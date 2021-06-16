@@ -72,11 +72,6 @@ class TypeConversionHashMap
 {
 	protected ref map<typename, ref TypeConverter> m_Values = new map<typename, ref TypeConverter>();
 		
-	void TypeConversionHashMap()
-	{
-		
-	}
-	
 	void ~TypeConversionHashMap()
 	{
 		delete m_Values;
