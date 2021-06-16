@@ -15,15 +15,8 @@
 class EventBase
 {
 	protected int m_EventState = -1;
-	protected float m_InitPhaseLength;
-	protected float m_MidPhaseLength;
-	protected float m_EndPhaseLength;
-	protected float m_NeededOvercast;
-	protected float m_windRelMinTarget;
-	protected float m_windRelMaxTarget;
-	protected float m_windRelMin, m_windRelMax, m_windChangeSpeed;
 	
-	protected Weather m_wObject;
+	protected Weather m_Weather;
 	protected PlayerBase m_Player;
 
 	protected ref Timer m_ClientUpdate = new Timer(CALL_CATEGORY_SYSTEM);
@@ -35,9 +28,13 @@ class EventBase
 
 	void EventBase()
 	{
-		EventInit();
+		m_Weather = GetGame().GetWeather();
 		
-		if (GetGame().IsClient() || !GetGame ().IsMultiplayer()) {
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
+			m_Player = PlayerBase.Cast(GetGame().GetPlayer());
+		}
+		
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 			m_ClientUpdate.Run(GetClientTick(), this, "UpdateClient", null, true);
 		}
 		
@@ -65,20 +62,6 @@ class EventBase
 			delete m_TimeRemainingTimer;
 		}
 	}
-
-	protected void EventInit()
-	{
-		if (GetGame().IsServer()) {
-			m_InitPhaseLength = 5.0;
-			m_MidPhaseLength = 10.0;
-			m_EndPhaseLength = 5.0;
-			m_wObject = GetGame().GetWeather();
-		}
-
-		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
-			m_Player = PlayerBase.Cast(GetGame().GetPlayer());
-		}
-	}
 	
 	// Abstract methods
 	protected void InitPhaseClient(float phase_time);
@@ -100,13 +83,33 @@ class EventBase
 	
 	float GetCurrentPhaseLength()
 	{
-		switch (m_EventState) {
-			case EventPhase.INIT:	return m_InitPhaseLength;
-			case EventPhase.MID: return m_MidPhaseLength;			
-			case EventPhase.END: return m_EndPhaseLength;			
+		return GetPhaseLength(m_EventState);
+	}
+	
+	float GetPhaseLength(EventPhase phase)
+	{
+		switch (phase) {
+			case EventPhase.INIT:	return GetInitPhaseLength();
+			case EventPhase.MID: 	return GetMidPhaseLength();			
+			case EventPhase.END: 	return GetEndPhaseLength();			
 		}
 		
 		return 0;
+	}
+	
+	float GetInitPhaseLength()
+	{
+		return 5.0;
+	}
+	
+	float GetMidPhaseLength()
+	{
+		return 10.0;
+	}
+	
+	float GetEndPhaseLength()
+	{
+		return 5.0;
 	}
 	
 	EventPhase GetActivePhaseID()

@@ -5,7 +5,7 @@ class WeatherEvent: EventBase
 		// I mean... it works :)
 		for (int i = WeatherChangeType.FOG; i <= WeatherChangeType.OVERCAST; i++) {		
 			if (GetWeatherTarget(i) != -1) {
-				RequestWeatherChange(i, GetWeatherTarget(i), m_InitPhaseLength, m_MidPhaseLength);
+				RequestWeatherChange(i, GetWeatherTarget(i), GetInitPhaseLength(), GetMidPhaseLength());
 			}
 		}
 	}
@@ -23,7 +23,7 @@ class WeatherEvent: EventBase
 				highest_value = Math.RandomFloat(0, 0.15);
 			}
 			
-			RequestWeatherChange(i, highest_value, m_EndPhaseLength, m_EndPhaseLength);
+			RequestWeatherChange(i, highest_value, GetEndPhaseLength(), GetEndPhaseLength());
 		}
 	}
 	

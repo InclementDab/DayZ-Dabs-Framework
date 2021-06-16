@@ -6,8 +6,7 @@ class MVC
 	
 	private static void CheckMVC()
 	{
-		if (!g_MVC)
-		{ 
+		if (!g_MVC) { 
 			g_MVC = new MVC();
 		}
 	}
@@ -34,14 +33,12 @@ class MVC
 	{
 		Log("MVC");
 		
-		if (!m_TypeConverterHashMap)
-		{
+		if (!m_TypeConverterHashMap) {
 			m_TypeConverterHashMap = new TypeConversionHashMap();
 			RegisterConversionTemplates(m_TypeConverterHashMap);
 		}
 		
-		if (!m_WidgetControllerHashMap)
-		{
+		if (!m_WidgetControllerHashMap) {
 			m_WidgetControllerHashMap = new TypenameHashMap();
 			RegisterWidgetControllers(m_WidgetControllerHashMap);
 		}
