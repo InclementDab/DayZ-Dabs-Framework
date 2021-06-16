@@ -1,0 +1,4 @@
+enum ERPCsDabsFramework
+{
+	EVENT_MANAGER_UPDATE = 3059462
+}

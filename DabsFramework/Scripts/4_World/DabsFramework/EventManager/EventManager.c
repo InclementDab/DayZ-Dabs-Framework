@@ -209,7 +209,7 @@ class EventManager
 	{	
 		switch (rpc_type) {
 			
-			case ERPCsNamalsk.NAM_RPC_EVENT_UPDATE: {
+			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {
 				
 				EventManagerUpdateParams event_update_params;
 				if (!ctx.Read(event_update_params)) {
@@ -261,7 +261,7 @@ class EventManager
 		EventManagerDebug("Sending In Progress info to %1", player.ToString());
 		foreach (typename event_type, EventBase event_base: m_ActiveEvents) {
 			if (event_base) {
-				GetGame().RPCSingleParam(player, ERPCsNamalsk.NAM_RPC_EVENT_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetActivePhaseID(), event_base.GetCurrentPhaseTimeRemaining()), true, player.GetIdentity());
+				GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetActivePhaseID(), event_base.GetCurrentPhaseTimeRemaining()), true, player.GetIdentity());
 			}
 		}
 	}
@@ -269,7 +269,7 @@ class EventManager
 	protected void SendActiveEventData(typename event_type, int phase_id, float time_remaining)
 	{
 		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), phase_id.ToString());
-		GetGame().RPCSingleParam(null, ERPCsNamalsk.NAM_RPC_EVENT_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining), true, null);
+		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining), true, null);
 	}
 	
 	bool IsEventActive(typename event_type)
