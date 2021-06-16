@@ -14,12 +14,12 @@ class CfgMods
 {
 	class DZ_DabsFramework
 	{
-		name = "Mod Template";
+		name = "Dabs Framework";
 		dir = "DabsFramework";
-		credits = "";
-		author = "";
+		credits = "InclementDab";
+		author = "InclementDab";
 		creditsJson = "DabsFramework/Scripts/Data/Credits.json";
-		versionPath = "DabsFramework/scripts/Data/Version.hpp";
+		versionPath = "DabsFramework/Scripts/Data/Version.hpp";
 		inputs = "DabsFramework/Scripts/Data/Inputs.xml";
 		type = "mod";
 		dependencies[] =
@@ -28,13 +28,6 @@ class CfgMods
 		};
 		class defs
 		{
-			class imageSets
-			{
-				files[]=
-				{
-					"DabsFramework/gui/imagesets/dayz_editor_gui.imageset"
-				};
-			};
 			class engineScriptModule
 			{
 				value = "";
