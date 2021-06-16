@@ -198,6 +198,14 @@ class EventBase
 	
 	vector GetEventPosition();
 	
+	/* 
+		When a player joins midway through an event, should the Event Manager play 'catch-up' and run all 
+		of the previously set phases? Or just the phase that it is currently active
+		
+		i.e. If the server is on Mid Phase and a player joins:
+			if true, the client will run ClientInitPhase AND ClientMidPhase
+			if false, the client will ONLY run ClientMidPhase
+	*/
 	bool JIPRunPreviousPhases()
 	{
 		return true;
@@ -238,12 +246,12 @@ class EventBase
 	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 #ifdef EVENT_MANAGER_DEBUG		
-		PrintFormat("[Namalsk][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
+		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 #endif
 	}
 	
 	void EventInfo(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
-		PrintFormat("[Namalsk][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
+		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 	}
 };
