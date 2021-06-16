@@ -248,7 +248,7 @@ class ViewController : ScriptedViewBase
 
 	private	typename GetControllerProperty(out Class context, string property_name)
 	{
-		PropertyInfo propertyInfo = GetSubScope(context, property_name);
+		PropertyInfo propertyInfo = PropertyInfo.GetSubScope(context, property_name);
 		if (propertyInfo)
 		{
 			return propertyInfo.Type;
@@ -287,7 +287,7 @@ class ViewController : ScriptedViewBase
 
 		// Attempt to load instance of Variable from Controller
 		Class context = this;
-		PropertyInfo relayCommandProperty = GetSubScope(context, relayCommandName);
+		PropertyInfo relayCommandProperty = PropertyInfo.GetSubScope(context, relayCommandName);
 		if (relayCommandProperty)
 		{
 			typename relayCommandType = relayCommandProperty.Type;

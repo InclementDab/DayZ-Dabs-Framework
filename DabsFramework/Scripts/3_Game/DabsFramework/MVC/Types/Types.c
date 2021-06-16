@@ -1,4 +1,3 @@
-
 class PropertyInfo
 {
 	string Name;
@@ -33,6 +32,28 @@ class PropertyInfo
 		}
 		
 		return null;
+	}
+	
+	// 0: Context of Start Scope, out is context of final scope
+	// 1: Name of variable string Ex: m_Binding.Value.Root
+	// return: Final variable name
+	static PropertyInfo GetSubScope(out Class context, string name)
+	{
+		if (name == string.Empty)
+			return null;
+	
+		TStringArray variable_scope = {};
+		name.Split(".", variable_scope);
+	
+		for (int i = 0; i < variable_scope.Count() - 1; i++) {
+			EnScript.GetClassVar(context, variable_scope[i], 0, context);
+		}
+	
+		if (variable_scope.Count() == 1) {
+			return PropertyInfo.GetFromClass(context, name);
+		}
+	
+		return PropertyInfo.GetFromClass(context, variable_scope[variable_scope.Count() - 1]);
 	}
 }
 

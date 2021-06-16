@@ -116,6 +116,47 @@ class ScriptView : ScriptedViewBase
 		m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		m_Controller.SetParent(this);
 	}
+	
+	// Loads .layout file Widgets into Properties of context (when they are the same name)
+	/*
+	
+	Example:
+	
+	.layout file:
+	MenuBarRoot		FrameWidget
+		MenuBarFile   	ButtonWidget
+			MenuBarFileLabel	TextWidget
+	
+	
+	.c file:
+	class TestClass
+	{
+		ButtonWidget MenuBarFile; //<-- these properties will be assigned
+		private TextWidget MenuBarFileLabel;
+	}
+	
+	*/
+	static void LoadViewProperties(Class context, PropertyTypeHashMap property_map, Widget root_widget)
+	{
+		foreach (string propertyName, typename property_type: property_map) {
+			if (!property_type.IsInherited(Widget))
+				continue;
+	
+			Widget target = root_widget.FindAnyWidget(propertyName);
+	
+			// fixes bug that breaks everything
+			if (target && root_widget.GetName() != propertyName) {
+				EnScript.SetClassVar(context, propertyName, 0, target);
+				continue;
+			}
+	
+			// Allows you to define the layout root aswell within it
+			if (!target && root_widget.GetName() == propertyName) {
+				EnScript.SetClassVar(context, propertyName, 0, root_widget);
+				continue;
+			}
+		}
+	}
 
 	// Virtual Methods
 	protected string GetLayoutFile();
