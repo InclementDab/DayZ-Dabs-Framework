@@ -1,0 +1,11 @@
+{
+    "Departments": [{
+        "DepartmentName": "Example",
+        "Sections": [{
+            "SectionName": "Developers",
+            "SectionLines": [
+                "DayZ Mod Template by InclementDab"
+            ]
+        }]
+    }]
+}

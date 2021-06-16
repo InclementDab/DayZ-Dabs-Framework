@@ -1,0 +1,11 @@
+name = "DabsFramework";
+picture = "DabsFramework/gui/images/dayz_editor_icon_black.edds";
+logo = "DabsFramework/gui/images/dayz_editor_icon_black.edds";
+logoSmall = "DabsFramework/gui/images/dayz_editor_icon_black.edds";
+logoOver = "DabsFramework/gui/images/dayz_editor_icon_black.edds";
+tooltip = "DabsFramework";
+overview = "";
+action = "";
+author = "";
+authorID = "";
+version = "";
