@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<modded_inputs>
+    <inputs>
+        <actions>
+			<!-- Actions go here -->
+        </actions>
+    </inputs>
+
+    <preset>
+		<!-- Presets for actions go here -->
+    </preset>
+</modded_inputs>
