@@ -1,5 +1,10 @@
 static ref MVC g_MVC;
 
+/*
+	A bunch of this code in this file is an unmanaged mess. MVC Singleton is really weird
+	also dont think i need to create an instance of the TypeConverters every time we use it. probably just use one instance
+*/
+
 class MVC
 {
 	static int LBMLogLevel;

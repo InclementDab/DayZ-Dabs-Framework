@@ -1,7 +1,6 @@
-
 class CfgPatches
 {
-	class DabsFramework_Scripts
+	class DF_Scripts
 	{
         units[] = {};
         weapons[] = {};

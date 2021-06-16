@@ -1,5 +1,5 @@
 
-// Check JM/CF/GUI/layouts/sample_LayoutBindingManager2.layout
+// Check DabsFramework/GUI/layouts/sample_mvc2.layout
 class SampleScriptViewController: ViewController
 {
 	Widget content_host;
