@@ -5,7 +5,6 @@
 *	Abstracted class for all Events
 *
 *	You are free to mod this as you please. 
-*	Just credit @InclementDab for the scripting
 *	
 *	That being said you are NOT free to redistribute / repack this into
 *	your own mod. 
@@ -228,6 +227,7 @@ class EventBase
 		return 0;
 	}
 	
+	// It will immediately destroy the Event if one of these is already running
 	TTypenameArray GetDisallowedEvents()
 	{
 		return {};
