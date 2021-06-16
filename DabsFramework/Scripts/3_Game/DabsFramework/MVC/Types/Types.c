@@ -70,14 +70,24 @@ typedef map<typename, typename> TypenameHashMap;
 // 1: Conversion Type
 class TypeConversionHashMap
 {
-	private autoptr map<typename, typename> value = new map<typename, typename>();
-	
-	typename Get(typename conversion_type)
+	protected ref map<typename, ref TypeConverter> m_Values = new map<typename, ref TypeConverter>();
+		
+	void TypeConversionHashMap()
 	{
-		typename result = value.Get(conversion_type);
+		
+	}
+	
+	void ~TypeConversionHashMap()
+	{
+		delete m_Values;
+	}
+	
+	TypeConverter Get(typename conversion_type)
+	{
+		TypeConverter result = m_Values.Get(conversion_type);
 		
 		if (!result) {
-			foreach (typename type, typename conversion: value) {
+			foreach (typename type, TypeConverter conversion: m_Values) {
 				if (conversion_type.IsInherited(type)) {
 					return conversion;
 				}
@@ -89,7 +99,7 @@ class TypeConversionHashMap
 	
 	void Remove(typename conversion_type) 
 	{
-		value.Remove(conversion_type);
+		m_Values.Remove(conversion_type);
 	}
 	
 	void Set(typename conversion_type, typename conversion_class) 
@@ -99,7 +109,13 @@ class TypeConversionHashMap
 			return;
 		}
 		
-		value.Set(conversion_type, conversion_class);
+		TypeConverter converter = TypeConverter.Cast(conversion_class.Spawn());
+		if (!converter) {
+			MVC.Error(string.Format("TypeConverterHashMap: Failed to create TypeConverter %1", conversion_class));
+			return;
+		}
+		
+		m_Values.Set(conversion_type, converter);
 	} 
 	
 	bool Insert(typename conversion_type, typename conversion_class)
@@ -109,6 +125,12 @@ class TypeConversionHashMap
 			return false;
 		}
 		
-		return value.Insert(conversion_type, conversion_class);
+		TypeConverter converter = TypeConverter.Cast(conversion_class.Spawn());
+		if (!converter) {
+			MVC.Error(string.Format("TypeConverterHashMap: Failed to create TypeConverter %1", conversion_class));
+			return false;
+		}
+		
+		return m_Values.Insert(conversion_type, converter);
 	}
 }

@@ -31,7 +31,7 @@ class MVC
 	{
 		CheckMVC();
 				
-		return TypeConverter.Cast(m_TypeConverterHashMap[type].Spawn()); 
+		return m_TypeConverterHashMap[type]; 
 	}
 	
 	void MVC()
