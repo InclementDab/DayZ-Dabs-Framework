@@ -1,63 +1,3 @@
-class PropertyInfo
-{
-	string Name;
-	typename Type;
-	
-	void PropertyInfo(string name, typename type)
-	{
-		Name = name;
-		Type = type;
-	}
-	
-	static PropertyInfo GetFromClass(Class context, string name)
-	{
-		if (!context)
-			return null;
-
-		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(context.Type());
-		if (hash_map[name])
-		{
-			return new PropertyInfo(name, hash_map[name]);
-		}
-		
-		return null;
-	}
-	
-	static PropertyInfo GetFromType(typename parent_type, string name)
-	{
-		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(parent_type);
-		if (hash_map[name])
-		{
-			return new PropertyInfo(name, hash_map[name]);
-		}
-		
-		return null;
-	}
-	
-	// 0: Context of Start Scope, out is context of final scope
-	// 1: Name of variable string Ex: m_Binding.Value.Root
-	// return: Final variable name
-	static PropertyInfo GetSubScope(out Class context, string name)
-	{
-		if (name == string.Empty)
-			return null;
-	
-		TStringArray variable_scope = {};
-		name.Split(".", variable_scope);
-	
-		for (int i = 0; i < variable_scope.Count() - 1; i++) {
-			EnScript.GetClassVar(context, variable_scope[i], 0, context);
-		}
-	
-		if (variable_scope.Count() == 1) {
-			return PropertyInfo.GetFromClass(context, name);
-		}
-	
-		return PropertyInfo.GetFromClass(context, variable_scope[variable_scope.Count() - 1]);
-	}
-}
-
-
 // 0: Property Name
 // 1: Property Type
 class PropertyTypeHashMap: map<string, typename>
@@ -65,8 +5,7 @@ class PropertyTypeHashMap: map<string, typename>
 	static PropertyTypeHashMap FromType(typename type)
 	{
 		PropertyTypeHashMap hash_map = new PropertyTypeHashMap();
-		for (int i = 0; i < type.GetVariableCount(); i++)
-		{
+		for (int i = 0; i < type.GetVariableCount(); i++) {
 			hash_map.Insert(type.GetVariableName(i), type.GetVariableType(i));	
 		}
 		
@@ -76,8 +15,9 @@ class PropertyTypeHashMap: map<string, typename>
 	void RemoveType(typename removed_type)
 	{
 		PropertyTypeHashMap hash_map = FromType(removed_type);
-		foreach (string name, typename type: hash_map)
+		foreach (string name, typename type: hash_map) {
 			Remove(name);
+		}
 	}
 }
 
@@ -95,11 +35,9 @@ class DataBindingHashMap: map<string, autoptr ViewBindingArray>
 {
 	void DebugPrint()
 	{
-		foreach (string name, ViewBindingArray viewSet: this)
-		{
+		foreach (string name, ViewBindingArray view_set: this) {
 			MVC.Log("[%1]:", name);
-			foreach (ViewBinding view: viewSet)
-			{
+			foreach (ViewBinding view: view_set) {
 				MVC.Log("    %1", view.GetLayoutRoot().GetName());
 			}
 		}
@@ -107,17 +45,16 @@ class DataBindingHashMap: map<string, autoptr ViewBindingArray>
 	
 	void InsertView(ViewBinding view)
 	{
-		ViewBindingArray viewSet = Get(view.Binding_Name);
-		if (!viewSet)
-		{
-			viewSet = new ViewBindingArray();
-			viewSet.Insert(view);
-			Insert(view.Binding_Name, viewSet);
-			Insert(view.Selected_Item, viewSet);
-		} else
-		{
-			viewSet.Insert(view);
-		}		
+		ViewBindingArray view_set = Get(view.Binding_Name);
+		if (view_set) {
+			view_set.Insert(view);
+			return;
+		} 
+		
+		view_set = new ViewBindingArray();
+		view_set.Insert(view);
+		Insert(view.Binding_Name, view_set);
+		Insert(view.Selected_Item, view_set);
 	}
 }
 
@@ -135,17 +72,13 @@ class TypeConversionHashMap
 {
 	private autoptr map<typename, typename> value = new map<typename, typename>();
 	
-	
-	typename Get(typename conversionType)
+	typename Get(typename conversion_type)
 	{
-		typename result = value.Get(conversionType);
+		typename result = value.Get(conversion_type);
 		
-		if (!result)
-		{
-			foreach (typename type, typename conversion: value)
-			{
-				if (conversionType.IsInherited(type))
-				{
+		if (!result) {
+			foreach (typename type, typename conversion: value) {
+				if (conversion_type.IsInherited(type)) {
 					return conversion;
 				}
 			}
@@ -154,29 +87,28 @@ class TypeConversionHashMap
 		return result;
 	}
 	
-	void Remove(typename conversionType) {
-		value.Remove(conversionType);
+	void Remove(typename conversion_type) 
+	{
+		value.Remove(conversion_type);
 	}
 	
-	void Set(typename conversionType, typename conversionClass)
-	{
-		if (!conversionClass.IsInherited(TypeConversionTemplate))
+	void Set(typename conversion_type, typename conversion_class) {
+		if (!conversion_class.IsInherited(TypeConversionTemplate))
 		{
-			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversionClass.ToString()));
+			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
 			return;
 		}
 		
-		value.Set(conversionType, conversionClass);
+		value.Set(conversion_type, conversion_class);
 	} 
 	
-	bool Insert(typename conversionType, typename conversionClass)
+	bool Insert(typename conversion_type, typename conversion_class)
 	{
-		if (!conversionClass.IsInherited(TypeConversionTemplate))
-		{
-			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversionClass.ToString()));
+		if (!conversion_class.IsInherited(TypeConversionTemplate)) {
+			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
 			return false;
 		}
 		
-		return value.Insert(conversionType, conversionClass);
+		return value.Insert(conversion_type, conversion_class);
 	}
-};
+}
