@@ -1,6 +1,6 @@
 
 // Check JM/CF/GUI/layouts/sample_LayoutBindingManager2.layout
-class SampleScriptViewController: Controller
+class SampleScriptViewController: ViewController
 {
 	Widget content_host;
 	ref ObservableCollection<ref SampleScriptView> script_view = new ObservableCollection<ref SampleScriptView>(this);
