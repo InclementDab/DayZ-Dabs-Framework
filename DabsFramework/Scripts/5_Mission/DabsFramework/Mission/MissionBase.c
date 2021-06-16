@@ -8,7 +8,7 @@ modded class MissionBase
 		
 		m_EventManager = new EventManager();
 	}
-	
+
 	EventManager GetEventManager()
 	{
 		return m_EventManager;

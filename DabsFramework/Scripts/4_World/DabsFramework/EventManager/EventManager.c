@@ -1,7 +1,7 @@
 typedef map<typename, ref EventBase> TEventMap;
 
 class EventManager
-{
+{	
 	// Enable / Disable the multiple event system
 	protected int m_MaxEventCount;
 	
@@ -42,18 +42,13 @@ class EventManager
 	// 1 (int): Minimum time between events
 	// 2 (int): Maximum time between events
 	// 3 (int): Maximum amount of parallel events
-	void OnInitServer(bool state, int min, int max, int max_event_count = 2)
-	{
-		if (!state) {
-			EventManagerInfo("EventManager is now disabled");
-			return;
-		}
-		
+	void Run(int min_between_events, int max_between_events, int max_event_count = 2)
+	{		
 		m_MaxEventCount = max_event_count;
-		m_EventFreqMin = min;
-		m_EventFreqMax = max;
+		m_EventFreqMin = min_between_events;
+		m_EventFreqMax = max_between_events;
 		
-#ifdef NAMALSK_SURVIVAL_DEBUG
+#ifdef EVENT_MANAGER_DEBUG
 		m_EventFreqMin *= 0.05;
 		m_EventFreqMax *= 0.05;
 #endif
@@ -345,7 +340,7 @@ class EventManager
 		
 	static void EventManagerDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
-#ifdef NAMALSK_SURVIVAL_DEBUG		
+#ifdef EVENT_MANAGER_DEBUG		
 		PrintFormat("[Namalsk][EventManager]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 #endif
 	}
