@@ -40,7 +40,7 @@ class ObservableCollection<Class TValue> : Observable
 {
 	private	ref array<autoptr TValue> _data = {};
 
-	void ObservableCollection(Controller controller)
+	void ObservableCollection(ViewController controller)
 	{
 		m_Type = TemplateType<TValue>.GetType();
 	}

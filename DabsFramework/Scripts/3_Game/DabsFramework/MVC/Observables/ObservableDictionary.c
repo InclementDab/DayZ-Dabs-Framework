@@ -3,7 +3,7 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 	private	ref map<TKey, ref TValue> _data = new map<TKey, ref TValue>();
 	private	ref array<TValue> _dataArray = {};
 
-	void ObservableDictionary(Controller controller)
+	void ObservableDictionary(ViewController controller)
 	{
 		m_Type = TemplateType<TValue>.GetType();
 	}
