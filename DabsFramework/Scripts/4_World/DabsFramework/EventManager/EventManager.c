@@ -14,21 +14,18 @@ typedef map<typename, ref EventBase> TEventMap;
 */
 
 class EventManager
-{	
+{			
 	// Enable / Disable the multiple event system
 	protected int m_MaxEventCount;
-	
-	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
-	protected ref TEventMap m_ActiveEvents = new TEventMap();
-	
 	protected float m_NextEventIn;
 	protected int m_EventFreqMin;
 	protected int m_EventFreqMax;
+	protected typename m_LastEventType;
 	
-	private typename m_LastEventType;
-	
+	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
+	protected ref TEventMap m_ActiveEvents = new TEventMap();
+
 	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
-	
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref map<typename, int> m_EventCooldowns = new map<typename, int>();
 	
