@@ -1,5 +1,11 @@
-# DayZ-Mod-Template
-Mod Template for DayZ Standalone. Includes build tools, gproj, and script folders
+# DayZ-Dabs-Framework
+This is a Framework built to give tools to the average modder to help them make grand and epic projects!
+
+Documentation will come in the future...
+Event Manager
+MVC
+
+..more?
 
 ### If you are cloning this and the mod already exists
 ```
