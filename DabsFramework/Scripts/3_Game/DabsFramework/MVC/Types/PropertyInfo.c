@@ -17,21 +17,21 @@ class PropertyInfo
 		}
 
 		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(context.Type());
-		if (hash_map[name]) {
-			return new PropertyInfo(name, hash_map[name]);
+		if (!hash_map[name]) {
+			return null;
 		}
 		
-		return null;
+		return new PropertyInfo(name, hash_map[name]);
 	}
 	
 	static PropertyInfo GetFromType(typename parent_type, string name)
 	{
 		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(parent_type);
-		if (hash_map[name]) {
-			return new PropertyInfo(name, hash_map[name]);
+		if (!hash_map[name]) {
+			return null;
 		}
 		
-		return null;
+		return new PropertyInfo(name, hash_map[name]);
 	}
 	
 	// 0: Context of Start Scope, out is context of final scope
