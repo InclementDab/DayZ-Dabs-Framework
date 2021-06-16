@@ -5,8 +5,7 @@ class ObservableSet<Class TValue> : Observable
 	int Insert(TValue value)
 	{
 		int index = _data.Insert(value);
-		if (index != -1)
-		{
+		if (index != -1) {
 			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Add, index, new Param1<TValue>(value)));
 		}
 
@@ -54,13 +53,7 @@ class ObservableSet<Class TValue> : Observable
 
 	TValue Get(int index)
 	{
-		TValue v = _data.Get(index);
-		if (!v)
-		{
-			MVC.Error(string.Format("ObservableCollection.Get returned null! Index: %1 Name: %2", index, m_VariableName));
-		}
-
-		return v;
+		return _data[index];
 	}
 
 	override int Count()
@@ -77,4 +70,4 @@ class ObservableSet<Class TValue> : Observable
 	{
 		return TValue;
 	}
-};
+}
