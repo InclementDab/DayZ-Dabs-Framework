@@ -1,4 +1,3 @@
-
 // Base class for all Observable Types (ObservableCollection, ObservableSet, ObservableDictionary)
 class Observable
 {
