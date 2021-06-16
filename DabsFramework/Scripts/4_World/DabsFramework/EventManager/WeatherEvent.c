@@ -1,3 +1,16 @@
+/*
+*
+*	WeatherEvent.c
+*
+*	An abstracted version of EventBase that accounts for weather
+*
+*	You are free to mod this as you please. 
+*	
+*	That being said you are NOT free to redistribute / repack this into
+*	your own mod. 
+*
+*/
+
 class WeatherEvent: EventBase
 {
 	override void InitPhaseServer()

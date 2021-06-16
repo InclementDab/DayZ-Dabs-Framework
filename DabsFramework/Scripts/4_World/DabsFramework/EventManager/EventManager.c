@@ -1,5 +1,18 @@
 typedef map<typename, ref EventBase> TEventMap;
 
+/*
+*
+*	EventManager.c
+*
+*	Primary Event Manager
+*
+*	You are free to mod this as you please. 
+*	
+*	That being said you are NOT free to redistribute / repack this into
+*	your own mod. 
+*
+*/
+
 class EventManager
 {	
 	// Enable / Disable the multiple event system
@@ -18,6 +31,24 @@ class EventManager
 	
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref map<typename, int> m_EventCooldowns = new map<typename, int>();
+	
+	protected static ref EventManager m_Instance;
+	
+	static EventManager Start()
+	{
+		m_Instance = new EventManager();
+		return m_Instance;
+	}
+	
+	static void Stop()
+	{
+		delete m_Instance;
+	}
+	
+	static EventManager GetInstance()
+	{
+		return m_Instance;
+	}
 	
 	void EventManager()
 	{		
@@ -328,16 +359,7 @@ class EventManager
 			EventManagerInfo("Chance of %1 is %2 percent", type.ToString(), value.ToString());
 		}
 	}
-	
-	// This is really arbitrary but the EventManager is a singleton and im afraid
-	// of breaking old code in mission files and destroying every server in existence :)
-	static EventManager GetInstance()
-	{
-		EventManager manager;
-		g_Script.CallFunction(GetGame().GetMission(), "GetEventManager", manager, null);
-		return manager;
-	}
-		
+			
 	static void EventManagerDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 #ifdef EVENT_MANAGER_DEBUG		

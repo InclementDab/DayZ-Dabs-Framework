@@ -1,16 +1,12 @@
 modded class MissionBase
 {
-	protected ref EventManager m_EventManager;
+	// Not strong ref, handled by the EventManager itself
+	protected EventManager m_EventManager;
 	
 	override void OnInit()
 	{
 		super.OnInit();
 		
-		m_EventManager = new EventManager();
-	}
-
-	EventManager GetEventManager()
-	{
-		return m_EventManager;
+		m_EventManager = EventManager.Start();
 	}
 }
