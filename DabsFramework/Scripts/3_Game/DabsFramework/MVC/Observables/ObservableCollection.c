@@ -8,7 +8,7 @@
 Example: 
 
 
-class TestController: Controller
+class TestController: ViewController
 {
 	// "LeftList" goes into Binding_Name
 	ref ObservableCollection<string> LeftList; 	
@@ -18,13 +18,13 @@ class TestController: Controller
 	
 	void TestController()
 	{
-		LeftList = new ObservableCollection<string>("LeftList", this);
+		LeftList = new ObservableCollection<string>(this);
 		LeftList.Insert("Line1");
 	}
 
-	override void PropertyChanged(string propertyName)
+	override void CollectionChanged(string property_name, CollectionChangedEventArgs args)
 	{
-		switch (propertyName)
+		switch (property_name)
 		{
 			case "LeftListSelection": {
 				Print("LeftList selection changed: " + LeftListSelection);

@@ -2,10 +2,10 @@
 *
 *	EventBase.c
 *
-*	Abstracted class for all Events that run on Namalsk
+*	Abstracted class for all Events
 *
 *	You are free to mod this as you please. 
-*	Just credit @InclementDab for the scripting and @Sumrak for the modeling
+*	Just credit @InclementDab for the scripting
 *	
 *	That being said you are NOT free to redistribute / repack this into
 *	your own mod. 
