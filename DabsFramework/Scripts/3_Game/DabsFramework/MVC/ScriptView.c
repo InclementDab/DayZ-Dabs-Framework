@@ -22,8 +22,8 @@ class CustomDialogWindow: ScriptView
 
 class ScriptView : ScriptedViewBase
 {
-	protected ref Controller m_Controller;
-	Controller GetController()
+	protected ref ViewController m_Controller;
+	ViewController GetController()
 	{
 		return m_Controller;
 	}
@@ -38,19 +38,19 @@ class ScriptView : ScriptedViewBase
 		m_LayoutRoot.GetScript(m_Controller);
 
 		// If no Controller is specified in the WB Root
-		if (!m_Controller || !m_Controller.IsInherited(Controller))
+		if (!m_Controller || !m_Controller.IsInherited(ViewController))
 		{
 
-			Log("Controller not found on %1, creating...", m_LayoutRoot.GetName());
-			if (!GetControllerType().IsInherited(Controller))
+			Log("ViewController not found on %1, creating...", m_LayoutRoot.GetName());
+			if (!GetControllerType().IsInherited(ViewController))
 			{
-				Error("%1 is invalid. Must inherit from Controller!", GetControllerType().ToString());
+				Error("%1 is invalid. Must inherit from ViewController!", GetControllerType().ToString());
 				return;
 			}
 
 			if (!Class.CastTo(m_Controller, GetControllerType().Spawn()))
 			{
-				Error("Could not create Controller %1", GetControllerType().ToString());
+				Error("Could not create ViewController %1", GetControllerType().ToString());
 				return;
 			}
 
@@ -109,7 +109,7 @@ class ScriptView : ScriptedViewBase
 	}
 
 	// Useful if you want to set to an existing controller
-	void SetController(Controller controller)
+	void SetController(ViewController controller)
 	{
 		m_Controller = controller;
 		m_Controller.Debug_Logging = Debug_Logging;
@@ -122,6 +122,6 @@ class ScriptView : ScriptedViewBase
 
 	protected typename GetControllerType()
 	{
-		return Controller;
+		return ViewController;
 	}
 };

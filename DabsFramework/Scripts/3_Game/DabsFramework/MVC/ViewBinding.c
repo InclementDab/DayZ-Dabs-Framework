@@ -77,7 +77,7 @@ class ViewBinding : ScriptedViewBase
 	}
 
 	// Controller -> view
-	void UpdateView(Controller controller)
+	void UpdateView(ViewController controller)
 	{
 		Trace("UpdateView");
 		if (!m_WidgetController)
@@ -100,8 +100,8 @@ class ViewBinding : ScriptedViewBase
 		}
 	}
 
-	// View -> Controller
-	void UpdateController(Controller controller)
+	// View -> ViewController
+	void UpdateController(ViewController controller)
 	{
 		Trace("UpdateController");
 		if (!m_WidgetController)

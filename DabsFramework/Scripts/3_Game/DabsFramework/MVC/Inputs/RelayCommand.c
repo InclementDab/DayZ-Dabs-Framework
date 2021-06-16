@@ -3,8 +3,8 @@ class RelayCommand
 {
 	private	bool m_CanExecute = true;
 
-	protected Controller m_Controller;
-	void SetController(Controller controller)
+	protected ViewController m_Controller;
+	void SetController(ViewController controller)
 	{
 		m_Controller = controller;
 	}

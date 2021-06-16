@@ -38,7 +38,7 @@ class TestController: Controller
 */
 
 // Abstract Class
-class Controller : ScriptedViewBase
+class ViewController : ScriptedViewBase
 {
 	// All View Bindings
 	[NonSerialized()]
@@ -195,7 +195,7 @@ class Controller : ScriptedViewBase
 					viewBinding.SetRelayCommand(relayCommand);
 				} else // Must be a function on the controller
 				{
-					Log("%2: RelayCommand %1 not found - Assuming its a function on the Controller / ScriptView!", viewBinding.Relay_Command, viewBinding.GetLayoutRoot().GetName());
+					Log("%2: RelayCommand %1 not found - Assuming its a function on the ViewController / ScriptView!", viewBinding.Relay_Command, viewBinding.GetLayoutRoot().GetName());
 				}
 			}
 
@@ -208,7 +208,7 @@ class Controller : ScriptedViewBase
 
 		// really wish i had XOR here
 		bool b1 = (w.GetChildren() != null);
-		bool b2 = (viewBase && viewBase.IsInherited(Controller) && viewBase != this);
+		bool b2 = (viewBase && viewBase.IsInherited(ViewController) && viewBase != this);
 
 		// scuffed XOR
 		// Makes it stop loading when it finds another controller
@@ -218,7 +218,7 @@ class Controller : ScriptedViewBase
 			LoadDataBindings(w.GetChildren());
 		} else if (b2) // Sets parent of the child controller
 		{
-			Controller childController = Controller.Cast(viewBase);
+			ViewController childController = ViewController.Cast(viewBase);
 			if (childController)
 			{
 				childController.SetParent(this);

@@ -5,9 +5,9 @@ class Observable
 	// Assigned on Constructor of super
 	private	typename m_Type;
 
-	protected Controller m_Controller;
+	protected ViewController m_Controller;
 
-	void Observable(Controller controller)
+	void Observable(ViewController controller)
 	{
 		m_Controller = controller;
 	}
