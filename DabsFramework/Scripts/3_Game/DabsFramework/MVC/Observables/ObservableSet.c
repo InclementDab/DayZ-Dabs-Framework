@@ -57,7 +57,7 @@ class ObservableSet<Class TValue> : Observable
 		TValue v = _data.Get(index);
 		if (!v)
 		{
-			LayoutBindingManager.Error(string.Format("ObservableCollection.Get returned null! Index: %1 Name: %2", index, m_VariableName));
+			MVC.Error(string.Format("ObservableCollection.Get returned null! Index: %1 Name: %2", index, m_VariableName));
 		}
 
 		return v;

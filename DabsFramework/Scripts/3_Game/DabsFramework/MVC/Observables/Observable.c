@@ -24,7 +24,7 @@ class Observable
 
 	TypeConverter GetTypeConverter()
 	{
-		return LayoutBindingManager.GetTypeConversion(m_Type);
+		return MVC.GetTypeConversion(m_Type);
 	}
 
 	// Abstract

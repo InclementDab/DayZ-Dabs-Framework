@@ -1,21 +1,21 @@
-static ref LayoutBindingManager g_LayoutBindingManager;
+static ref MVC g_MVC;
 
-class LayoutBindingManager
+class MVC
 {
 	static int LBMLogLevel;
 	
-	private static void CheckLayoutBindingManager()
+	private static void CheckMVC()
 	{
-		if (!g_LayoutBindingManager)
+		if (!g_MVC)
 		{ 
-			g_LayoutBindingManager = new LayoutBindingManager();
+			g_MVC = new MVC();
 		}
 	}
 	
 	protected static ref TypenameHashMap m_WidgetControllerHashMap;
 	static WidgetController GetWidgetController(Widget data) 
 	{
-		CheckLayoutBindingManager();
+		CheckMVC();
 	
 		WidgetController widgetController = WidgetController.Cast(m_WidgetControllerHashMap.Get(data.Type()).Spawn());
 		g_Script.Call(widgetController, "SetWidget", data);
@@ -25,14 +25,14 @@ class LayoutBindingManager
 	protected static ref TypeConversionHashMap m_TypeConverterHashMap;
 	static TypeConverter GetTypeConversion(typename type) 
 	{
-		CheckLayoutBindingManager();
+		CheckMVC();
 				
 		return TypeConverter.Cast(m_TypeConverterHashMap[type].Spawn()); 
 	}
 	
-	void LayoutBindingManager()
+	void MVC()
 	{
-		Log("LayoutBindingManager");
+		Log("MVC");
 		
 		if (!m_TypeConverterHashMap)
 		{
@@ -47,9 +47,9 @@ class LayoutBindingManager
 		}
 	}
 	
-	void ~LayoutBindingManager() 
+	void ~MVC() 
 	{ 
-		Log("~LayoutBindingManager"); 
+		Log("~MVC"); 
 	}
 	
 	// Override THIS to add your own Custom Conversion Templates
@@ -57,7 +57,7 @@ class LayoutBindingManager
 	// i.e. you can assign a TextWidget to float, due to the TypeConversion's GetString()
 	void RegisterConversionTemplates(out TypeConversionHashMap type_conversions)
 	{
-		Log("LayoutBindingManager::RegisterConversionTemplates");
+		Log("MVC::RegisterConversionTemplates");
 		type_conversions.Insert(bool, TypeConversionBool);
 		type_conversions.Insert(int, TypeConversionInt);
 		type_conversions.Insert(float, TypeConversionFloat);
@@ -74,7 +74,7 @@ class LayoutBindingManager
 	// Great for prefabs
 	void RegisterWidgetControllers(out TypenameHashMap widget_controllers)
 	{
-		Log("LayoutBindingManager::RegisterWidgetwidget_controllers");
+		Log("MVC::RegisterWidgetwidget_controllers");
 		
 		widget_controllers.Insert(Widget, WidgetBaseController);
 		widget_controllers.Insert(SpacerBaseWidget, SpacerBaseWidgetController);
@@ -102,23 +102,23 @@ class LayoutBindingManager
 	static void Trace(string message, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 		if (LBMLogLevel <= 0)
-			PrintFormat("LayoutBindingManagerLog::Trace %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
+			PrintFormat("MVCLog::Trace %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
 	}
 	
 	static void Log(string message, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 		if (LBMLogLevel <= 1)
-			PrintFormat("LayoutBindingManagerLog::Log %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
+			PrintFormat("MVCLog::Log %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
 	}
 
 	static void Error(string message, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 		string msg = string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9);
-		//PrintFormat("LayoutBindingManagerLog::Error %1", msg);
-		Error2("LayoutBindingManager Error", msg);
+		//PrintFormat("MVCLog::Error %1", msg);
+		Error2("MVC Error", msg);
 		
 #ifdef COMPONENT_SYSTEM
-		Workbench.Dialog("LayoutBindingManager Error", msg);
+		Workbench.Dialog("MVC Error", msg);
 #endif
 	}
 };

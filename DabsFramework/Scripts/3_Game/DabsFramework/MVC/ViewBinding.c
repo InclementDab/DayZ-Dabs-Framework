@@ -57,10 +57,10 @@ class ViewBinding : ScriptedViewBase
 		if (binding_type && Binding_Name != string.Empty)
 		{
 			Log("Loading TypeConverter for Variable: %1 of Type: %2", Binding_Name, binding_type.ToString());
-			m_PropertyConverter = LayoutBindingManager.GetTypeConversion(binding_type);
+			m_PropertyConverter = MVC.GetTypeConversion(binding_type);
 			if (!m_PropertyConverter)
 			{
-				Error("Could not find TypeConverter for type %1 in %2\n\nMod LayoutBindingManager.RegisterConversionTemplates to register custom TypeConverters", binding_type.ToString(), Binding_Name);
+				Error("Could not find TypeConverter for type %1 in %2\n\nMod MVC.RegisterConversionTemplates to register custom TypeConverters", binding_type.ToString(), Binding_Name);
 			}
 		}
 
@@ -68,10 +68,10 @@ class ViewBinding : ScriptedViewBase
 		if (selected_type && Selected_Item != string.Empty)
 		{
 			Log("Loading TypeConverter for Variable: %1 of Type: %2", Selected_Item, selected_type.ToString());
-			m_SelectedConverter = LayoutBindingManager.GetTypeConversion(selected_type);
+			m_SelectedConverter = MVC.GetTypeConversion(selected_type);
 			if (!m_SelectedConverter)
 			{
-				Error("Could not find TypeConverter for type %1 in %2\n\nMod LayoutBindingManager.RegisterConversionTemplates to register custom TypeConverters", selected_type.ToString(), Selected_Item);
+				Error("Could not find TypeConverter for type %1 in %2\n\nMod MVC.RegisterConversionTemplates to register custom TypeConverters", selected_type.ToString(), Selected_Item);
 			}
 		}
 	}

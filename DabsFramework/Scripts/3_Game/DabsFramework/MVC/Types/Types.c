@@ -76,10 +76,10 @@ class DataBindingHashMap: map<string, autoptr ViewBindingArray>
 	{
 		foreach (string name, ViewBindingArray viewSet: this)
 		{
-			LayoutBindingManager.Log("[%1]:", name);
+			MVC.Log("[%1]:", name);
 			foreach (ViewBinding view: viewSet)
 			{
-				LayoutBindingManager.Log("    %1", view.GetLayoutRoot().GetName());
+				MVC.Log("    %1", view.GetLayoutRoot().GetName());
 			}
 		}
 	}
@@ -141,7 +141,7 @@ class TypeConversionHashMap
 	{
 		if (!conversionClass.IsInherited(TypeConversionTemplate))
 		{
-			LayoutBindingManager.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversionClass.ToString()));
+			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversionClass.ToString()));
 			return;
 		}
 		
@@ -152,7 +152,7 @@ class TypeConversionHashMap
 	{
 		if (!conversionClass.IsInherited(TypeConversionTemplate))
 		{
-			LayoutBindingManager.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversionClass.ToString()));
+			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversionClass.ToString()));
 			return false;
 		}
 		

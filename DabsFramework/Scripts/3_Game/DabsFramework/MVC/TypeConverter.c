@@ -1,5 +1,5 @@
-// Used for Converting Data within LayoutBindingManager.
-// Register your own with LayoutBindingManager.RegisterConversionTemplates
+// Used for Converting Data within MVC.
+// Register your own with MVC.RegisterConversionTemplates
 class TypeConverter
 {
 	// Main Setter and Getter
