@@ -92,9 +92,9 @@ class TypeConversionHashMap
 		value.Remove(conversion_type);
 	}
 	
-	void Set(typename conversion_type, typename conversion_class) {
-		if (!conversion_class.IsInherited(TypeConversionTemplate))
-		{
+	void Set(typename conversion_type, typename conversion_class) 
+	{
+		if (!conversion_class.IsInherited(TypeConversionTemplate)) {
 			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
 			return;
 		}
