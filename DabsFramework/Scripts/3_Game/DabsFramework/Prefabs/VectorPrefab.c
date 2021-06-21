@@ -33,11 +33,13 @@ class VectorPrefab: PrefabBase<vector>
 		m_VectorPrefabController.NotifyPropertyChanged("Z");
 	}
 		
-	override string GetLayoutFile() {
-		return "DayZEditor/gui/Layouts/prefabs/VectorPrefab.layout";
+	override string GetLayoutFile() 
+	{
+		return "DabsFramework/gui/Layouts/prefabs/VectorPrefab.layout";
 	}
 	
-	override typename GetControllerType() {
+	override typename GetControllerType() 
+	{
 		return VectorPrefabController;
 	}
 	

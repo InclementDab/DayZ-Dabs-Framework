@@ -2,7 +2,8 @@ class MultilineEditBoxPrefab: ScriptView
 {	
 	MultilineEditBoxWidget ContentText;
 		
-	override string GetLayoutFile() {
-		return "DayZEditor/gui/Layouts/prefabs/MultilineEditBoxPrefab.layout";
+	override string GetLayoutFile() 
+	{
+		return "DabsFramework/gui/Layouts/prefabs/MultilineEditBoxPrefab.layout";
 	}
 }

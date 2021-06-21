@@ -48,7 +48,8 @@ class GroupPrefab: PrefabBase<ObservableCollection<ref ScriptView>>
 	{
 	}
 	
-	override string GetLayoutFile() {
-		return "DayZEditor/gui/Layouts/prefabs/GroupPrefab.layout";
+	override string GetLayoutFile() 
+	{
+		return "DabsFramework/gui/Layouts/prefabs/GroupPrefab.layout";
 	}
 }

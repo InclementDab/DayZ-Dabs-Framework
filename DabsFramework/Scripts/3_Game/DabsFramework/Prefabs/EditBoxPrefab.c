@@ -4,7 +4,7 @@ class EditBoxPrefab: PrefabBase<string>
 		
 	override string GetLayoutFile() 
 	{
-		return "DayZEditor/gui/Layouts/prefabs/EditBoxPrefab.layout";
+		return "DabsFramework/gui/Layouts/prefabs/EditBoxPrefab.layout";
 	}
 }
 

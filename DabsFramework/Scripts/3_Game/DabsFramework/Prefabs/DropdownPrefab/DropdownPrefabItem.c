@@ -54,6 +54,6 @@ class DropdownListPrefabItem<Class TValue>: DropdownListPrefabItemBase
 	
 	override string GetLayoutFile() 
 	{
-		return "DayZEditor/gui/Layouts/prefabs/Dropdown/DropdownElementPrefab.layout";
+		return "DabsFramework/gui/Layouts/prefabs/Dropdown/DropdownElementPrefab.layout";
 	}
 }

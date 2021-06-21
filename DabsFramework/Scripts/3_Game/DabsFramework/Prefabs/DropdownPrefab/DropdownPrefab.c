@@ -123,6 +123,6 @@ class DropdownListPrefab<Class TValue>: ScriptView
 	
 	override string GetLayoutFile() 
 	{
-		return "DayZEditor/gui/Layouts/prefabs/Dropdown/DropdownPrefab.layout";
+		return "DabsFramework/gui/Layouts/prefabs/Dropdown/DropdownPrefab.layout";
 	}
 }

@@ -55,7 +55,7 @@ class ListBoxPrefabEntry<Class T>: ScriptView
 	
 	override string GetLayoutFile() 
 	{
-		return "DayZEditor/gui/Layouts/prefabs/Listbox/ListBoxEntryPrefab.layout";
+		return "DabsFramework/gui/Layouts/prefabs/Listbox/ListBoxEntryPrefab.layout";
 	}
 	
 	override typename GetControllerType()

@@ -7,17 +7,8 @@ class MessageBoxPrefab: ScriptView
 		CaptionText.SetText(content);
 	}
 	
-	override string GetLayoutFile() {
-		return "DayZEditor/gui/Layouts/prefabs/MessageBoxPrefab.layout";
+	override string GetLayoutFile() 
+	{
+		return "DabsFramework/gui/Layouts/prefabs/MessageBoxPrefab.layout";
 	}
 }
-
-enum MessageBoxButtons
-{
-	OK,
-	OKCancel,
-	AbortRetryIgnore,
-	YesNoCancel,
-	YesNo,
-	RetryCancel
-};

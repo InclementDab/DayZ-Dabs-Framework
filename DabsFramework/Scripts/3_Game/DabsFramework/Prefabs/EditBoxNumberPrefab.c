@@ -41,7 +41,8 @@ class EditBoxNumberPrefab: PrefabBase<StringEvaluater>
 		g_Script.CallFunction(m_BindingContext, "PropertyChanged", null, m_BindingName);
 	}
 	
-	override string GetLayoutFile() {
-		return "DayZEditor/gui/Layouts/prefabs/EditBoxPrefab.layout";
+	override string GetLayoutFile() 
+	{
+		return "DabsFramework/gui/Layouts/prefabs/EditBoxPrefab.layout";
 	}
 }

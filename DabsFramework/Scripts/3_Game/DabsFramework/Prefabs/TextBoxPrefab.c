@@ -1,6 +1,7 @@
 class TextBoxPrefab: PrefabBase<string>
 {
-	override string GetLayoutFile() {
-		return "DayZEditor/gui/Layouts/prefabs/TextBoxPrefab.layout";
+	override string GetLayoutFile() 
+	{
+		return "DabsFramework/gui/Layouts/prefabs/TextBoxPrefab.layout";
 	}
 }
