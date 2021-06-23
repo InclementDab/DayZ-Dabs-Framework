@@ -7,8 +7,9 @@ class SliderPrefab: PrefabBase<float>
 	{
 		m_Min = min; m_Max = max;
 		
-		m_PrefabBaseController.CalculatedValue = m_PrefabBaseController.Value / m_Max;
-		m_PrefabBaseController.NotifyPropertyChanged("Value");
+		m_PrefabBaseController.CalculatedValue = GetDefaultValue(binding_context, binding_name);
+		// This line will update the Value param aswell
+		m_PrefabBaseController.NotifyPropertyChanged("CalculatedValue");
 	}
 	
 	override void PrefabPropertyChanged(string property_name)
