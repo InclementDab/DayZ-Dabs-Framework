@@ -16,7 +16,7 @@ class WeatherEvent: EventBase
 	override void InitPhaseServer()
 	{
 		// I mean... it works :)
-		for (int i = WeatherChangeType.FOG; i <= WeatherChangeType.OVERCAST; i++) {		
+		for (int i = EWeatherPhenomenon.FOG; i <= EWeatherPhenomenon.OVERCAST; i++) {		
 			if (GetWeatherTarget(i) != -1) {
 				RequestWeatherChange(i, GetWeatherTarget(i), GetInitPhaseLength(), GetMidPhaseLength());
 			}
@@ -30,9 +30,9 @@ class WeatherEvent: EventBase
 		
 		// i.e. Snowfall brings fog to 0.5, HeavyFog then brings it to 1.0, after HeavyFog finishes,
 		// the fog level will be brought back down to 0.5, until Snowfall returns it back to 0
-		for (int i = WeatherChangeType.FOG; i <= WeatherChangeType.OVERCAST; i++) {
+		for (int i = EWeatherPhenomenon.FOG; i <= EWeatherPhenomenon.OVERCAST; i++) {
 			float highest_value = GetHighestRemainingWeatherValue(i);
-			if (highest_value == 0 && i == WeatherChangeType.OVERCAST) {
+			if (highest_value == 0 && i == EWeatherPhenomenon.OVERCAST) {
 				highest_value = Math.RandomFloat(0, 0.15);
 			}
 			
@@ -42,10 +42,10 @@ class WeatherEvent: EventBase
 	
 	override void OnEventEndServer()
 	{
-		for (int i = WeatherChangeType.FOG; i <= WeatherChangeType.OVERCAST; i++) {
+		for (int i = EWeatherPhenomenon.FOG; i <= EWeatherPhenomenon.OVERCAST; i++) {
 			WeatherPhenomenon weather_phenom = GetWeatherPhenomenon(i);
 			float highest_value = GetHighestRemainingWeatherValue(i);
-			if (highest_value == 0 && i == WeatherChangeType.OVERCAST) {
+			if (highest_value == 0 && i == EWeatherPhenomenon.OVERCAST) {
 				highest_value = 0.15; // Keeps things spicy
 			}
 			
@@ -69,32 +69,32 @@ class WeatherEvent: EventBase
 		return -1;
 	}
 	
-	float GetWeatherTarget(WeatherChangeType change_type)
+	float GetWeatherTarget(EWeatherPhenomenon change_type)
 	{
 		switch (change_type) {
-			case WeatherChangeType.FOG: return GetFogTarget();
-			case WeatherChangeType.RAIN: return GetRainTarget();
-			case WeatherChangeType.OVERCAST: return GetOvercastTarget();
+			case EWeatherPhenomenon.FOG: return GetFogTarget();
+			case EWeatherPhenomenon.RAIN: return GetRainTarget();
+			case EWeatherPhenomenon.OVERCAST: return GetOvercastTarget();
 		}
 		
 		return -1;
 	}
 	
-	static WeatherPhenomenon GetWeatherPhenomenon(WeatherChangeType change_type)
+	static WeatherPhenomenon GetWeatherPhenomenon(EWeatherPhenomenon change_type)
 	{
 		switch (change_type) {
-			case WeatherChangeType.FOG: return GetGame().GetWeather().GetFog();
-			case WeatherChangeType.RAIN: return GetGame().GetWeather().GetRain();
-			case WeatherChangeType.OVERCAST: return GetGame().GetWeather().GetOvercast();
+			case EWeatherPhenomenon.FOG: return GetGame().GetWeather().GetFog();
+			case EWeatherPhenomenon.RAIN: return GetGame().GetWeather().GetRain();
+			case EWeatherPhenomenon.OVERCAST: return GetGame().GetWeather().GetOvercast();
 		}
 		
 		return null;
 	}
 	
 	// Safe way of requesting a change in weather events
-	protected void RequestWeatherChange(WeatherChangeType weather_type, float change, float time, float duration)
+	protected void RequestWeatherChange(EWeatherPhenomenon weather_type, float change, float time, float duration)
 	{
-		EventDebug("Requested Weather Change %1, value %2", typename.EnumToString(WeatherChangeType, weather_type), change.ToString());		
+		EventDebug("Requested Weather Change %1, value %2", typename.EnumToString(EWeatherPhenomenon, weather_type), change.ToString());		
 		array<EventBase> active_events = EventManager.GetInstance().GetActiveEvents();
 		foreach (EventBase fog_event: active_events) {
 			WeatherEvent weather_event;
@@ -130,7 +130,7 @@ class WeatherEvent: EventBase
 		weather_phenomenon.Set(change, time, duration);
 	}
 	
-	float GetHighestRemainingWeatherValue(WeatherChangeType change_type)
+	float GetHighestRemainingWeatherValue(EWeatherPhenomenon change_type)
 	{
 		// This does a few important things	//
 		// 1. Grabs ceiling weather value
