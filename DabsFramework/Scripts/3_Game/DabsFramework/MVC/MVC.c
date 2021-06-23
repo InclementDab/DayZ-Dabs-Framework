@@ -71,6 +71,7 @@ class MVC
 		type_conversions.Insert(Object, TypeConversionObject);
 		type_conversions.Insert(Observable, TypeConversionObservable);
 		type_conversions.Insert(ScriptedViewBase, TypeConversionScriptView);
+		type_conversions.Insert(StringEvaluater, TypeConversionEquation);
 	}
 	
 	// Override THIS to add your own Widget widget_controllers 
