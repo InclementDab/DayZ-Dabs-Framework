@@ -35,6 +35,13 @@ class EditBoxNumberPrefab: PrefabBase<StringEvaluater>
 		return false;
 	}
 	
+	override StringEvaluater GetDefaultValue()
+	{
+		float value;
+		EnScript.GetClassVar(m_BindingContext, m_BindingName, 0, value);
+		return value.ToString();
+	}
+	
 	override void PrefabPropertyChanged(string property_name)
 	{
 		EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.Value.Parse());
