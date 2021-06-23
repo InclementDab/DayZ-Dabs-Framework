@@ -27,21 +27,16 @@ class DropdownListPrefab<Class TValue>: ScriptView
 	protected Class m_BindingContext;
 	protected string m_BindingName;
 	
-	// With Direct Binding, I think we can depreciate the default_value
-	void DropdownListPrefab(string caption, Class binding_context, string binding_name, TValue default_value = EMPTY_VALUE)
+	void DropdownListPrefab(string caption, Class binding_context, string binding_name)
 	{
 		m_BindingName = binding_name;
 		m_BindingContext = binding_context;
-			
-		if (default_value == EMPTY_VALUE) {
-			EnScript.GetClassVar(m_BindingContext, m_BindingName, 0, default_value);
-		}
 		
 		Class.CastTo(m_DropdownPrefabController, m_Controller);
 		m_DropdownPrefabController.Caption = caption;
 		m_DropdownPrefabController.NotifyPropertyChanged("Caption", false);
 		
-		m_DefaultValue = default_value;
+		EnScript.GetClassVar(m_BindingContext, m_BindingName, 0, m_DefaultValue);
 	}
 	
 	void ~DropdownListPrefab()
