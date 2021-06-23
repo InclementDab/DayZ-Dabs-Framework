@@ -80,7 +80,7 @@ class WeatherEvent: EventBase
 		return -1;
 	}
 	
-	WeatherPhenomenon GetWeatherPhenomenon(WeatherChangeType change_type)
+	static WeatherPhenomenon GetWeatherPhenomenon(WeatherChangeType change_type)
 	{
 		switch (change_type) {
 			case WeatherChangeType.FOG: return GetGame().GetWeather().GetFog();
