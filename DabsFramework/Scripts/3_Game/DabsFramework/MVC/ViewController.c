@@ -245,6 +245,7 @@ class ViewController : ScriptedViewBase
 			typename variableType = type.GetVariableType(i);
 			string variableName = type.GetVariableName(i);
 
+			// optimization
 			if (!variableType.IsInherited(target_variable.Type())) {
 				continue;
 			}
