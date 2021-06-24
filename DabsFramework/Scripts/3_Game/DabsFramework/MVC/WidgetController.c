@@ -71,7 +71,7 @@ class WidgetController
 		NotImplementedError("Move");
 	}
 
-	void Swap(int indexA, int indexB)
+	void Swap(int index_a, int index_b)
 	{
 		NotImplementedError("Swap");
 	}
@@ -97,7 +97,7 @@ class WidgetController
 	{
 		Error(string.Format("%1 does not support function %2", Type(), function));
 	}
-};
+}
 
 class WidgetControllerTemplate<Class T> : WidgetController
 {
@@ -107,7 +107,7 @@ class WidgetControllerTemplate<Class T> : WidgetController
 	{
 		Class.CastTo(m_Widget, w);
 	}
-};
+}
 
 class WidgetBaseController : WidgetControllerTemplate<Widget>
 {
@@ -134,7 +134,7 @@ class WidgetBaseController : WidgetControllerTemplate<Widget>
 	{
 		type_converter.SetWidget(m_Widget);
 	}
-};
+}
 
 class ButtonWidgetController : WidgetControllerTemplate<ButtonWidget>
 {
@@ -162,7 +162,7 @@ class ButtonWidgetController : WidgetControllerTemplate<ButtonWidget>
 	{
 		// Since SetSelection is being used. This needs to override to avoid errors
 	}
-};
+}
 
 class EditBoxWidgetController : WidgetControllerTemplate<EditBoxWidget>
 {
@@ -180,7 +180,7 @@ class EditBoxWidgetController : WidgetControllerTemplate<EditBoxWidget>
 	{
 		type_converter.SetString(m_Widget.GetText());
 	}
-};
+}
 
 class CheckBoxWidgetController : WidgetControllerTemplate<CheckBoxWidget>
 {
@@ -208,7 +208,7 @@ class CheckBoxWidgetController : WidgetControllerTemplate<CheckBoxWidget>
 	{
 		// Since SetSelection is being used. This needs to override to avoid errors
 	}
-};
+}
 
 class SliderWidgetController : WidgetControllerTemplate<SliderWidget>
 {
@@ -226,7 +226,7 @@ class SliderWidgetController : WidgetControllerTemplate<SliderWidget>
 	{
 		type_converter.SetFloat(m_Widget.GetCurrent());
 	}
-};
+}
 
 class ProgressBarController : WidgetControllerTemplate<ProgressBarWidget>
 {
@@ -244,7 +244,7 @@ class ProgressBarController : WidgetControllerTemplate<ProgressBarWidget>
 	{
 		type_converter.SetFloat(m_Widget.GetCurrent());
 	}
-};
+}
 
 class TextWidgetController : WidgetControllerTemplate<TextWidget>
 {
@@ -252,7 +252,7 @@ class TextWidgetController : WidgetControllerTemplate<TextWidget>
 	{
 		m_Widget.SetText(type_converter.GetString());
 	}
-};
+}
 
 class ImageWidgetController : WidgetControllerTemplate<ImageWidget>
 {
@@ -264,7 +264,7 @@ class ImageWidgetController : WidgetControllerTemplate<ImageWidget>
 			m_Widget.SetImage(0);
 		}
 	}
-};
+}
 
 class MultilineEditBoxWidgetController : WidgetControllerTemplate<MultilineEditBoxWidget>
 {
@@ -307,10 +307,11 @@ class MultilineEditBoxWidgetController : WidgetControllerTemplate<MultilineEditB
 
 	override void Clear()
 	{
-		for (int i = 0; i < m_Widget.GetLinesCount(); i++)
+		for (int i = 0; i < m_Widget.GetLinesCount(); i++) {
 			m_Widget.SetLine(i, string.Empty);
+		}
 	}
-};
+}
 
 class SpacerBaseWidgetController : WidgetControllerTemplate<SpacerBaseWidget>
 {
@@ -321,113 +322,103 @@ class SpacerBaseWidgetController : WidgetControllerTemplate<SpacerBaseWidget>
 
 	override void SetSelection(TypeConverter type_converter)
 	{
-		if (type_converter.GetWidget())
-		{
+		if (type_converter.GetWidget()) {
 			SetFocus(type_converter.GetWidget());
 		}
 	}
 
 	override void GetSelection(out TypeConverter type_converter)
 	{
-		if (IsWidgetChild(m_Widget, GetFocus()))
-		{
+		if (IsWidgetChild(m_Widget, GetFocus())) {
 			type_converter.SetWidget(GetFocus());
 		}
 	}
 
 	override void Insert(TypeConverter type_converter)
 	{
-		if (type_converter.GetWidget())
-		{
+		if (type_converter.GetWidget()) {
 			m_Widget.AddChild(type_converter.GetWidget());
 		}
 	}
 
 	override void InsertAt(int index, TypeConverter type_converter)
 	{
-		if (index == Count())
-		{
+		if (index == Count()) {
 			Insert(type_converter);
-		} else if (type_converter.GetWidget())
-		{
-			Widget widgetA = GetChildAtIndex(m_Widget, index);
-			m_Widget.AddChildAfter(type_converter.GetWidget(), widgetA);
+		} 
+		
+		else if (type_converter.GetWidget()) {
+			Widget widget_a = GetChildAtIndex(m_Widget, index);
+			m_Widget.AddChildAfter(type_converter.GetWidget(), widget_a);
 		}
 	}
 
 	override void Replace(int index, TypeConverter type_converter)
 	{
-		if (type_converter.GetWidget())
-		{
-			Widget widgetA = GetChildAtIndex(m_Widget, index);
-			m_Widget.AddChildAfter(type_converter.GetWidget(), widgetA);
-			m_Widget.RemoveChild(widgetA);
+		if (type_converter.GetWidget()) {
+			Widget widget_a = GetChildAtIndex(m_Widget, index);
+			m_Widget.AddChildAfter(type_converter.GetWidget(), widget_a);
+			m_Widget.RemoveChild(widget_a);
 		}
 	}
 
 	override void Remove(int index, TypeConverter type_converter)
 	{
-		if (type_converter.GetWidget())
-		{
+		if (type_converter.GetWidget()) {
 			m_Widget.RemoveChild(type_converter.GetWidget());
 		}
 	}
 
 	override void Move(int index, TypeConverter type_converter)
 	{
-		Widget widgetA = GetChildAtIndex(m_Widget, index - 1);
-		if (type_converter.GetWidget() && widgetA)
-		{
+		Widget widget_a = GetChildAtIndex(m_Widget, index - 1);
+		if (type_converter.GetWidget() && widget_a) {
 			m_Widget.RemoveChild(type_converter.GetWidget());
-			m_Widget.AddChildAfter(type_converter.GetWidget(), widgetA);
+			m_Widget.AddChildAfter(type_converter.GetWidget(), widget_a);
 		}
 	}
 
-	override void Swap(int indexA, int indexB)
+	override void Swap(int index_a, int index_b)
 	{
-		if (indexA == indexB || indexA < 0 || indexB < 0)
+		if (index_a == index_b || index_a < 0 || index_b < 0) {
 			return;
-
-		if (indexA > indexB)
-		{
-			int temp = indexA;
-			indexA = indexB;
-			indexB = temp;
 		}
 
-		Widget widgetA = GetChildAtIndex(m_Widget, indexA);
-		Widget widgetB = GetChildAtIndex(m_Widget, indexB);
-		Widget widgetC = GetChildAtIndex(m_Widget, indexB - 1);
+		if (index_a > index_b) {
+			int temp = index_a;
+			index_a = index_b;
+			index_b = temp;
+		}
 
-		m_Widget.RemoveChild(widgetA);
-		m_Widget.AddChildAfter(widgetA, widgetB);
-		m_Widget.RemoveChild(widgetB);
-		m_Widget.AddChildAfter(widgetB, widgetC);
+		Widget widget_a = GetChildAtIndex(m_Widget, index_a);
+		Widget widget_b = GetChildAtIndex(m_Widget, index_b);
+		Widget widget_c = GetChildAtIndex(m_Widget, index_b - 1);
+
+		m_Widget.RemoveChild(widget_a);
+		m_Widget.AddChildAfter(widget_a, widget_b);
+		m_Widget.RemoveChild(widget_b);
+		m_Widget.AddChildAfter(widget_b, widget_c);
 	}
 
 	override void Clear()
 	{
-		Widget widgetA = m_Widget.GetChildren();
-		while (widgetA != null)
-		{
-			m_Widget.RemoveChild(widgetA);
-			widgetA = widgetA.GetSibling();
+		Widget widget_a = m_Widget.GetChildren();
+		while (widget_a) {
+			m_Widget.RemoveChild(widget_a);
+			widget_a = widget_a.GetSibling();
 		}
 	}
 
 	override int Find(TypeConverter type_converter)
 	{
-		Widget widgetA = m_Widget.GetChildren();
+		Widget widget_a = m_Widget.GetChildren();
 		int result;
-		while (widgetA != null)
-		{
-
-			if (widgetA == type_converter.GetWidget())
-			{
+		while (widget_a) {
+			if (widget_a == type_converter.GetWidget()) {
 				return result;
 			}
 
-			widgetA = widgetA.GetSibling();
+			widget_a = widget_a.GetSibling();
 			result++;
 		}
 
@@ -436,17 +427,16 @@ class SpacerBaseWidgetController : WidgetControllerTemplate<SpacerBaseWidget>
 
 	override int Count()
 	{
-		Widget widgetA = m_Widget.GetChildren();
+		Widget widget_a = m_Widget.GetChildren();
 		int result;
-		while (widgetA != null)
-		{
-			widgetA = widgetA.GetSibling();
+		while (widget_a) {
+			widget_a = widget_a.GetSibling();
 			result++;
 		}
 
 		return result;
 	}
-};
+}
 
 class XComboBoxWidgetController : WidgetControllerTemplate<XComboBoxWidget>
 {
@@ -494,7 +484,7 @@ class XComboBoxWidgetController : WidgetControllerTemplate<XComboBoxWidget>
 	{
 		return m_Widget.GetNumItems();
 	}
-};
+}
 
 class TextListboxController : WidgetControllerTemplate<TextListboxWidget>
 {
@@ -509,8 +499,7 @@ class TextListboxController : WidgetControllerTemplate<TextListboxWidget>
 		{
 			string row_text;
 			m_Widget.GetItemText(i, 0, row_text);
-			if (row_text == type_converter.GetString())
-			{
+			if (row_text == type_converter.GetString()) {
 				m_Widget.SelectRow(i);
 				return;
 			}
@@ -539,24 +528,23 @@ class TextListboxController : WidgetControllerTemplate<TextListboxWidget>
 		m_Widget.SetItem(index, string.Empty, type_converter, 0);
 	}
 
-	override void Swap(int indexA, int indexB)
+	override void Swap(int index_a, int index_b)
 	{
 		string textA, textB;
 		Class dataA, dataB;
 
-		if (indexA < 0 || indexA > m_Widget.GetNumItems() || indexB < 0 || indexB > m_Widget.GetNumItems())
-		{
+		if (index_a < 0 || index_a > m_Widget.GetNumItems() || index_b < 0 || index_b > m_Widget.GetNumItems()) {
 			return;
 		}
 
-		m_Widget.GetItemText(indexA, 0, textA);
-		m_Widget.GetItemData(indexA, 0, dataA);
+		m_Widget.GetItemText(index_a, 0, textA);
+		m_Widget.GetItemData(index_a, 0, dataA);
 
-		m_Widget.GetItemText(indexB, 0, textB);
-		m_Widget.GetItemData(indexB, 0, dataB);
+		m_Widget.GetItemText(index_b, 0, textB);
+		m_Widget.GetItemData(index_b, 0, dataB);
 
-		m_Widget.SetItem(indexB, textA, dataA, 0);
-		m_Widget.SetItem(indexA, textB, dataB, 0);
+		m_Widget.SetItem(index_b, textA, dataA, 0);
+		m_Widget.SetItem(index_a, textB, dataB, 0);
 	}
 
 	override void Clear()
@@ -568,15 +556,14 @@ class TextListboxController : WidgetControllerTemplate<TextListboxWidget>
 	{
 		return m_Widget.GetNumItems();
 	}
-};
+}
 
 class ItemPreviewWidgetController : WidgetControllerTemplate<ItemPreviewWidget>
 {
 	override void Set(TypeConverter type_converter)
 	{
 		EntityAI entity;
-		if (Class.CastTo(entity, type_converter.GetObject()))
-		{
+		if (Class.CastTo(entity, type_converter.GetObject())) {
 			m_Widget.SetView(0);
 			m_Widget.SetItem(entity);
 			m_Widget.SetModelPosition(vector.Zero);
@@ -587,15 +574,14 @@ class ItemPreviewWidgetController : WidgetControllerTemplate<ItemPreviewWidget>
 	{
 		type_converter.Set(m_Widget.GetItem());
 	}
-};
+}
 
 class PlayerPreviewWidgetController : WidgetControllerTemplate<PlayerPreviewWidget>
 {
     override void Set(TypeConverter type_converter)
     {
         DayZPlayer player;
-        if (Class.CastTo(player, type_converter.GetObject()))
-        {
+        if (Class.CastTo(player, type_converter.GetObject())) {
             m_Widget.SetPlayer(player);
             m_Widget.SetModelPosition(vector.Zero);
         }
@@ -614,12 +600,11 @@ class PlayerPreviewWidgetController : WidgetControllerTemplate<PlayerPreviewWidg
 	override void GetSelection(out TypeConverter type_converter)
 	{
 		DayZPlayer player;
-		if (Class.CastTo(player, m_Widget.GetDummyPlayer()))
-		{
+		if (Class.CastTo(player, m_Widget.GetDummyPlayer())) {
 			type_converter.SetObject(player.GetHumanInventory().GetEntityInHands());
 		} 
 	}
-};
+}
 
 class HtmlWidgetController : WidgetControllerTemplate<HtmlWidget>
 {
@@ -627,4 +612,4 @@ class HtmlWidgetController : WidgetControllerTemplate<HtmlWidget>
     {
         m_Widget.SetText(type_converter.GetString());
     }
-};
+}
