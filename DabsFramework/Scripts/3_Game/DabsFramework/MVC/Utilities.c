@@ -10,3 +10,29 @@ class TemplateType<Class T>
 		return (new TemplateType<T>()).Type().GetVariableType(0);
 	}
 }
+
+Widget GetChildAtIndex(Widget widget, int index)
+{
+	Widget result = widget.GetChildren();
+	while (index > 0)
+	{
+		result = result.GetSibling();
+		index--;
+	}
+
+	return result;
+}
+
+bool IsWidgetChild(Widget widget, Widget child)
+{
+	Widget result = widget.GetChildren();
+	while (result) {
+		if (result == child) {
+			return true;
+		}
+		
+		result = result.GetSibling();
+	}
+
+	return false;
+}
