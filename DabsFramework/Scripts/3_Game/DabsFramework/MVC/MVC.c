@@ -1,5 +1,3 @@
-static ref MVC g_MVC;
-
 /*
 	A bunch of this code in this file is an unmanaged mess. MVC Singleton is really weird
 	also dont think i need to create an instance of the TypeConverters every time we use it. probably just use one instance
@@ -9,19 +7,32 @@ static ref MVC g_MVC;
 
 class MVC
 {
-	static int LBMLogLevel;
+	static ref MVC m_Instance;
 	
-	private static void CheckMVC()
+	static MVC Start()
 	{
-		if (!g_MVC) { 
-			g_MVC = new MVC();
-		}
+		m_Instance = new MVC();
+		return m_Instance;
+	}
+
+	static void Stop()
+	{
+		delete m_Instance;
 	}
 	
+	static MVC GetInstance()
+	{
+		return m_Instance;
+	}
+	
+	static int LBMLogLevel;
+		
 	protected static ref TypenameHashMap m_WidgetControllerHashMap;
 	static WidgetController GetWidgetController(Widget data) 
 	{
-		CheckMVC();
+		if (!m_Instance) {
+			MVC.Start();
+		}
 	
 		WidgetController widgetController = WidgetController.Cast(m_WidgetControllerHashMap.Get(data.Type()).Spawn());
 		g_Script.Call(widgetController, "SetWidget", data);
@@ -31,7 +42,9 @@ class MVC
 	protected static ref TypeConversionHashMap m_TypeConverterHashMap;
 	static TypeConverter GetTypeConversion(typename type) 
 	{
-		CheckMVC();
+		if (!m_Instance) {
+			MVC.Start();
+		}
 				
 		return m_TypeConverterHashMap[type]; 
 	}
