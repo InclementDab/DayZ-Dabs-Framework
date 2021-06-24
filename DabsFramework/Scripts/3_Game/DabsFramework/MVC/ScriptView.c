@@ -20,7 +20,7 @@ class CustomDialogWindow: ScriptView
 
 */
 
-class ScriptView : ScriptedViewBase
+class ScriptView: ScriptedViewBase
 {
 	protected ref ViewController m_Controller;
 	ViewController GetController()
@@ -38,18 +38,15 @@ class ScriptView : ScriptedViewBase
 		m_LayoutRoot.GetScript(m_Controller);
 
 		// If no Controller is specified in the WB Root
-		if (!m_Controller || !m_Controller.IsInherited(ViewController))
-		{
+		if (!m_Controller || !m_Controller.IsInherited(ViewController)) {
 
 			Log("ViewController not found on %1, creating...", m_LayoutRoot.GetName());
-			if (!GetControllerType().IsInherited(ViewController))
-			{
+			if (!GetControllerType().IsInherited(ViewController)) {
 				Error("%1 is invalid. Must inherit from ViewController!", GetControllerType().ToString());
 				return;
 			}
 
-			if (!Class.CastTo(m_Controller, GetControllerType().Spawn()))
-			{
+			if (!Class.CastTo(m_Controller, GetControllerType().Spawn())) {
 				Error("Could not create ViewController %1", GetControllerType().ToString());
 				return;
 			}
@@ -69,8 +66,7 @@ class ScriptView : ScriptedViewBase
 	{
 		delete m_Controller;
 
-		if (m_LayoutRoot)
-		{
+		if (m_LayoutRoot) {
 			Log("~" + m_LayoutRoot.GetName());
 			m_LayoutRoot.Unlink();
 		}
@@ -81,26 +77,23 @@ class ScriptView : ScriptedViewBase
 		m_LayoutRoot = CreateWidget(parent);
 	}
 
-	private	Widget CreateWidget(Widget parent)
+	protected Widget CreateWidget(Widget parent)
 	{
 		Widget result;
-		if (!GetLayoutFile())
-		{
+		if (!GetLayoutFile()) {
 			Error("Layout file not found! Are you overriding GetLayoutFile?");
 			return result;
 		}
 
 		WorkspaceWidget workspace = GetWorkbenchGame().GetWorkspace();
-		if (!workspace)
-		{
+		if (!workspace) {
 			Error("Workspace was null, try reloading Workbench");
 			return result;
 		}
 
 		Log("Loading %1", GetLayoutFile());
 		result = workspace.CreateWidgets(GetLayoutFile(), parent);
-		if (!result)
-		{
+		if (!result) {
 			Error("Invalid layout file %1", GetLayoutFile());
 			return result;
 		}
@@ -119,7 +112,6 @@ class ScriptView : ScriptedViewBase
 	
 	// Loads .layout file Widgets into Properties of context (when they are the same name)
 	/*
-	
 	Example:
 	
 	.layout file:
@@ -134,25 +126,26 @@ class ScriptView : ScriptedViewBase
 		ButtonWidget MenuBarFile; //<-- these properties will be assigned
 		private TextWidget MenuBarFileLabel;
 	}
-	
 	*/
+	
 	static void LoadViewProperties(Class context, PropertyTypeHashMap property_map, Widget root_widget)
 	{
-		foreach (string propertyName, typename property_type: property_map) {
-			if (!property_type.IsInherited(Widget))
+		foreach (string property_name, typename property_type: property_map) {
+			if (!property_type.IsInherited(Widget)) {
 				continue;
+			}
 	
-			Widget target = root_widget.FindAnyWidget(propertyName);
+			Widget target = root_widget.FindAnyWidget(property_name);
 	
 			// fixes bug that breaks everything
-			if (target && root_widget.GetName() != propertyName) {
-				EnScript.SetClassVar(context, propertyName, 0, target);
+			if (target && root_widget.GetName() != property_name) {
+				EnScript.SetClassVar(context, property_name, 0, target);
 				continue;
 			}
 	
 			// Allows you to define the layout root aswell within it
-			if (!target && root_widget.GetName() == propertyName) {
-				EnScript.SetClassVar(context, propertyName, 0, root_widget);
+			if (!target && root_widget.GetName() == property_name) {
+				EnScript.SetClassVar(context, property_name, 0, root_widget);
 				continue;
 			}
 		}
@@ -165,4 +158,4 @@ class ScriptView : ScriptedViewBase
 	{
 		return ViewController;
 	}
-};
+}

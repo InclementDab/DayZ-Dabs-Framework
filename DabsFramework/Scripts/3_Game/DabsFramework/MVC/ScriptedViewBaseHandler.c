@@ -1,4 +1,3 @@
-
 class ScriptedViewBaseHandler : ScriptedWidgetEventHandler
 {
 	protected ScriptedViewBase m_ScriptedViewBase;
@@ -137,4 +136,4 @@ class ScriptedViewBaseHandler : ScriptedWidgetEventHandler
 	{
 		return m_ScriptedViewBase.OnUpdate(w);
 	}
-};
+}

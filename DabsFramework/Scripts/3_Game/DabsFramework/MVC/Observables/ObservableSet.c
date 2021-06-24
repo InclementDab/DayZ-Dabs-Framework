@@ -28,8 +28,9 @@ class ObservableSet<Class TValue> : Observable
 	void Remove(TValue value)
 	{
 		int index = _data.Find(value);
-		if (index != -1)
+		if (index != -1) {
 			Remove(index);
+		}
 	}
 
 	void Set(int index, TValue value)

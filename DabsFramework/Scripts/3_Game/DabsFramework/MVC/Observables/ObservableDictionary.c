@@ -16,11 +16,9 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 
 	int Insert(TKey key, TValue value)
 	{
-		if (_data.Insert(key, value))
-		{
+		if (_data.Insert(key, value)) {
 			int index = _dataArray.Insert(value);
-			if (index == -1)
-			{
+			if (index == -1) {
 				Error("Inserted into map but failed to insert into array so FML.");
 				return -1;
 			}
@@ -34,8 +32,7 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 
 	void Remove(TKey key)
 	{
-		if (_data.Contains(key))
-		{
+		if (_data.Contains(key)) {
 			TValue value = _data.Get(key);
 
 			int remove_index = _dataArray.Find(value);
@@ -59,8 +56,7 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 
 	void RemoveRange(int start, int end)
 	{
-		for (int i = start; i < end; i++)
-		{
+		for (int i = start; i < end; i++) {
 			int index = start;
 			
 			TValue value = _dataArray.Get(index);
@@ -82,8 +78,7 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 	{
 		int remove_index = -1;
 
-		if (_data.Contains(key))
-		{
+		if (_data.Contains(key)) {
 			remove_index = _dataArray.Find(_data.Get(key));
 			if (remove_index >= 0) _dataArray.Set(remove_index, value);
 		}
@@ -94,13 +89,15 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 
 	int MoveIndex(int index, int moveIndex)
 	{
-		if (moveIndex == index)
+		if (moveIndex == index) {
 			return index;
+		}
 		
 		TValue value = _dataArray.Get(index);
 		int new_index = _dataArray.MoveIndex(index, moveIndex);
-		if (new_index != index)
+		if (new_index != index) {
 			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Move, new_index, new Param1<TValue>(value)));
+		}
 		
 		return new_index;
 	}
@@ -124,4 +121,4 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 	{
 		return _data.Count();
 	}
-};
+}

@@ -14,8 +14,7 @@ class TemplateType<Class T>
 Widget GetChildAtIndex(Widget widget, int index)
 {
 	Widget result = widget.GetChildren();
-	while (index > 0)
-	{
+	while (index > 0) {
 		result = result.GetSibling();
 		index--;
 	}
