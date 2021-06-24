@@ -99,18 +99,14 @@ class ViewController : ScriptedViewBase
 		// the whole damn thing breaks. Thanks BI
 		Trace("NotifyPropertyChanged %1", property_name);
 
-		if (property_name == string.Empty)
-		{
+		if (property_name == string.Empty) {
 			Log("Updating all properties in View, this is NOT recommended as it is performance intensive");
-			foreach (ViewBindingArray viewArray : m_DataBindingHashMap)
-			{
-				foreach (ViewBinding viewBinding : viewArray)
-				{
-					Trace("NotifyPropertyChanged %1", viewBinding.Binding_Name);
-					viewBinding.UpdateView(this);
-					if (notify_controller)
-					{
-						PropertyChanged(viewBinding.Binding_Name);
+			foreach (ViewBindingArray view_array : m_DataBindingHashMap) {
+				foreach (ViewBinding view_binding : view_array) {
+					Trace("NotifyPropertyChanged %1", view_binding.Binding_Name);
+					view_binding.UpdateView(this);
+					if (notify_controller) {
+						PropertyChanged(view_binding.Binding_Name);
 					}
 				}
 			}
@@ -118,17 +114,13 @@ class ViewController : ScriptedViewBase
 			return;
 		}
 
-		ViewBindingArray views = m_DataBindingHashMap[property_name];
-		if (views)
-		{
-			foreach (ViewBinding view : views)
-			{
+		if (m_DataBindingHashMap[property_name]) {
+			foreach (ViewBinding view: m_DataBindingHashMap[property_name]) {
 				view.UpdateView(this);
 			}
 		}
 
-		if (notify_controller)
-		{
+		if (notify_controller) {
 			PropertyChanged(property_name);
 		}
 	}
@@ -139,18 +131,13 @@ class ViewController : ScriptedViewBase
 		Trace("NotifyCollectionChanged %1", args.Source.ToString());
 
 		string collection_name = GetVariableName(args.Source);
-		if (collection_name == string.Empty)
-		{
+		if (collection_name == string.Empty) {
 			Error("NotifyCollectionChanged could not find variable %1 in %2", args.Source.ToString(), string.ToString(this));
 			return;
 		}
-
-		ViewBindingArray views = m_DataBindingHashMap[collection_name];
-
-		if (views)
-		{
-			foreach (ViewBinding view : views)
-			{
+		
+		if (m_DataBindingHashMap[collection_name]) {
+			foreach (ViewBinding view: m_DataBindingHashMap[collection_name]) {
 				view.UpdateViewFromCollection(args);
 			}
 		}
@@ -168,66 +155,61 @@ class ViewController : ScriptedViewBase
 
 	private int LoadDataBindings(Widget w)
 	{
-		ScriptedViewBase viewBase;
-		w.GetScript(viewBase);
+		ScriptedViewBase view_base;
+		w.GetScript(view_base);
 
 		// If we find a ViewBinding
-		if (viewBase && viewBase.IsInherited(ViewBinding))
-		{
-			ViewBinding viewBinding = ViewBinding.Cast(viewBase);
-			viewBinding.SetParent(this);
-			m_ViewBindingHashMap.Insert(w, viewBinding);
-			m_DataBindingHashMap.InsertView(viewBinding);
+		if (view_base && view_base.IsInherited(ViewBinding)) {
+			ViewBinding view_binding = ViewBinding.Cast(view_base);
+			view_binding.SetParent(this);
+			m_ViewBindingHashMap.Insert(w, view_binding);
+			m_DataBindingHashMap.InsertView(view_binding);
 
-			viewBinding.SetProperties(GetControllerProperty(viewBinding.Binding_Name), GetControllerProperty(viewBinding.Selected_Item));
+			view_binding.SetProperties(GetControllerProperty(view_binding.Binding_Name), GetControllerProperty(view_binding.Selected_Item));
 
 			// todo find a way to define these on ScriptView aswell
 			// Load RelayCommand
-			if (viewBinding.Relay_Command != string.Empty)
-			{
-
-				RelayCommand relayCommand = LoadRelayCommand(viewBinding);
+			if (view_binding.Relay_Command != string.Empty) {
+				RelayCommand relay_command = LoadRelayCommand(view_binding);
 				// Success! One of the two options were found
-				if (relayCommand)
-				{
-					Log("%2: RelayCommand %1 succesfully acquired. Assigning...", viewBinding.Relay_Command, viewBinding.GetLayoutRoot().GetName());
-					relayCommand.SetController(this);
-					viewBinding.SetRelayCommand(relayCommand);
-				} else // Must be a function on the controller
-				{
-					Log("%2: RelayCommand %1 not found - Assuming its a function on the ViewController / ScriptView!", viewBinding.Relay_Command, viewBinding.GetLayoutRoot().GetName());
+				if (relay_command) {
+					Log("%2: RelayCommand %1 succesfully acquired. Assigning...", view_binding.Relay_Command, view_binding.GetLayoutRoot().GetName());
+					relay_command.SetController(this);
+					view_binding.SetRelayCommand(relay_command);
+				} 
+				
+				else { // Must be a function on the controller
+					Log("%2: RelayCommand %1 not found - Assuming its a function on the ViewController / ScriptView!", view_binding.Relay_Command, view_binding.GetLayoutRoot().GetName());
 				}
 			}
 
 			// Load property for the first time
-			if (viewBinding.Binding_Name != string.Empty)
-			{
-				NotifyPropertyChanged(viewBinding.Binding_Name, false);
+			if (view_binding.Binding_Name != string.Empty) {
+				NotifyPropertyChanged(view_binding.Binding_Name, false);
 			}
 		}
 
 		// really wish i had XOR here
 		bool b1 = (w.GetChildren() != null);
-		bool b2 = (viewBase && viewBase.IsInherited(ViewController) && viewBase != this);
+		bool b2 = (view_base && view_base.IsInherited(ViewController) && view_base != this);
 
 		// scuffed XOR
 		// Makes it stop loading when it finds another controller
 		// needs to be looked at
-		if (b1 && (b1 || b2) && !(b1 && b2))
-		{
+		if (b1 && (b1 || b2) && !(b1 && b2)) {
 			LoadDataBindings(w.GetChildren());
-		} else if (b2) // Sets parent of the child controller
-		{
-			ViewController childController = ViewController.Cast(viewBase);
-			if (childController)
-			{
-				childController.SetParent(this);
+		} 
+		
+		// Sets parent of the child controller
+		else if (b2) { 
+			ViewController child_controller = ViewController.Cast(view_base);
+			if (child_controller) {
+				child_controller.SetParent(this);
 			}
 		}
 
 		// w != m_LayoutRoot is so we dont bleed into siblings
-		if (w.GetSibling() != null && w != m_LayoutRoot)
-		{
+		if (w.GetSibling() != null && w != m_LayoutRoot) {
 			LoadDataBindings(w.GetSibling());
 		}
 
@@ -236,8 +218,7 @@ class ViewController : ScriptedViewBase
 
 	private	typename GetControllerProperty(string property_name)
 	{
-		if (m_PropertyTypeHashMap[property_name])
-		{
+		if (m_PropertyTypeHashMap[property_name]) {
 			return m_PropertyTypeHashMap[property_name];
 		}
 
@@ -248,31 +229,29 @@ class ViewController : ScriptedViewBase
 
 	private	typename GetControllerProperty(out Class context, string property_name)
 	{
-		PropertyInfo propertyInfo = PropertyInfo.GetSubScope(context, property_name);
-		if (propertyInfo)
-		{
-			return propertyInfo.Type;
+		PropertyInfo property_info = PropertyInfo.GetSubScope(context, property_name);
+		if (property_info) {
+			return property_info.Type;
 		}
 
 		typename t;
 		return t;
 	}
 
-	private	string GetVariableName(Class targetVariable)
+	private	string GetVariableName(Class target_variable)
 	{
 		typename type = Type();
-		for (int i = 0; i < type.GetVariableCount(); i++)
-		{
+		for (int i = 0; i < type.GetVariableCount(); i++) {
 			typename variableType = type.GetVariableType(i);
 			string variableName = type.GetVariableName(i);
 
-			if (!variableType.IsInherited(targetVariable.Type()))
+			if (!variableType.IsInherited(target_variable.Type())) {
 				continue;
+			}
 
 			Class result;
 			EnScript.GetClassVar(this, variableName, 0, result);
-			if (result == targetVariable)
-			{
+			if (result == target_variable) {
 				return variableName;
 			}
 		}
@@ -282,54 +261,51 @@ class ViewController : ScriptedViewBase
 
 	private	RelayCommand LoadRelayCommand(ViewBinding view_binding)
 	{
-		string relayCommandName = view_binding.Relay_Command;
-		RelayCommand relayCommand;
+		string relay_command_name = view_binding.Relay_Command;
+		RelayCommand relay_command;
 
 		// Attempt to load instance of Variable from Controller
 		Class context = this;
-		PropertyInfo relayCommandProperty = PropertyInfo.GetSubScope(context, relayCommandName);
-		if (relayCommandProperty)
-		{
-			typename relayCommandType = relayCommandProperty.Type;
-			relayCommandName = relayCommandProperty.Name;
+		PropertyInfo relay_command_property = PropertyInfo.GetSubScope(context, relay_command_name);
+		if (relay_command_property) {
+			typename relay_command_type = relay_command_property.Type;
+			relay_command_name = relay_command_property.Name;
 
 			// If we find the variable on the Controller
-			if (relayCommandType && relayCommandType.IsInherited(RelayCommand))
-			{
-				Log("RelayCommand Property %1 found on Controller!", relayCommandName);
-				EnScript.GetClassVar(context, relayCommandName, 0, relayCommand);
+			if (relay_command_type && relay_command_type.IsInherited(RelayCommand)) {
+				Log("RelayCommand Property %1 found on Controller!", relay_command_name);
+				EnScript.GetClassVar(context, relay_command_name, 0, relay_command);
 
 				// If that property isnt initialized, but exists
-				if (!relayCommand)
-				{
-					Log("RelayCommand Property %1 was not initialized! Initializing...", relayCommandName);
-					Class.CastTo(relayCommand, relayCommandType.Spawn());
-					EnScript.SetClassVar(context, relayCommandName, 0, relayCommand);
-					return relayCommand;
+				if (!relay_command) {
+					Log("RelayCommand Property %1 was not initialized! Initializing...", relay_command_name);
+					Class.CastTo(relay_command, relay_command_type.Spawn());
+					EnScript.SetClassVar(context, relay_command_name, 0, relay_command);
+					return relay_command;
 				}
 			}
-		} else // If we DONT find the variable on the controller, attempt to create an instance of it
-		{
-			Log("RelayCommand Property %1 not found on Controller", relayCommandName);
-			relayCommandType = relayCommandName.ToType();
+		} 
+		
+		// If we DONT find the variable on the controller, attempt to create an instance of it
+		else { 
+			Log("RelayCommand Property %1 not found on Controller", relay_command_name);
+			relay_command_type = relay_command_name.ToType();
 
-			if (relayCommandType && relayCommandType.IsInherited(RelayCommand))
-			{
-				Log("RelayCommand type found %1", relayCommandName);
-				Class.CastTo(relayCommand, relayCommandType.Spawn());
-				return relayCommand;
+			if (relay_command_type && relay_command_type.IsInherited(RelayCommand)) {
+				Log("RelayCommand type found %1", relay_command_name);
+				Class.CastTo(relay_command, relay_command_type.Spawn());
+				return relay_command;
 			}
 		}
 
-		return relayCommand;
+		return relay_command;
 	}
 
 	// Update Controller on action from ViewBinding
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
 		ViewBinding view_binding = m_ViewBindingHashMap.Get(w);
-		if (view_binding)
-		{
+		if (view_binding) {
 			view_binding.UpdateController(this);
 		}
 
@@ -339,8 +315,7 @@ class ViewController : ScriptedViewBase
 	override bool OnChange(Widget w, int x, int y, bool finished)
 	{
 		ViewBinding view_binding = m_ViewBindingHashMap.Get(w);
-		if (view_binding)
-		{
+		if (view_binding) {
 			view_binding.UpdateController(this);
 		}
 
@@ -373,4 +348,4 @@ class ViewController : ScriptedViewBase
 	{
 		m_DataBindingHashMap.DebugPrint();
 	}
-};
+}

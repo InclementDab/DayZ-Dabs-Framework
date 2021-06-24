@@ -3,6 +3,12 @@
 	also dont think i need to create an instance of the TypeConverters every time we use it. probably just use one instance
 
 	edit1: okay fixed the type converter thingy
+
+	edit2: drunk tyler seems to have solved most of it, however the whole TypeConverter
+	fiasco actually might bite us in the ass, considering it was previously just creating 
+	each TypeConverter on each ViewBinding PogO
+
+	
 */
 
 class MVC
