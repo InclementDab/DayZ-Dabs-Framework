@@ -24,8 +24,6 @@ class MVC
 	{
 		return m_Instance;
 	}
-	
-	static int LBMLogLevel;
 		
 	protected static ref TypenameHashMap m_WidgetControllerHashMap;
 	static WidgetController GetWidgetController(Widget data) 
@@ -53,15 +51,11 @@ class MVC
 	{
 		Log("MVC");
 		
-		if (!m_TypeConverterHashMap) {
-			m_TypeConverterHashMap = new TypeConversionHashMap();
-			RegisterConversionTemplates(m_TypeConverterHashMap);
-		}
+		m_TypeConverterHashMap = new TypeConversionHashMap();
+		RegisterConversionTemplates(m_TypeConverterHashMap);
 		
-		if (!m_WidgetControllerHashMap) {
-			m_WidgetControllerHashMap = new TypenameHashMap();
-			RegisterWidgetControllers(m_WidgetControllerHashMap);
-		}
+		m_WidgetControllerHashMap = new TypenameHashMap();
+		RegisterWidgetControllers(m_WidgetControllerHashMap);
 	}
 	
 	void ~MVC() 
@@ -119,14 +113,12 @@ class MVC
 	
 	static void Trace(string message, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
-		if (LBMLogLevel <= 0)
-			PrintFormat("MVCLog::Trace %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
+		PrintFormat("MVCLog::Trace %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
 	}
 	
 	static void Log(string message, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
-		if (LBMLogLevel <= 1)
-			PrintFormat("MVCLog::Log %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
+		PrintFormat("MVCLog::Log %1", string.Format(message, param1, param2, param3, param4, param5, param6, param7, param8, param9));
 	}
 
 	static void Error(string message, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
