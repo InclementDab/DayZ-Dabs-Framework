@@ -447,4 +447,4 @@ class ScriptedViewBase : Managed
 
 		return false;
 	}
-};
+}

@@ -28,4 +28,4 @@ class Observable
 
 	// Abstract
 	int Count();
-};
+}

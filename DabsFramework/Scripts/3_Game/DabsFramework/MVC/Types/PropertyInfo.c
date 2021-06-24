@@ -43,7 +43,7 @@ class PropertyInfo
 			return null;
 		}
 	
-		TStringArray variable_scope = {};
+		TStringArray variable_scope = {}
 		name.Split(".", variable_scope);
 	
 		for (int i = 0; i < variable_scope.Count() - 1; i++) {

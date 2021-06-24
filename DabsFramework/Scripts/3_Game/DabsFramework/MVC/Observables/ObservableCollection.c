@@ -38,7 +38,7 @@ class TestController: ViewController
 
 class ObservableCollection<Class TValue> : Observable
 {
-	private	ref array<autoptr TValue> _data = {};
+	private	ref array<autoptr TValue> _data = {}
 
 	void ObservableCollection(ViewController controller)
 	{
@@ -143,4 +143,4 @@ class ObservableCollection<Class TValue> : Observable
 	{
 		return _data.Find(value);
 	}
-};
+}

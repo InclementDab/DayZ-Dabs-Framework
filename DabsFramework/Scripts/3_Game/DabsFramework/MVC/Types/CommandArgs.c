@@ -1,9 +1,8 @@
-
 // Base class for all CommandArgs
 class CommandArgs
 {
 	ScriptedViewBase Context;
-};
+}
 
 class CommandArgsT<Class T>: CommandArgs
 {
@@ -13,7 +12,7 @@ class CommandArgsT<Class T>: CommandArgs
 	{
 		Source = source;
 	}
-};
+}
 
 // 0: Source Widget
 // 1: Mouse Button
@@ -35,7 +34,7 @@ class ButtonCommandArgs: CommandArgsT<ButtonWidget>
 	{
 		return Source.GetState();
 	}
-};
+}
 
 
 // 0: Source Widget
@@ -46,7 +45,7 @@ class CheckBoxCommandArgs: CommandArgsT<CheckBoxWidget>
 	{
 		return Source.IsChecked();
 	}
-};
+}
 
 // 0: Source Widget
 // 1: Selected Item
@@ -61,7 +60,7 @@ class XComboBoxCommandArgs: Param2<XComboBoxWidget, int>
 	{
 		return param2;
 	}
-};
+}
 
 // 0: Source Widget
 // 1: Selected Widget
@@ -76,4 +75,4 @@ class WrapSpacerCommandArgs: Param2<WrapSpacerWidget, Widget>
 	{
 		return param2;
 	}
-};
+}

@@ -8,7 +8,7 @@ enum NotifyCollectionChangedAction
 	Move,
 	Swap,
 	Clear
-};
+}
 
 // 0: Start Index
 // 1: Finish Index

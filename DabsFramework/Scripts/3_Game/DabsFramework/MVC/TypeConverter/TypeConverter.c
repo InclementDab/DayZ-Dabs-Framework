@@ -87,7 +87,7 @@ class TypeConverter
 
 		return __NULL_FUNCT;
 	}
-};
+}
 
 // Inherit from THIS for creating Custom TypeConversions
 class TypeConversionTemplate<Class T>: TypeConverter

@@ -37,4 +37,4 @@ class RelayCommand
 
 	// Abstract function called when execution ability is changed
 	void CanExecuteChanged(bool state);
-};
+}

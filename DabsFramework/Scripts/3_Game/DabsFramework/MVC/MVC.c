@@ -137,7 +137,7 @@ class MVC
 		Workbench.Dialog("MVC Error", msg);
 #endif
 	}
-};
+}
 
 // Workbench safe variant of GetGame()
 // https://feedback.bistudio.com/T153287
