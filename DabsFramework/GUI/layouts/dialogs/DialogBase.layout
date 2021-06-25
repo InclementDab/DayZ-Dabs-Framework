@@ -1,7 +1,7 @@
 WrapSpacerWidgetClass EditorDialog {
  clipchildren 0
  ignorepointer 1
- color 0.0588 0.0588 0.0588 0.9804
+ color 0.5882 0.5882 0.5882 1
  position 0 0
  size 0.25 0
  halign center_ref
@@ -12,7 +12,7 @@ WrapSpacerWidgetClass EditorDialog {
  vexactsize 0
  priority 998
  scriptclass ""
- style Colorable
+ style Outline_1px_BlackBackground
  "Ignore invisible" 0
  Padding 1
  Margin 0
