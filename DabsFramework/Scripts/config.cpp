@@ -31,7 +31,7 @@ class CfgMods
 			{
 				files[]=
 				{
-					"DabsFramework/gui/imagesets/dabsframework_prefabs.imageset"
+					"DabsFramework/gui/imagesets/prefabs.imageset"
 				};
 			};
 
@@ -39,7 +39,7 @@ class CfgMods
 			{
 				files[]=
 				{
-					"DabsFramework/gui/imagesets/dabsframework_prefabs.styles"
+					"DabsFramework/gui/looknfeel/prefabs.styles"
 				};
 			};
 
