@@ -131,13 +131,13 @@ class TypeConversionTemplate<Class T>: TypeConverter
 
 	override void SetToController(Class context, string name, int index)
 	{
-		PropertyInfo propertyInfo = PropertyInfo.GetSubScope(context, name);
-		EnScript.SetClassVar(context, propertyInfo.Name, index, m_Value);
+		PropertyInfo property_info = PropertyInfo.GetSubScope(context, name);
+		EnScript.SetClassVar(context, property_info.Name, index, m_Value);
 	}
 
 	override void GetFromController(Class context, string name, int index)
 	{
-		PropertyInfo propertyInfo = PropertyInfo.GetSubScope(context, name);
-		EnScript.GetClassVar(context, propertyInfo.Name, index, m_Value);
+		PropertyInfo property_info = PropertyInfo.GetSubScope(context, name);
+		EnScript.GetClassVar(context, property_info.Name, index, m_Value);
 	}
 }
