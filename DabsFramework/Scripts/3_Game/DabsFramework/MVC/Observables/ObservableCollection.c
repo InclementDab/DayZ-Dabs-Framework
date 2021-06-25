@@ -38,7 +38,7 @@ class TestController: ViewController
 
 class ObservableCollection<Class TValue> : Observable
 {
-	private	ref array<autoptr TValue> _data = {}
+	private	ref array<autoptr TValue> _data = {};
 
 	void ObservableCollection(ViewController controller)
 	{
