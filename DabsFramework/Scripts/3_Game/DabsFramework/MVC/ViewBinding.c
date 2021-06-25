@@ -14,9 +14,9 @@ class ViewBinding : ScriptedViewBase
 
 	// Strong reference to Relay Command
 	protected autoptr RelayCommand m_RelayCommand;
-	void SetRelayCommand(RelayCommand relayCommand)
+	void SetRelayCommand(RelayCommand relay_command)
 	{
-		m_RelayCommand = relayCommand;
+		m_RelayCommand = relay_command;
 		m_RelayCommand.SetViewBinding(this);
 	}
 
@@ -267,6 +267,16 @@ class ViewBinding : ScriptedViewBase
 		}
 
 		return super.OnChange(w, x, y, finished);
+	}
+	
+	bool HasBinding()
+	{
+		return (Binding_Name != string.Empty);
+	}
+	
+	bool HasRelayCommand()
+	{
+		return (Relay_Command != string.Empty || m_RelayCommand != null);
 	}
 
 	/*
