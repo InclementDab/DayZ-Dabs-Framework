@@ -5,7 +5,7 @@ class PropertyTypeHashMap: map<string, typename>
 	void PropertyTypeHashMap(typename type)
 	{
 		for (int i = 0; i < type.GetVariableCount(); i++) {
-			Insert(type.GetVariableName(i), type.GetVariableType(i));	
+			this[type.GetVariableName(i)] = type.GetVariableType(i);
 		}	
 	}
 	
