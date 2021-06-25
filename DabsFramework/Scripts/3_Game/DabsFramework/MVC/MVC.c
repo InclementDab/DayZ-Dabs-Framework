@@ -31,7 +31,7 @@ class MVC
 		return m_Instance;
 	}
 		
-	protected static ref TypenameHashMap m_WidgetControllerHashMap;
+	protected static ref TTypeNameTypenameMap m_WidgetControllerHashMap;
 	static WidgetController GetWidgetController(Widget data) 
 	{
 		if (!m_Instance) {
@@ -60,7 +60,7 @@ class MVC
 		m_TypeConverterHashMap = new TypeConversionHashMap();
 		RegisterConversionTemplates(m_TypeConverterHashMap);
 		
-		m_WidgetControllerHashMap = new TypenameHashMap();
+		m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 		RegisterWidgetControllers(m_WidgetControllerHashMap);
 	}
 	
@@ -90,7 +90,7 @@ class MVC
 	// Override THIS to add your own Widget widget_controllers 
 	// this determins how the Widget controls the data sent to it
 	// Great for prefabs
-	void RegisterWidgetControllers(out TypenameHashMap widget_controllers)
+	void RegisterWidgetControllers(out TTypeNameTypenameMap widget_controllers)
 	{
 		Log("MVC::RegisterWidgetwidget_controllers");
 		
