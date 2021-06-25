@@ -1,5 +1,15 @@
 class TypeConversionObject: TypeConversionTemplate<Object>
 {
+	override float GetFloat()
+	{
+		return m_Value.GetID();
+	}
+	
+	override int GetInt()
+	{
+		return m_Value.GetID();
+	}
+	
 	override string GetString()
 	{
 		return m_Value.GetType();

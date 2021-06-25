@@ -2,19 +2,16 @@
 // 1: Property Type
 class PropertyTypeHashMap: map<string, typename>
 {
-	static PropertyTypeHashMap FromType(typename type)
+	void PropertyTypeHashMap(typename type)
 	{
-		PropertyTypeHashMap hash_map = new PropertyTypeHashMap();
 		for (int i = 0; i < type.GetVariableCount(); i++) {
-			hash_map.Insert(type.GetVariableName(i), type.GetVariableType(i));	
-		}
-		
-		return hash_map;
+			Insert(type.GetVariableName(i), type.GetVariableType(i));	
+		}	
 	}
 	
 	void RemoveType(typename removed_type)
 	{
-		PropertyTypeHashMap hash_map = FromType(removed_type);
+		PropertyTypeHashMap hash_map = new PropertyTypeHashMap(removed_type);
 		foreach (string name, typename type: hash_map) {
 			Remove(name);
 		}
@@ -27,15 +24,15 @@ class PropertyTypeHashMap: map<string, typename>
 typedef map<Widget, ViewBinding> ViewBindingHashMap;
 
 // 0: View Binding
-typedef set<ViewBinding> ViewBindingArray;
+typedef set<ViewBinding> ViewBindingSet;
 
 // 0: Property Name
 // 1: View Binding Set
-class DataBindingHashMap: map<string, autoptr ViewBindingArray>
+class DataBindingHashMap: map<string, autoptr ViewBindingSet>
 {
 	void DebugPrint()
 	{
-		foreach (string name, ViewBindingArray view_set: this) {
+		foreach (string name, ViewBindingSet view_set: this) {
 			MVC.Log("[%1]:", name);
 			foreach (ViewBinding view: view_set) {
 				MVC.Log("    %1", view.GetLayoutRoot().GetName());
@@ -45,13 +42,13 @@ class DataBindingHashMap: map<string, autoptr ViewBindingArray>
 	
 	void InsertView(ViewBinding view)
 	{
-		ViewBindingArray view_set = Get(view.Binding_Name);
+		ViewBindingSet view_set = Get(view.Binding_Name);
 		if (view_set) {
 			view_set.Insert(view);
 			return;
 		} 
 		
-		view_set = new ViewBindingArray();
+		view_set = new ViewBindingSet();
 		view_set.Insert(view);
 		Insert(view.Binding_Name, view_set);
 		Insert(view.Selected_Item, view_set);
@@ -61,10 +58,6 @@ class DataBindingHashMap: map<string, autoptr ViewBindingArray>
 // 0: Relay_Command parameter
 // 1: Command Value
 typedef map<string, RelayCommand> RelayCommandHashMap
-
-// 0: Source Type
-// 1: Conversion Type
-typedef map<typename, typename> TypenameHashMap;
 
 // 0: Source Type
 // 1: Conversion Type

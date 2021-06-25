@@ -10,23 +10,18 @@ class PropertyInfo
 		Type = type;
 	}
 	
-	static PropertyInfo GetFromClass(Class context, string name)
+	static PropertyInfo Create(Class context, string name)
 	{
 		if (!context) {
 			return null;
 		}
 
-		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(context.Type());
-		if (!hash_map[name]) {
-			return null;
-		}
-		
-		return new PropertyInfo(name, hash_map[name]);
+		return Create(context.Type(), name);
 	}
 	
-	static PropertyInfo GetFromType(typename parent_type, string name)
+	static PropertyInfo Create(typename parent_type, string name)
 	{
-		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(parent_type);
+		PropertyTypeHashMap hash_map = new PropertyTypeHashMap(parent_type);
 		if (!hash_map[name]) {
 			return null;
 		}
@@ -51,9 +46,9 @@ class PropertyInfo
 		}
 	
 		if (variable_scope.Count() == 1) {
-			return PropertyInfo.GetFromClass(context, name);
+			return PropertyInfo.Create(context, name);
 		}
 	
-		return PropertyInfo.GetFromClass(context, variable_scope[variable_scope.Count() - 1]);
+		return PropertyInfo.Create(context, variable_scope[variable_scope.Count() - 1]);
 	}
 }

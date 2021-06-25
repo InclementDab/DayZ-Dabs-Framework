@@ -63,7 +63,7 @@ class ViewController : ScriptedViewBase
 
 	// Hashmap of all properties in the Controller
 	[NonSerialized()]
-	protected autoptr PropertyTypeHashMap m_PropertyTypeHashMap = PropertyTypeHashMap.FromType(Type());
+	protected autoptr PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
 	typename GetPropertyType(string property_name)
 	{
 		return m_PropertyTypeHashMap[property_name];
@@ -101,7 +101,7 @@ class ViewController : ScriptedViewBase
 
 		if (property_name == string.Empty) {
 			Log("Updating all properties in View, this is NOT recommended as it is performance intensive");
-			foreach (ViewBindingArray view_array: m_DataBindingHashMap) {
+			foreach (ViewBindingSet view_array: m_DataBindingHashMap) {
 				foreach (ViewBinding view_binding: view_array) {
 					Trace("NotifyPropertyChanged %1", view_binding.Binding_Name);
 					view_binding.UpdateView(this);
