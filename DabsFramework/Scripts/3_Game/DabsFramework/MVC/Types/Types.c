@@ -2,19 +2,16 @@
 // 1: Property Type
 class PropertyTypeHashMap: map<string, typename>
 {
-	static PropertyTypeHashMap FromType(typename type)
+	void PropertyTypeHashMap(typename type)
 	{
-		PropertyTypeHashMap hash_map = new PropertyTypeHashMap();
 		for (int i = 0; i < type.GetVariableCount(); i++) {
-			hash_map.Insert(type.GetVariableName(i), type.GetVariableType(i));	
-		}
-		
-		return hash_map;
+			Insert(type.GetVariableName(i), type.GetVariableType(i));	
+		}	
 	}
 	
 	void RemoveType(typename removed_type)
 	{
-		PropertyTypeHashMap hash_map = FromType(removed_type);
+		PropertyTypeHashMap hash_map = new PropertyTypeHashMap(removed_type);
 		foreach (string name, typename type: hash_map) {
 			Remove(name);
 		}

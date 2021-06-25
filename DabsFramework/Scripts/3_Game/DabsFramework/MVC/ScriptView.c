@@ -33,7 +33,7 @@ class ScriptView: ScriptedViewBase
 	{
 		m_LayoutRoot = CreateWidget(null);
 
-		LoadViewProperties(this, PropertyTypeHashMap.FromType(Type()), m_LayoutRoot);
+		LoadViewProperties(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
 
 		m_LayoutRoot.GetScript(m_Controller);
 
@@ -52,7 +52,7 @@ class ScriptView: ScriptedViewBase
 			}
 
 			// Since its not loaded in the WB, needs to be called here
-			LoadViewProperties(m_Controller, PropertyTypeHashMap.FromType(GetControllerType()), m_LayoutRoot);
+			LoadViewProperties(m_Controller, new PropertyTypeHashMap(GetControllerType()), m_LayoutRoot);
 			m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		}
 

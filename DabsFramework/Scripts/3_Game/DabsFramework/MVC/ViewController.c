@@ -63,7 +63,7 @@ class ViewController : ScriptedViewBase
 
 	// Hashmap of all properties in the Controller
 	[NonSerialized()]
-	protected autoptr PropertyTypeHashMap m_PropertyTypeHashMap = PropertyTypeHashMap.FromType(Type());
+	protected autoptr PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
 	typename GetPropertyType(string property_name)
 	{
 		return m_PropertyTypeHashMap[property_name];

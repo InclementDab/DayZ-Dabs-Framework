@@ -21,7 +21,7 @@ class PropertyInfo
 	
 	static PropertyInfo Create(typename parent_type, string name)
 	{
-		PropertyTypeHashMap hash_map = PropertyTypeHashMap.FromType(parent_type);
+		PropertyTypeHashMap hash_map = new PropertyTypeHashMap(parent_type);
 		if (!hash_map[name]) {
 			return null;
 		}
