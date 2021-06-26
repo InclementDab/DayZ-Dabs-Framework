@@ -158,7 +158,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0.7059 0.7059 0.7059 0.2941
+   color 0.7059 0.7059 0.7059 0.3922
    position 0 0
    size 0.58 20
    halign center_ref

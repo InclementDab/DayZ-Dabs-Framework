@@ -1,6 +1,6 @@
 <WidgetStyles>
     <Widget Name="PanelWidget">
-        <Style Name="RoundPanelOutline" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="RoundPanelOutline" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -24,7 +24,7 @@
                 <Item Name="Top" Image="Round_Outline_Top" />
             </State>
         </Style>
-        <Style Name="Outline_1px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Outline_1px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -50,7 +50,7 @@
         </Style>
     </Widget>
     <Widget Name="ButtonWidget">
-        <Style Name="RoundedButtonHightlight" Font="gui/fonts/MetronBook" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="RoundedButtonHightlight" Font="gui/fonts/MetronBook" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -107,7 +107,7 @@
                 <Item Name="Top" Image="RoundButtonHighlight_50_Top" />
             </State>
         </Style>
-        <Style Name="Outline_1px_Button" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Outline_1px_Button" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -166,7 +166,7 @@
         </Style>
     </Widget>
     <Widget Name="CheckBoxWidget">
-        <Style Name="CheckBox_16px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="CheckBox_16px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="CheckBox" Image="" />
             </State>
@@ -180,7 +180,7 @@
                 <Item Name="CheckBox" Image="CheckBox_16px" />
             </State>
         </Style>
-        <Style Name="CheckBox_22px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="CheckBox_22px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="CheckBox" Image="" />
             </State>
@@ -194,7 +194,7 @@
                 <Item Name="CheckBox" Image="CheckBox_22px" />
             </State>
         </Style>
-        <Style Name="CheckBox_62px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="CheckBox_62px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="CheckBox" Image="" />
             </State>
@@ -210,7 +210,7 @@
         </Style>
     </Widget>
     <Widget Name="SliderWidget">
-        <Style Name="Slider_1px_alpha_50" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Slider_1px_alpha_50" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="BarBottom" Image="" />
                 <Item Name="BarCenter" Image="" />
@@ -274,7 +274,7 @@
         </Style>
     </Widget>
     <Widget Name="EditBoxWidget">
-        <Style Name="Green_Hightlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Green_Hightlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -309,7 +309,7 @@
                 <Item Name="Top" Image="" />
             </State>
         </Style>
-        <Style Name="Blue_Highlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Blue_Highlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -346,7 +346,7 @@
         </Style>
     </Widget>
     <Widget Name="WrapSpacerWidget">
-        <Style Name="Outline_1px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Outline_1px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -367,10 +367,10 @@
                 <Item Name="Right" Image="OutlineRight_1px" />
                 <Item Name="RightBottom" Image="OutlineBottomRight_1px" />
                 <Item Name="RightTop" Image="OutlineTopRight_1px" />
-                <Item Name="Top" Image="OutlineTopRight_1px" />
+                <Item Name="Top" Image="OutlineTop_1px" />
             </State>
         </Style>
-        <Style Name="Outline_1px_BlackBackground" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dabs_framework_prefabs" Color="0">
+        <Style Name="Outline_1px_BlackBackground" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />

@@ -24,13 +24,13 @@ GameProjectClass {
 				"gui/imagesets/playstation_buttons.imageset"
 				"gui/imagesets/selection.imageset"
 				"gui/imagesets/console_toolbar.imageset"
-				"DabsFramework/gui/imagesets/dabs_framework_prefabs.imageset"
+				"DabsFramework/gui/imagesets/prefabs.imageset"
 				
 			}
 			widgetStyles {
 				"gui/looknfeel/dayzwidgets.styles" 
 				"gui/looknfeel/widgets.styles"
-				"DabsFramework/gui/looknfeel/dabs_framework_prefabs.styles"
+				"DabsFramework/gui/looknfeel/prefabs.styles"
 			}
 			ScriptModules {
 				ScriptModulePathClass {

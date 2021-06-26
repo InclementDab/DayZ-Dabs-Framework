@@ -1,10 +1,10 @@
 ImageSetClass {
- Name "dabs_framework_prefabs"
+ Name "prefabs"
  RefSize 256 256
  Textures {
   ImageSetTextureClass {
    mpix 1
-   path "{B54A430B162BFDD2}DabsFramework/GUI/imagesets/dabs_framework_prefabs.edds"
+   path "{B54A430B162BFDD2}DabsFramework/GUI/imagesets/prefabs.edds"
   }
  }
  Images {
