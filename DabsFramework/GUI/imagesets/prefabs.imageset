@@ -1,0 +1,440 @@
+ImageSetClass {
+ Name "prefabs"
+ RefSize 256 256
+ Textures {
+  ImageSetTextureClass {
+   mpix 1
+   path "{B54A430B162BFDD2}DabsFramework/GUI/imagesets/prefabs.edds"
+  }
+ }
+ Images {
+  ImageSetDefClass Round_Outline_TopLeft {
+   Name "Round_Outline_TopLeft"
+   Pos 24 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_TopRight {
+   Name "Round_Outline_TopRight"
+   Pos 36 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_BottomLeft {
+   Name "Round_Outline_BottomLeft"
+   Pos 24 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_BottomRight {
+   Name "Round_Outline_BottomRight"
+   Pos 36 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 10" {
+   Name "Alpha 10"
+   Pos 0 15
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 20" {
+   Name "Alpha 20"
+   Pos 0 14
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 30" {
+   Name "Alpha 30"
+   Pos 0 13
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 40" {
+   Name "Alpha 40"
+   Pos 0 12
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 50" {
+   Name "Alpha 50"
+   Pos 0 11
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 60" {
+   Name "Alpha 60"
+   Pos 0 10
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 70" {
+   Name "Alpha 70"
+   Pos 0 9
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 80" {
+   Name "Alpha 80"
+   Pos 0 8
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass "Alpha 90" {
+   Name "Alpha 90"
+   Pos 0 7
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass White {
+   Name "White"
+   Pos 0 6
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass OutlineTopLeft_1px {
+   Name "OutlineTopLeft_1px"
+   Pos 0 0
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass OutlineTopRight_1px {
+   Name "OutlineTopRight_1px"
+   Pos 3 0
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass OutlineBottomLeft_1px {
+   Name "OutlineBottomLeft_1px"
+   Pos 0 3
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass OutlineBottomRight_1px {
+   Name "OutlineBottomRight_1px"
+   Pos 3 3
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass GreenHighlight {
+   Name "GreenHighlight"
+   Pos 17 7
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass OutlineTopLeft_2px {
+   Name "OutlineTopLeft_2px"
+   Pos 6 0
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass OutlineTopRight_2px {
+   Name "OutlineTopRight_2px"
+   Pos 12 0
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass OutlineBottomLeft_2px {
+   Name "OutlineBottomLeft_2px"
+   Pos 6 6
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass OutlineBottomRight_2px {
+   Name "OutlineBottomRight_2px"
+   Pos 12 6
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass OutlineLeft_1px {
+   Name "OutlineLeft_1px"
+   Pos 0 2
+   Size 2 1
+   Flags 0
+  }
+  ImageSetDefClass OutlineTop_1px {
+   Name "OutlineTop_1px"
+   Pos 2 0
+   Size 1 2
+   Flags 0
+  }
+  ImageSetDefClass OutlineRight_1px {
+   Name "OutlineRight_1px"
+   Pos 3 2
+   Size 2 1
+   Flags 0
+  }
+  ImageSetDefClass OutlineBottom_1px {
+   Name "OutlineBottom_1px"
+   Pos 2 3
+   Size 1 2
+   Flags 0
+  }
+  ImageSetDefClass OutlineTop_2px {
+   Name "OutlineTop_2px"
+   Pos 10 0
+   Size 2 4
+   Flags 0
+  }
+  ImageSetDefClass OutlineBottom_2px {
+   Name "OutlineBottom_2px"
+   Pos 10 6
+   Size 2 4
+   Flags 0
+  }
+  ImageSetDefClass OutlineLeft_2px {
+   Name "OutlineLeft_2px"
+   Pos 6 4
+   Size 4 2
+   Flags 0
+  }
+  ImageSetDefClass OutlineRight_2px {
+   Name "OutlineRight_2px"
+   Pos 12 4
+   Size 4 2
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_Top {
+   Name "Round_Outline_Top"
+   Pos 32 21
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_Bottom {
+   Name "Round_Outline_Bottom"
+   Pos 32 33
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_Right {
+   Name "Round_Outline_Right"
+   Pos 36 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass Round_Outline_Left {
+   Name "Round_Outline_Left"
+   Pos 24 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_TopLeft {
+   Name "RoundButtonHighlight_50_TopLeft"
+   Pos 45 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_TopRight {
+   Name "RoundButtonHighlight_50_TopRight"
+   Pos 57 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_Left {
+   Name "RoundButtonHighlight_50_Left"
+   Pos 45 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_Right {
+   Name "RoundButtonHighlight_50_Right"
+   Pos 57 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight50TopLeft {
+   Name "RoundButtonHighlight50TopLeft"
+   Pos 53 33
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_Top {
+   Name "RoundButtonHighlight_50_Top"
+   Pos 53 21
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_BottomLeft {
+   Name "RoundButtonHighlight_50_BottomLeft"
+   Pos 45 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_50_BottomRight {
+   Name "RoundButtonHighlight_50_BottomRight"
+   Pos 57 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_22px {
+   Name "CheckBox_22px"
+   Pos 47 42
+   Size 22 22
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_16px {
+   Name "CheckBox_16px"
+   Pos 4 38
+   Size 16 16
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_62px {
+   Name "CheckBox_62px"
+   Pos 189 1
+   Size 64 64
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Mark_16px {
+   Name "CheckBox_Mark_16px"
+   Pos 4 21
+   Size 16 16
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Mark_22px {
+   Name "CheckBox_Mark_22px"
+   Pos 22 42
+   Size 22 22
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Mark_62px {
+   Name "CheckBox_Mark_62px"
+   Pos 189 65
+   Size 64 64
+   Flags 0
+  }
+  ImageSetDefClass BlueHighlight {
+   Name "BlueHighlight"
+   Pos 21 7
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Highlight_62px {
+   Name "CheckBox_Highlight_62px"
+   Pos 125 1
+   Size 64 64
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Highlight_16px {
+   Name "CheckBox_Highlight_16px"
+   Pos 4 55
+   Size 16 16
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Highlight_22px {
+   Name "CheckBox_Highlight_22px"
+   Pos 71 42
+   Size 22 22
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_TopLeft {
+   Name "1px_Outline_BlackCenter_TopLeft"
+   Pos 17 0
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_BottomRight {
+   Name "1px_Outline_BlackCenter_BottomRight"
+   Pos 21 4
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_Right {
+   Name "1px_Outline_BlackCenter_Right"
+   Pos 21 2
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_Bottom {
+   Name "1px_Outline_BlackCenter_Bottom"
+   Pos 19 4
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_Left {
+   Name "1px_Outline_BlackCenter_Left"
+   Pos 17 2
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_BottomLeft {
+   Name "1px_Outline_BlackCenter_BottomLeft"
+   Pos 17 4
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_TopRight {
+   Name "1px_Outline_BlackCenter_TopRight"
+   Pos 21 0
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_Top {
+   Name "1px_Outline_BlackCenter_Top"
+   Pos 19 0
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_BlackCenter_center {
+   Name "1px_Outline_BlackCenter_center"
+   Pos 19 2
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_Top {
+   Name "1px_Outline_Alpha_Center_Top"
+   Pos 15 11
+   Size 1 3
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_TopRight {
+   Name "1px_Outline_Alpha_Center_TopRight"
+   Pos 16 11
+   Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_BottomRight {
+   Name "1px_Outline_Alpha_Center_BottomRight"
+   Pos 16 15
+   Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_Right {
+   Name "1px_Outline_Alpha_Center_Right"
+   Pos 16 14
+   Size 3 1
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_BottomLeft {
+   Name "1px_Outline_Alpha_Center_BottomLeft"
+   Pos 12 15
+   Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_Bottom {
+   Name "1px_Outline_Alpha_Center_Bottom"
+   Pos 15 15
+   Size 1 3
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_Left {
+   Name "1px_Outline_Alpha_Center_Left"
+   Pos 12 14
+   Size 3 1
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_Center {
+   Name "1px_Outline_Alpha_Center_Center"
+   Pos 15 14
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass 1px_Outline_Alpha_Center_TopLeft {
+   Name "1px_Outline_Alpha_Center_TopLeft"
+   Pos 12 11
+   Size 3 3
+   Flags 0
+  }
+ }
+ Groups {
+ }
+}

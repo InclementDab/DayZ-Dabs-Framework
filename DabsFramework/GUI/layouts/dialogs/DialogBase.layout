@@ -1,7 +1,7 @@
 WrapSpacerWidgetClass EditorDialog {
  clipchildren 0
  ignorepointer 1
- color 0.0588 0.0588 0.0588 0.9804
+ color 0.5882 0.5882 0.5882 1
  position 0 0
  size 0.25 0
  halign center_ref
@@ -12,7 +12,7 @@ WrapSpacerWidgetClass EditorDialog {
  vexactsize 0
  priority 998
  scriptclass ""
- style Colorable
+ style Outline_1px_BlackBackground
  "Ignore invisible" 0
  Padding 1
  Margin 0
@@ -77,8 +77,8 @@ WrapSpacerWidgetClass EditorDialog {
       PanelWidgetClass TitleClosePanel {
        ignorepointer 1
        color 0.7843 0.2941 0.2745 1
-       position 0 0
-       size 26 26
+       position 2 0
+       size 22 21
        halign right_ref
        valign center_ref
        hexactpos 1

@@ -60,7 +60,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      clipchildren 1
      inheritalpha 0
      ignorepointer 1
-     color 0.5882 0.5882 0.5882 1
+     color 0.7059 0.7059 0.7059 0.5882
      position 0 0
      size 0.8 0.8
      halign center_ref
@@ -116,7 +116,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      clipchildren 1
      inheritalpha 0
      ignorepointer 1
-     color 0.5882 0.5882 0.5882 1
+     color 0.7059 0.7059 0.7059 0.5882
      position 0 0
      size 0.8 0.8
      halign center_ref
@@ -158,7 +158,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0.3922 0.3922 0.3922 0.3922
+   color 0.7059 0.7059 0.7059 0.3922
    position 0 0
    size 0.58 20
    halign center_ref
@@ -169,7 +169,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
    vexactsize 1
    priority 2
    scriptclass "ViewBinding"
-   style Default
+   style Slider_1px_alpha_50
    maximum 1
    step 0.001
    current 0.5
@@ -213,7 +213,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      vexactpos 1
      hexactsize 0
      vexactsize 1
-     style Slim_Outline2
+     style blank
     }
    }
    {

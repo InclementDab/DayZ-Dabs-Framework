@@ -38,7 +38,7 @@ FrameWidgetClass CheckBoxPrefab {
    clipchildren 0
    inheritalpha 0
    keepsafezone 0
-   color 0.902 0.902 0.902 1
+   color 0.7059 0.7059 0.7059 1
    position 0.5 0
    size 16 16
    valign center_ref
@@ -48,7 +48,7 @@ FrameWidgetClass CheckBoxPrefab {
    vexactsize 1
    scaled 1
    scriptclass "ViewBinding"
-   style dze_checkbox_white
+   style CheckBox_16px
    checked 0
    {
     ScriptParamsClass {

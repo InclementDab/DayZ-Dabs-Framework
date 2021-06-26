@@ -161,7 +161,7 @@ GridSpacerWidgetClass DropdownPrefab {
       PanelWidgetClass DropdownPrefabPanel {
        visible 1
        ignorepointer 1
-       color 0.5882 0.5882 0.5882 1
+       color 0.7059 0.7059 0.7059 0.5882
        position -4 0
        size 0.945 1
        halign center_ref
@@ -170,7 +170,7 @@ GridSpacerWidgetClass DropdownPrefab {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       style Slim_Outline2
+       style Outline_1px
       }
      }
      {

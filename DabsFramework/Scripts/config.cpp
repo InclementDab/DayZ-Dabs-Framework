@@ -27,6 +27,22 @@ class CfgMods
 		};
 		class defs
 		{
+			class imageSets
+			{
+				files[]=
+				{
+					"DabsFramework/gui/imagesets/prefabs.imageset"
+				};
+			};
+
+			class widgetStyles
+			{
+				files[]=
+				{
+					"DabsFramework/gui/looknfeel/prefabs.styles"
+				};
+			};
+
 			class engineScriptModule
 			{
 				value = "";

@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass SelectItemList {
- color 0.3529 0.3529 0.3529 0.1176
+ color 0.2353 0.2353 0.2353 0.1176
  size 1 24
  hexactpos 1
  vexactpos 1
@@ -9,6 +9,7 @@ WrapSpacerWidgetClass SelectItemList {
  Margin 0
  {
   ButtonWidgetClass EditorSelectItemListButton {
+   color 1 1 1 0.1176
    position 10 10
    size 1 1
    hexactpos 1
@@ -18,7 +19,7 @@ WrapSpacerWidgetClass SelectItemList {
    {
     TextWidgetClass EditorSelectItemListLabel {
      ignorepointer 1
-     position 24 0
+     position 0 0
      size 0.8 1
      hexactpos 1
      vexactpos 1
