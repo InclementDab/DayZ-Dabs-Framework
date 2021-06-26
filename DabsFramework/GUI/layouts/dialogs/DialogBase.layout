@@ -77,7 +77,7 @@ WrapSpacerWidgetClass EditorDialog {
       PanelWidgetClass TitleClosePanel {
        ignorepointer 1
        color 0.7843 0.2941 0.2745 1
-       position 2 1
+       position 2 0
        size 22 21
        halign right_ref
        valign center_ref
