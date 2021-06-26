@@ -181,7 +181,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      ignorepointer 1
      color 0.8627 0.8627 0.8627 1
      position 0 0
-     size 0.2 12
+     size 0.9 12
      halign center_ref
      valign center_ref
      hexactpos 0
