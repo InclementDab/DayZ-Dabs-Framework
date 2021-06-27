@@ -1,11 +1,11 @@
 modded class ModStructure
 {
-	override string GetModPath() 
+	string GetPath() 
 	{ 
 		return m_ModPath; 
 	}
 	
-	int GetModIndex() 
+	int GetIndex() 
 	{ 
 		return m_ModIndex; 
 	}
