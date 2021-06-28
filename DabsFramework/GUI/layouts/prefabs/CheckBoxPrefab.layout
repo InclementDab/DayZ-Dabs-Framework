@@ -1,6 +1,6 @@
 FrameWidgetClass CheckBoxPrefab {
  visible 1
- clipchildren 0
+ clipchildren 1
  ignorepointer 1
  size 0.85 18
  halign center_ref
@@ -14,7 +14,7 @@ FrameWidgetClass CheckBoxPrefab {
  {
   TextWidgetClass Caption {
    visible 1
-   clipchildren 0
+   clipchildren 1
    ignorepointer 1
    position 7 0
    size 0.3 16
@@ -35,7 +35,7 @@ FrameWidgetClass CheckBoxPrefab {
   }
   CheckBoxWidgetClass CheckBox {
    visible 1
-   clipchildren 0
+   clipchildren 1
    inheritalpha 0
    keepsafezone 0
    color 0.7059 0.7059 0.7059 1
