@@ -1,6 +1,7 @@
 WrapSpacerWidgetClass rootFrame {
  color 0.7059 0.7059 0.7059 0.9412
- size 0.25 165
+ position -20 0
+ size 0.25 167
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -19,34 +20,45 @@ WrapSpacerWidgetClass rootFrame {
    scriptclass "ViewBinding"
    text "ColorPickerCaption"
    "text offset" 3 0
+   "text valign" center
    {
     ScriptParamsClass {
      Binding_Name "Caption"
     }
    }
   }
+  PanelWidgetClass OutlineColorPickerSpacer {
+   ignorepointer 0
+   size 2 0.85
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 0
+  }
   PanelWidgetClass HSVColorGradiantPanel {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
    position 0 0
-   size 0.25 0.85
+   size 140 140
    hexactpos 0
    vexactpos 0
-   hexactsize 0
-   vexactsize 0
+   hexactsize 1
+   vexactsize 1
    scriptclass ""
-   style blank
+   style Outline_1px
    {
     CanvasWidgetClass HSVColorGradiant {
      ignorepointer 0
      position 0 0
-     size 1 1
+     size 138 138
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      {
       ImageWidgetClass HSVColorPickerIcon {
        ignorepointer 1
@@ -84,31 +96,44 @@ WrapSpacerWidgetClass rootFrame {
     }
    }
   }
-  PanelWidgetClass ColorSpectrumGradiantPanel {
-   ignorepointer 1
-   color 0.7059 0.7059 0.7059 1
-   size 0.03 0.85
+  PanelWidgetClass OutlineColorPickerSpacer0 {
+   ignorepointer 0
+   size 5 0.85
+   halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
-   hexactsize 0
+   hexactsize 1
    vexactsize 0
-   style blank
+  }
+  PanelWidgetClass ColorSpectrumGradiantPanel {
+   ignorepointer 1
+   color 0.7059 0.7059 0.7059 1
+   size 22 140
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Outline_1px
    {
     CanvasWidgetClass ColorSpectrumGradiant {
      ignorepointer 0
-     size 1 1
+     position 0 0
+     size 20 138
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      {
       PanelWidgetClass ColorSpectrumPickerPanel {
+       visible 1
        clipchildren 0
        ignorepointer 1
        color 1 1 1 0.9961
+       position 0 0
        size 1 6
        halign center_ref
        hexactpos 1
@@ -139,21 +164,20 @@ WrapSpacerWidgetClass rootFrame {
   PanelWidgetClass ColorSlidersPanel {
    ignorepointer 1
    position 0 0
-   size 0.7 0.85
+   size 295 140
    hexactpos 0
    vexactpos 0
-   hexactsize 0
-   vexactsize 0
+   hexactsize 1
+   vexactsize 1
    {
     WrapSpacerWidgetClass ColorSlidersContainer {
      ignorepointer 1
-     position 0 0
-     size 1 1
-     halign center_ref
+     size 295 140
+     valign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      scriptclass "ViewBinding"
      Margin 0
      {
@@ -168,8 +192,8 @@ WrapSpacerWidgetClass rootFrame {
        {
         SliderWidgetClass RedSlider {
          color 1 0 0 1
-         position 30 0
-         size 0.7 16
+         position 5 0
+         size 0.75 16
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -194,22 +218,53 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          TextWidgetClass RedText {
-           size 50 12
+          PanelWidgetClass RedBackgroundPanel {
+           clipchildren 1
+           ignorepointer 1
+           color 1 0 0 0.1961
+           position 10 0
+           size 35 16
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           scriptclass "ViewBinding"
-           text "255"
-           font "gui/fonts/sdf_MetronLight42"
-           "text halign" center
-           "text valign" center
+           style rover_sim_colorable
            {
-            ScriptParamsClass {
-             Binding_Name "Red"
+            EditBoxWidgetClass RedEditBox {
+             clipchildren 0
+             color 1 1 1 0.9961
+             position 2 0
+             size 28 12
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             scriptclass "ViewBinding"
+             text "255"
+             font "gui/fonts/sdf_MetronLight42"
+             {
+              ScriptParamsClass {
+               Binding_Name "Red"
+               Two_Way_Binding 1
+              }
+             }
+            }
+            PanelWidgetClass RedTextOutline {
+             ignorepointer 1
+             color 0.7059 0.7059 0.7059 0.9961
+             position 0 0
+             size 35 16
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style Outline_1px
             }
            }
           }
@@ -227,8 +282,8 @@ WrapSpacerWidgetClass rootFrame {
        {
         SliderWidgetClass GreenSlider {
          color 0 1 0 1
-         position 30 0
-         size 0.7 15
+         position 5 0
+         size 0.75 15
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -253,23 +308,54 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          TextWidgetClass GreenText {
-           position 0 0
-           size 50 12
+          PanelWidgetClass GreenBackgroundPanel {
+           clipchildren 1
+           ignorepointer 1
+           color 0 1 0 0.1961
+           position 10 0
+           size 35 16
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           scriptclass "ViewBinding"
-           text "255"
-           font "gui/fonts/sdf_MetronLight42"
-           "text halign" center
-           "text valign" center
+           style rover_sim_colorable
            {
-            ScriptParamsClass {
-             Binding_Name "Green"
+            EditBoxWidgetClass GreenEditBox {
+             clipchildren 0
+             color 1 1 1 0.9961
+             position 2 0
+             size 28 12
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             scriptclass "ViewBinding"
+             style Green_Hightlight
+             text "255"
+             font "gui/fonts/sdf_MetronLight42"
+             {
+              ScriptParamsClass {
+               Binding_Name "Green"
+               Two_Way_Binding 1
+              }
+             }
+            }
+            PanelWidgetClass GreenTextOutline {
+             ignorepointer 1
+             color 0.7059 0.7059 0.7059 0.9961
+             position 0 0
+             size 35 16
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style Outline_1px
             }
            }
           }
@@ -287,8 +373,8 @@ WrapSpacerWidgetClass rootFrame {
        {
         SliderWidgetClass BlueSlider {
          color 0 0 1 1
-         position 30 0
-         size 0.7 16
+         position 5 0
+         size 0.75 16
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -314,23 +400,53 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          TextWidgetClass BlueText {
-           position 0 0
-           size 50 12
+          PanelWidgetClass BlueBackgroundPanel {
+           clipchildren 1
+           ignorepointer 1
+           color 0 0 1 0.1961
+           position 10 0
+           size 35 16
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           scriptclass "ViewBinding"
-           text "255"
-           font "gui/fonts/sdf_MetronLight42"
-           "text halign" center
-           "text valign" center
+           style rover_sim_colorable
            {
-            ScriptParamsClass {
-             Binding_Name "Blue"
+            EditBoxWidgetClass BlueEditBox {
+             clipchildren 0
+             color 1 1 1 0.9961
+             position 2 0
+             size 28 12
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             scriptclass "ViewBinding"
+             style Blue_Highlight
+             text "255"
+             font "gui/fonts/sdf_MetronLight42"
+             {
+              ScriptParamsClass {
+               Binding_Name "Blue"
+               Two_Way_Binding 1
+              }
+             }
+            }
+            PanelWidgetClass BlueTextOutline {
+             ignorepointer 1
+             color 0.7059 0.7059 0.7059 0.9961
+             size 35 16
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style Outline_1px
             }
            }
           }
@@ -348,8 +464,8 @@ WrapSpacerWidgetClass rootFrame {
        {
         SliderWidgetClass AlphaSlider {
          color 0.7059 0.7059 0.7059 0.5882
-         position 30 0
-         size 0.7 16
+         position 5 0
+         size 0.75 16
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -375,24 +491,52 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          TextWidgetClass AlphaText {
-           position 0 0
-           size 50 12
+          PanelWidgetClass AlphaBackgroundPanel {
+           clipchildren 1
+           ignorepointer 1
+           color 0.3922 0.3922 0.3922 0.3922
+           position 10 0
+           size 35 16
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           scriptclass "ViewBinding"
-           text "255"
-           font "gui/fonts/sdf_MetronLight42"
-           "text offset" 3 0
-           "text halign" center
-           "text valign" center
+           style rover_sim_colorable
            {
-            ScriptParamsClass {
-             Binding_Name "Alpha"
+            EditBoxWidgetClass AlphaEditBox {
+             clipchildren 0
+             position 2 0
+             size 28 12
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             scriptclass "ViewBinding"
+             style ServerBrowser
+             text "255"
+             font "gui/fonts/sdf_MetronLight42"
+             {
+              ScriptParamsClass {
+               Binding_Name "Alpha"
+               Two_Way_Binding 1
+              }
+             }
+            }
+            PanelWidgetClass AlphaTextOutline {
+             ignorepointer 1
+             color 0.7059 0.7059 0.7059 0.9961
+             size 35 16
+             halign center_ref
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style Outline_1px
             }
            }
           }
@@ -411,6 +555,7 @@ WrapSpacerWidgetClass rootFrame {
        {
         GridSpacerWidgetClass GridSpacerWidget0 {
          ignorepointer 1
+         position 0 0
          size 0.9 1
          halign center_ref
          valign center_ref
