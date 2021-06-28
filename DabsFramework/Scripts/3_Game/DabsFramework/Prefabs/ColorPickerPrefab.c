@@ -1,10 +1,11 @@
 class ColorPickerController: PrefabBaseController<int>
 {
+	int LastValue;
 	int Alpha, Red, Green, Blue;
 	float Hue, Saturation, Var; // Value -> Var because PrefabBase uses Value, did not see this coming!
 	
 	override void PropertyChanged(string property_name)
-	{		
+	{
 		switch (property_name) {
 			
 			case "Alpha":		
@@ -51,13 +52,18 @@ class ColorPickerPrefab: PrefabBase<int>
 	
 	Widget HSVColorPickerIcon;
 	
+	Widget CurrentColorVisual;
+	Widget LastSavedColorVisual;
+	
 	void ColorPickerPrefab(string caption, Class binding_context, string binding_name)
 	{		
 		m_ColorPickerController = ColorPickerController.Cast(GetController());
 
-		//UpdateHSVSpectrum();
-		m_ColorPickerController.NotifyPropertyChanged("Value");
-		m_ColorPickerController.NotifyPropertiesChanged({"Red", "Green", "Blue", "Hue", "Saturation", "Var"});
+		m_ColorPickerController.LastValue = m_ColorPickerController.Value;
+		m_ColorPickerController.NotifyPropertyChanged("LastValue");
+		
+		// order matters
+		m_ColorPickerController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
 	}
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
@@ -77,6 +83,16 @@ class ColorPickerPrefab: PrefabBase<int>
 				m_ColorPickerController.Hue = Math.Lerp(0, 360, y_p);
 				m_ColorPickerController.NotifyPropertyChanged("Hue");
 				break;
+			}
+			
+			case CurrentColorVisual: {
+				GetGame().CopyToClipboard(m_ColorPickerController.Value.ToString());
+				break;
+			}
+			
+			case LastSavedColorVisual: {
+				m_ColorPickerController.Value = m_ColorPickerController.LastValue;
+				m_ColorPickerController.NotifyPropertyChanged("Value");
 			}
 		}
 		
