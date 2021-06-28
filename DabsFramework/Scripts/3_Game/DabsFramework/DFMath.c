@@ -22,36 +22,36 @@ void InverseARGBF(int argb, out float a, out float r, out float g, out float b)
 
 class DFMath
 {
-	void RGBtoHSV(float fR, float fG, float fB, out float fH, out float fS, out float fV) 
+	static void RGBtoHSV(float r, float g, float b, out float h, out float s, out float v) 
 	{
-		float fCMax = Math.Max(Math.Max(fR, fG), fB);
-		float fCMin = Math.Min(Math.Min(fR, fG), fB);
-		float fDelta = fCMax - fCMin;
+		float fc_max = Math.Max(Math.Max(r, g), b);
+		float fc_min = Math.Min(Math.Min(r, g), b);
+		float f_delta = fc_max - fc_min;
 		
-		if (fDelta > 0) {
-			if (fCMax == fR) {
-				fH = 60 * (DFMath.FMod(((fG - fB) / fDelta), 6));
-			} else if(fCMax == fG) {
-				fH = 60 * (((fB - fR) / fDelta) + 2);
-			} else if(fCMax == fB) {
-				fH = 60 * (((fR - fG) / fDelta) + 4);
+		if (f_delta > 0) {
+			if (fc_max == r) {
+				h = 60 * (DFMath.FMod(((g - b) / f_delta), 6));
+			} else if (fc_max == g) {
+				h = 60 * (((r - r) / f_delta) + 2);
+			} else if (fc_max == b) {
+				h = 60 * (((r - g) / f_delta) + 4);
 			}
 		  
-			if (fCMax > 0) {
-				fS = fDelta / fCMax;
+			if (fc_max > 0) {
+				s = f_delta / fc_max;
 			} else {
-				fS = 0;
+				s = 0;
 			}
 		  
-			fV = fCMax;
+			h = fc_max;
 		} else {
-			fH = 0;
-			fS = 0;
-			fV = fCMax;
+			h = 0;
+			s = 0;
+			h = fc_max;
 		}
 		
-		if (fH < 0) {
-		  fH = 360 + fH;
+		if (h < 0) {
+		  h = 360 + h;
 		}
 	}
 	
