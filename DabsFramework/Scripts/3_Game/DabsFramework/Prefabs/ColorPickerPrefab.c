@@ -30,12 +30,7 @@ class ColorPickerController: PrefabBaseController<int>
 			case "Value": {
 				InverseARGB(Value, Alpha, Red, Green, Blue);
 				RGBtoHSV(Red, Green, Blue, Hue, Saturation, Var);
-				NotifyPropertyChanged("Red", false);
-				NotifyPropertyChanged("Green", false);
-				NotifyPropertyChanged("Blue", false);
-				NotifyPropertyChanged("Hue", false);
-				NotifyPropertyChanged("Saturation", false);
-				NotifyPropertyChanged("Var", false);
+				NotifyPropertiesChanged({"Red", "Green", "Blue", "Hue", "Saturation", "Var"}, false);
 				break;
 			}
 		}
@@ -60,7 +55,9 @@ class ColorPickerPrefab: PrefabBase<int>
 	{		
 		m_ColorPickerController = ColorPickerController.Cast(GetController());
 
-		UpdateHSVSpectrum();
+		//UpdateHSVSpectrum();
+		m_ColorPickerController.NotifyPropertyChanged("Value");
+		m_ColorPickerController.NotifyPropertiesChanged({"Red", "Green", "Blue", "Hue", "Saturation", "Var"});
 	}
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
@@ -92,19 +89,12 @@ class ColorPickerPrefab: PrefabBase<int>
 		
 		switch (property_name) {
 			case "Value": {
-				Print("Value");
-				float a, r, g, b, h, s, v;
-				InverseARGBF(m_ColorPickerController.Value, a, r, g, b);
-				//RGBFtoHSV(r, g, b, h, s, v);
-				//OnHueChange();
 				SetWidgetPosRelativeToParent(HSVColorPickerIcon, m_ColorPickerController.Saturation / 100, Math.Lerp(1, 0, m_ColorPickerController.Var / 100));
-				
 				UpdateHSVSpectrum();
 				break;
 			}
 			
-			case "Hue": {
-				Print("Hue");		
+			case "Hue": {	
 				// Update active color
 				float x, y;
 				GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
