@@ -186,7 +186,7 @@ class ViewBinding : ScriptedViewBase
 	}
 
 	// View -> Collection
-	void UpdateCollectionFromView(ref CollectionChangedEventArgs args)
+	void UpdateCollectionFromView(CollectionChangedEventArgs args)
 	{
 		Trace("UpdateCollectionFromView");
 
