@@ -41,7 +41,7 @@ PanelWidgetClass ContentPanel {
      "exact text" 0
      "size to text h" 0
      "size to text v" 0
-     lines 40
+     lines 100
      "limit visible" 1
     }
    }
