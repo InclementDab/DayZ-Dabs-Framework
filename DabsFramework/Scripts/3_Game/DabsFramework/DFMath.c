@@ -1,5 +1,3 @@
-
-
 class DFMath
 {
     static float RGBtoHue(float r, float b, float g)

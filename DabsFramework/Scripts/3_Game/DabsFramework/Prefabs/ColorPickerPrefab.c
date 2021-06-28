@@ -69,9 +69,7 @@ class ColorPickerPrefab: PrefabBase<int>
 	}
 	
 	void UpdateHSVSpectrum()
-	{
-		float rgb[3];
-		
+	{		
 		int start_x = 0;
 		int start_y = 0;
 		
