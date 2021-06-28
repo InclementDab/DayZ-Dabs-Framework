@@ -1,11 +1,9 @@
 // this will need to be an int if its RGBA
-class ColorPickerPrefab: PrefabBase<vector>
+class ColorPickerPrefab: PrefabBase<int>
 {
 	CanvasWidget HSVColorGradiant;
 	CanvasWidget ColorSpectrumGradiant;
-	
-	Widget LastSavedColorVisual0;
-		
+			
 	protected float m_CurrentHue;
 	
 	void ColorPickerPrefab(string caption, Class binding_context, string binding_name)
@@ -23,7 +21,8 @@ class ColorPickerPrefab: PrefabBase<vector>
 		switch (w) {
 			case HSVColorGradiant: {
 				DFMath.HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), rgb);
-				LastSavedColorVisual0.SetColor(ARGBF(1.0, rgb[0], rgb[1], rgb[2]));
+				m_PrefabBaseController.Value = ARGBF(1.0, rgb[0], rgb[1], rgb[2]);
+				m_PrefabBaseController.NotifyPropertyChanged("Value");
 				break;
 			}
 			
