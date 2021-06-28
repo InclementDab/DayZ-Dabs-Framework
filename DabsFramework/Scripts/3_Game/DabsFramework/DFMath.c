@@ -22,6 +22,39 @@ void InverseARGBF(int argb, out float a, out float r, out float g, out float b)
 
 class DFMath
 {
+	void RGBtoHSV(float fR, float fG, float fB, out float fH, out float fS, out float fV) 
+	{
+		float fCMax = Math.Max(Math.Max(fR, fG), fB);
+		float fCMin = Math.Min(Math.Min(fR, fG), fB);
+		float fDelta = fCMax - fCMin;
+		
+		if (fDelta > 0) {
+			if (fCMax == fR) {
+				fH = 60 * (DFMath.FMod(((fG - fB) / fDelta), 6));
+			} else if(fCMax == fG) {
+				fH = 60 * (((fB - fR) / fDelta) + 2);
+			} else if(fCMax == fB) {
+				fH = 60 * (((fR - fG) / fDelta) + 4);
+			}
+		  
+			if (fCMax > 0) {
+				fS = fDelta / fCMax;
+			} else {
+				fS = 0;
+			}
+		  
+			fV = fCMax;
+		} else {
+			fH = 0;
+			fS = 0;
+			fV = fCMax;
+		}
+		
+		if (fH < 0) {
+		  fH = 360 + fH;
+		}
+	}
+	
     static float RGBtoHue(float r, float b, float g)
 	{ 
         // h, s, v = hue, saturation, value
@@ -37,17 +70,17 @@ class DFMath
  
         // if cmax equal r then compute h
         else if (cmax == r) {
-			return Remainder(60 * ((g - b) / diff) + 360, 360);
+			return FMod(60 * ((g - b) / diff) + 360, 360);
 		}
  
         // if cmax equal g then compute h
         else if (cmax == g) {
-			return Remainder(60 * ((b - r) / diff) + 120, 360);
+			return FMod(60 * ((b - r) / diff) + 120, 360);
 		}
  
         // if cmax equal b then compute h
         else if (cmax == b) {
-			return Remainder(60 * ((r - g) / diff) + 240, 360);
+			return FMod(60 * ((r - g) / diff) + 240, 360);
 		}
 		
 		return 0;
@@ -63,7 +96,7 @@ class DFMath
 		v /= 100;
 	    float c = s * v;
 		int vv = h / 60;		
-	    float x = c * (1 - Math.AbsFloat(Remainder(h / 60, 2) - 1));
+	    float x = c * (1 - Math.AbsFloat(FMod(h / 60, 2) - 1));
 	    float m = v - c;
 		
 	    if (h >= 0 && h < 60) {
@@ -90,7 +123,7 @@ class DFMath
 		}
 	}
 	
-	static float Remainder(float num, float divisor)
+	static float FMod(float num, float divisor)
 	{
 		return num - ((int)(num / divisor) * divisor);
 	}
