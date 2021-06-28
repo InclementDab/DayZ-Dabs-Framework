@@ -6,8 +6,9 @@ class CanvasWidgetController: WidgetControllerTemplate<CanvasWidget>
 		m_Widget.GetScreenPos(x_pos, y_pos);
 		m_Widget.GetScreenSize(x_size, y_size);
 		
-		float x_center = x_pos + (x_size / 2);
+		float x_center = x_pos + (x_size / 2);		
 		
-		m_Widget.DrawLine(x_center, y_pos, x_center, y_pos - y_size, x_size, type_converter.GetInt());
+		m_Widget.Clear();
+		m_Widget.DrawLine(x_center, y_pos, x_center, y_pos + y_size, x_size, type_converter.GetInt());
 	}
 }
