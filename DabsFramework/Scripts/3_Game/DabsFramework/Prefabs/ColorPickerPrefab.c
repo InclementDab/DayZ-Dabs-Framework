@@ -20,10 +20,7 @@ class ColorPickerController: PrefabBaseController<int>
 			case "Hue": 
 			case "Saturation": 
 			case "Var": {
-				Value = HSVtoRGB(Hue, Saturation, Var);
-				//super.PropertyChanged("Value");
-				// maybe notify
-				
+				Value = HSVtoARGB(Hue, Saturation, Var, Alpha);				
 				NotifyPropertyChanged("Value");
 				break;
 			}
@@ -74,8 +71,8 @@ class ColorPickerPrefab: PrefabBase<int>
 					
 		switch (w) {
 			case HSVColorGradiant: {
-				m_PrefabBaseController.Value = HSVtoRGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p));
-				m_PrefabBaseController.NotifyPropertyChanged("Value");
+				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha / 100);
+				m_ColorPickerController.NotifyPropertyChanged("Value");
 				break;
 			}
 			
@@ -114,8 +111,8 @@ class ColorPickerPrefab: PrefabBase<int>
 				// Update active color
 				float x, y;
 				GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
-				m_PrefabBaseController.Value = HSVtoRGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y));
-				m_PrefabBaseController.NotifyPropertyChanged("Value", false);
+				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y), m_ColorPickerController.Alpha / 100);
+				m_ColorPickerController.NotifyPropertyChanged("Value", false);
 				
 				UpdateHSVSpectrum();
 				break;
@@ -139,11 +136,11 @@ class ColorPickerPrefab: PrefabBase<int>
 			
 			for (int j = 0; j <= size_x; ) {
 				float x_value = j / size_x;	
-				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoRGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value)));
+				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), m_ColorPickerController.Alpha / 100));
 				j += STEP_SIZE;
 			}
 			
-			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoRGB(Math.Lerp(0, 360, y_value), 100, 100));
+			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, m_ColorPickerController.Alpha / 100));
 			i += STEP_SIZE;
 		}
 	}
