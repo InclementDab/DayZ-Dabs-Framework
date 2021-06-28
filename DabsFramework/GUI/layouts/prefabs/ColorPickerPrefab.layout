@@ -42,7 +42,6 @@ WrapSpacerWidgetClass rootFrame {
        hexactsize 1
        vexactsize 1
        image0 "set:dayz_gui image:icon_circle"
-       imageTexture ""
        mode blend
        "src alpha" 1
        filter 1
@@ -316,7 +315,7 @@ WrapSpacerWidgetClass rootFrame {
        style rover_sim_colorable
        {
         ScriptParamsClass {
-         Debug_Logging 1
+         Debug_Logging 0
          Selected_Item "Value"
         }
        }
