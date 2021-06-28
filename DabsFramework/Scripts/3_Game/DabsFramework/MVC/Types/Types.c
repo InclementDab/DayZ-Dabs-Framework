@@ -42,16 +42,18 @@ class DataBindingHashMap: map<string, autoptr ViewBindingSet>
 	
 	void InsertView(ViewBinding view)
 	{
-		ViewBindingSet view_set = Get(view.Binding_Name);
-		if (view_set) {
-			view_set.Insert(view);
-			return;
-		} 
+		TStringArray names = {view.Binding_Name, view.Selected_Item};
+		foreach (string name: names) {			
+			ViewBindingSet view_set = Get(name);
+			if (view_set) {
+				view_set.Insert(view);
+				continue;
+			} 
 		
-		view_set = new ViewBindingSet();
-		view_set.Insert(view);
-		Insert(view.Binding_Name, view_set);
-		Insert(view.Selected_Item, view_set);
+			view_set = new ViewBindingSet();
+			view_set.Insert(view);
+			Insert(name, view_set);
+		}
 	}
 }
 
