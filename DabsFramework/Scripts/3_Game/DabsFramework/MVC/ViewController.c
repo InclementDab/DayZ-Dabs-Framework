@@ -124,6 +124,20 @@ class ViewController : ScriptedViewBase
 			PropertyChanged(property_name);
 		}
 	}
+	
+	/*
+	* Example:
+	*	NotifyPropertyChanged({"slider_value", "slider_number"});
+	*
+	*  Calls multiple Property Changes
+	*/
+	
+	void NotifyPropertyChanged(notnull array<string> property_names, bool notify_controller = true)
+	{
+		foreach (string property_name: property_names) {
+			NotifyPropertyChanged(property_name, notify_controller);
+		}
+	}
 
 	// Do NOT call this. ObservableCollection does this for you
 	void NotifyCollectionChanged(CollectionChangedEventArgs args)
