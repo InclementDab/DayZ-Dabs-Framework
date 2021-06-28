@@ -1,14 +1,14 @@
 WrapSpacerWidgetClass EditorDialog {
- clipchildren 0
+ clipchildren 1
  ignorepointer 1
- color 0.5882 0.5882 0.5882 0.9412
+ color 0.7059 0.7059 0.7059 0.9412
  position 0 0
- size 0.25 0
+ size 540 0
  halign center_ref
  valign center_ref
  hexactpos 1
  vexactpos 1
- hexactsize 0
+ hexactsize 1
  vexactsize 0
  priority 998
  scriptclass ""
@@ -37,7 +37,7 @@ WrapSpacerWidgetClass EditorDialog {
    {
     PanelWidgetClass TitleBar {
      ignorepointer 1
-     color 0.4196 0.6471 1 0.4706
+     color 0.4196 0.6471 1 0.9412
      size 1 0.95
      halign center_ref
      hexactpos 1
@@ -118,20 +118,20 @@ WrapSpacerWidgetClass EditorDialog {
   }
   WrapSpacerWidgetClass DialogButtons {
    ignorepointer 1
-   color 0 0 0 0
-   size 1 0
+   color 0.7059 0.7059 0.7059 1
+   position 0 0
+   size 540 60
    halign center_ref
    hexactpos 0
    vexactpos 0
-   hexactsize 0
-   vexactsize 0
+   hexactsize 1
+   vexactsize 1
    scaled 1
    priority 3
    scriptclass "ViewBinding"
-   style Empty
-   Padding 20
+   style Outline_1px
+   Padding 5
    Margin 0
-   "Size To Content V" 1
    content_halign center
    content_valign center
    {
@@ -140,26 +140,39 @@ WrapSpacerWidgetClass EditorDialog {
     }
    }
   }
-  WrapSpacerWidgetClass DialogContent {
-   visible 1
-   clipchildren 0
-   ignorepointer 1
-   position 0 0
-   size 0.98 0
+  ScrollWidgetClass ScrollWidget0 {
+   ignorepointer 0
+   keepsafezone 0
+   color 0.3137 0.3137 0.3137 0.5882
+   size 538 300
    halign center_ref
    valign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   priority 2
-   scriptclass "ViewBinding"
-   Padding 3
-   Margin 3
-   "Size To Content V" 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   "Scrollbar V" 1
    {
-    ScriptParamsClass {
-     Binding_Name "DialogContentData"
+    WrapSpacerWidgetClass DialogContent {
+     visible 1
+     clipchildren 1
+     ignorepointer 1
+     size 0.99 0
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     priority 2
+     scriptclass "ViewBinding"
+     Padding 3
+     Margin 3
+     "Size To Content V" 1
+     {
+      ScriptParamsClass {
+       Binding_Name "DialogContentData"
+      }
+     }
     }
    }
   }
