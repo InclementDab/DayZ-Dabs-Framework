@@ -46,7 +46,7 @@ WrapSpacerWidgetClass rootFrame {
    vexactsize 0
    style Outline_1px
    {
-    CanvasWidgetClass ColorSpectrumGradiant0 {
+    CanvasWidgetClass ColorSpectrumGradiant {
      ignorepointer 1
      size 1 1
      valign center_ref
