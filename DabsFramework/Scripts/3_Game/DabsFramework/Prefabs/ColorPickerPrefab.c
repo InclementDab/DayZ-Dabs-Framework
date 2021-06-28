@@ -74,12 +74,16 @@ class ColorPickerPrefab: PrefabBase<int>
 			case HSVColorGradiant: {
 				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha);
 				m_ColorPickerController.NotifyPropertyChanged("Value");
+				
+				StartDragging(HSVColorPickerIcon);
 				break;
 			}
 			
 			case ColorSpectrumGradiant: {
 				m_ColorPickerController.Hue = Math.Lerp(0, 360, y_p);
 				m_ColorPickerController.NotifyPropertyChanged("Hue");
+				
+				StartDragging(ColorSpectrumPickerPanel);
 				break;
 			}
 			
@@ -96,6 +100,29 @@ class ColorPickerPrefab: PrefabBase<int>
 		}
 		
 		return super.OnMouseButtonDown(w, x, y, button);
+	}
+	
+	override bool OnMouseButtonUp(Widget w, int x, int y, int button)
+	{
+		switch (w) {
+			case HSVColorPickerIcon: 
+			case ColorSpectrumPickerPanel: {
+				StopDragging(w);
+				break;
+			}
+		}
+		
+		return super.OnMouseButtonUp(w, x, y, button);
+	}
+	
+	void StartDragging(Widget w)
+	{
+		// todo
+	}
+	
+	void StopDragging(Widget w)
+	{
+		// todo
 	}
 	
 	override void PrefabPropertyChanged(string property_name)
