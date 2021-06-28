@@ -6,6 +6,15 @@ class ColorPickerController: PrefabBaseController<int>
 	
 	override void PropertyChanged(string property_name)
 	{
+		Alpha 	= Math.Clamp(Alpha, 0, 255);
+		Red 	= Math.Clamp(Red, 0, 255);
+		Green 	= Math.Clamp(Green, 0, 255);
+		Blue 	= Math.Clamp(Blue, 0, 255);
+		
+		Hue 	= Math.Clamp(Hue, 0, 360);
+		Saturation = Math.Clamp(Saturation, 0, 100);
+		Var 	= Math.Clamp(Var, 0, 100);
+		
 		switch (property_name) {
 			
 			case "Alpha":		
