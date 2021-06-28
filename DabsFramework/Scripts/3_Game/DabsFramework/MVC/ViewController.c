@@ -132,7 +132,7 @@ class ViewController : ScriptedViewBase
 	*  Calls multiple Property Changes
 	*/
 	
-	void NotifyPropertyChanged(notnull array<string> property_names, bool notify_controller = true)
+	void NotifyPropertiesChanged(notnull array<string> property_names, bool notify_controller = true)
 	{
 		foreach (string property_name: property_names) {
 			NotifyPropertyChanged(property_name, notify_controller);
