@@ -1,18 +1,18 @@
 class GroupPrefab: PrefabBase<ObservableCollection<ref ScriptView>>
 {
-	ref ObservableCollection<ref ScriptView> collection_ref;
+	protected ref ObservableCollection<ref ScriptView> m_Children;
 	
 	protected WrapSpacerWidget EditorDialogOptionContent;
 	
 	void GroupPrefab(string caption, Class binding_context, string binding_name)
 	{
-		collection_ref = new ObservableCollection<ref ScriptView>(m_PrefabBaseController);
-		m_PrefabBaseController.Value = collection_ref;
+		m_Children = new ObservableCollection<ref ScriptView>(m_PrefabBaseController);
+		m_PrefabBaseController.Value = m_Children;
 	}
 	
 	void ~GroupPrefab()
 	{
-		delete collection_ref;
+		delete m_Children;
 	}
 	
 	void Insert(ScriptView content)
@@ -36,12 +36,16 @@ class GroupPrefab: PrefabBase<ObservableCollection<ref ScriptView>>
 		EditorDialogOptionContent.Show(state);
 	}
 	
-	// Inefficient but unsure else how to propagate updates to all children
-	void Update()
+	void NotifyChildren(string property_name = "")
 	{
-		for (int i = 0; i < collection_ref.Count(); i++) {
-			collection_ref[i].GetController().NotifyPropertyChanged();
+		for (int i = 0; i < m_Children.Count(); i++) {
+			m_Children[i].GetController().NotifyPropertyChanged(property_name);
 		}
+	}
+	
+	ObservableCollection<ref ScriptView> GetChildren()
+	{
+		return m_Children;
 	}
 	
 	override void PrefabPropertyChanged(string property_name)

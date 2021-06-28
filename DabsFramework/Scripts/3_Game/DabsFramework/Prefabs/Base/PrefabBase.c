@@ -23,7 +23,7 @@ class PrefabBase<Class TValue>: ScriptView
 		EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.Value);		
 		g_Script.CallFunction(m_BindingContext, "PropertyChanged", null, m_BindingName);
 	}
-	
+		
 	// Abstractable, done in SliderPrefab and EditBoxNumberPrefab
 	TValue GetDefaultValue(Class binding_context, string binding_name)
 	{
@@ -31,7 +31,23 @@ class PrefabBase<Class TValue>: ScriptView
 		EnScript.GetClassVar(binding_context, binding_name, 0, value);
 		return value;
 	}
+	
+	void ResetToDefault()
+	{
+		EnScript.GetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.Value);
+		m_PrefabBaseController.NotifyPropertyChanged("Value");
+	}
+	
+	string GetBindingName()
+	{
+		return m_BindingName;
+	}
 
+	Class GetBindingContext()
+	{
+		return m_BindingContext;
+	}
+	
 	override typename GetControllerType() 
 	{
 		return (new PrefabBaseController<TValue>()).Type();
