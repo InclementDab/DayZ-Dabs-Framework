@@ -1,4 +1,4 @@
-class EditBoxPrefab: PrefabBase<string>
+class EditBoxPrefab: SimplePrefabBase<string>
 {	
 	EditBoxWidget ContentText;
 		
@@ -7,7 +7,3 @@ class EditBoxPrefab: PrefabBase<string>
 		return "DabsFramework/gui/Layouts/prefabs/EditBoxPrefab.layout";
 	}
 }
-
-
-
-

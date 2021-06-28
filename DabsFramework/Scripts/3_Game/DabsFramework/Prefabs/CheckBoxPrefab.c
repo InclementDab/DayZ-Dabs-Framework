@@ -1,4 +1,4 @@
-class CheckBoxPrefab: PrefabBase<bool>
+class CheckBoxPrefab: SimplePrefabBase<bool>
 {
 	override string GetLayoutFile() 
 	{

@@ -1,27 +1,11 @@
-class PrefabBaseController<Class TValue>: ViewController
+class SimplePrefabBase<Class TValue>: ScriptView
 {
-	string Caption;
-	TValue Value;
-	TValue CalculatedValue; // Used for things like SliderWidget output
-	
-	override void PropertyChanged(string property_name)
-	{
-		if (GetParent() && GetParent().IsInherited(PrefabBase)) {
-			g_Script.Call(GetParent(), "PrefabPropertyChanged", property_name);
-		}
-	}
-}
-
-class PrefabBase<Class TValue>: ScriptView
-{
-	//protected static const TValue DEFAULT_VALUE;
-	
 	protected PrefabBaseController<TValue> m_PrefabBaseController;
 	protected Class m_BindingContext;
 	protected string m_BindingName;
 	
 	// With Direct Binding, I think we can depreciate the default_value
-	void PrefabBase(string caption, Class binding_context, string binding_name)
+	void SimplePrefabBase(string caption, Class binding_context, string binding_name)
 	{
 		m_BindingName = binding_name;
 		m_BindingContext = binding_context;

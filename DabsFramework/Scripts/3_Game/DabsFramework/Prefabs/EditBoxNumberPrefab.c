@@ -1,4 +1,4 @@
-class EditBoxNumberPrefab: PrefabBase<StringEvaluater>
+class EditBoxNumberPrefab: SimplePrefabBase<StringEvaluater>
 {
 	EditBoxWidget ContentText;
 	

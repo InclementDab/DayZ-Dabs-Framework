@@ -1,6 +1,26 @@
-class ColorPickerPrefab: PrefabBase<int>
+class ColorPickerController<Class TValue>: ViewController
+{
+	string Caption;
+	TValue Value;
+	TValue CalculatedValue; // Used for things like SliderWidget output
+	
+	TValue Red, Green, Blue;
+	
+	override void PropertyChanged(string property_name)
+	{
+		if (GetParent() && GetParent().IsInherited(PrefabBase)) {
+			g_Script.Call(GetParent(), "PrefabPropertyChanged", property_name);
+		}
+	}
+}
+
+class ColorPickerPrefab: ScriptView
 {
 	static const int STEP_SIZE = 4;
+	
+	protected ColorPickerController<int> m_PrefabBaseController;
+	protected Class m_BindingContext;
+	protected string m_BindingName;
 	
 	CanvasWidget HSVColorGradiant;
 	CanvasWidget ColorSpectrumGradiant;
@@ -11,6 +31,17 @@ class ColorPickerPrefab: PrefabBase<int>
 	
 	void ColorPickerPrefab(string caption, Class binding_context, string binding_name)
 	{
+		m_BindingName = binding_name;
+		m_BindingContext = binding_context;
+	
+		Class.CastTo(m_PrefabBaseController, m_Controller);
+		m_PrefabBaseController.Caption = caption;
+		m_PrefabBaseController.NotifyPropertyChanged("Caption", false);
+		
+		// Assign default value from the controller
+		m_PrefabBaseController.Value = GetDefaultValue(m_BindingContext, m_BindingName);
+		m_PrefabBaseController.NotifyPropertyChanged("Value", false);
+		
 		int a, r, g, b;
 		InverseARGB(m_PrefabBaseController.Value, a, r, g, b);
 		m_CurrentHue = DFMath.RGBtoHue(r, g, b);
@@ -42,8 +73,11 @@ class ColorPickerPrefab: PrefabBase<int>
 		return super.OnMouseButtonDown(w, x, y, button);
 	}
 	
-	override void PrefabPropertyChanged(string property_name)
+	void PrefabPropertyChanged(string property_name)
 	{
+		EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.Value);		
+		g_Script.CallFunction(m_BindingContext, "PropertyChanged", null, m_BindingName);
+		
 		switch (property_name) {
 			case "Value": {
 				float a, r, g, b, h, s, v;
@@ -69,10 +103,7 @@ class ColorPickerPrefab: PrefabBase<int>
 	}
 	
 	void UpdateHSVSpectrum()
-	{		
-		int start_x = 0;
-		int start_y = 0;
-		
+	{				
 		float size_x, size_y;
 		HSVColorGradiant.GetScreenSize(size_x, size_y);
 				
@@ -82,11 +113,11 @@ class ColorPickerPrefab: PrefabBase<int>
 		HSVColorGradiant.Clear();
 		ColorSpectrumGradiant.Clear();
 		
-		for (int i = start_y; i < start_y + size_y; ) {
-			float y_value = (i - start_y) / size_y;
+		for (int i = 0; i <= size_y; ) {
+			float y_value = i / size_y;
 			
-			for (int j = start_x; j < start_x + size_x; ) {
-				float x_value = (j - start_x) / size_x;	
+			for (int j = 0; j <= size_x; ) {
+				float x_value = j / size_x;	
 				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value)));
 				j += STEP_SIZE;
 			}
@@ -158,5 +189,22 @@ class ColorPickerPrefab: PrefabBase<int>
 	override string GetLayoutFile()
 	{
 		return "DabsFramework/GUI/layouts/prefabs/ColorPickerPrefab.layout";
+	}
+			
+	int GetDefaultValue(Class binding_context, string binding_name)
+	{
+		int value;
+		EnScript.GetClassVar(binding_context, binding_name, 0, value);
+		return value;
+	}
+
+	override typename GetControllerType() 
+	{
+		return (new ColorPickerController<int>()).Type();
+	}
+	
+	ColorPickerController<int> GetPrefabController() 
+	{
+		return m_PrefabBaseController;
 	}
 }

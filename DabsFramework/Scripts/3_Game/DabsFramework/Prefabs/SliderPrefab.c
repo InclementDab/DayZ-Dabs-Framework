@@ -1,4 +1,4 @@
-class SliderPrefab: PrefabBase<float>
+class SliderPrefab: SimplePrefabBase<float>
 {
 	protected float m_Min, m_Max;
 	protected float m_ButtonIncrementCoef;
