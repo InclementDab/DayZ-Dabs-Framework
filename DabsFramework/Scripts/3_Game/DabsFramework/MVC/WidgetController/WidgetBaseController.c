@@ -23,4 +23,11 @@ class WidgetBaseController : WidgetControllerTemplate<Widget>
 	{
 		type_converter.SetWidget(m_Widget);
 	}
+	
+	override void SetSelection(TypeConverter type_converter)
+	{
+		if (m_Widget) {
+			m_Widget.SetColor(type_converter.GetInt());
+		}
+	}
 }
