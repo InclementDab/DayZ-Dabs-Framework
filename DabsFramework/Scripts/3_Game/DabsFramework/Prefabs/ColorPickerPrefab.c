@@ -1,6 +1,7 @@
 class ColorPickerController: PrefabBaseController<int>
 {
 	int Alpha, Red, Green, Blue;
+	float Hue, Saturation, Var; // Value -> Var because PrefabBase uses Value, did not see this coming!
 	
 	override void PropertyChanged(string property_name)
 	{		
@@ -15,11 +16,24 @@ class ColorPickerController: PrefabBaseController<int>
 				break;
 			}
 			
+			case "Hue": 
+			case "Saturation": 
+			case "Var": {
+				Value = HSVtoRGB(Hue, Saturation, Var);
+				super.PropertyChanged("Value");
+				// maybe notify
+				break;
+			}
+			
 			case "Value": {
 				InverseARGB(Value, Alpha, Red, Green, Blue);
+				RGBtoHSV(Red, Green, Blue, Hue, Saturation, Var);
 				NotifyPropertyChanged("Red");
 				NotifyPropertyChanged("Green");
 				NotifyPropertyChanged("Blue");
+				NotifyPropertyChanged("Hue");
+				NotifyPropertyChanged("Saturation");
+				NotifyPropertyChanged("Var");
 				break;
 			}
 		}
@@ -31,13 +45,12 @@ class ColorPickerPrefab: PrefabBase<int>
 	static const int STEP_SIZE = 4;
 	
 	protected ColorPickerController m_ColorPickerController;
+	protected float m_CurrentHue;
 	
 	CanvasWidget HSVColorGradiant;
 	CanvasWidget ColorSpectrumGradiant;
 	
 	Widget HSVColorPickerIcon;
-			
-	protected float m_CurrentHue;
 	
 	void ColorPickerPrefab(string caption, Class binding_context, string binding_name)
 	{		
