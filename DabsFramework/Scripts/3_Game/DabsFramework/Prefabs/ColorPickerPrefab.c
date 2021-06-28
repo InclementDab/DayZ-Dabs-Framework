@@ -59,6 +59,7 @@ class ColorPickerPrefab: PrefabBase<int>
 	
 	Widget HSVColorPickerIcon;
 	Widget ColorSpectrumPickerPanel;
+	Widget ColorLightnessPickerPanel;
 	
 	Widget CurrentColorVisual;
 	Widget LastSavedColorVisual;
@@ -101,6 +102,14 @@ class ColorPickerPrefab: PrefabBase<int>
 				break;
 			}
 			
+			case ColorLightnessGradient: {
+				m_ColorPickerController.Saturation = Math.Lerp(0, 100, y_p);
+				m_ColorPickerController.NotifyPropertyChanged("Saturation");
+				
+				StartDragging(ColorLightnessPickerPanel);
+				break;
+			}
+			
 			case CurrentColorVisual: {
 				GetGame().CopyToClipboard(m_ColorPickerController.Value.ToString());
 				break;
@@ -120,7 +129,8 @@ class ColorPickerPrefab: PrefabBase<int>
 	{
 		switch (w) {
 			case HSVColorPickerIcon: 
-			case ColorSpectrumPickerPanel: {
+			case ColorSpectrumPickerPanel:
+			case ColorLightnessPickerPanel: {
 				StopDragging(w);
 				break;
 			}
@@ -147,6 +157,7 @@ class ColorPickerPrefab: PrefabBase<int>
 			case "Value": {
 				SetWidgetPosRelativeToParent(HSVColorPickerIcon, m_ColorPickerController.Saturation / 100, Math.Lerp(1, 0, m_ColorPickerController.Var / 100));
 				SetWidgetPosRelativeToParent(ColorSpectrumPickerPanel, 0.5, Math.InverseLerp(0, 360, m_ColorPickerController.Hue));
+				SetWidgetPosRelativeToParent(ColorLightnessPickerPanel, 0.5, Math.InverseLerp(0, 100, m_ColorPickerController.Saturation));
 				UpdateHSVSpectrum();
 				break;
 			}
@@ -186,8 +197,8 @@ class ColorPickerPrefab: PrefabBase<int>
 				j += STEP_SIZE;
 			}
 			
-			ColorSpectrumGradient.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, m_ColorPickerController.Alpha));
-			ColorLightnessGradient.DrawLine(0, 1, 0 + hsl_size_x, i, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), 100, m_ColorPickerController.Alpha));
+			ColorSpectrumGradient.DrawLine(0, i, hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, 255));
+			ColorLightnessGradient.DrawLine(0, i, hsl_size_x, i, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), 100, 255));
 			i += STEP_SIZE;
 		}
 	}
