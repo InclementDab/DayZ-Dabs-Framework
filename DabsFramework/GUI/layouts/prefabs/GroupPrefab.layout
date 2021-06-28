@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass EditorDialogOption {
- clipchildren 0
+ clipchildren 1
  inheritalpha 0
  ignorepointer 0
  color 1 1 1 0.3137
@@ -31,7 +31,7 @@ WrapSpacerWidgetClass EditorDialogOption {
    switch toggle
    {
     FrameWidgetClass EditorDialogOptionPanel {
-     clipchildren 0
+     clipchildren 1
      ignorepointer 1
      size 1 1
      hexactpos 1
@@ -83,7 +83,7 @@ WrapSpacerWidgetClass EditorDialogOption {
      }
     }
     TextWidgetClass EditorDialogOptionTitle {
-     clipchildren 0
+     clipchildren 1
      ignorepointer 1
      color 1 1 1 0.7843
      position 0 0
