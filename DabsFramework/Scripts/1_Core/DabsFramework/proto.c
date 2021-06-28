@@ -107,10 +107,10 @@ static void HSVtoRGBF(float h, float s, float v, out float r, out float g, out f
 	r += m; g += m; b += m;
 }
 
-static int HSVtoRGB(float h, float s, float v)
+static int HSVtoARGB(float h, float s, float v, float a)
 {
 	float r, g, b;
 	HSVtoRGBF(h, s, v, r, g, b);
 	
-	return ARGBF(1.0, r, g, b);
+	return ARGBF(a, r, g, b);
 }
