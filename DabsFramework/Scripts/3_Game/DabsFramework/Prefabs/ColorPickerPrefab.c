@@ -30,7 +30,6 @@ class ColorPickerPrefab: PrefabBase<int>
 				DFMath.HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), rgb);
 				m_PrefabBaseController.Value = ARGBF(1.0, rgb[0], rgb[1], rgb[2]);
 				m_PrefabBaseController.NotifyPropertyChanged("Value");
-				
 				break;
 			}
 			
@@ -51,11 +50,9 @@ class ColorPickerPrefab: PrefabBase<int>
 				InverseARGBF(m_PrefabBaseController.Value, a, r, g, b);
 				DFMath.RGBtoHSV(r, g, b, h, s, v);
 				SetHue(h);
-				SetWidgetPosRelativeToParent(HSVColorPickerIcon, s, v);
-				
+				SetWidgetPosRelativeToParent(HSVColorPickerIcon, s / 100, Math.Lerp(1, 0, v / 100));
 				break;
 			}
-			
 		}
 	}
 	
@@ -118,6 +115,9 @@ class ColorPickerPrefab: PrefabBase<int>
 		if (!w) {
 			return;
 		}
+		
+		x = Math.Clamp(x, 0, 1);
+		y = Math.Clamp(y, 0, 1);
 		
 		Widget parent = w.GetParent();
 		

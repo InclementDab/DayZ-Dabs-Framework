@@ -24,35 +24,38 @@ class DFMath
 {
 	static void RGBtoHSV(float r, float g, float b, out float h, out float s, out float v) 
 	{
-		float fc_max = Math.Max(Math.Max(r, g), b);
-		float fc_min = Math.Min(Math.Min(r, g), b);
-		float f_delta = fc_max - fc_min;
+		// h, s, v = hue, saturation, value
+        float cmax = Math.Max(r, Math.Max(g, b)); // maximum of r, g, b
+        float cmin = Math.Min(r, Math.Min(g, b)); // minimum of r, g, b
+        float diff = cmax - cmin; // diff of cmax and cmin.
+         
+        // if cmax and cmax are equal then h = 0
+        if (cmax == cmin) {
+            h = 0;
+		}
+ 
+        // if cmax equal r then compute h
+        else if (cmax == r) {
+			h = FMod(60 * ((g - b) / diff) + 360, 360);
+		}
+ 
+        // if cmax equal g then compute h
+        else if (cmax == g) {
+			h = FMod(60 * ((b - r) / diff) + 120, 360);
+		}
+ 
+        // if cmax equal b then compute h
+        else if (cmax == b) {
+			h = FMod(60 * ((r - g) / diff) + 240, 360);
+		}
 		
-		if (f_delta > 0) {
-			if (fc_max == r) {
-				h = 60 * (DFMath.FMod(((g - b) / f_delta), 6));
-			} else if (fc_max == g) {
-				h = 60 * (((r - r) / f_delta) + 2);
-			} else if (fc_max == b) {
-				h = 60 * (((r - g) / f_delta) + 4);
-			}
-		  
-			if (fc_max > 0) {
-				s = f_delta / fc_max;
-			} else {
-				s = 0;
-			}
-		  
-			h = fc_max;
-		} else {
-			h = 0;
+		if (cmax == 0) {
 			s = 0;
-			h = fc_max;
+		} else {
+			s = (diff / cmax) * 100;
 		}
 		
-		if (h < 0) {
-		  h = 360 + h;
-		}
+		v = cmax * 100;
 	}
 	
     static float RGBtoHue(float r, float b, float g)
