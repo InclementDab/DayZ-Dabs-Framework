@@ -1,0 +1,65 @@
+WrapSpacerWidgetClass rootFrame {
+ size 0.25 20
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ Padding 0
+ Margin 0
+ {
+  FrameWidgetClass FrameWidget0 {
+   ignorepointer 1
+   size 1 20
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    SliderWidgetClass SliderWidget0 {
+     color 1 1 1 0.9961
+     position 5 0
+     size 0.65 18
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     scriptclass "ViewBinding"
+     style Slider_1px_alpha_50
+     {
+      ScriptParamsClass {
+      }
+     }
+    }
+    FrameWidgetClass FrameWidget1 {
+     ignorepointer 1
+     size 162 20
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      EditBoxWidgetClass EditBoxWidget0 {
+       size 33 16
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ViewBinding"
+       text "255"
+       font "gui/fonts/sdf_MetronLight42"
+       {
+        ScriptParamsClass {
+         Binding_Name "CalculatedValue"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
