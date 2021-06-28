@@ -1,4 +1,4 @@
-class EditBoxPrefab: SimplePrefabBase<string>
+class EditBoxPrefab: PrefabBase<string>
 {	
 	EditBoxWidget ContentText;
 		

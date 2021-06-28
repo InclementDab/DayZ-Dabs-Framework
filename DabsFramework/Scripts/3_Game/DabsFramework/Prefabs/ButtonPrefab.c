@@ -1,4 +1,4 @@
-class ButtonPrefab: SimplePrefabBase<bool>
+class ButtonPrefab: PrefabBase<bool>
 {
 	override string GetLayoutFile() 
 	{

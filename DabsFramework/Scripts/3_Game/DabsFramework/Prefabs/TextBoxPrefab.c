@@ -1,4 +1,4 @@
-class TextBoxPrefab: SimplePrefabBase<string>
+class TextBoxPrefab: PrefabBase<string>
 {
 	override string GetLayoutFile() 
 	{

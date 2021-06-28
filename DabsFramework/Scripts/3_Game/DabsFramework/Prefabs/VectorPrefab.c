@@ -17,7 +17,7 @@ class VectorPrefabController: PrefabBaseController<vector>
 	}
 }
 
-class VectorPrefab: SimplePrefabBase<vector>
+class VectorPrefab: PrefabBase<vector>
 {
 	protected VectorPrefabController m_VectorPrefabController;
 	

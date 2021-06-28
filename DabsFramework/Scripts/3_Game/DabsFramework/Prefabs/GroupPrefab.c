@@ -1,4 +1,4 @@
-class GroupPrefab: SimplePrefabBase<ObservableCollection<ref ScriptView>>
+class GroupPrefab: PrefabBase<ObservableCollection<ref ScriptView>>
 {
 	ref ObservableCollection<ref ScriptView> collection_ref;
 	

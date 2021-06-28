@@ -1,26 +1,17 @@
-class PrefabBaseController<Class TValue>: ViewController
-{
-	string Caption;
-	TValue Value;
-	TValue CalculatedValue; // Used for things like SliderWidget output
-	
-	override void PropertyChanged(string property_name)
-	{
-		if (GetParent() && GetParent().IsInherited(PrefabBase)) {
-			g_Script.Call(GetParent(), "PrefabPropertyChanged", property_name);
-		}
-	}
-}
-
-class PrefabBase<Class TController, Class TValue>:ScriptView
+class ComplexPrefabBase<Class TController, Class TValue>:ScriptView
 {
 	protected TController<TValue> m_PrefabBaseController;
 	protected Class m_BindingContext;
 	protected string m_BindingName;
 	
 	// With Direct Binding, I think we can depreciate the default_value
-	void PrefabBase(string caption, Class binding_context, string binding_name)
+	void ComplexPrefabBase(string caption, Class binding_context, string binding_name)
 	{
+		if (!TController.IsInherited(ViewController)) {
+			Error("TController value must inherit from ViewController with a Template Parameter");
+			return;
+		}
+		
 		m_BindingName = binding_name;
 		m_BindingContext = binding_context;
 	

@@ -1,11 +1,10 @@
-class SimplePrefabBase<Class TValue>: ScriptView
+class PrefabBase<Class TValue>: ScriptView
 {
 	protected PrefabBaseController<TValue> m_PrefabBaseController;
 	protected Class m_BindingContext;
 	protected string m_BindingName;
 	
-	// With Direct Binding, I think we can depreciate the default_value
-	void SimplePrefabBase(string caption, Class binding_context, string binding_name)
+	void PrefabBase(string caption, Class binding_context, string binding_name)
 	{
 		m_BindingName = binding_name;
 		m_BindingContext = binding_context;
