@@ -1,12 +1,20 @@
 class ColorPickerPrefab: PrefabBase<int>
 {
+	static const int STEP_SIZE = 3;
+	
 	CanvasWidget HSVColorGradiant;
 	CanvasWidget ColorSpectrumGradiant;
+	
+	Widget HSVColorPickerIcon;
 			
 	protected float m_CurrentHue;
 	
 	void ColorPickerPrefab(string caption, Class binding_context, string binding_name)
 	{
+		int a, r, g, b;
+		InverseARGB(m_PrefabBaseController.Value, a, r, g, b);
+		m_CurrentHue = DFMath.RGBtoHue(r, g, b);
+		
 		UpdateHSVSpectrum();
 	}
 	
@@ -22,6 +30,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				DFMath.HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), rgb);
 				m_PrefabBaseController.Value = ARGBF(1.0, rgb[0], rgb[1], rgb[2]);
 				m_PrefabBaseController.NotifyPropertyChanged("Value");
+				SetWidgetPosRelativeToParent(HSVColorPickerIcon, x_p, y_p);
 				break;
 			}
 			
@@ -32,6 +41,21 @@ class ColorPickerPrefab: PrefabBase<int>
 		}
 		
 		return super.OnMouseButtonDown(w, x, y, button);
+	}
+	
+	override void PrefabPropertyChanged(string property_name)
+	{
+		switch (property_name) {
+			case "Value": {
+				float a, r, g, b;
+				InverseARGBF(m_PrefabBaseController.Value, a, r, g, b);
+				SetHue(DFMath.RGBtoHue(r, g, b));
+				
+				
+				break;
+			}
+			
+		}
 	}
 	
 	void SetHue(float hue)
@@ -56,18 +80,20 @@ class ColorPickerPrefab: PrefabBase<int>
 		HSVColorGradiant.Clear();
 		ColorSpectrumGradiant.Clear();
 		
-		for (int i = start_y; i < start_y + size_y; i++) {
+		for (int i = start_y; i < start_y + size_y; ) {
 			float y_value = (i - start_y) / size_y;
 			
-			for (int j = start_x; j < start_x + size_x; j++) {
+			for (int j = start_x; j < start_x + size_x; ) {
 				float x_value = (j - start_x) / size_x;	
 				
 				DFMath.HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), rgb);
-				HSVColorGradiant.DrawLine(i, j, i + 1, j + 1, 1, ARGBF(1, rgb[0], rgb[1], rgb[2]));
+				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, ARGBF(1, rgb[0], rgb[1], rgb[2]));
+				j += STEP_SIZE;
 			}
 			
 			DFMath.HSVtoRGB(Math.Lerp(0, 360, y_value), 100, 100, rgb);
-			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, 1, ARGBF(1.0, rgb[0], rgb[1], rgb[2]));
+			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, ARGBF(1.0, rgb[0], rgb[1], rgb[2]));
+			i += STEP_SIZE;
 		}
 	}
 		
@@ -84,6 +110,22 @@ class ColorPickerPrefab: PrefabBase<int>
 		float x_size, y_size;
 		w.GetScreenSize(x_size, y_size);
 		x /= x_size; y /= y_size;
+	}
+	
+	void SetWidgetPosRelativeToParent(Widget w, float x, float y)
+	{
+		if (!w) {
+			return;
+		}
+		
+		Widget parent = w.GetParent();
+		
+		float p_x_size, p_y_size;
+		parent.GetScreenSize(p_x_size, p_y_size);
+		
+		float x_size, y_size;
+		w.GetScreenSize(x_size, y_size);
+		w.SetPos((p_x_size * x) - (x_size / 2), (p_y_size * y) - (y_size / 2));
 	}
 		
 	override string GetLayoutFile()

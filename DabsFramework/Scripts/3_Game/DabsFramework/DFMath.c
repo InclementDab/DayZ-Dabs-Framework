@@ -10,6 +10,16 @@ void InverseARGB(int argb, out int a, out int r, out int g, out int b)
 	a = argb & 255;
 }
 
+void InverseARGBF(int argb, out float a, out float r, out float g, out float b)
+{
+	int ai, ri, gi, bi;
+	InverseARGB(argb, ai, ri, gi, bi);
+	a = ai / 255; 
+	r = ri / 255; 
+	g = gi / 255; 
+	b = bi / 255;
+}
+
 class DFMath
 {
     static float RGBtoHue(float r, float b, float g)

@@ -32,6 +32,22 @@ WrapSpacerWidgetClass rootFrame {
      vexactpos 1
      hexactsize 0
      vexactsize 0
+     {
+      ImageWidgetClass HSVColorPickerIcon {
+       ignorepointer 1
+       position 0 0
+       size 20 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       image0 "set:dayz_gui image:icon_circle"
+       imageTexture ""
+       mode blend
+       "src alpha" 1
+       filter 1
+      }
+     }
     }
    }
   }
@@ -107,7 +123,13 @@ WrapSpacerWidgetClass rootFrame {
      vexactpos 1
      hexactsize 1
      vexactsize 1
+     scriptclass "ViewBinding"
      style rover_sim_colorable
+     {
+      ScriptParamsClass {
+       Selected_Item "Value"
+      }
+     }
     }
     PanelWidgetClass LastSavedColorVisual1 {
      ignorepointer 1
@@ -293,6 +315,7 @@ WrapSpacerWidgetClass rootFrame {
        style rover_sim_colorable
        {
         ScriptParamsClass {
+         Debug_Logging 1
          Selected_Item "Value"
         }
        }
