@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass rootFrame {
- color 0.7059 0.7059 0.7059 1
+ color 0.7059 0.7059 0.7059 0.9412
  size 0.25 165
  halign center_ref
  valign center_ref
@@ -7,7 +7,7 @@ WrapSpacerWidgetClass rootFrame {
  vexactpos 1
  hexactsize 0
  vexactsize 1
- style Outline_1px
+ style Outline_1px_BlackBackground
  {
   TextWidgetClass ColorPickerCaption {
    ignorepointer 1
@@ -65,7 +65,7 @@ WrapSpacerWidgetClass rootFrame {
         ImageWidgetClass HSVColorPickerIconBlackOutline {
          ignorepointer 1
          color 0 0 0 1
-         size 23 23
+         size 22 22
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -398,7 +398,7 @@ WrapSpacerWidgetClass rootFrame {
          {
           TextWidgetClass CurrentColorText {
            ignorepointer 1
-           size 135 12
+           size 135 14
            hexactpos 1
            vexactpos 1
            hexactsize 1
@@ -409,9 +409,9 @@ WrapSpacerWidgetClass rootFrame {
            "text valign" center
           }
           PanelWidgetClass CurrentColorVisual {
-           ignorepointer 1
+           ignorepointer 0
            position 0 0
-           size 16 12
+           size 20 14
            hexactpos 1
            vexactpos 1
            hexactsize 1
@@ -427,7 +427,7 @@ WrapSpacerWidgetClass rootFrame {
           }
           TextWidgetClass LastSavedColorText {
            ignorepointer 1
-           size 135 12
+           size 135 14
            hexactpos 1
            vexactpos 1
            hexactsize 1
@@ -440,14 +440,20 @@ WrapSpacerWidgetClass rootFrame {
            "text valign" center
           }
           PanelWidgetClass LastSavedColorVisual {
-           ignorepointer 1
+           ignorepointer 0
            position 0 0
-           size 16 12
+           size 20 14
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
+           scriptclass "ViewBinding"
            style rover_sim_colorable
+           {
+            ScriptParamsClass {
+             Selected_Item "LastValue"
+            }
+           }
           }
          }
         }
