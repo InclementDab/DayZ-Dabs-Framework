@@ -79,8 +79,15 @@ class ColorPickerPrefab: PrefabBase<int>
 		AlphaSliderFrame.Show(allow_alpha);
 	}
 	
+	void ~ColorPickerPrefab()
+	{
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(RunDrag);
+	}
+	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
 	{
+		x += 6;
+		
 		float x_p = x;
 		float y_p = y;
 		GetWidgetLocalPositionNormalized(w, x_p, y_p);
@@ -90,7 +97,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha);
 				m_ColorPickerController.NotifyPropertyChanged("Value");
 				
-				StartDragging(HSVColorPickerIcon);
+				StartDragging(HSVColorGradient, false);
 				break;
 			}
 			
@@ -98,7 +105,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				m_ColorPickerController.Hue = Math.Lerp(0, 360, y_p);
 				m_ColorPickerController.NotifyPropertyChanged("Hue");
 				
-				StartDragging(ColorSpectrumPickerPanel);
+				StartDragging(ColorSpectrumGradient);
 				break;
 			}
 			
@@ -106,7 +113,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				m_ColorPickerController.Saturation = Math.Lerp(0, 100, y_p);
 				m_ColorPickerController.NotifyPropertyChanged("Saturation");
 				
-				StartDragging(ColorLightnessPickerPanel);
+				StartDragging(ColorLightnessGradient);
 				break;
 			}
 			
@@ -124,31 +131,46 @@ class ColorPickerPrefab: PrefabBase<int>
 		
 		return super.OnMouseButtonDown(w, x, y, button);
 	}
-	
-	override bool OnMouseButtonUp(Widget w, int x, int y, int button)
+		
+	void StartDragging(Widget w)
 	{
-		switch (w) {
-			case HSVColorPickerIcon: 
-			case ColorSpectrumPickerPanel:
-			case ColorLightnessPickerPanel: {
-				StopDragging(w);
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(RunDrag, 0, true, w);
+	}
+	
+	void RunDrag(Widget drag_target)
+	{
+		if (!(GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK) || !GetGame().GetInput().HasGameFocus()) {
+			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(RunDrag);
+			return;
+		}
+		
+		int x, y;
+		GetMousePos(x, y);
+		float x_p = x;
+		float y_p = y;
+		GetWidgetLocalPositionNormalized(drag_target, x_p, y_p);
+
+		switch (drag_target) {
+			case HSVColorGradient: {
+				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha);
+				m_ColorPickerController.NotifyPropertyChanged("Value");
+				break;
+			}
+			
+			case ColorSpectrumGradient: {
+				m_ColorPickerController.Hue = Math.Lerp(0, 360, y_p);
+				m_ColorPickerController.NotifyPropertyChanged("Hue");
+				break;
+			}
+			
+			case ColorLightnessGradient: {
+				m_ColorPickerController.Saturation = Math.Lerp(0, 100, y_p);
+				m_ColorPickerController.NotifyPropertyChanged("Saturation");
 				break;
 			}
 		}
+	}
 		
-		return super.OnMouseButtonUp(w, x, y, button);
-	}
-	
-	void StartDragging(Widget w)
-	{
-		// todo
-	}
-	
-	void StopDragging(Widget w)
-	{
-		// todo
-	}
-	
 	override void PrefabPropertyChanged(string property_name)
 	{
 		super.PrefabPropertyChanged(property_name);
