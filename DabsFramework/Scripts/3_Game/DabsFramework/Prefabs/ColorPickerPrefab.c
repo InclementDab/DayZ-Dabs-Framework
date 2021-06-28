@@ -53,7 +53,9 @@ class ColorPickerPrefab: PrefabBase<int>
 	Widget CurrentColorVisual;
 	Widget LastSavedColorVisual;
 	
-	void ColorPickerPrefab(string caption, Class binding_context, string binding_name)
+	Widget AlphaSliderFrame;
+	
+	void ColorPickerPrefab(string caption, Class binding_context, string binding_name, bool allow_alpha = true)
 	{		
 		m_ColorPickerController = ColorPickerController.Cast(GetController());
 
@@ -62,6 +64,8 @@ class ColorPickerPrefab: PrefabBase<int>
 		
 		// order matters
 		m_ColorPickerController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
+		
+		AlphaSliderFrame.Show(allow_alpha);
 	}
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
