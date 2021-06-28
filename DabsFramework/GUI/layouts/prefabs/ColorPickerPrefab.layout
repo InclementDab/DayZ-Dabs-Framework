@@ -289,7 +289,12 @@ WrapSpacerWidgetClass rootFrame {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       style rover_sim_colorable
+       scriptclass "ViewBinding"
+       {
+        ScriptParamsClass {
+         Selected_Item "Value"
+        }
+       }
       }
       TextWidgetClass LastSavedColorText {
        ignorepointer 1
