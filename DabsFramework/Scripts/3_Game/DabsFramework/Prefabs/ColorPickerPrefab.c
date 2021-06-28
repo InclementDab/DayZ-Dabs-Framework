@@ -71,7 +71,7 @@ class ColorPickerPrefab: PrefabBase<int>
 					
 		switch (w) {
 			case HSVColorGradiant: {
-				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha);
+				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), Math.AbsInt(256 - m_ColorPickerController.Alpha));
 				m_ColorPickerController.NotifyPropertyChanged("Value");
 				break;
 			}
@@ -111,7 +111,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				// Update active color
 				float x, y;
 				GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
-				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y), m_ColorPickerController.Alpha);
+				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y), Math.AbsInt(256 - m_ColorPickerController.Alpha));
 				m_ColorPickerController.NotifyPropertyChanged("Value", false);
 				
 				UpdateHSVSpectrum();
@@ -136,11 +136,11 @@ class ColorPickerPrefab: PrefabBase<int>
 			
 			for (int j = 0; j <= size_x; ) {
 				float x_value = j / size_x;	
-				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), Math.AbsFloat(254 - m_ColorPickerController.Alpha)));
+				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), Math.AbsInt(256 - m_ColorPickerController.Alpha)));
 				j += STEP_SIZE;
 			}
 			
-			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, Math.AbsFloat(254 - m_ColorPickerController.Alpha)));
+			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, Math.AbsInt(256 - m_ColorPickerController.Alpha)));
 			i += STEP_SIZE;
 		}
 	}
