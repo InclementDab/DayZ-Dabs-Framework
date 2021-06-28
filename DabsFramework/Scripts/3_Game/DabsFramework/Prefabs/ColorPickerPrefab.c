@@ -53,8 +53,9 @@ class ColorPickerPrefab: PrefabBase<int>
 	
 	protected ColorPickerController m_ColorPickerController;
 	
-	CanvasWidget HSVColorGradiant;
-	CanvasWidget ColorSpectrumGradiant;
+	CanvasWidget HSVColorGradient;
+	CanvasWidget ColorSpectrumGradient;
+	CanvasWidget ColorLightnessGradient;
 	
 	Widget HSVColorPickerIcon;
 	Widget ColorSpectrumPickerPanel;
@@ -84,7 +85,7 @@ class ColorPickerPrefab: PrefabBase<int>
 		GetWidgetLocalPositionNormalized(w, x_p, y_p);
 					
 		switch (w) {
-			case HSVColorGradiant: {
+			case HSVColorGradient: {
 				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha);
 				m_ColorPickerController.NotifyPropertyChanged("Value");
 				
@@ -92,7 +93,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				break;
 			}
 			
-			case ColorSpectrumGradiant: {
+			case ColorSpectrumGradient: {
 				m_ColorPickerController.Hue = Math.Lerp(0, 360, y_p);
 				m_ColorPickerController.NotifyPropertyChanged("Hue");
 				
@@ -164,24 +165,29 @@ class ColorPickerPrefab: PrefabBase<int>
 	void UpdateHSVSpectrum()
 	{				
 		float size_x, size_y;
-		HSVColorGradiant.GetScreenSize(size_x, size_y);
+		HSVColorGradient.GetScreenSize(size_x, size_y);
 				
 		float hsv_size_x, hsv_size_y;
-		ColorSpectrumGradiant.GetScreenSize(hsv_size_x, hsv_size_y);
+		ColorSpectrumGradient.GetScreenSize(hsv_size_x, hsv_size_y);
 		
-		HSVColorGradiant.Clear();
-		ColorSpectrumGradiant.Clear();
+		float hsl_size_x, hsl_size_y;
+		ColorLightnessGradient.GetScreenSize(hsl_size_x, hsl_size_y);
+		
+		HSVColorGradient.Clear();
+		ColorSpectrumGradient.Clear();
+		ColorLightnessGradient.Clear();
 		
 		for (int i = 0; i <= size_y; ) {
 			float y_value = i / size_y;
 			
 			for (int j = 0; j <= size_x; ) {
 				float x_value = j / size_x;	
-				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), m_ColorPickerController.Alpha));
+				HSVColorGradient.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), m_ColorPickerController.Alpha));
 				j += STEP_SIZE;
 			}
 			
-			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, m_ColorPickerController.Alpha));
+			ColorSpectrumGradient.DrawLine(0, i, 0 + hsv_size_x, i, STEP_SIZE, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, m_ColorPickerController.Alpha));
+			ColorLightnessGradient.DrawLine(0, 1, 0 + hsl_size_x, i, STEP_SIZE, HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), 100, m_ColorPickerController.Alpha));
 			i += STEP_SIZE;
 		}
 	}
