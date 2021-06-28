@@ -1,4 +1,4 @@
-class WidgetBaseController : WidgetControllerTemplate<Widget>
+class WidgetBaseController: WidgetControllerTemplate<Widget>
 {
 	override void Set(TypeConverter type_converter)
 	{
@@ -29,5 +29,10 @@ class WidgetBaseController : WidgetControllerTemplate<Widget>
 		if (m_Widget) {
 			m_Widget.SetColor(type_converter.GetInt());
 		}
+	}
+	
+	override void GetSelection(out TypeConverter type_converter)
+	{
+		// Since SetSelection is being used. This needs to override to avoid errors
 	}
 }
