@@ -30,7 +30,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				DFMath.HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), rgb);
 				m_PrefabBaseController.Value = ARGBF(1.0, rgb[0], rgb[1], rgb[2]);
 				m_PrefabBaseController.NotifyPropertyChanged("Value");
-				SetWidgetPosRelativeToParent(HSVColorPickerIcon, x_p, y_p);
+				
 				break;
 			}
 			
@@ -47,10 +47,11 @@ class ColorPickerPrefab: PrefabBase<int>
 	{
 		switch (property_name) {
 			case "Value": {
-				float a, r, g, b;
+				float a, r, g, b, h, s, v;
 				InverseARGBF(m_PrefabBaseController.Value, a, r, g, b);
-				SetHue(DFMath.RGBtoHue(r, g, b));
-				
+				DFMath.RGBtoHSV(r, g, b, h, s, v);
+				SetHue(h);
+				SetWidgetPosRelativeToParent(HSVColorPickerIcon, s, v);
 				
 				break;
 			}
