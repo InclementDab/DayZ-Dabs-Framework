@@ -1,26 +1,41 @@
 WrapSpacerWidgetClass rootFrame {
- size 0.25 215
+ color 0.7059 0.7059 0.7059 1
+ size 0.25 165
  halign center_ref
  valign center_ref
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 1
- style Colorable
- Padding 3
- Margin 3
+ style Outline_1px
  {
+  TextWidgetClass ColorPickerCaption {
+   ignorepointer 1
+   size 1 18
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   scriptclass "ViewBinding"
+   text "ColorPickerCaption"
+   "text offset" 3 0
+   {
+    ScriptParamsClass {
+     Binding_Name "Caption"
+    }
+   }
+  }
   PanelWidgetClass HSVColorGradiantPanel {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
    position 0 0
-   size 0.3 0.6
+   size 0.25 0.85
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
    scriptclass ""
-   style Outline_1px
+   style blank
    {
     CanvasWidgetClass HSVColorGradiant {
      ignorepointer 0
@@ -54,17 +69,18 @@ WrapSpacerWidgetClass rootFrame {
   PanelWidgetClass ColorSpectrumGradiantPanel {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
-   size 0.03 0.6
+   size 0.03 0.85
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 0
-   style Outline_1px
+   style blank
    {
     CanvasWidgetClass ColorSpectrumGradiant {
      ignorepointer 0
      size 1 1
+     halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
@@ -76,7 +92,7 @@ WrapSpacerWidgetClass rootFrame {
   PanelWidgetClass ColorSlidersPanel {
    ignorepointer 1
    position 0 0
-   size 0.64 0.6
+   size 0.7 0.85
    hexactpos 0
    vexactpos 0
    hexactsize 0
@@ -84,7 +100,8 @@ WrapSpacerWidgetClass rootFrame {
    {
     WrapSpacerWidgetClass ColorSlidersContainer {
      ignorepointer 1
-     size 1 0
+     position 0 0
+     size 1 1
      halign center_ref
      hexactpos 1
      vexactpos 1
@@ -92,256 +109,315 @@ WrapSpacerWidgetClass rootFrame {
      vexactsize 0
      scriptclass "ViewBinding"
      Margin 0
-     "Size To Content V" 1
      {
-      ScriptParamsClass {
-      }
-     }
-    }
-   }
-  }
-  GridSpacerWidgetClass ColorHistoryGridSpacer {
-   ignorepointer 1
-   position 0 0
-   size 0.6 75
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 1
-   Padding 13
-   Margin 13
-   "Size To Content H" 1
-   "Size To Content V" 1
-   content_halign center
-   Columns 5
-   Rows 2
-   {
-    PanelWidgetClass LastSavedColorVisual0 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     scriptclass "ViewBinding"
-     style rover_sim_colorable
-     {
-      ScriptParamsClass {
-       Selected_Item "Value"
-      }
-     }
-    }
-    PanelWidgetClass LastSavedColorVisual1 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual2 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual3 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual4 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual5 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual6 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual7 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual8 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-    PanelWidgetClass LastSavedColorVisual9 {
-     ignorepointer 1
-     size 30 18
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     style rover_sim_colorable
-    }
-   }
-  }
-  PanelWidgetClass Spacer {
-   ignorepointer 1
-   size 0.13 75
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 1
-   {
-    ButtonWidgetClass ButtonWidget0 {
-     ignorepointer 0
-     color 1 1 1 0.098
-     position 0 4
-     size 0.5 0.72
-     halign center_ref
-     valign bottom_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     style Default
-     {
-      ImageWidgetClass ImageWidget0 {
-       clipchildren 1
-       inheritalpha 0
+      FrameWidgetClass RedSliderFrame {
        ignorepointer 1
-       size 0.7 0.7
-       halign center_ref
-       valign center_ref
+       position 0 0
+       size 1 20
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
-       image0 "set:dayz_gui image:arrow_left"
-       mode additive
-       "src alpha" 1
-       filter 1
-      }
-     }
-    }
-    TextWidgetClass TextWidget0 {
-     ignorepointer 1
-     size 62 16
-     halign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     text "Save"
-     "text halign" center
-     "text valign" center
-    }
-   }
-  }
-  PanelWidgetClass PanelWidget3 {
-   ignorepointer 1
-   size 0.36 75
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 1
-   {
-    GridSpacerWidgetClass GridSpacerWidget0 {
-     ignorepointer 1
-     size 1 1
-     halign center_ref
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     Padding 4
-     Margin 0
-     "Size To Content H" 1
-     "Size To Content V" 1
-     Columns 2
-     Rows 2
-     {
-      TextWidgetClass CurrentColorText {
-       ignorepointer 1
-       size 120 16
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
        vexactsize 1
-       text "Current Color"
-       font "gui/fonts/sdf_MetronLight42"
-       "text halign" center
-       "text valign" center
-      }
-      PanelWidgetClass CurrentColorVisual {
-       ignorepointer 1
-       position 0 0
-       size 40 16
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
-       vexactsize 1
-       scriptclass "ViewBinding"
-       style rover_sim_colorable
        {
-        ScriptParamsClass {
-         Debug_Logging 0
-         Selected_Item "Value"
+        SliderWidgetClass RedSlider {
+         color 1 0 0 1
+         position 30 0
+         size 0.7 16
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Slider_1px_alpha_50
+         {
+          ScriptParamsClass {
+           Binding_Name "Value"
+          }
+         }
+        }
+        FrameWidgetClass RedEditboxFrame {
+         ignorepointer 1
+         size 60 20
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          EditBoxWidgetClass RedEditBox {
+           size 33 12
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           scriptclass "ViewBinding"
+           text "255"
+           font "gui/fonts/sdf_MetronLight42"
+           {
+            ScriptParamsClass {
+             Binding_Name "Value"
+            }
+           }
+          }
+         }
         }
        }
       }
-      TextWidgetClass LastSavedColorText {
+      FrameWidgetClass GreenSliderFrame {
        ignorepointer 1
-       size 120 16
+       size 1 20
        hexactpos 1
        vexactpos 1
-       hexactsize 1
+       hexactsize 0
        vexactsize 1
-       text "Last Saved"
-       font "gui/fonts/sdf_MetronLight42"
-       "text offset" 3 0
-       "exact text" 0
-       "text halign" center
-       "text valign" center
+       {
+        SliderWidgetClass GreenSlider {
+         color 0 1 0 1
+         position 30 0
+         size 0.7 16
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Slider_1px_alpha_50
+         {
+          ScriptParamsClass {
+          }
+         }
+        }
+        FrameWidgetClass GreenEditboxFrame {
+         ignorepointer 1
+         size 60 20
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          EditBoxWidgetClass GreenEditBox {
+           position 0 0
+           size 33 12
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           scriptclass "ViewBinding"
+           text "255"
+           font "gui/fonts/sdf_MetronLight42"
+           {
+            ScriptParamsClass {
+             Binding_Name "Value"
+            }
+           }
+          }
+         }
+        }
+       }
       }
-      PanelWidgetClass LastSavedColorVisual {
+      FrameWidgetClass BlueSliderFrame {
        ignorepointer 1
-       size 40 16
+       size 1 20
        hexactpos 1
        vexactpos 1
-       hexactsize 1
+       hexactsize 0
        vexactsize 1
-       style rover_sim_colorable
+       {
+        SliderWidgetClass BlueSlider {
+         color 0 0 1 1
+         position 30 0
+         size 0.7 16
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Slider_1px_alpha_50
+         {
+          ScriptParamsClass {
+          }
+         }
+        }
+        FrameWidgetClass BlueEditboxFrame {
+         ignorepointer 1
+         position 0 0
+         size 60 20
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          EditBoxWidgetClass BlueEditBox {
+           position 0 0
+           size 33 12
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           scriptclass "ViewBinding"
+           text "255"
+           font "gui/fonts/sdf_MetronLight42"
+           {
+            ScriptParamsClass {
+             Binding_Name "Value"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+      FrameWidgetClass AlphaSliderFrame {
+       ignorepointer 1
+       size 1 20
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        SliderWidgetClass AlphaSlider {
+         color 0.7059 0.7059 0.7059 0.5882
+         position 30 0
+         size 0.7 16
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Slider_1px_alpha_50
+         {
+          ScriptParamsClass {
+          }
+         }
+        }
+        FrameWidgetClass AlphaEditboxFrame {
+         ignorepointer 1
+         position 0 0
+         size 60 20
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         {
+          EditBoxWidgetClass BlueEditBox0 {
+           position 0 0
+           size 33 12
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           scriptclass "ViewBinding"
+           text "255"
+           font "gui/fonts/sdf_MetronLight42"
+           {
+            ScriptParamsClass {
+             Binding_Name "Value"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+      PanelWidgetClass CurrentLastColorPanel {
+       ignorepointer 1
+       position 0 0
+       size 1 40
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        GridSpacerWidgetClass GridSpacerWidget0 {
+         ignorepointer 1
+         size 0.9 1
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         Padding 5
+         Margin 0
+         "Size To Content H" 1
+         "Size To Content V" 1
+         Columns 2
+         Rows 2
+         {
+          TextWidgetClass CurrentColorText {
+           ignorepointer 1
+           size 135 12
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           text "Current Color"
+           font "gui/fonts/sdf_MetronLight42"
+           "text halign" center
+           "text valign" center
+          }
+          PanelWidgetClass CurrentColorVisual {
+           ignorepointer 1
+           position 0 0
+           size 16 12
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           scriptclass "ViewBinding"
+           style rover_sim_colorable
+           {
+            ScriptParamsClass {
+             Debug_Logging 0
+             Selected_Item "Value"
+            }
+           }
+          }
+          TextWidgetClass LastSavedColorText {
+           ignorepointer 1
+           size 135 12
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           text "Last Saved"
+           font "gui/fonts/sdf_MetronLight42"
+           "text offset" 3 0
+           "exact text" 0
+           "text halign" center
+           "text valign" center
+          }
+          PanelWidgetClass LastSavedColorVisual {
+           ignorepointer 1
+           position 0 0
+           size 16 12
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           style rover_sim_colorable
+          }
+         }
+        }
+       }
+      }
+     }
+     {
+      ScriptParamsClass {
       }
      }
     }
