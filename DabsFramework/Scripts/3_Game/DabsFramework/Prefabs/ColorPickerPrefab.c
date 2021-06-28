@@ -16,6 +16,8 @@ class ColorPickerPrefab: PrefabBase<int>
 		m_CurrentHue = DFMath.RGBtoHue(r, g, b);
 		
 		UpdateHSVSpectrum();
+		
+		m_PrefabBaseController.NotifyPropertyChanged("Value");
 	}
 	
 	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
