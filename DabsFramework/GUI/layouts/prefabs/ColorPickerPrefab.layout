@@ -1,6 +1,5 @@
 WrapSpacerWidgetClass rootFrame {
  color 0.7059 0.7059 0.7059 0.9412
- position -20 0
  size 0.25 167
  halign center_ref
  valign center_ref
@@ -13,6 +12,7 @@ WrapSpacerWidgetClass rootFrame {
   TextWidgetClass ColorPickerCaption {
    ignorepointer 1
    size 1 18
+   halign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -551,13 +551,13 @@ WrapSpacerWidgetClass rootFrame {
       PanelWidgetClass CurrentLastColorPanel {
        ignorepointer 1
        position 0 0
-       size 1 40
+       size 1 52
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
        {
-        GridSpacerWidgetClass GridSpacerWidget0 {
+        GridSpacerWidgetClass GridSpacerWidget {
          ignorepointer 1
          position 0 0
          size 0.9 1
@@ -583,13 +583,13 @@ WrapSpacerWidgetClass rootFrame {
            vexactsize 1
            text "Current Color"
            font "gui/fonts/sdf_MetronLight42"
-           "text halign" center
+           "text offset" 3 0
            "text valign" center
           }
           PanelWidgetClass CurrentColorVisual {
            ignorepointer 0
            position 0 0
-           size 30 14
+           size 60 14
            hexactpos 1
            vexactpos 1
            hexactsize 1
@@ -614,13 +614,11 @@ WrapSpacerWidgetClass rootFrame {
            font "gui/fonts/sdf_MetronLight42"
            "text offset" 3 0
            "exact text" 0
-           "text halign" center
            "text valign" center
           }
           PanelWidgetClass LastSavedColorVisual {
            ignorepointer 0
-           position 0 0
-           size 30 14
+           size 60 14
            hexactpos 1
            vexactpos 1
            hexactsize 1
