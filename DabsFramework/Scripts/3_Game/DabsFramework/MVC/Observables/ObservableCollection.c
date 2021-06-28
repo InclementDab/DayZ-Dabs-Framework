@@ -138,6 +138,11 @@ class ObservableCollection<Class TValue> : Observable
 	{
 		return _data.Count();
 	}
+	
+	array<ref TValue> GetArray()
+	{
+		return _data;
+	}
 
 	int Find(TValue value)
 	{

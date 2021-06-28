@@ -43,9 +43,9 @@ class GroupPrefab: PrefabBase<ObservableCollection<ref ScriptView>>
 		}
 	}
 	
-	ObservableCollection<ref ScriptView> GetChildren()
+	array<ref ScriptView> GetChildren()
 	{
-		return m_Children;
+		return m_Children.GetArray();
 	}
 	
 	override void PrefabPropertyChanged(string property_name)
