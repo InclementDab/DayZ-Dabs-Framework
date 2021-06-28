@@ -1,6 +1,6 @@
 class ColorPickerPrefab: PrefabBase<int>
 {
-	static const int STEP_SIZE = 3;
+	static const int STEP_SIZE = 4;
 	
 	CanvasWidget HSVColorGradiant;
 	CanvasWidget ColorSpectrumGradiant;
