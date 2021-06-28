@@ -50,7 +50,7 @@ WrapSpacerWidgetClass rootFrame {
      {
       ImageWidgetClass HSVColorPickerIcon {
        ignorepointer 1
-       position -10 -10
+       position 0 0
        size 20 20
        hexactpos 1
        vexactpos 1
@@ -61,6 +61,24 @@ WrapSpacerWidgetClass rootFrame {
        "src alpha" 1
        filter 1
        pivot 0 0
+       {
+        ImageWidgetClass HSVColorPickerIconBlackOutline {
+         ignorepointer 1
+         color 0 0 0 1
+         size 23 23
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:icon_circle"
+         mode blend
+         "src alpha" 1
+         filter 1
+         pivot 0 0
+        }
+       }
       }
      }
     }
