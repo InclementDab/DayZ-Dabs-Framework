@@ -193,7 +193,7 @@ WrapSpacerWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      {
-      PanelWidgetClass ColorLightnessGradientPickerPanel {
+      PanelWidgetClass ColorLightnessPickerPanel {
        visible 1
        clipchildren 0
        ignorepointer 1
@@ -207,7 +207,7 @@ WrapSpacerWidgetClass rootFrame {
        vexactsize 1
        style Outline_1px
        {
-        PanelWidgetClass ColorLightnessGradientPickerPanelBlackOutline {
+        PanelWidgetClass ColorLightnessPickerPanelBlackOutline {
          clipchildren 0
          ignorepointer 1
          color 0 0 0 1
