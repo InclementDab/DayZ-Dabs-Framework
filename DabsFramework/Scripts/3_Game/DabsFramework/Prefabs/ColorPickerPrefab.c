@@ -97,7 +97,7 @@ class ColorPickerPrefab: PrefabBase<int>
 				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_ColorPickerController.Alpha);
 				m_ColorPickerController.NotifyPropertyChanged("Value");
 				
-				StartDragging(HSVColorGradient, false);
+				StartDragging(HSVColorGradient);
 				break;
 			}
 			
