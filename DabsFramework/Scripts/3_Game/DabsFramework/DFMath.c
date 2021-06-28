@@ -1,3 +1,15 @@
+// todo proto.c
+void InverseARGB(int argb, out int a, out int r, out int g, out int b)
+{
+	b = argb & 255;
+	argb >>= 8;
+	g = argb & 255;
+	argb >>= 8;
+	r = argb & 255;
+	argb >>= 8;
+	a = argb & 255;
+}
+
 class DFMath
 {
     static float RGBtoHue(float r, float b, float g)
