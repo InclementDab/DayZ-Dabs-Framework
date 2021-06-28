@@ -116,5 +116,5 @@ static int HSVtoARGB(float h, float s, float v, int a)
 	float r, g, b;
 	HSVtoRGBF(h, s, v, r, g, b);
 	
-	return ARGBF(a, r, g, b);
+	return ARGBF(a / 255, r, g, b);
 }
