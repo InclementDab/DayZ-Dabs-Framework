@@ -1,4 +1,3 @@
-// this will need to be an int if its RGBA
 class ColorPickerPrefab: PrefabBase<int>
 {
 	CanvasWidget HSVColorGradiant;
@@ -71,7 +70,7 @@ class ColorPickerPrefab: PrefabBase<int>
 			ColorSpectrumGradiant.DrawLine(0, i, 0 + hsv_size_x, i, 1, ARGBF(1.0, rgb[0], rgb[1], rgb[2]));
 		}
 	}
-	
+		
 	void GetWidgetLocalPositionNormalized(Widget w, inout float x, inout float y)
 	{
 		if (!w) {
@@ -92,6 +91,3 @@ class ColorPickerPrefab: PrefabBase<int>
 		return "DabsFramework/GUI/layouts/prefabs/ColorPickerPrefab.layout";
 	}
 }
-
-
-ref ColorPickerPrefab m_ColorPickerPrefabTest;
