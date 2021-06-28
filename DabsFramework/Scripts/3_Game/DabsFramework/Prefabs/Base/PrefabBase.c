@@ -1,17 +1,11 @@
-class ComplexPrefabBase<Class TController, Class TValue>:ScriptView
+class PrefabBase<Class TValue>: ScriptView
 {
-	protected TController<TValue> m_PrefabBaseController;
+	protected PrefabBaseController<TValue> m_PrefabBaseController;
 	protected Class m_BindingContext;
 	protected string m_BindingName;
 	
-	// With Direct Binding, I think we can depreciate the default_value
-	void ComplexPrefabBase(string caption, Class binding_context, string binding_name)
+	void PrefabBase(string caption, Class binding_context, string binding_name)
 	{
-		if (!TController.IsInherited(ViewController)) {
-			Error("TController value must inherit from ViewController with a Template Parameter");
-			return;
-		}
-		
 		m_BindingName = binding_name;
 		m_BindingContext = binding_context;
 	
@@ -40,12 +34,11 @@ class ComplexPrefabBase<Class TController, Class TValue>:ScriptView
 
 	override typename GetControllerType() 
 	{
-		return (new TController<TValue>()).Type();
+		return (new PrefabBaseController<TValue>()).Type();
 	}
 	
-	TController<TValue> GetPrefabController() 
+	PrefabBaseController<TValue> GetPrefabController() 
 	{
 		return m_PrefabBaseController;
 	}
 }
-
