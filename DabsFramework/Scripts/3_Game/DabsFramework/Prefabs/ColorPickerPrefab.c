@@ -45,7 +45,6 @@ class ColorPickerPrefab: PrefabBase<int>
 	static const int STEP_SIZE = 4;
 	
 	protected ColorPickerController m_ColorPickerController;
-	protected float m_CurrentHue;
 	
 	CanvasWidget HSVColorGradiant;
 	CanvasWidget ColorSpectrumGradiant;
@@ -58,7 +57,6 @@ class ColorPickerPrefab: PrefabBase<int>
 		
 		int a, r, g, b;
 		InverseARGB(m_PrefabBaseController.Value, a, r, g, b);
-		m_CurrentHue = DFMath.RGBtoHue(r, g, b);
 		
 		UpdateHSVSpectrum();
 		
@@ -73,13 +71,14 @@ class ColorPickerPrefab: PrefabBase<int>
 					
 		switch (w) {
 			case HSVColorGradiant: {
-				m_PrefabBaseController.Value = HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p));
+				m_PrefabBaseController.Value = HSVtoRGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p));
 				m_PrefabBaseController.NotifyPropertyChanged("Value");
 				break;
 			}
 			
 			case ColorSpectrumGradiant: {
-				SetHue(Math.Lerp(0, 360, y_p));
+				m_ColorPickerController.Hue = Math.Lerp(0, 360, y_p);
+				m_ColorPickerController.NotifyPropertyChanged("Hue");
 				break;
 			}
 		}
@@ -94,25 +93,24 @@ class ColorPickerPrefab: PrefabBase<int>
 		switch (property_name) {
 			case "Value": {
 				float a, r, g, b, h, s, v;
-				InverseARGBF(m_PrefabBaseController.Value, a, r, g, b);
-				RGBFtoHSV(r, g, b, h, s, v);
-				SetHue(h);
+				InverseARGBF(m_ColorPickerController.Value, a, r, g, b);
+				//RGBFtoHSV(r, g, b, h, s, v);
+				//OnHueChange();
 				SetWidgetPosRelativeToParent(HSVColorPickerIcon, s / 100, Math.Lerp(1, 0, v / 100));
 				break;
 			}
-		}
-	}
-	
-	void SetHue(float hue)
-	{
-		m_CurrentHue = hue;
-		UpdateHSVSpectrum();
+			
+			case "Hue": {
+				UpdateHSVSpectrum();
 		
-		// Update active color
-		float x, y;
-		GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
-		m_PrefabBaseController.Value = HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y));
-		m_PrefabBaseController.NotifyPropertyChanged("Value", false);
+				// Update active color
+				float x, y;
+				GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
+				m_PrefabBaseController.Value = HSVtoRGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y));
+				m_PrefabBaseController.NotifyPropertyChanged("Value", false);
+				break;
+			}
+		}
 	}
 	
 	void UpdateHSVSpectrum()
@@ -131,7 +129,7 @@ class ColorPickerPrefab: PrefabBase<int>
 			
 			for (int j = 0; j <= size_x; ) {
 				float x_value = j / size_x;	
-				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value)));
+				HSVColorGradiant.DrawLine(i, j, i + STEP_SIZE, j + STEP_SIZE, STEP_SIZE, HSVtoRGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value)));
 				j += STEP_SIZE;
 			}
 			
