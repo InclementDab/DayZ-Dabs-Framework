@@ -3,7 +3,7 @@ modded class Math
 	// Modulo for floating point numbers
     static float FMod(float num, float divisor)
 	{
-		return num - ((int)(num / divisor) * divisor);
+		return num - (Floor(num / divisor) * divisor);
 	}
 	
 	static float SmoothLerp(float a, float b, float t)
