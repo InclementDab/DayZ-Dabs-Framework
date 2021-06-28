@@ -131,9 +131,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactsize 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
+         maximum 255
          {
           ScriptParamsClass {
-           Binding_Name "Value"
+           Binding_Name "Red"
+           Two_Way_Binding 1
           }
          }
         }
@@ -145,8 +147,8 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          EditBoxWidgetClass RedEditBox {
-           size 33 12
+          TextWidgetClass RedText {
+           size 50 12
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -156,9 +158,11 @@ WrapSpacerWidgetClass rootFrame {
            scriptclass "ViewBinding"
            text "255"
            font "gui/fonts/sdf_MetronLight42"
+           "text halign" center
+           "text valign" center
            {
             ScriptParamsClass {
-             Binding_Name "Value"
+             Binding_Name "Red"
             }
            }
           }
@@ -177,7 +181,7 @@ WrapSpacerWidgetClass rootFrame {
         SliderWidgetClass GreenSlider {
          color 0 1 0 1
          position 30 0
-         size 0.7 16
+         size 0.7 15
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -186,8 +190,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactsize 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
+         maximum 255
          {
           ScriptParamsClass {
+           Binding_Name "Green"
+           Two_Way_Binding 1
           }
          }
         }
@@ -199,9 +206,9 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          EditBoxWidgetClass GreenEditBox {
+          TextWidgetClass GreenText {
            position 0 0
-           size 33 12
+           size 50 12
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -211,9 +218,11 @@ WrapSpacerWidgetClass rootFrame {
            scriptclass "ViewBinding"
            text "255"
            font "gui/fonts/sdf_MetronLight42"
+           "text halign" center
+           "text valign" center
            {
             ScriptParamsClass {
-             Binding_Name "Value"
+             Binding_Name "Green"
             }
            }
           }
@@ -241,8 +250,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactsize 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
+         maximum 255
          {
           ScriptParamsClass {
+           Binding_Name "Blue"
+           Two_Way_Binding 1
           }
          }
         }
@@ -255,9 +267,9 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          EditBoxWidgetClass BlueEditBox {
+          TextWidgetClass BlueText {
            position 0 0
-           size 33 12
+           size 50 12
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -267,9 +279,11 @@ WrapSpacerWidgetClass rootFrame {
            scriptclass "ViewBinding"
            text "255"
            font "gui/fonts/sdf_MetronLight42"
+           "text halign" center
+           "text valign" center
            {
             ScriptParamsClass {
-             Binding_Name "Value"
+             Binding_Name "Blue"
             }
            }
           }
@@ -297,8 +311,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactsize 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
+         maximum 255
          {
           ScriptParamsClass {
+           Binding_Name "Alpha"
+           Two_Way_Binding 1
           }
          }
         }
@@ -311,9 +328,9 @@ WrapSpacerWidgetClass rootFrame {
          hexactsize 1
          vexactsize 1
          {
-          EditBoxWidgetClass BlueEditBox0 {
+          TextWidgetClass AlphaText {
            position 0 0
-           size 33 12
+           size 50 12
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -323,9 +340,12 @@ WrapSpacerWidgetClass rootFrame {
            scriptclass "ViewBinding"
            text "255"
            font "gui/fonts/sdf_MetronLight42"
+           "text offset" 3 0
+           "text halign" center
+           "text valign" center
            {
             ScriptParamsClass {
-             Binding_Name "Value"
+             Binding_Name "Alpha"
             }
            }
           }
