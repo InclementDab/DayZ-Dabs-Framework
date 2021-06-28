@@ -139,6 +139,7 @@ WrapSpacerWidgetClass EditorDialogOption {
    vexactsize 1
    scriptclass "ViewBinding"
    style Empty
+   Padding 6
    Margin 0
    "Size To Content V" 1
    {
