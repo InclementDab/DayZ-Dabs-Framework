@@ -60,6 +60,14 @@ class ColorPickerPrefab: PrefabBase<int>
 	{
 		m_CurrentHue = hue;
 		UpdateHSVSpectrum();
+		
+		// Update active color
+		float x, y;
+		GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
+		float rgb[3];
+		DFMath.HSVtoRGB(m_CurrentHue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y), rgb);
+		m_PrefabBaseController.Value = ARGBF(1.0, rgb[0], rgb[1], rgb[2]);
+		m_PrefabBaseController.NotifyPropertyChanged("Value", false);
 	}
 	
 	void UpdateHSVSpectrum()
@@ -127,6 +135,31 @@ class ColorPickerPrefab: PrefabBase<int>
 		float x_size, y_size;
 		w.GetScreenSize(x_size, y_size);
 		w.SetPos((p_x_size * x) - (x_size / 2), (p_y_size * y) - (y_size / 2));
+	}
+	
+	void GetWidgetPosRelativeToParent(Widget w, out float x, out float y)
+	{
+		if (!w) {
+			return;
+		}
+		
+		Widget parent = w.GetParent();
+		
+		float p_x_size, p_y_size;
+		parent.GetScreenSize(p_x_size, p_y_size);
+		if (p_x_size == 0 || p_y_size == 0) {
+			// div by zero
+			return;
+		}
+		
+		float x_pos, y_pos;
+		w.GetPos(x_pos, y_pos);
+		
+		float x_size, y_size;
+		w.GetScreenSize(x_size, y_size);
+		
+		x = (x_pos / p_x_size) + ((x_size / 2) / p_x_size);
+		y = (y_pos / p_y_size) + ((y_size / 2) / p_y_size);
 	}
 		
 	override string GetLayoutFile()
