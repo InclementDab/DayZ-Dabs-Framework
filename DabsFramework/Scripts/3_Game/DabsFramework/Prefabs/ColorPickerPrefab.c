@@ -1,16 +1,25 @@
 class ColorPickerController: PrefabBaseController<int>
 {
-	int Red, Green, Blue;
+	int Alpha, Red, Green, Blue;
 	
 	override void PropertyChanged(string property_name)
-	{
+	{		
 		switch (property_name) {
-						
+			
+			case "Alpha":		
 			case "Red":
 			case "Green":
 			case "Blue": {
-				Value = ARGB(255, Red, Green, Blue);
+				Value = ARGB(Alpha, Red, Green, Blue);
 				super.PropertyChanged("Value");
+				break;
+			}
+			
+			case "Value": {
+				InverseARGB(Value, Alpha, Red, Green, Blue);
+				NotifyPropertyChanged("Red");
+				NotifyPropertyChanged("Green");
+				NotifyPropertyChanged("Blue");
 				break;
 			}
 		}
