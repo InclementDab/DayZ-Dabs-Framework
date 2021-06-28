@@ -40,7 +40,7 @@ class ColorPickerController: PrefabBaseController<int>
 
 class ColorPickerPrefab: PrefabBase<int>
 {
-	static const int STEP_SIZE = 4;
+	static const int STEP_SIZE = 3;
 	
 	protected ColorPickerController m_ColorPickerController;
 	
@@ -48,6 +48,7 @@ class ColorPickerPrefab: PrefabBase<int>
 	CanvasWidget ColorSpectrumGradiant;
 	
 	Widget HSVColorPickerIcon;
+	Widget ColorSpectrumPickerPanel;
 	
 	Widget CurrentColorVisual;
 	Widget LastSavedColorVisual;
@@ -104,20 +105,16 @@ class ColorPickerPrefab: PrefabBase<int>
 		switch (property_name) {
 			case "Value": {
 				SetWidgetPosRelativeToParent(HSVColorPickerIcon, m_ColorPickerController.Saturation / 100, Math.Lerp(1, 0, m_ColorPickerController.Var / 100));
+				SetWidgetPosRelativeToParent(ColorSpectrumPickerPanel, 0.5, Math.InverseLerp(0, 360, m_ColorPickerController.Hue));
 				UpdateHSVSpectrum();
 				break;
 			}
 			
 			case "Hue": {	
-				// Update active color
-				Print(Math.InverseLerp(0, 360, m_ColorPickerController.Hue));
-				
-				
 				float x, y;
 				GetWidgetPosRelativeToParent(HSVColorPickerIcon, x, y);
 				m_ColorPickerController.Value = HSVtoARGB(m_ColorPickerController.Hue, Math.Lerp(0, 100, x), Math.Lerp(100, 0, y), m_ColorPickerController.Alpha);
-				m_ColorPickerController.NotifyPropertyChanged("Value", false);
-				
+				m_ColorPickerController.NotifyPropertyChanged("Value", false);				
 				UpdateHSVSpectrum();
 				break;
 			}
