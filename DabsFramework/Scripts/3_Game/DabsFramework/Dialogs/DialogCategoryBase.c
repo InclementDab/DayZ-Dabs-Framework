@@ -1,31 +1,3 @@
-ref DialogCategoryBase m_DialogCategoryBase;
-
-void RunDialogTest()
-{
-	m_DialogCategoryBase = new DialogCategoryBase("Test");
-	
-	GroupPrefab group1 = new GroupPrefab("Group1", null, string.Empty);
-	group1.Insert(new SliderPrefab("Slider1", null, ""));
-	
-	GroupPrefab group2 = new GroupPrefab("Group2", null, string.Empty);
-	group2.Insert(new SliderPrefab("Slider2", null, ""));
-	
-	array<ref ScriptView> arry = { group1, group2 };
-	m_DialogCategoryBase.AddContent("Testing1", arry);
-	
-	GroupPrefab group3 = new GroupPrefab("group3", null, string.Empty);
-	group3.Insert(new EditBoxPrefab("Edit", null, ""));
-	
-	GroupPrefab group4 = new GroupPrefab("group4", null, string.Empty);
-	group4.Insert(new CheckBoxPrefab("Check", null, ""));
-
-	array<ref ScriptView> arry2 = { group3, group4 };
-	m_DialogCategoryBase.AddContent("Testing2", arry2);
-	
-	DialogResult result = m_DialogCategoryBase.ShowDialog();
-}
-
-
 class DialogCategoryBaseController: DialogBaseController
 {
 	ref ObservableCollection<ref DialogCategoryListItem> DialogCategoryData = new ObservableCollection<ref DialogCategoryListItem>(this);		
