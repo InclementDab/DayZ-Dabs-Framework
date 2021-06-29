@@ -38,6 +38,7 @@ FrameWidgetClass CategorizedListItem {
    }
    {
     ScriptParamsClass {
+     Relay_Command "OnListItemExecute"
     }
    }
   }
