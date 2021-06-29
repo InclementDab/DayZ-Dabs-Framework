@@ -127,6 +127,7 @@ WrapSpacerWidgetClass CategorizedDialog {
      "Size To Content V" 1
      {
       ScriptParamsClass {
+       Binding_Name "DialogCategoryData"
       }
      }
     }
@@ -166,6 +167,7 @@ WrapSpacerWidgetClass CategorizedDialog {
      "Size To Content V" 1
      {
       ScriptParamsClass {
+       Binding_Name "CurrentContent"
       }
      }
     }
