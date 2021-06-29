@@ -19,8 +19,6 @@ void RunDialogTest()
 class DialogCategoryBaseController: DialogBaseController
 {
 	ref ObservableCollection<ref DialogCategoryListItem> DialogCategoryData = new ObservableCollection<ref DialogCategoryListItem>(this);		
-
-	ScriptView CurrentContent;
 		
 	void ~DialogCategoryBaseController()
 	{
@@ -40,17 +38,23 @@ class DialogCategoryBase: DialogBase
 	ScriptView AddContent(string category, ScriptView content)
 	{
 		content.SetParent(this);
+		content.GetLayoutRoot().Show(false);
 		
 		m_DialogCategoryBaseController.DialogCategoryData.Insert(new DialogCategoryListItem(category, content, this));
-		
-		//m_DialogCategoryBaseController.DialogContentData.Insert(content);
+		m_DialogCategoryBaseController.DialogContentData.Insert(content);
 		return content;
 	}
 	
 	void SetActiveCategory(DialogCategoryListItem list_item)
 	{
-		m_DialogCategoryBaseController.CurrentContent = list_item.GetContent();
-		m_DialogCategoryBaseController.NotifyPropertyChanged("CurrentContent");
+		ScriptView set_content = list_item.GetContent();
+		for (int i = 0; i < m_DialogCategoryBaseController.DialogContentData.Count(); i++) {
+			if (m_DialogCategoryBaseController.DialogContentData[i] == set_content) {
+				m_DialogCategoryBaseController.DialogContentData[i].GetLayoutRoot().Show(true);
+			} else {
+				m_DialogCategoryBaseController.DialogContentData[i].GetLayoutRoot().Show(false);
+			}
+		}
 	}
 	
 	override typename GetControllerType() 
@@ -73,6 +77,8 @@ class DialogCategoryListItemController: ViewController
 class DialogCategoryListItem: ScriptViewTemplate<DialogCategoryListItemController>
 {
 	protected DialogCategoryBase m_DialogCategoryBase;
+	
+	// todo array
 	protected ScriptView m_Content;
 	
 	void DialogCategoryListItem(string caption, ScriptView content, DialogCategoryBase parent)
