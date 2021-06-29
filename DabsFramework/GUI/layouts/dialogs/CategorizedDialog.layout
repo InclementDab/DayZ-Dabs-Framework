@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass CategorizedDialog {
- color 1 1 1 0.9412
+ color 1 1 1 0.9608
  size 400 400
  halign center_ref
  valign center_ref
@@ -11,32 +11,111 @@ WrapSpacerWidgetClass CategorizedDialog {
  Padding 0
  Margin 0
  {
-  FrameWidgetClass FrameWidget1 {
+  FrameWidgetClass WindowDragWrapper {
+   ignorepointer 0
+   size 1 26
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   {
+    PanelWidgetClass TitleBar {
+     ignorepointer 1
+     color 0.6588 0.7529 1 1
+     position 0 1
+     size 398 26
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style rover_sim_colorable
+     {
+      PanelWidgetClass TitleBarClosePanel {
+       ignorepointer 1
+       color 1 0 0 1
+       position 2 2
+       size 22 21
+       halign right_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style rover_sim_colorable
+       {
+        ButtonWidgetClass TitleCloseButton {
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "x"
+         text_valign top
+        }
+       }
+      }
+     }
+    }
+    TextWidgetClass TitleBarText {
+     ignorepointer 1
+     size 400 1
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 0
+     text "Title"
+     font "gui/fonts/Metron"
+     "text halign" center
+     "text valign" center
+    }
+   }
+  }
+  FrameWidgetClass SpacerTitlebarContentPanel {
    ignorepointer 1
-   size 1 22
+   size 1 10
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 1
   }
-  ScrollWidgetClass ScrollWidget0 {
+  PanelWidgetClass SpacerLeftPanel {
    ignorepointer 1
-   size 170 370
+   position 6 10
+   size 10 345
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   "Scrollbar V" 1
+   style blank
+  }
+  PanelWidgetClass ListPanel {
+   visible 1
+   ignorepointer 1
+   color 0.3137 0.3137 0.3137 1
+   size 150 345
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Outline_1px
    {
-    WrapSpacerWidgetClass WrapSpacerWidget1 {
+    WrapSpacerWidgetClass LeftListPanelContent {
      ignorepointer 1
-     size 1 1
+     color 0.1961 0.1961 0.1961 0.3922
+     position 0 1
+     size 148 0
+     halign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      scriptclass "ViewBinding"
-     Padding 1
      Margin 0
      "Size To Content V" 1
      {
@@ -46,45 +125,46 @@ WrapSpacerWidgetClass CategorizedDialog {
     }
    }
   }
-  PanelWidgetClass FrameWidget0 {
+  PanelWidgetClass SpacerPanelColored {
    ignorepointer 1
-   position 6 10
-   size 5 377
+   color 0.3137 0.3137 0.3137 1
+   size 3 345
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
    style rover_sim_colorable
   }
-  PanelWidgetClass FrameWidget2 {
+  PanelWidgetClass SpacerPanelTransparent {
    ignorepointer 1
-   size 28 377
+   size 10 345
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
    style blank
   }
-  PanelWidgetClass FrameWidget3 {
+  PanelWidgetClass ItemContentPanel {
    ignorepointer 1
    color 1 1 1 0.3922
-   position 0 10
-   size 195 370
+   position 0 0
+   size 215 345
+   halign right_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style rover_sim_colorable
+   style blank
    {
-    WrapSpacerWidgetClass WrapSpacerWidget0 {
+    WrapSpacerWidgetClass ItemContent {
      ignorepointer 1
+     position 0 1
      size 1 1
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 0
      scriptclass "ViewBinding"
-     Padding 1
      Margin 0
      "Size To Content V" 1
      {
