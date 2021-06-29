@@ -20,6 +20,7 @@ WrapSpacerWidgetClass CategorizedDialog {
    vexactpos 1
    hexactsize 0
    vexactsize 1
+   draggable 1
    {
     PanelWidgetClass TitleBar {
      ignorepointer 1
@@ -47,8 +48,8 @@ WrapSpacerWidgetClass CategorizedDialog {
        style rover_sim_colorable
        {
         ButtonWidgetClass TitleCloseButton {
-         position 0 -1
-         size 1 0.99
+         position 0 0
+         size 1 1
          halign center_ref
          valign center_ref
          hexactpos 1
