@@ -6,11 +6,21 @@ void RunDialogTest()
 	
 	GroupPrefab group1 = new GroupPrefab("Group1", null, string.Empty);
 	group1.Insert(new SliderPrefab("Slider1", null, ""));
-	m_DialogCategoryBase.AddContent("Testing1", group1);
 	
 	GroupPrefab group2 = new GroupPrefab("Group2", null, string.Empty);
 	group2.Insert(new SliderPrefab("Slider2", null, ""));
-	m_DialogCategoryBase.AddContent("Testing2", group2);
+	
+	array<ref ScriptView> arry = { group1, group2 };
+	m_DialogCategoryBase.AddContent("Testing1", arry);
+	
+	GroupPrefab group3 = new GroupPrefab("group3", null, string.Empty);
+	group3.Insert(new EditBoxPrefab("Edit", null, ""));
+	
+	GroupPrefab group4 = new GroupPrefab("group4", null, string.Empty);
+	group4.Insert(new CheckBoxPrefab("Check", null, ""));
+
+	array<ref ScriptView> arry2 = { group3, group4 };
+	m_DialogCategoryBase.AddContent("Testing2", arry2);
 	
 	DialogResult result = m_DialogCategoryBase.ShowDialog();
 }
@@ -35,25 +45,39 @@ class DialogCategoryBase: DialogBase
 		m_DialogCategoryBaseController = DialogCategoryBaseController.Cast(m_Controller);
 	}
 	
-	ScriptView AddContent(string category, ScriptView content)
+	void AddContent(string caption, array<ref ScriptView> content)
 	{
-		content.SetParent(this);
-		content.GetLayoutRoot().Show(false);
+		DialogCategoryListItem category_list_item = new DialogCategoryListItem(caption);
+		foreach (ScriptView script_view: content) {
+			category_list_item.AddContent(script_view);
+			script_view.SetParent(this);
+			script_view.GetLayoutRoot().Show(false);
+			m_DialogCategoryBaseController.DialogContentData.Insert(script_view);
+		}
 		
-		m_DialogCategoryBaseController.DialogCategoryData.Insert(new DialogCategoryListItem(category, content, this));
-		m_DialogCategoryBaseController.DialogContentData.Insert(content);
-		return content;
+		category_list_item.SetParent(this);
+		m_DialogCategoryBaseController.DialogCategoryData.Insert(category_list_item);
+	}
+	
+	void AddContent(DialogCategoryListItem category_list_item)
+	{
+		array<ref ScriptView> content = category_list_item.GetContent();
+		foreach (ScriptView script_view: content) {
+			script_view.SetParent(this);
+			script_view.GetLayoutRoot().Show(false);
+			m_DialogCategoryBaseController.DialogContentData.Insert(script_view);
+		}
+		
+		category_list_item.SetParent(this);
+		
+		m_DialogCategoryBaseController.DialogCategoryData.Insert(category_list_item);
 	}
 	
 	void SetActiveCategory(DialogCategoryListItem list_item)
 	{
-		ScriptView set_content = list_item.GetContent();
+		array<ref ScriptView> set_content = list_item.GetContent();
 		for (int i = 0; i < m_DialogCategoryBaseController.DialogContentData.Count(); i++) {
-			if (m_DialogCategoryBaseController.DialogContentData[i] == set_content) {
-				m_DialogCategoryBaseController.DialogContentData[i].GetLayoutRoot().Show(true);
-			} else {
-				m_DialogCategoryBaseController.DialogContentData[i].GetLayoutRoot().Show(false);
-			}
+			m_DialogCategoryBaseController.DialogContentData[i].GetLayoutRoot().Show(set_content.Find(m_DialogCategoryBaseController.DialogContentData[i]) != -1);
 		}
 	}
 	
@@ -78,14 +102,10 @@ class DialogCategoryListItem: ScriptViewTemplate<DialogCategoryListItemControlle
 {
 	protected DialogCategoryBase m_DialogCategoryBase;
 	
-	// todo array
-	protected ScriptView m_Content;
+	protected ref array<ref ScriptView> m_Content = {};
 	
-	void DialogCategoryListItem(string caption, ScriptView content, DialogCategoryBase parent)
+	void DialogCategoryListItem(string caption)
 	{
-		m_Content = content;
-		m_DialogCategoryBase = parent;
-		
 		m_TemplateController.Caption = caption;
 		m_TemplateController.NotifyPropertyChanged("Caption");
 	}
@@ -99,7 +119,17 @@ class DialogCategoryListItem: ScriptViewTemplate<DialogCategoryListItemControlle
 		m_DialogCategoryBase.SetActiveCategory(this);
 	}
 	
-	ScriptView GetContent()
+	void SetParent(DialogCategoryBase dialog)
+	{
+		m_DialogCategoryBase = dialog;
+	}
+	
+	void AddContent(ScriptView content)
+	{
+		m_Content.Insert(content);
+	}
+	
+	array<ref ScriptView> GetContent()
 	{
 		return m_Content;
 	}
