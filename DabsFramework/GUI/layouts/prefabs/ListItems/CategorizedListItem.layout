@@ -1,8 +1,8 @@
 FrameWidgetClass CategorizedListItem {
- size 148 20
+ size 1 20
  hexactpos 1
  vexactpos 1
- hexactsize 1
+ hexactsize 0
  vexactsize 1
  {
   ButtonWidgetClass CategorizedListItemButton {
