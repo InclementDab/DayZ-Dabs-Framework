@@ -4,7 +4,7 @@ ImageSetClass {
  Textures {
   ImageSetTextureClass {
    mpix 1
-   path "{B54A430B162BFDD2}DabsFramework/GUI/imagesets/prefabs.edds"
+   path "{82F14D6B9D1AA1CE}DabsFramework/GUI/imagesets/prefabs.edds"
   }
  }
  Images {
@@ -432,6 +432,12 @@ ImageSetClass {
    Name "1px_Outline_Alpha_Center_TopLeft"
    Pos 12 11
    Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass 3den_Style_Dropdown {
+   Name "3den_Style_Dropdown"
+   Pos 189 130
+   Size 64 64
    Flags 0
   }
  }
