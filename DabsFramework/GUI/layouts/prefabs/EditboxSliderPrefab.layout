@@ -1,4 +1,4 @@
-WrapSpacerWidgetClass rootFrame {
+WrapSpacerWidgetClass UNUSED {
  size 0.25 20
  hexactpos 1
  vexactpos 1

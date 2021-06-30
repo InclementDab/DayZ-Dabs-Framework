@@ -6,7 +6,7 @@ FrameWidgetClass CategorizedListItem {
  vexactsize 1
  {
   ButtonWidgetClass CategorizedListItemButton {
-   color 0.6275 0.6275 0.6275 0.3922
+   color 0.3922 0.3922 0.3922 0.1569
    size 1 1
    halign center_ref
    valign center_ref
@@ -29,6 +29,7 @@ FrameWidgetClass CategorizedListItem {
      scriptclass "ViewBinding"
      text "General"
      font "gui/fonts/sdf_MetronLight42"
+     "text offset" 15 0
      {
       ScriptParamsClass {
        Binding_Name "Caption"
