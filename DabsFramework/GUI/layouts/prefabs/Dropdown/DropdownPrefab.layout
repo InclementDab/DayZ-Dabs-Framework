@@ -1,55 +1,62 @@
-GridSpacerWidgetClass DropdownPrefab {
- clipchildren 1
- ignorepointer 1
- size 0.98 18
+FrameWidgetClass DropdownPrefab {
+ position 0 0
+ size 500 18
+ halign center_ref
+ valign center_ref
  hexactpos 1
  vexactpos 1
- hexactsize 0
+ hexactsize 1
  vexactsize 1
- Padding 0
- Margin 0
- "Size To Content H" 1
- "Size To Content V" 1
- content_halign center
- Columns 2
- Rows 1
  {
-  PanelWidgetClass DropdownSpacer {
+  TextWidgetClass DropdownPrefabCaption {
+   clipchildren 0
    ignorepointer 1
-   position 0 0
-   size 0.26 1
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
+   position 6 2
+   size 150 16
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   scriptclass "ViewBinding"
+   text "Caption!"
+   font "gui/fonts/etelkatextpro"
+   "text offset" 3 0
+   "exact text" 0
+   "size to text h" 0
+   "size to text v" 0
+   "text valign" center
+   {
+    ScriptParamsClass {
+     Binding_Name "Caption"
+    }
+   }
   }
-  WrapSpacerWidgetClass DropdownPrefabContent {
+  PanelWidgetClass DropdownOutline {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
-   position 0 0
-   size 1 1
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   style Empty
-   Padding 0
-   Margin 0
-   "Size To Content H" 1
-   "Size To Content V" 1
+   position 25 0
+   size 150 18
+   halign right_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style PanelOutline_1px_BlackBackground
    {
     ButtonWidgetClass DropdownPrefabButton {
      clipchildren 1
      inheritalpha 0
      ignorepointer 0
-     position 0.01 0
-     size 0.77 0.99
+     position 0 0
+     size 150 18
      halign right_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      scriptclass "ViewBinding"
      style Empty
      switch toggle
@@ -57,17 +64,20 @@ GridSpacerWidgetClass DropdownPrefab {
       TextWidgetClass DropdownText {
        clipchildren 1
        ignorepointer 1
-       position 0.03 1
-       size 0.7 1
-       hexactpos 0
+       size 1 16
+       halign center_ref
+       valign center_ref
+       hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
+       scaled 1
        scriptclass "ViewBinding"
+       style Normal
        text "Info"
-       font "gui/fonts/etelkatextpro16"
-       "exact text" 1
-       text_proportion 0
+       font "gui/fonts/sdf_MetronLight24"
+       "text offset" 10 0
+       "exact text" 0
        "size to text h" 0
        "size to text v" 0
        "text valign" center
@@ -78,14 +88,15 @@ GridSpacerWidgetClass DropdownPrefab {
        }
       }
       FrameWidgetClass DropdownIconFrame {
-       clipchildren 1
+       clipchildren 0
+       inheritalpha 0
        ignorepointer 1
-       position 0.055 0.069
-       size 14 14
+       position 5 0
+       size 15 15
        halign right_ref
        valign center_ref
-       hexactpos 0
-       vexactpos 0
+       hexactpos 1
+       vexactpos 1
        hexactsize 1
        vexactsize 1
        fixaspect inside
@@ -95,20 +106,20 @@ GridSpacerWidgetClass DropdownPrefab {
          clipchildren 0
          inheritalpha 1
          ignorepointer 1
-         position 0 -1
-         size 1 1
+         position 0 0
+         size 15 15
          halign center_ref
          valign center_ref
-         hexactpos 1
+         hexactpos 0
          vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:icon_arrow"
+         hexactsize 1
+         vexactsize 1
+         image0 "set:ccgui_enforce image:HudMantaLight"
          mode blend
          "src alpha" 1
          "no wrap" 1
          stretch 1
-         "flip v" 0
+         "flip v" 1
          filter 1
         }
         ImageWidgetClass DropdownCollapseIcon {
@@ -116,15 +127,15 @@ GridSpacerWidgetClass DropdownPrefab {
          clipchildren 0
          inheritalpha 1
          ignorepointer 1
-         position 0 -1
-         size 1 1
+         position 0 0
+         size 15 15
          halign center_ref
          valign center_ref
-         hexactpos 1
+         hexactpos 0
          vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:icon_arrow"
+         hexactsize 1
+         vexactsize 1
+         image0 "set:ccgui_enforce image:HudMantaLight"
          mode additive
          "src alpha" 1
          "no wrap" 1
@@ -134,44 +145,6 @@ GridSpacerWidgetClass DropdownPrefab {
          filter 1
         }
        }
-      }
-      TextWidgetClass DropdownPrefabCaption {
-       clipchildren 0
-       ignorepointer 1
-       position -0.33 0
-       size 0.14 16
-       valign center_ref
-       hexactpos 0
-       vexactpos 0
-       hexactsize 0
-       vexactsize 1
-       scriptclass "ViewBinding"
-       text "Caption!"
-       font "gui/fonts/etelkatextpro"
-       "text offset" 3 0
-       "exact text" 0
-       "size to text h" 0
-       "size to text v" 0
-       "text valign" center
-       {
-        ScriptParamsClass {
-         Binding_Name "Caption"
-        }
-       }
-      }
-      PanelWidgetClass DropdownPrefabPanel {
-       visible 1
-       ignorepointer 1
-       color 0.7059 0.7059 0.7059 0.5882
-       position -6 0
-       size 0.945 1
-       halign center_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       style Outline_1px
       }
      }
      {
