@@ -72,7 +72,7 @@
                 <Item Name="Top" Image="OutlineTop_2px" />
             </State>
         </Style>
-        <Style Name="Outline_1px_BlackBackground" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
+        <Style Name="PanelOutline_1px_BlackBackground" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -86,7 +86,7 @@
             </State>
             <State Name="Normal">
                 <Item Name="Bottom" Image="1px_Outline_BlackCenter_Bottom" />
-                <Item Name="Center" Image="" />
+                <Item Name="Center" Image="1px_Outline_BlackCenter_center" />
                 <Item Name="Left" Image="1px_Outline_BlackCenter_Left" />
                 <Item Name="LeftBottom" Image="1px_Outline_BlackCenter_BottomLeft" />
                 <Item Name="LeftTop" Image="1px_Outline_BlackCenter_TopLeft" />

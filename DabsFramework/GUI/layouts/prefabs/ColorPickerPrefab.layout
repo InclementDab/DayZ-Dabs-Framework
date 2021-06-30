@@ -11,7 +11,7 @@ WrapSpacerWidgetClass rootFrame {
  {
   TextWidgetClass ColorPickerCaption {
    ignorepointer 1
-   size 1 18
+   size 1 16
    halign center_ref
    hexactpos 1
    vexactpos 1
@@ -19,7 +19,8 @@ WrapSpacerWidgetClass rootFrame {
    vexactsize 1
    scriptclass "ViewBinding"
    text "ColorPickerCaption"
-   "text offset" 3 0
+   font "gui/fonts/sdf_MetronLight30"
+   "text offset" 9 0
    "text valign" center
    {
     ScriptParamsClass {
@@ -41,7 +42,7 @@ WrapSpacerWidgetClass rootFrame {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
    position 0 0
-   size 140 140
+   size 140 142
    hexactpos 0
    vexactpos 0
    hexactsize 1
@@ -52,7 +53,7 @@ WrapSpacerWidgetClass rootFrame {
     CanvasWidgetClass HSVColorGradient {
      ignorepointer 0
      position 0 0
-     size 138 138
+     size 138 140
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -109,7 +110,7 @@ WrapSpacerWidgetClass rootFrame {
   PanelWidgetClass ColorSpectrumGradientPanel {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
-   size 22 140
+   size 22 142
    valign center_ref
    hexactpos 1
    vexactpos 1
@@ -120,7 +121,7 @@ WrapSpacerWidgetClass rootFrame {
     CanvasWidgetClass ColorSpectrumGradient {
      ignorepointer 0
      position 0 0
-     size 20 138
+     size 20 140
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -174,7 +175,7 @@ WrapSpacerWidgetClass rootFrame {
   PanelWidgetClass ColorLightnessGradientPanel {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
-   size 22 140
+   size 22 142
    valign center_ref
    hexactpos 1
    vexactpos 1
@@ -185,7 +186,7 @@ WrapSpacerWidgetClass rootFrame {
     CanvasWidgetClass ColorLightnessGradient {
      ignorepointer 0
      position 0 0
-     size 20 138
+     size 20 140
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -229,7 +230,7 @@ WrapSpacerWidgetClass rootFrame {
   PanelWidgetClass ColorSlidersPanel {
    ignorepointer 1
    position 0 0
-   size 265 140
+   size 265 142
    hexactpos 0
    vexactpos 0
    hexactsize 1

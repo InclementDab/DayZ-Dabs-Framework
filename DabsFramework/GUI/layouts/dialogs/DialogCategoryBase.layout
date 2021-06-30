@@ -1,7 +1,7 @@
 WrapSpacerWidgetClass CategorizedDialog {
  color 1 1 1 0.9608
  position 0 0
- size 750 400
+ size 695 400
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -39,7 +39,7 @@ WrapSpacerWidgetClass CategorizedDialog {
        ignorepointer 1
        color 0.7843 0.2941 0.2745 1
        position 2 2
-       size 22 21
+       size 22 22
        halign right_ref
        hexactpos 1
        vexactpos 1
@@ -47,7 +47,10 @@ WrapSpacerWidgetClass CategorizedDialog {
        vexactsize 1
        style rover_sim_colorable
        {
-        ButtonWidgetClass TitleCloseButton {
+        ButtonWidgetClass TitleClose {
+         visible 1
+         ignorepointer 0
+         color 0.6667 0.6667 0.6667 1
          position 0 0
          size 1 1
          halign center_ref
@@ -56,9 +59,11 @@ WrapSpacerWidgetClass CategorizedDialog {
          vexactpos 1
          hexactsize 0
          vexactsize 0
+         priority 5
          scriptclass "ViewBinding"
-         text "x"
-         text_valign top
+         style Default
+         text "X"
+         font "gui/fonts/Metron-Bold"
          {
           ScriptParamsClass {
            Relay_Command "ExitDialogExecute"
@@ -96,10 +101,10 @@ WrapSpacerWidgetClass CategorizedDialog {
   PanelWidgetClass SpacerLeftPanel {
    ignorepointer 1
    position 6 10
-   size 0.02 345
+   size 5 345
    hexactpos 1
    vexactpos 1
-   hexactsize 0
+   hexactsize 1
    vexactsize 1
    style blank
   }
@@ -107,7 +112,7 @@ WrapSpacerWidgetClass CategorizedDialog {
    visible 1
    ignorepointer 1
    color 0.3137 0.3137 0.3137 1
-   size 225 345
+   size 180 395
    hexactpos 1
    vexactpos 1
    hexactsize 1
@@ -115,17 +120,18 @@ WrapSpacerWidgetClass CategorizedDialog {
    style Outline_1px
    {
     ScrollWidgetClass ListPanelScrollbar {
-     ignorepointer 1
-     size 223 343
-     halign center_ref
+     ignorepointer 0
+     position 1 0
+     size 185 395
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
+     "Scrollbar V" 1
      {
       WrapSpacerWidgetClass LeftListPanelContent {
-       ignorepointer 1
+       ignorepointer 0
        color 0.1961 0.1961 0.1961 0.3922
        position 0 0
        size 1 0
@@ -149,10 +155,10 @@ WrapSpacerWidgetClass CategorizedDialog {
   }
   PanelWidgetClass SpacerPanelTransparent {
    ignorepointer 1
-   size 0.02 345
+   size 5 400
    hexactpos 1
    vexactpos 1
-   hexactsize 0
+   hexactsize 1
    vexactsize 1
    style blank
   }
@@ -160,7 +166,7 @@ WrapSpacerWidgetClass CategorizedDialog {
    ignorepointer 1
    color 1 1 1 0.3922
    position 0 0
-   size 480 345
+   size 495 395
    halign right_ref
    hexactpos 1
    vexactpos 1
@@ -169,23 +175,23 @@ WrapSpacerWidgetClass CategorizedDialog {
    style blank
    {
     ScrollWidgetClass ItemContentScrollbar {
-     ignorepointer 1
-     size 478 343
-     halign center_ref
+     ignorepointer 0
+     size 500 395
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
+     "Scrollbar V" 1
      {
       WrapSpacerWidgetClass ItemContent {
        ignorepointer 1
-       position 0 1
-       size 1 1
+       size 1 0
+       halign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
        scriptclass "ViewBinding"
        Margin 0
        "Size To Content V" 1
@@ -222,6 +228,17 @@ WrapSpacerWidgetClass CategorizedDialog {
      Binding_Name "DialogButtonData"
     }
    }
+  }
+  PanelWidgetClass ContentButtonSpacer {
+   ignorepointer 1
+   color 0.7059 0.7059 0.7059 0.9412
+   size 695 1
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style rover_sim_colorable
   }
  }
 }

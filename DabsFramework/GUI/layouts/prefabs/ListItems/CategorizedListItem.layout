@@ -6,7 +6,7 @@ FrameWidgetClass CategorizedListItem {
  vexactsize 1
  {
   ButtonWidgetClass CategorizedListItemButton {
-   color 0.3922 0.3922 0.3922 0.1569
+   color 0.3922 0.3922 0.3922 0.1765
    size 1 1
    halign center_ref
    valign center_ref
@@ -19,13 +19,13 @@ FrameWidgetClass CategorizedListItem {
    {
     TextWidgetClass CategorizedListItemText {
      ignorepointer 1
-     size 1 1
+     size 1 12
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
-     vexactsize 0
+     vexactsize 1
      scriptclass "ViewBinding"
      text "General"
      font "gui/fonts/sdf_MetronLight42"
