@@ -6,6 +6,8 @@ class DialogCategoryListItemController: ViewController
 
 class DialogCategoryListItem: ScriptViewTemplate<DialogCategoryListItemController>
 {
+	ButtonWidget CategorizedListItemButton;
+	
 	protected DialogCategoryBase m_DialogCategoryBase;
 	
 	protected ref array<ref ScriptView> m_Content = {};
