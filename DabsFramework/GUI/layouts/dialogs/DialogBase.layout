@@ -144,7 +144,7 @@ WrapSpacerWidgetClass EditorDialog {
    ignorepointer 0
    keepsafezone 0
    color 0.3137 0.3137 0.3137 0.5882
-   size 538 300
+   size 538 230
    halign center_ref
    valign center_ref
    hexactpos 1
