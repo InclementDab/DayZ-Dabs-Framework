@@ -10,7 +10,7 @@ FrameWidgetClass CategorizedListItem {
    inheritalpha 0
    ignorepointer 0
    keepsafezone 0
-   color 1 0.5176 0 0.3922
+   color 0.7529 0.3686 0.3255 1
    size 1 1
    halign center_ref
    valign center_ref
