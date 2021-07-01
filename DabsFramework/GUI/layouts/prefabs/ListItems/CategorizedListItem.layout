@@ -6,7 +6,11 @@ FrameWidgetClass CategorizedListItem {
  vexactsize 1
  {
   ButtonWidgetClass CategorizedListItemButton {
-   color 0.3922 0.3922 0.3922 0.1765
+   disabled 0
+   inheritalpha 0
+   ignorepointer 0
+   keepsafezone 0
+   color 1 0.5176 0 0.3922
    size 1 1
    halign center_ref
    valign center_ref
@@ -15,7 +19,9 @@ FrameWidgetClass CategorizedListItem {
    hexactsize 0
    vexactsize 0
    scriptclass "ViewBinding"
-   style Default
+   style ButtonColorOnSelect
+   "no focus" 0
+   switch normal
    {
     TextWidgetClass CategorizedListItemText {
      ignorepointer 1

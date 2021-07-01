@@ -83,10 +83,16 @@ WrapSpacerWidgetClass CategorizedDialog {
      vexactpos 1
      hexactsize 0
      vexactsize 0
+     scriptclass "ViewBinding"
      text "Title"
      font "gui/fonts/Metron"
      "text halign" center
      "text valign" center
+     {
+      ScriptParamsClass {
+       Binding_Name "Title"
+      }
+     }
     }
    }
   }
@@ -132,7 +138,7 @@ WrapSpacerWidgetClass CategorizedDialog {
      {
       WrapSpacerWidgetClass LeftListPanelContent {
        ignorepointer 0
-       color 0.1961 0.1961 0.1961 0.3922
+       color 0.1961 0.1961 0.1961 0
        position 0 0
        size 1 0
        halign center_ref
