@@ -212,6 +212,63 @@
                 <Item Name="Top" Image="OutlineTop_1px" />
             </State>
         </Style>
+        <Style Name="ButtonColorOnSelect" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="Alpha 80" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="Alpha 0" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+        </Style>
     </Widget>
     <Widget Name="CheckBoxWidget">
         <Style Name="CheckBox_16px" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">

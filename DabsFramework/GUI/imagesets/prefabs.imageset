@@ -440,6 +440,12 @@ ImageSetClass {
    Size 64 64
    Flags 0
   }
+  ImageSetDefClass "Alpha 0" {
+   Name "Alpha 0"
+   Pos 0 16
+   Size 1 1
+   Flags 0
+  }
  }
  Groups {
  }
