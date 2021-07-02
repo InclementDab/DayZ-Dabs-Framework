@@ -44,7 +44,7 @@ class DropdownListPrefab<Class TValue>: ScriptView
 		delete m_ItemList;
 	}
 	
-	void InsertItem(string item_text, TValue user_data)
+	void Set(string item_text, TValue user_data)
 	{
 		DropdownListPrefabItem<TValue> element = new DropdownListPrefabItem<TValue>(item_text, user_data);
 		element.SetParent(this);			
