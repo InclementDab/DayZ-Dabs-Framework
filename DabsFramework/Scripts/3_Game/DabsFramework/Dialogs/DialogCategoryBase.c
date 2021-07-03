@@ -44,10 +44,10 @@ class DialogCategoryBase: DialogBase
 			m_DialogCategoryBaseController.DialogContentData[i].GetLayoutRoot().Show(set_content.Find(m_DialogCategoryBaseController.DialogContentData[i]) != -1);
 		}
 		
-		// todo: defaults are not setting the vomit color and im too drunk
-		/*for (int j = 0; j < m_DialogCategoryBaseController.DialogCategoryData.Count(); j++) {
-			m_DialogCategoryBaseController.DialogCategoryData[j].CategorizedListItemButton.SetState(set_content.Find(m_DialogCategoryBaseController.DialogContentData[j]) != -1);
-		}*/
+		for (int j = 0; j < m_DialogCategoryBaseController.DialogContentData.Count(); j++) {
+			m_DialogCategoryBaseController.DialogCategoryData[j].GetTemplateController().Active = (list_item == m_DialogCategoryBaseController.DialogCategoryData[j]);
+			m_DialogCategoryBaseController.DialogCategoryData[j].GetTemplateController().NotifyPropertyChanged("Active");
+		}
 	}
 	
 	override typename GetControllerType() 

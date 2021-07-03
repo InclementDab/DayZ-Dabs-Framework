@@ -1,5 +1,6 @@
 class DialogCategoryListItemController: ViewController
 {
+	bool Active;
 	string Icon;
 	string Caption;
 }
@@ -9,7 +10,6 @@ class DialogCategoryListItem: ScriptViewTemplate<DialogCategoryListItemControlle
 	ButtonWidget CategorizedListItemButton;
 	
 	protected DialogCategoryBase m_DialogCategoryBase;
-	
 	protected ref array<ref ScriptView> m_Content = {};
 	
 	void DialogCategoryListItem(string caption)

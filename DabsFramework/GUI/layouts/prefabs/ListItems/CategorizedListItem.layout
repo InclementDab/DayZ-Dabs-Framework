@@ -19,13 +19,13 @@ FrameWidgetClass CategorizedListItem {
    hexactsize 0
    vexactsize 0
    scriptclass "ViewBinding"
-   style ButtonColorOnSelect
-   "no focus" 0
+   style EmptyHighlight
+   "no focus" 1
    switch normal
    {
     TextWidgetClass CategorizedListItemText {
      ignorepointer 1
-     size 1 12
+     size 0.94 12
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -45,6 +45,8 @@ FrameWidgetClass CategorizedListItem {
    }
    {
     ScriptParamsClass {
+     Binding_Name "Active"
+     Two_Way_Binding 1
      Relay_Command "OnListItemExecute"
     }
    }
