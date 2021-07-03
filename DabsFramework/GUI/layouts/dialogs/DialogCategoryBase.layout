@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass CategorizedDialog {
- color 1 1 1 0.9961
+ color 0.7059 0.7059 0.7059 1
  position 0 0
  size 695 400
  halign center_ref
