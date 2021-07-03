@@ -446,6 +446,12 @@ ImageSetClass {
    Size 1 1
    Flags 0
   }
+  ImageSetDefClass Discord_Icon {
+   Name "Discord_Icon"
+   Pos 1 191
+   Size 64 64
+   Flags 0
+  }
  }
  Groups {
  }
