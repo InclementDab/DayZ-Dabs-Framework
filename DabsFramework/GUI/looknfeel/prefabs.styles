@@ -226,7 +226,7 @@
             </State>
             <State Name="Focus">
                 <Item Name="Bottom" Image="" />
-                <Item Name="Center" Image="Alpha 80" />
+                <Item Name="Center" Image="" />
                 <Item Name="Left" Image="" />
                 <Item Name="LeftBottom" Image="" />
                 <Item Name="LeftTop" Image="" />
@@ -259,7 +259,7 @@
             </State>
             <State Name="Pushed">
                 <Item Name="Bottom" Image="" />
-                <Item Name="Center" Image="" />
+                <Item Name="Center" Image="Alpha 80" />
                 <Item Name="Left" Image="" />
                 <Item Name="LeftBottom" Image="" />
                 <Item Name="LeftTop" Image="" />
