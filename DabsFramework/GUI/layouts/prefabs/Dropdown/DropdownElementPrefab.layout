@@ -1,6 +1,6 @@
 PanelWidgetClass DropdownElement {
  ignorepointer 1
- color 0.0588 0.0588 0.0588 1
+ color 0 0 0 1
  position 0 0
  size 150 18
  hexactpos 1
