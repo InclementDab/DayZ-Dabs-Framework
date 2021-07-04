@@ -130,6 +130,10 @@ class ScriptView: ScriptedViewBase
 	
 	static void LoadViewProperties(Class context, PropertyTypeHashMap property_map, Widget root_widget)
 	{
+		if (!root_widget) {
+			return;
+		}
+		
 		foreach (string property_name, typename property_type: property_map) {
 			if (!property_type.IsInherited(Widget)) {
 				continue;
