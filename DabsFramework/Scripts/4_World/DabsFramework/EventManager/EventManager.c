@@ -69,7 +69,9 @@ class EventManager
 		2 (int): Maximum amount of parallel events
 	*/
 	void Run(int min_between_events = 550, int max_between_events = 3500, int max_event_count = 2)
-	{		
+	{
+		PrintToRPT("Initializing Event Manager");
+		
 		m_MaxEventCount = max_event_count;
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
