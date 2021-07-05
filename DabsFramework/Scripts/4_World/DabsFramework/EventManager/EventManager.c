@@ -1,3 +1,5 @@
+typedef map<typename, ref EventBase> TEventMap;
+
 /*
 *
 *	EventManager.c
@@ -31,7 +33,6 @@ class EventManager
 	
 	static EventManager Start()
 	{
-		PrintToRPT("Initializing Event Manager");
 		m_Instance = new EventManager();
 		return m_Instance;
 	}

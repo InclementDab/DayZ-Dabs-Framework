@@ -1,1 +1,0 @@
-typedef map<typename, ref EventBase> TEventMap;
