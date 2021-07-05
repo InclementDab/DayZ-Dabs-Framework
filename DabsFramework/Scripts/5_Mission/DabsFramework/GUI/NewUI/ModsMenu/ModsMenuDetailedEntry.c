@@ -25,9 +25,8 @@ modded class ModsMenuDetailedEntry
 		for (int i = 0; i < GetGame().ConfigGetChildrenCount(base_dir); i++) {
 			string child;
 			GetGame().ConfigGetChildName(base_dir, i, child);
-			string name = GetGame().ConfigGetTextOut(base_dir + " " + child + " name");
-			
-			if (mod_info.GetName() == name) {
+
+			if (mod_info.GetName() == GetGame().ConfigGetTextOut(base_dir + " " + child + " name")) {
 				return GetGame().ConfigGetTextOut(base_dir + " " + child + " overview");
 			}
 		}
