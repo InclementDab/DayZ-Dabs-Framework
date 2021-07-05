@@ -8,6 +8,7 @@ WrapSpacerWidgetClass CategorizedDialog {
  vexactpos 1
  hexactsize 1
  vexactsize 1
+ priority 998
  style Outline_1px_BlackBackground
  Padding 1
  Margin 0
