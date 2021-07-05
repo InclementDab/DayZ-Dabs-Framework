@@ -16,7 +16,7 @@ WrapSpacerWidgetClass SelectItemList {
    vexactpos 1
    hexactsize 0
    vexactsize 0
-   style ButtonColorOnSelect
+   style EmptyHighlight
    {
     TextWidgetClass EditorSelectItemListLabel {
      ignorepointer 1
