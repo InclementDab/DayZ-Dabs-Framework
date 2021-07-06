@@ -1,17 +1,3 @@
-class DropdownListPrefabController<Class TValue>: ViewController
-{
-	string Caption;
-	DropdownListPrefabItemBase Value;
-	TValue CalculatedValue; // Used for things like SliderWidget output
-		
-	override void PropertyChanged(string property_name)
-	{
-		if (GetParent()) {
-			g_Script.Call(GetParent(), "PrefabPropertyChanged", property_name);
-		}
-	}
-}
-
 class DropdownListPrefab<Class TValue>: ScriptView
 {	
 	private static const TValue EMPTY_VALUE;

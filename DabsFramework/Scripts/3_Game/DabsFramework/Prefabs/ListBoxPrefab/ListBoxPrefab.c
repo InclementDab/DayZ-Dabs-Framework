@@ -1,8 +1,3 @@
-class ListBoxPrefabController<Class T>: ViewController
-{
-	ref ObservableCollection<ref ListBoxPrefabEntry<T>> ListBoxData = new ObservableCollection<ref ListBoxPrefabEntry<T>>(this);
-}
-
 class ListBoxPrefab<Class T>: ScriptView
 {	
 	ref ScriptInvoker Event_OnClick = new ScriptInvoker();

@@ -1,10 +1,3 @@
-class ListBoxPrefabEntryController<Class TValue>: ViewController
-{
-	string Icon;
-	string Caption;
-	TValue Value;
-}
-
 class ListBoxPrefabEntry<Class T>: ScriptView
 {
 	protected ListBoxPrefab<T> m_Owner;

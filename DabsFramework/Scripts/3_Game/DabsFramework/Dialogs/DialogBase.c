@@ -77,14 +77,17 @@ class DialogBase: ScriptView
 		return button;
 	}
 	
-	// TODO: Add string table and translations
 	static string GetDialogResultText(DialogResult result)
 	{
 		switch (result) {
-			case DialogResult.OK: 		return "#OK";
-			case DialogResult.Cancel: 	return "#cancel";
-			case DialogResult.Yes: 		return "#message_dialog_yes";
-			case DialogResult.No:		return "#message_dialog_no";
+			case DialogResult.None:		return "#STR_DIALOG_NONE";
+			case DialogResult.OK: 		return "#STR_DIALOG_OK";
+			case DialogResult.Cancel: 	return "#STR_DIALOG_CANCEL";
+			case DialogResult.Abort:	return "#STR_DIALOG_ABORT";
+			case DialogResult.Retry:	return "#STR_DIALOG_RETRY";
+			case DialogResult.Ignore:	return "#STR_DIALOG_IGNORE";
+			case DialogResult.Yes:		return "#STR_DIALOG_YES";
+			case DialogResult.No:		return "#STR_DIALOG_NO";
 		}
 		
 		return typename.EnumToString(DialogResult, result);

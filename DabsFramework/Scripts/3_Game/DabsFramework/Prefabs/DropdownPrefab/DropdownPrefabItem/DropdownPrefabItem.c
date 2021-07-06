@@ -1,17 +1,3 @@
-class DropdownListPrefabItemController<Class TValue>: ViewController
-{
-	string Text;
-	TValue UserData;
-}
-
-class DropdownListPrefabItemBase: ScriptView
-{
-	string GetText()
-	{
-		return string.Empty;
-	}
-}
-
 class DropdownListPrefabItem<Class TValue>: DropdownListPrefabItemBase
 {
 	protected DropdownListPrefabItemController<TValue> m_DropdownListPrefabItemController;
