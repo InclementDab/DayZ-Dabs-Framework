@@ -36,6 +36,25 @@ WrapSpacerWidgetClass CategorizedDialog {
      vexactsize 1
      style rover_sim_colorable
      {
+      ImageWidgetClass TitleIcon {
+       visible 0
+       ignorepointer 1
+       position 2 2
+       size 22 22
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ViewBinding"
+       mode additive
+       "src alpha" 1
+       filter 0
+       {
+        ScriptParamsClass {
+         Binding_Name "Icon"
+        }
+       }
+      }
       PanelWidgetClass TitleBarClosePanel {
        ignorepointer 1
        color 0.7843 0.2941 0.2745 1

@@ -38,18 +38,41 @@ WrapSpacerWidgetClass EditorDialog {
     PanelWidgetClass TitleBar {
      ignorepointer 1
      color 0.4196 0.6471 1 0.9412
-     size 1 0.95
+     size 1 25
      halign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
-     vexactsize 0
+     vexactsize 1
      draggable 0
      style rover_sim_colorable
      {
+      ImageWidgetClass TitleIcon {
+       visible 0
+       ignorepointer 1
+       position 2 2
+       size 21 21
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       scriptclass "ViewBinding"
+       image0 ""
+       mode blend
+       "src alpha" 1
+       "no wrap" 1
+       stretch 1
+       filter 0
+       {
+        ScriptParamsClass {
+         Binding_Name "Icon"
+        }
+       }
+      }
       TextWidgetClass TitleText {
        clipchildren 1
        ignorepointer 1
+       position 0 0
        size 1 0.9
        halign center_ref
        valign center_ref
@@ -77,10 +100,9 @@ WrapSpacerWidgetClass EditorDialog {
       PanelWidgetClass TitleClosePanel {
        ignorepointer 1
        color 0.7843 0.2941 0.2745 1
-       position 2 0
-       size 22 21
+       position 2 2
+       size 21 21
        halign right_ref
-       valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
@@ -102,6 +124,7 @@ WrapSpacerWidgetClass EditorDialog {
          priority 5
          scriptclass "ViewBinding"
          style Default
+         "no focus" 1
          text "X"
          font "gui/fonts/Metron-Bold"
          {

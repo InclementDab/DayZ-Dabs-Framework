@@ -8,6 +8,7 @@ class DialogBase: ScriptView
 	
 	// View Properties	
 	protected WrapSpacerWidget WindowDragWrapper;
+	protected ImageWidget TitleIcon;
 	
 	void DialogBase(string title)
 	{
@@ -15,6 +16,13 @@ class DialogBase: ScriptView
 		
 		m_DialogBaseController.Title = title;
 		m_DialogBaseController.NotifyPropertyChanged("Title");
+		
+		m_DialogBaseController.Icon = GetIcon();
+		if (m_DialogBaseController.Icon != string.Empty) {
+			m_DialogBaseController.NotifyPropertyChanged("Icon");
+			TitleIcon.Show(true);
+		}
+		
 		m_LayoutRoot.Show(false);
 	}
 			
@@ -137,6 +145,12 @@ class DialogBase: ScriptView
 	    }		
 		
 		return false;
+	}
+	
+	// Abstract
+	string GetIcon()
+	{
+		return string.Empty;
 	}
 	
 	override typename GetControllerType() 
