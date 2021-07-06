@@ -1,13 +1,3 @@
-class DialogCategoryBaseController: DialogBaseController
-{
-	ref ObservableCollection<ref DialogCategoryListItem> DialogCategoryData = new ObservableCollection<ref DialogCategoryListItem>(this);		
-		
-	void ~DialogCategoryBaseController()
-	{
-		delete DialogCategoryData;
-	}
-}
-
 class DialogCategoryBase: DialogBase
 {
 	protected DialogCategoryBaseController m_DialogCategoryBaseController;

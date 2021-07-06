@@ -1,10 +1,3 @@
-class DialogCategoryListItemController: ViewController
-{
-	bool Active;
-	string Icon;
-	string Caption;
-}
-
 class DialogCategoryListItem: ScriptViewTemplate<DialogCategoryListItemController>
 {
 	ButtonWidget CategorizedListItemButton;
