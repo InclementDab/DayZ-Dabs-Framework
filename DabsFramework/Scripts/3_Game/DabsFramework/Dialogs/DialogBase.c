@@ -79,6 +79,9 @@ class DialogBase: ScriptView
 	
 	static string GetDialogResultText(DialogResult result)
 	{
+		// TODO: Temporary, until stringtables are complete
+		return typename.EnumToString(DialogResult, result);
+		
 		switch (result) {
 			case DialogResult.None:		return "#STR_DIALOG_NONE";
 			case DialogResult.OK: 		return "#STR_DIALOG_OK";
