@@ -1,11 +1,11 @@
-name = "Dabs Framework";
+name = "$STR_DF_NAME";
 picture = "DabsFramework/gui/images/dabs_framework_logo.edds";
 logo = "DabsFramework/gui/images/dabs_framework_logo.edds";
 logoSmall = "DabsFramework/gui/images/dabs_framework_logo.edds";
 logoOver = "DabsFramework/gui/images/dabs_framework_logo.edds";
-tooltip = "DabsFramework";
-overview = "DF is a Lightweight framework designed to provide modders with new and powerful tools helpful in creating great and mods for the community. Created by InclementDab";
+tooltip = "$STR_DF_TOOLTIP";
+overview = "$STR_DF_DESCRIPTION";
 action = "https://dab.dev";
-author = "InclementDab";
+author = "$STR_DF_AUTHOR";
 authorID = "76561198247958888";
 version = "1.0";

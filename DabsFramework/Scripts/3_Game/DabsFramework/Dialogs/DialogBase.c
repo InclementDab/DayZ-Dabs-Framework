@@ -57,7 +57,7 @@ class DialogBase: ScriptView
 	
 	DialogButton AddButton(DialogResult result)
 	{
-		return AddButton(typename.EnumToString(DialogResult, result), result);
+		return AddButton(GetDialogResultText(result), result);
 	}
 	
 	DialogButton AddButton(string label, string callback)
@@ -75,6 +75,19 @@ class DialogBase: ScriptView
 		button.SetParent(this);
 		m_DialogBaseController.DialogButtonData.Insert(button);
 		return button;
+	}
+	
+	// TODO: Add string table and translations
+	static string GetDialogResultText(DialogResult result)
+	{
+		switch (result) {
+			case DialogResult.OK: 		return "#OK";
+			case DialogResult.Cancel: 	return "#cancel";
+			case DialogResult.Yes: 		return "#message_dialog_yes";
+			case DialogResult.No:		return "#message_dialog_no";
+		}
+		
+		return typename.EnumToString(DialogResult, result);
 	}
 	
 	protected void DialogExitButtonCallback(DialogExitButton button)
