@@ -1,11 +1,26 @@
 {
     "Departments": [{
-        "DepartmentName": "Example",
+        "DepartmentName": "Development",
         "Sections": [{
-            "SectionName": "Developers",
-            "SectionLines": [
-                "DayZ Mod Template by InclementDab"
-            ]
-        }]
+                "SectionName": "Developers",
+                "SectionLines": [
+                    "InclementDab",
+                    "Gormirn"
+                ]
+            },
+            {
+                "SectionName": "Translators",
+                "SectionLines": [
+                    "InclementDab",
+                    "DanceOfJesus (French)",
+                    "MarioE (Spanish)",
+                    "Dubinek (Czech)",
+                    "Steve AKA Salutesh (German)",
+                    "Yuki (Russian)",
+                    ".magik34 (Polish)",
+                    "Daze (Hungarian)"
+                ]
+            }
+        ]
     }]
 }
