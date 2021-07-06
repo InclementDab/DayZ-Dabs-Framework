@@ -27,7 +27,7 @@ class ListBoxPrefabEntry<Class T>: ScriptView
 	
 	override bool OnDoubleClick(Widget w, int x, int y, int button)
 	{
-		m_Owner.EntryOnClick(GetListBoxPrefabEntryController().Value, w, x, y, button);
+		m_Owner.EntryOnDoubleClick(GetListBoxPrefabEntryController().Value, w, x, y, button);
 		return true;
 	}
 	
