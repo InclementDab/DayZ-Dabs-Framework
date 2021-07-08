@@ -28,6 +28,11 @@ WrapSpacerWidgetClass EditBoxPrefab {
    style Bold
    "text offset" -10 0
    "text halign" right
+   {
+    ScriptParamsClass {
+     Binding_Name "Caption"
+    }
+   }
   }
   TextWidgetClass ContentText {
    visible 1
@@ -44,6 +49,11 @@ WrapSpacerWidgetClass EditBoxPrefab {
    "exact text" 0
    "size to text h" 1
    "size to text v" 1
+   {
+    ScriptParamsClass {
+     Binding_Name "Value"
+    }
+   }
   }
  }
 }
