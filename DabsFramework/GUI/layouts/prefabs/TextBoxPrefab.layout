@@ -1,6 +1,6 @@
 WrapSpacerWidgetClass EditBoxPrefab {
  visible 1
- size 0.8 18
+ size 1 18
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -10,48 +10,69 @@ WrapSpacerWidgetClass EditBoxPrefab {
  scriptclass ""
  style Colorable
  Padding 0
- Margin 5
- content_halign right
+ Margin 0
  content_valign center
  {
-  TextWidgetClass Caption {
-   ignorepointer 0
-   position 0 0
-   size 0.4 1
+  FrameWidgetClass CaptionFrame {
+   ignorepointer 1
+   size 0.25 18
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
-   vexactsize 0
-   priority 1
-   scriptclass "ViewBinding"
-   style Bold
-   "text offset" -10 0
-   "text halign" right
+   vexactsize 1
    {
-    ScriptParamsClass {
-     Binding_Name "Caption"
+    TextWidgetClass Caption {
+     ignorepointer 0
+     position 7 0
+     size 1 16
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     priority 1
+     scriptclass "ViewBinding"
+     style Bold
+     "text offset" 3 0
+     "size to text h" 0
+     "text valign" center
+     {
+      ScriptParamsClass {
+       Binding_Name "Caption"
+      }
+     }
     }
    }
   }
-  TextWidgetClass ContentText {
-   visible 1
-   size 0.7 0.9
-   halign right_ref
-   valign center_ref
+  FrameWidgetClass ContentFrame {
+   ignorepointer 1
+   size 0.7 18
    hexactpos 1
    vexactpos 1
    hexactsize 0
-   vexactsize 0
-   scriptclass "ViewBinding"
-   style Normal
-   font "gui/fonts/etelkatextpro"
-   "exact text" 0
-   "size to text h" 1
-   "size to text v" 1
+   vexactsize 1
    {
-    ScriptParamsClass {
-     Binding_Name "Value"
+    TextWidgetClass ContentText {
+     visible 1
+     size 0.7 16
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     scriptclass "ViewBinding"
+     style Normal
+     font "gui/fonts/etelkatextpro"
+     "exact text" 0
+     "size to text h" 1
+     "size to text v" 0
+     "text valign" center
+     {
+      ScriptParamsClass {
+       Binding_Name "Value"
+      }
+     }
     }
    }
   }
