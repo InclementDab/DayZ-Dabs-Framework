@@ -50,8 +50,9 @@ WrapSpacerWidgetClass EditorDialog {
       ImageWidgetClass TitleIcon {
        visible 0
        ignorepointer 1
-       position 2 2
-       size 21 21
+       position 5 0
+       size 22 22
+       valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
@@ -62,7 +63,7 @@ WrapSpacerWidgetClass EditorDialog {
        "src alpha" 1
        "no wrap" 1
        stretch 1
-       filter 0
+       filter 1
        {
         ScriptParamsClass {
          Binding_Name "Icon"
