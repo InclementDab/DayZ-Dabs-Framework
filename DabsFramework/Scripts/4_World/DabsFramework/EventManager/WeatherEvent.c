@@ -16,7 +16,7 @@ class WeatherEvent: EventBase
 	override void InitPhaseServer()
 	{
 		// I mean... it works :)
-		for (int i = EWeatherPhenomenon.FOG; i <= EWeatherPhenomenon.OVERCAST; i++) {		
+		for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {		
 			if (GetWeatherTarget(i) != -1) {
 				RequestWeatherChange(i, GetWeatherTarget(i), GetInitPhaseLength(), GetMidPhaseLength());
 			}
@@ -30,7 +30,7 @@ class WeatherEvent: EventBase
 		
 		// i.e. Snowfall brings fog to 0.5, HeavyFog then brings it to 1.0, after HeavyFog finishes,
 		// the fog level will be brought back down to 0.5, until Snowfall returns it back to 0
-		for (int i = EWeatherPhenomenon.FOG; i <= EWeatherPhenomenon.OVERCAST; i++) {
+		for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {
 			float highest_value = GetHighestRemainingWeatherValue(i);
 			if (highest_value == 0 && i == EWeatherPhenomenon.OVERCAST) {
 				highest_value = Math.RandomFloat(0, 0.15);
@@ -42,7 +42,7 @@ class WeatherEvent: EventBase
 	
 	override void OnEventEndServer()
 	{
-		for (int i = EWeatherPhenomenon.FOG; i <= EWeatherPhenomenon.OVERCAST; i++) {
+		for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {
 			WeatherPhenomenon weather_phenom = GetWeatherPhenomenon(i);
 			float highest_value = GetHighestRemainingWeatherValue(i);
 			if (highest_value == 0 && i == EWeatherPhenomenon.OVERCAST) {
