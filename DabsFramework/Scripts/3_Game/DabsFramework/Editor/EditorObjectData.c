@@ -101,7 +101,7 @@ class EditorObjectData: SerializableBase
 		serializer.Write(Flags);
 	}
 	
-	override void Read(Serializer serializer, int version)
+	override bool Read(Serializer serializer, int version)
 	{
 		serializer.Read(Type);
 		serializer.Read(DisplayName);
@@ -109,5 +109,7 @@ class EditorObjectData: SerializableBase
 		serializer.Read(Orientation);
 		serializer.Read(Scale);
 		serializer.Read(Flags);
+		
+		return true;
 	}
 }

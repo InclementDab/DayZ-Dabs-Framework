@@ -30,7 +30,7 @@ class EditorSaveData
 		}
 	}
 	
-	void Read(Serializer serializer)
+	bool Read(Serializer serializer)
 	{
 		serializer.Read(Version);
 		serializer.Read(MapName);
@@ -45,10 +45,13 @@ class EditorSaveData
 		}
 		
 		int editor_deleted_object_count;
+		serializer.Read(editor_deleted_object_count);
 		for (int j = 0; j < editor_deleted_object_count; j++) {
 			EditorDeletedObjectData deleted_data();
 			deleted_data.Read(serializer, Version);
 			EditorDeletedObjects.Insert(deleted_data);
 		}
+		
+		return true;
 	}
 }
