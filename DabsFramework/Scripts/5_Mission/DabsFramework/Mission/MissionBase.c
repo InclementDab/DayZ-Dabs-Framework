@@ -10,4 +10,10 @@ modded class MissionBase
 		
 		m_EventManager = EventManager.Start();
 	}
+	
+	// Just another way to acquire it
+	EventManager GetEventManager()
+	{
+		return m_EventManager;
+	}
 }
