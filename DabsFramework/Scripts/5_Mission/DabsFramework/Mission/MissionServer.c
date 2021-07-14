@@ -5,6 +5,8 @@ modded class MissionServer
 		super.InvokeOnConnect(player, identity);
 		
 		// JIP Event Data
-		m_EventManager.DispatchEventInfo(player);
+		if (m_EventManager) {
+			m_EventManager.DispatchEventInfo(player);
+		}
 	}
 }
