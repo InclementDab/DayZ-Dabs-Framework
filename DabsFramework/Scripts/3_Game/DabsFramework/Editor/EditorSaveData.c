@@ -1,6 +1,6 @@
 class EditorSaveData
 {
-	int Version;
+	int Version = 1;
 	string MapName;
 	vector CameraPosition;
 	
