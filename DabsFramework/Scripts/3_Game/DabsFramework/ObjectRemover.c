@@ -1,6 +1,12 @@
+class ObjectRemoverLink: OLinkT
+{
+	int Flags;
+	int Events;
+}
+
 class ObjectRemover
 {
-	private static ref const map<Object, ref OLinkT> REGISTERED_OBJECTS = new map<Object, ref OLinkT>;
+	private static ref const map<Object, ref ObjectRemoverLink> REGISTERED_OBJECTS = new map<Object, ref ObjectRemoverLink>;
 
 	private void ObjectRemover();
 	private void ~ObjectRemover();
@@ -17,7 +23,10 @@ class ObjectRemover
 			return false;
 		}
 
-		REGISTERED_OBJECTS.Insert(obj, new OLinkT(obj));
+		ObjectRemoverLink object_link = new ObjectRemoverLink(obj);
+		object_link.Flags = obj.GetFlags();
+		object_link.Events = obj.GetEventMask();
+		REGISTERED_OBJECTS.Insert(obj, object_link);
 		return true;
 	}
 
@@ -45,7 +54,7 @@ class ObjectRemover
 			return false;
 		}
 
-		OLinkT object_link = REGISTERED_OBJECTS.Get(obj);
+		ObjectRemoverLink object_link = REGISTERED_OBJECTS[obj];
 
 		if (!object_link) {
 			return false;
@@ -53,8 +62,9 @@ class ObjectRemover
 
 		REGISTERED_OBJECTS.Remove(obj);
 
-		if (!object_link.IsNull())
+		if (!object_link.IsNull()) {
 			object_link.Release();
+		}
 
 		return true;
 	}
@@ -121,13 +131,49 @@ class ObjectRemover
 		}
 
 		Register(obj);
-		EntityFlags entityFlags = obj.GetFlags();
-		EntityEvent entityEvents = obj.GetEventMask();
-		obj.ClearFlags(entityFlags, true);
-		obj.ClearEventMask(entityEvents);
+		EntityFlags flags = obj.GetFlags();
+		EntityEvent events = obj.GetEventMask();
+		obj.ClearFlags(flags, true);
+		obj.ClearEventMask(events);
 		obj.SetEventMask(EntityEvent.NOTVISIBLE);
 		obj.SetScale(0.0);
 		dBodyDestroy(obj); //! Needed for disabling some extra collisions.
+		
+		//dBodyActive(objectHere, ActiveState.INACTIVE);
+		//dBodyDynamic(objectHere, false);
+	}
+	
+	/**
+	 * @brief Restores static objects to the map.
+	 *
+	 * @param obj	Object pointer
+	 */
+	static void RestoreObject(Object obj)
+	{
+		if (!obj || !IsMapObject(obj)) {
+			return;
+		}
+		
+		ObjectRemoverLink object_link = REGISTERED_OBJECTS[obj];
+		if (!object_link) {
+			return;
+		}
+			
+		obj.SetFlags(object_link.Flags, true);
+		obj.SetEventMask(object_link.Events);
+		obj.SetScale(1.0);
+		Unregister(obj);
+	}
+	
+	/**
+	 * @brief Restores all static Objects to the map.
+	 *
+	 */
+	static void RestoreAllMapObjects()
+	{
+		foreach (Object obj, ObjectRemoverLink link: REGISTERED_OBJECTS) {
+			RestoreObject(obj);
+		}
 	}
 
 	/**
