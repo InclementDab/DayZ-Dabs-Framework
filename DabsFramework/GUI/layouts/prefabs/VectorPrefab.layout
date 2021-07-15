@@ -118,7 +118,7 @@ PanelWidgetClass EditorPosElement {
          scriptclass "ViewBinding"
          style Default
          text "reee"
-         "limit visible" 1
+         "limit visible" 0
          "exact text" 0
          font "gui/fonts/sdf_MetronLight24"
          {
@@ -212,7 +212,7 @@ PanelWidgetClass EditorPosElement {
          scriptclass "ViewBinding"
          style Green_Hightlight
          text "reee"
-         "limit visible" 1
+         "limit visible" 0
          "exact text" 0
          font "gui/fonts/sdf_MetronLight24"
          {
@@ -308,7 +308,7 @@ PanelWidgetClass EditorPosElement {
          scriptclass "ViewBinding"
          style Blue_Highlight
          text "reee"
-         "limit visible" 1
+         "limit visible" 0
          "Use default text" 0
          "exact text" 0
          font "gui/fonts/sdf_MetronLight24"
