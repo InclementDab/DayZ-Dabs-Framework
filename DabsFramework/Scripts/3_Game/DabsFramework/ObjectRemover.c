@@ -54,13 +54,13 @@ class ObjectRemover
 			return false;
 		}
 
-		ObjectRemoverLink object_link = REGISTERED_OBJECTS[obj];
-
-		if (!object_link) {
+		if (!REGISTERED_OBJECTS[obj]) {
 			return false;
 		}
 
 		GetGame().ObjectRelease(obj);	
+		
+		delete REGISTERED_OBJECTS[obj];
 		REGISTERED_OBJECTS.Remove(obj);		
 		return true;
 	}
