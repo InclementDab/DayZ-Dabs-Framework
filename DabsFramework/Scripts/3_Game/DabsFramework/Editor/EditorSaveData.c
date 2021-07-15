@@ -1,5 +1,8 @@
 class EditorSaveData
 {
+	[NonSerialized()]
+	static const string BIN_CHECK = "EditorBinned";
+	
 	int Version = 1;
 	string MapName;
 	vector CameraPosition;
@@ -15,6 +18,7 @@ class EditorSaveData
 		
 	void Write(Serializer serializer)
 	{
+		serializer.Write(BIN_CHECK);
 		serializer.Write(Version);
 		serializer.Write(MapName);
 		serializer.Write(CameraPosition);
@@ -32,6 +36,12 @@ class EditorSaveData
 	
 	bool Read(Serializer serializer)
 	{
+		string bincheck;
+		serializer.Read(bincheck);
+		if (bincheck != BIN_CHECK) {
+			return false;
+		}
+		
 		serializer.Read(Version);
 		serializer.Read(MapName);
 		serializer.Read(CameraPosition);
@@ -53,5 +63,26 @@ class EditorSaveData
 		}
 		
 		return true;
+	}
+	
+	static bool IsBinnedFile(string file)
+	{
+		FileSerializer serializer();
+		
+		if (!serializer.Open(file)) {
+			Error("Bincheck Failed, could not open " + file);
+			return false;
+		}
+		
+		string bincheck;
+		if (!serializer.Read(bincheck)) {
+			Error("Bincheck Failed, generic");
+			serializer.Close();
+			return false;
+		}
+		
+		serializer.Close();
+		
+		return (bincheck == BIN_CHECK);
 	}
 }
