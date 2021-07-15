@@ -25,4 +25,24 @@ modded class Math
 	{
 		return Vector(Math.SmoothLerp(p1[0], p2[0], time), Math.SmoothLerp(p1[1], p2[1], time), Math.SmoothLerp(p1[2], p2[2], time));
 	}
+	
+	// Works very similar to Clamp except it rolls over instead of clamping
+	/* 
+		Examples:
+	
+		int value = 20;
+		value = Math.Rollover(value, 0, 15);
+		Print(value);
+		
+		value = 5
+	*/
+	
+	static int Rollover(int value, int min, int max)
+	{
+		while (value < min) {
+			value += max;
+		}
+		
+		return value % max;
+	}
 }
