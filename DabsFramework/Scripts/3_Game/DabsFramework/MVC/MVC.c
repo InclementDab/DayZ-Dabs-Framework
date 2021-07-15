@@ -92,7 +92,7 @@ class MVC
 	// Great for prefabs
 	void RegisterWidgetControllers(out TTypeNameTypenameMap widget_controllers)
 	{
-		Log("MVC::RegisterWidgetwidget_controllers");
+		Log("MVC::RegisterWidgetControllers");
 		
 		widget_controllers.Insert(Widget, WidgetBaseController);
 		widget_controllers.Insert(SpacerBaseWidget, SpacerBaseWidgetController);
