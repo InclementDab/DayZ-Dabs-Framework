@@ -5,7 +5,7 @@ class ObjectRemoverLink: OLinkT
 }
 
 class ObjectRemover
-{
+{	
 	private static ref const map<Object, ref ObjectRemoverLink> REGISTERED_OBJECTS = new map<Object, ref ObjectRemoverLink>;
 
 	private void ObjectRemover();
@@ -60,12 +60,8 @@ class ObjectRemover
 			return false;
 		}
 
-		REGISTERED_OBJECTS.Remove(obj);
-
-		if (!object_link.IsNull()) {
-			object_link.Release();
-		}
-
+		GetGame().ObjectRelease(obj);	
+		REGISTERED_OBJECTS.Remove(obj);		
 		return true;
 	}
 
@@ -185,9 +181,7 @@ class ObjectRemover
 	static void RemoveObjectsInRadius2D(vector position, float radius)
 	{
 		array<Object> objects = new array<Object>();
-		array<CargoBase> proxyCargos = new array<CargoBase>();
-
-		GetGame().GetObjectsAtPosition(position, radius, objects, proxyCargos);
+		GetGame().GetObjectsAtPosition(position, radius, objects, null);
 		foreach (Object obj: objects) {
 			RemoveObject(obj);
 		}
