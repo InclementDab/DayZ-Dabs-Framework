@@ -57,10 +57,7 @@ class ObjectRemover
 		if (!REGISTERED_OBJECTS[obj]) {
 			return false;
 		}
-
-		GetGame().ObjectRelease(obj);	
 		
-		delete REGISTERED_OBJECTS[obj];
 		REGISTERED_OBJECTS.Remove(obj);		
 		return true;
 	}
