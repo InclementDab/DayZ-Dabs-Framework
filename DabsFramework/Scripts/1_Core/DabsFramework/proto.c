@@ -1,5 +1,5 @@
 // Converts ARGB mask into its counterparts
-void InverseARGB(int argb, out int a, out int r, out int g, out int b)
+static void InverseARGB(int argb, out int a, out int r, out int g, out int b)
 {
 	b = argb & 255;
 	argb >>= 8;
@@ -10,7 +10,7 @@ void InverseARGB(int argb, out int a, out int r, out int g, out int b)
 	a = argb & 255;
 }
 
-void InverseARGBF(int argb, out float a, out float r, out float g, out float b)
+static void InverseARGBF(int argb, out float a, out float r, out float g, out float b)
 {
 	int ai, ri, gi, bi;
 	InverseARGB(argb, ai, ri, gi, bi);
