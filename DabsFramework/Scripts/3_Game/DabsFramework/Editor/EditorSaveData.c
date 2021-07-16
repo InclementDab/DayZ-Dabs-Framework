@@ -76,7 +76,6 @@ class EditorSaveData
 		
 		string bincheck;
 		if (!serializer.Read(bincheck)) {
-			Error("Bincheck Failed, generic");
 			serializer.Close();
 			return false;
 		}

@@ -41,7 +41,7 @@ class EditorDeletedObjectData: SerializableBase
 		return data;
 	}
 	
-	Object FindObject(float radius = 0.05)
+	Object FindObject(float radius = 0.1)
 	{				
 		array<Object> objects = {};
 		GetGame().GetObjectsAtPosition3D(Position, radius, objects, null);
