@@ -304,19 +304,19 @@
                 <Item Name="Top" Image="" />
             </State>
             <State Name="Normal">
-                <Item Name="Bottom" Image="Alpha 30" />
-                <Item Name="Center" Image="Alpha 30" />
-                <Item Name="Left" Image="Alpha 30" />
-                <Item Name="LeftBottom" Image="Alpha 30" />
-                <Item Name="LeftTop" Image="Alpha 30" />
-                <Item Name="Right" Image="Alpha 30" />
-                <Item Name="RightBottom" Image="Alpha 30" />
-                <Item Name="RightTop" Image="Alpha 30" />
-                <Item Name="Top" Image="Alpha 30" />
+                <Item Name="Bottom" Image="Alpha 60" />
+                <Item Name="Center" Image="Alpha 60" />
+                <Item Name="Left" Image="Alpha 60" />
+                <Item Name="LeftBottom" Image="Alpha 60" />
+                <Item Name="LeftTop" Image="Alpha 60" />
+                <Item Name="Right" Image="Alpha 60" />
+                <Item Name="RightBottom" Image="Alpha 60" />
+                <Item Name="RightTop" Image="Alpha 60" />
+                <Item Name="Top" Image="Alpha 60" />
             </State>
             <State Name="Pushed">
                 <Item Name="Bottom" Image="" />
-                <Item Name="Center" Image="Alpha 30" />
+                <Item Name="Center" Image="Alpha 60" />
                 <Item Name="Left" Image="" />
                 <Item Name="LeftBottom" Image="" />
                 <Item Name="LeftTop" Image="" />
