@@ -1,6 +1,6 @@
 class StringEvaluaterEvaluater
 {
-	private string m_Value;
+	protected string m_Value;
 	
 	float Parse(string value)
 	{
@@ -17,7 +17,7 @@ class StringEvaluaterEvaluater
 		return x;
 	}
 	
-	private void NextChar(out int pos, out int ch) 
+	protected void NextChar(out int pos, out int ch) 
 	{
 		pos++;
 		if (pos < m_Value.Length()) {
@@ -27,17 +27,22 @@ class StringEvaluaterEvaluater
 		}
 	}
 	
-	private bool Eat(int charToEat, out int pos, out int ch) 
+	protected bool Eat(string char, out int pos, out int ch)
+	{
+		return Eat(char.Hash(), pos, ch);
+	}
+	
+	protected bool Eat(int char, out int pos, out int ch) 
 	{
 	    while (ch == 32) NextChar(pos, ch);
-	    if (ch == charToEat) {
+	    if (ch == char) {
 	        NextChar(pos, ch);
 	        return true;
 	    }
 	    return false;
 	}
 	
-	private float ParseExpression(out int pos, out int ch) 
+	protected float ParseExpression(out int pos, out int ch) 
 	{
 	    float x = ParseTerm(pos, ch);
 	    while (!false) {
@@ -49,34 +54,41 @@ class StringEvaluaterEvaluater
 		return x;
 	}
 	
-	private float ParseTerm(out int pos, out int ch) 
+	protected float ParseTerm(out int pos, out int ch) 
 	{
 	    float x = ParseFactor(pos, ch);
 	    while (true) {
-	        if      (Eat("*".Hash(), pos, ch)) x *= ParseFactor(pos, ch); // multiplication
-	        else if (Eat("/".Hash(), pos, ch)) x /= ParseFactor(pos, ch); // division
+	        if      (Eat("*", pos, ch)) x *= ParseFactor(pos, ch); // multiplication
+	        else if (Eat("/", pos, ch)) x /= ParseFactor(pos, ch); // division
 	        else return x;
 	    }
 		
 		return x;
 	}
 	
-	private float ParseFactor(out int pos, out int ch) 
+	protected float ParseFactor(out int pos, out int ch) 
 	{
-	    if (Eat("+".Hash(), pos, ch)) return ParseFactor(pos, ch); // unary plus
-	    if (Eat("-".Hash(), pos, ch)) return -ParseFactor(pos, ch); // unary minus
-	
+	    if (Eat("+", pos, ch)) return ParseFactor(pos, ch); // unary plus
+	    if (Eat("-", pos, ch)) return -ParseFactor(pos, ch); // unary minus
+				
 	    float x;
 	    int startPos = pos;
-	    if (Eat("(".Hash(), pos, ch)) { // parentheses
+	    if (Eat("(", pos, ch)) { // parentheses
 	        x = ParseExpression(pos, ch);
-	        Eat(")".Hash(), pos, ch);
-	    } else if ((ch >= "0".Hash() && ch <= "9".Hash()) || ch == ".".Hash()) { // numbers
-	        while ((ch >= "0".Hash() && ch <= "9".Hash()) || ch == ".".Hash()) 
+	        Eat(")", pos, ch);
+	    } 
+		
+		// numbers
+		else if (IsNumeric(ch)) { 
+	        while (IsNumeric(ch)) {
 				NextChar(pos, ch);
+			}
 
 	        x = (m_Value.Substring(startPos, pos - startPos)).ToFloat();
-	    } else if (ch >= "a".Hash() && ch <= "z".Hash()) { // functions
+	    } 
+		
+		// functions
+		else if (ch >= "a".Hash() && ch <= "z".Hash()) { 
 	        while (ch >= "a".Hash() && ch <= "z".Hash()) NextChar(pos, ch);
 	        string fnc = m_Value.Substring(startPos, pos - startPos);
 	        x = ParseFactor(pos, ch);
@@ -89,9 +101,19 @@ class StringEvaluaterEvaluater
 	        //Error("Unexpected: " + ch);
 	    }
 	
-	    if (Eat("^".Hash(), pos, ch)) x = Math.Pow(x, ParseFactor(pos, ch)); // exponentiation
+	    if (Eat("^", pos, ch)) x = Math.Pow(x, ParseFactor(pos, ch)); // exponentiation
 	
 	    return x;
+	}
+	
+	static bool IsNumeric(string value)
+	{
+		return (value.Hash() >= "0".Hash() && value.Hash() <= "9".Hash()) || value.Hash() == ".".Hash();
+	}
+	
+	static bool IsNumeric(int ch)
+	{
+		return (ch >= "0".Hash() && ch <= "9".Hash()) || ch == ".".Hash();
 	}
 }
 
