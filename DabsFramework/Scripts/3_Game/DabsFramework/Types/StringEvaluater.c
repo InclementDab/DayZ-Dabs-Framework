@@ -20,11 +20,9 @@ class StringEvaluaterEvaluater
 		int ch = 0;
 		NextChar(pos, ch);
 		float x = ParseExpression(pos, ch);
-		Print(pos);
-		Print(value.Length());
 		if (pos < value.Length()) {
 			Error("Unexpected: " + ch + " " + value);
-			return -1;
+			return 0;
 		}
 		
 		return x;
