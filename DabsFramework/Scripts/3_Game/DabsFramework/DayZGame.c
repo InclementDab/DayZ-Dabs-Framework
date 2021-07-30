@@ -3,7 +3,7 @@ modded class DayZGame
 	DayZPlayer GetPlayerByIdentity(notnull PlayerIdentity identity)
 	{
 		int high, low;
-		if (IsMultiplayer()) {
+		if (!IsMultiplayer()) {
 			return GetPlayer();
 		}
 		
