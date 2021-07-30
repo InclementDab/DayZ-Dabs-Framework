@@ -20,6 +20,8 @@ class StringEvaluaterEvaluater
 		int ch = 0;
 		NextChar(pos, ch);
 		float x = ParseExpression(pos, ch);
+		Print(pos);
+		Print(value.Length());
 		if (pos < value.Length()) {
 			Error("Unexpected: " + ch + " " + value);
 			return -1;
@@ -45,18 +47,23 @@ class StringEvaluaterEvaluater
 	
 	protected bool Eat(int char, out int pos, out int ch) 
 	{
-	    while (ch == 32) NextChar(pos, ch);
+		// Space
+	    while (ch == 32) {
+			NextChar(pos, ch);
+		}
+		
 	    if (ch == char) {
 	        NextChar(pos, ch);
 	        return true;
 	    }
+		
 	    return false;
 	}
 	
 	protected float ParseExpression(out int pos, out int ch) 
 	{
 	    float x = ParseTerm(pos, ch);
-	    while (!false) {
+	    while (true) {
 	        if      (Eat("+".Hash(), pos, ch)) x += ParseTerm(pos, ch); // addition
 	        else if (Eat("-".Hash(), pos, ch)) x -= ParseTerm(pos, ch); // subtraction
 	        else return x;
@@ -105,7 +112,7 @@ class StringEvaluaterEvaluater
 				NextChar(pos, ch);
 			}
 
-	        return (m_Value.Substring(start_pos, pos - start_pos)).ToFloat();
+	        x = (m_Value.Substring(start_pos, pos - start_pos)).ToFloat();
 	    } 
 		
 		// functions
@@ -115,20 +122,20 @@ class StringEvaluaterEvaluater
 			}
 			
 	        // Handle functions
-			return EvaluateFunction(m_Value.Substring(start_pos, pos - start_pos), ParseFactor(pos, ch));
+			x = EvaluateFunction(m_Value.Substring(start_pos, pos - start_pos), ParseFactor(pos, ch));
 	    }
 	
 		// exponentiation
 	    if (Eat("^", pos, ch)) { 
-			return Math.Pow(x, ParseFactor(pos, ch)); 
+			x = Math.Pow(x, ParseFactor(pos, ch)); 
 		}
 	
 	    return x;
 	}
 	
-	static float EvaluateFunction(string function, float value)
+	static float EvaluateFunction(string fnc, float value)
 	{
-		switch (function) {
+		switch (fnc) {
 			// todo: more functionality!
 			case "sqrt": return Math.Sqrt(value);			
 			case "sin": return Math.Sin(value);			
@@ -136,7 +143,7 @@ class StringEvaluaterEvaluater
 			case "tan": return Math.Tan(value);
 		}
 		
-		Error("Unknown Function: " + function);
+		Error("Unknown Function: " + fnc);
 		return 0;
 	}
 	
