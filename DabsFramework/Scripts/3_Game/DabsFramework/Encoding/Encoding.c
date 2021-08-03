@@ -28,15 +28,17 @@ class Encoding
     {
 		string result;
 		
+		// There might be some Math.Log2 optimization to make the code shorter
+		// but im almost certain that this is the fastest way to do this		
 		while (true) {
 			result = HEX_BYTES[ascii % 16] + result;
-			ascii /= 16;
+			ascii >>= 4;
 			if (ascii <= 0) {
 				return result;
 			}
 		}
 		
-        return string.Empty;
+        return result;
     }
 	
 	static int FromHex(string hex)
