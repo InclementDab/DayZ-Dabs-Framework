@@ -30,7 +30,7 @@ PanelWidgetClass ButtonPanel {
    {
     ButtonWidgetClass Button {
      clipchildren 1
-     color 0.3137 0.3137 0.3137 0.9412
+     color 0.7529 0.3647 0.3216 1
      position 0 0
      size 1 1
      halign center_ref
