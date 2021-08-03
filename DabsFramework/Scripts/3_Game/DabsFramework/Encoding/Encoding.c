@@ -35,8 +35,8 @@ class Encoding
 				return result;
 			}
 		}
-				
-        return result;
+		
+        return string.Empty;
     }
 	
 	static int FromHex(string hex)
@@ -47,13 +47,11 @@ class Encoding
 		hex.ToUpper();
 		hex.TrimInPlace();
 		
-		if (hex.Length() % 2) {
-			hex = "0" + hex;
-		}
-		
-		for (int i = 0; i < hex.Length();) {
-			result += (HEX_BYTES.Find(hex[i]) * 16) + HEX_BYTES.Find(hex[i + 1]);
-			i += 2;
+		for (int i = 0; i < hex.Length(); i++) {
+			/* The additional math at the end is to invert the direction of the for loop
+			 but only for the pow, since the index operator works from the first item,
+			 we want ^0 on the last digit, and ^n-1 on the first digit */
+			result += HEX_BYTES.Find(hex[i]) * Math.Pow(16, Math.AbsInt(i - hex.Length() + 1));
 		}
 
 		return result;
