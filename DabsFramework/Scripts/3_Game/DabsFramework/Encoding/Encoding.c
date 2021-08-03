@@ -26,8 +26,38 @@ class Encoding
 	
     static string ToHex(int ascii)
     {
-        return (HEX_BYTES[Math.Floor(ascii / 16)] + HEX_BYTES[ascii % 16]);
+		string result;
+		
+		while (true) {
+			result = HEX_BYTES[ascii % 16] + result;
+			ascii /= 16;
+			if (ascii <= 0) {
+				return result;
+			}
+		}
+				
+        return result;
     }
+	
+	static int FromHex(string hex)
+	{
+		int result;
+		
+		// Formatting
+		hex.ToUpper();
+		hex.TrimInPlace();
+		
+		if (hex.Length() % 2) {
+			hex = "0" + hex;
+		}
+		
+		for (int i = 0; i < hex.Length();) {
+			result += (HEX_BYTES.Find(hex[i]) * 16) + HEX_BYTES.Find(hex[i + 1]);
+			i += 2;
+		}
+
+		return result;
+	}
 	
     static string FromBytesHex(notnull array<int> data)
     {
