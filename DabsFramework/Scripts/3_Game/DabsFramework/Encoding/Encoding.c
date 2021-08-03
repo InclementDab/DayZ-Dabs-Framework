@@ -31,12 +31,12 @@ class Encoding
 	
     static string FromBytesHex(notnull array<int> data)
     {
-        string hexStr = "";
+        string hex = "";
         for (int i = 0; i < data.Count(); i++) {
-            hexStr += Encoding.ToHex(data[i]);
+            hex += Encoding.ToHex(data[i]);
         }
 		
-        return hexStr;
+        return hex;
     }
 	
 	// todo base64 encoding so we can convert Steamid64 to DayZ ID
