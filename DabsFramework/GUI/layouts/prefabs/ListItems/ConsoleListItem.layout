@@ -1,0 +1,17 @@
+TextWidgetClass ConsoleTextReadout {
+ position 0 0
+ size 1 16
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ scriptclass "ViewBinding"
+ font "gui/fonts/sdf_MetronLight24"
+ "text offset" 10 0
+ text_proportion 0.8
+ "text valign" center
+ {
+  ScriptParamsClass {
+  }
+ }
+}
