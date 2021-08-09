@@ -15,6 +15,10 @@ class EditorObjectData: SerializableBase
 	// Re-enable this once we get versioned serializing working :)
 	//bool EditorOnly = false;
 	
+	// todo: remove this nonserialized so this can save
+	[NonSerialized()]
+	ref array<string> Attachments = {};
+	
 	[NonSerialized()]
 	string Model;
 	
@@ -31,6 +35,9 @@ class EditorObjectData: SerializableBase
 	
 	[NonSerialized()]
 	Object WorldObject;
+	
+	[NonSerialized()]
+	ref map<string, ref Param> Parameters = new map<string, ref Param>();
 	
 	void EditorObjectData() 
 	{
