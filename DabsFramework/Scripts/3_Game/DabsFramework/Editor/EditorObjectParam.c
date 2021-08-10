@@ -28,11 +28,6 @@ class EditorObjectParam1<Class T1>: EditorObjectParam
 		return param;
 	}
 	
-	override string GetSerializeableType()
-	{
-		return (new EditorObjectParam1<T1>()).Type().ToString();
-	}
-	
 	override bool Serialize(Serializer ctx)
 	{
 		return ctx.Write(param1);

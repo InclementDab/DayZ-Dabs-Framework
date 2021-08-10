@@ -112,20 +112,16 @@ class EditorObjectData: SerializableBase
 		}
 		
 		serializer.Write(Attachments.Count());
-		Print(Attachments.Count());
 		for (int i = 0; i < Attachments.Count(); i++) {
-			Print(Attachments[i]);
 			serializer.Write(Attachments[i]);
 		}
 		
 		// Serialize parameters
 		serializer.Write(Parameters.Count());
-		Print(Parameters.Count());
 		for (int j = 0; j < Parameters.Count(); j++) {
 			string key_at_index = Parameters.GetKey(j);
 			serializer.Write(key_at_index);
 			// write the type of the object that will need to be created
-			Print(Parameters[key_at_index]);
 			serializer.Write(Parameters[key_at_index].GetSerializeableType());
 			
 			// write the data of the object
@@ -152,19 +148,15 @@ class EditorObjectData: SerializableBase
 			string attachment;
 			serializer.Read(attachment);
 			Attachments[i] = attachment;
-			Print(attachment);
 		}
 		
 		int params_count;
 		serializer.Read(params_count);
-		Print(params_count);
 		for (int j = 0; j < params_count; j++) {
 			string param_key;
 			string param_type;
 			serializer.Read(param_key);
 			serializer.Read(param_type);
-			Print(param_key);
-			Print(param_type);
 			if (!param_type.ToType()) {
 				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
 				return false;
@@ -178,8 +170,6 @@ class EditorObjectData: SerializableBase
 			
 			param_value.Deserialize(serializer);
 			Parameters[param_key] = param_value;
-
-			Print(param_value);
 		}
 		
 		return true;
