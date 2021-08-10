@@ -37,7 +37,7 @@ class EditorObjectData: SerializableBase
 	Object WorldObject;
 	
 	[NonSerialized()]
-	ref map<string, ref Param> Parameters = new map<string, ref Param>();
+	ref map<string, ref EditorObjectParam> Parameters = new map<string, ref EditorObjectParam>();
 	
 	void EditorObjectData() 
 	{
@@ -106,6 +106,31 @@ class EditorObjectData: SerializableBase
 		serializer.Write(Orientation);
 		serializer.Write(Scale);
 		serializer.Write(Flags);
+		
+		if (version < 2) {
+			return;
+		}
+		
+		serializer.Write(Attachments.Count());
+		Print(Attachments.Count());
+		for (int i = 0; i < Attachments.Count(); i++) {
+			Print(Attachments[i]);
+			serializer.Write(Attachments[i]);
+		}
+		
+		// Serialize parameters
+		serializer.Write(Parameters.Count());
+		Print(Parameters.Count());
+		for (int j = 0; j < Parameters.Count(); j++) {
+			string key_at_index = Parameters.GetKey(j);
+			serializer.Write(key_at_index);
+			// write the type of the object that will need to be created
+			Print(Parameters[key_at_index]);
+			serializer.Write(Parameters[key_at_index].GetSerializeableType());
+			
+			// write the data of the object
+			Parameters[key_at_index].Serialize(serializer);
+		}
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -116,6 +141,46 @@ class EditorObjectData: SerializableBase
 		serializer.Read(Orientation);
 		serializer.Read(Scale);
 		serializer.Read(Flags);
+		
+		if (version < 2) {
+			return true;
+		}
+		
+		int attachments_count;
+		serializer.Read(attachments_count);
+		for (int i = 0; i < attachments_count; i++) {
+			string attachment;
+			serializer.Read(attachment);
+			Attachments[i] = attachment;
+			Print(attachment);
+		}
+		
+		int params_count;
+		serializer.Read(params_count);
+		Print(params_count);
+		for (int j = 0; j < params_count; j++) {
+			string param_key;
+			string param_type;
+			serializer.Read(param_key);
+			serializer.Read(param_type);
+			Print(param_key);
+			Print(param_type);
+			if (!param_type.ToType()) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			EditorObjectParam param_value = EditorObjectParam.Cast(param_type.ToType().Spawn());
+			if (!param_value) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			param_value.Deserialize(serializer);
+			Parameters[param_key] = param_value;
+
+			Print(param_value);
+		}
 		
 		return true;
 	}
