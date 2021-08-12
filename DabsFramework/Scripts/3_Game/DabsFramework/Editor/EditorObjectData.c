@@ -147,7 +147,7 @@ class EditorObjectData: SerializableBase
 		for (int i = 0; i < attachments_count; i++) {
 			string attachment;
 			serializer.Read(attachment);
-			Attachments[i] = attachment;
+			Attachments.InsertAt(attachment, i);
 		}
 		
 		int params_count;
