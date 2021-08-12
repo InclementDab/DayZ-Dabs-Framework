@@ -37,7 +37,7 @@ class EditorObjectData: SerializableBase
 	Object WorldObject;
 	
 	[NonSerialized()]
-	ref map<string, ref EditorObjectParam> Parameters = new map<string, ref EditorObjectParam>();
+	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
 	
 	void EditorObjectData() 
 	{
@@ -125,7 +125,7 @@ class EditorObjectData: SerializableBase
 			serializer.Write(Parameters[key_at_index].GetSerializeableType());
 			
 			// write the data of the object
-			Parameters[key_at_index].Serialize(serializer);
+			Parameters[key_at_index].Write(serializer);
 		}
 	}
 	
@@ -162,13 +162,13 @@ class EditorObjectData: SerializableBase
 				return false;
 			}
 			
-			EditorObjectParam param_value = EditorObjectParam.Cast(param_type.ToType().Spawn());
+			SerializableParam param_value = SerializableParam.Cast(param_type.ToType().Spawn());
 			if (!param_value) {
 				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
 				return false;
 			}
 			
-			param_value.Deserialize(serializer);
+			param_value.Read(serializer);
 			Parameters[param_key] = param_value;
 		}
 		
