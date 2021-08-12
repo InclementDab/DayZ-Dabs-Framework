@@ -21,9 +21,9 @@ class SerializableParam1<Class T1>: SerializableParam
 {
 	T1 param1;
 
-	static SerializableParam7<T1> Create(T1 value1)
+	static SerializableParam1<T1> Create(T1 value1)
 	{
-		SerializableParam7<T1> param();
+		SerializableParam1<T1> param();
 		param.param1 = value1;
 		return param;
 	}
@@ -44,9 +44,9 @@ class SerializableParam2<Class T1, Class T2>: SerializableParam
 	T1 param1;
 	T2 param2;
 
-	static SerializableParam7<T1, T2> Create(T1 value1, T2 value2)
+	static SerializableParam2<T1, T2> Create(T1 value1, T2 value2)
 	{
-		SerializableParam7<T1, T2> param();
+		SerializableParam2<T1, T2> param();
 		param.param1 = value1;
 		param.param2 = value2;
 		return param;
@@ -69,9 +69,9 @@ class SerializableParam3<Class T1, Class T2, Class T3>: SerializableParam
 	T2 param2;
 	T3 param3;
 	
-	static SerializableParam7<T1, T2, T3> Create(T1 value1, T2 value2, T3 value3)
+	static SerializableParam3<T1, T2, T3> Create(T1 value1, T2 value2, T3 value3)
 	{
-		SerializableParam7<T1, T2, T3> param();
+		SerializableParam3<T1, T2, T3> param();
 		param.param1 = value1;
 		param.param2 = value2;
 		param.param3 = value3;
@@ -96,9 +96,9 @@ class SerializableParam4<Class T1, Class T2, Class T3, Class T4>: SerializablePa
 	T3 param3;
 	T4 param4;
 	
-	static SerializableParam7<T1, T2, T3, T4> Create(T1 value1, T2 value2, T3 value3, T4 value4)
+	static SerializableParam4<T1, T2, T3, T4> Create(T1 value1, T2 value2, T3 value3, T4 value4)
 	{
-		SerializableParam7<T1, T2, T3, T4> param();
+		SerializableParam4<T1, T2, T3, T4> param();
 		param.param1 = value1;
 		param.param2 = value2;
 		param.param3 = value3;
@@ -125,9 +125,9 @@ class SerializableParam5<Class T1, Class T2, Class T3, Class T4, Class T5>: Seri
 	T4 param4;
 	T5 param5;
 	
-	static SerializableParam7<T1, T2, T3, T4, T5> Create(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
+	static SerializableParam5<T1, T2, T3, T4, T5> Create(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5)
 	{
-		SerializableParam7<T1, T2, T3, T4, T5> param();
+		SerializableParam5<T1, T2, T3, T4, T5> param();
 		param.param1 = value1;
 		param.param2 = value2;
 		param.param3 = value3;
@@ -156,9 +156,9 @@ class SerializableParam6<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 	T5 param5;
 	T6 param6;
 	
-	static SerializableParam7<T1, T2, T3, T4, T5, T6> Create(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
+	static SerializableParam6<T1, T2, T3, T4, T5, T6> Create(T1 value1, T2 value2, T3 value3, T4 value4, T5 value5, T6 value6)
 	{
-		SerializableParam7<T1, T2, T3, T4, T5, T6> param();
+		SerializableParam6<T1, T2, T3, T4, T5, T6> param();
 		param.param1 = value1;
 		param.param2 = value2;
 		param.param3 = value3;
