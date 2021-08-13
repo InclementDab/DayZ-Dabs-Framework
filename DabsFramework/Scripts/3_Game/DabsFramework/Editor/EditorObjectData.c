@@ -12,8 +12,17 @@ class EditorObjectData: SerializableBase
 	vector Orientation;
 	float Scale = 1;
 	
-	// Re-enable this once we get versioned serializing working :)
-	//bool EditorOnly = false;
+	[NonSerialized()]
+	bool EditorOnly;
+	
+	[NonSerialized()]
+	bool Locked;
+	
+	[NonSerialized()]
+	bool AllowDamage;
+	
+	[NonSerialized()]
+	bool Simulate;
 	
 	// todo: remove this nonserialized so this can save
 	[NonSerialized()]
@@ -127,6 +136,15 @@ class EditorObjectData: SerializableBase
 			// write the data of the object
 			Parameters[key_at_index].Write(serializer);
 		}
+		
+		if (version < 3) {
+			return;
+		}
+		
+		serializer.Write(EditorOnly);
+		serializer.Write(Locked);
+		serializer.Write(AllowDamage);
+		serializer.Write(Simulate);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -171,6 +189,15 @@ class EditorObjectData: SerializableBase
 			param_value.Read(serializer);
 			Parameters[param_key] = param_value;
 		}
+		
+		if (version < 3) {
+			return true;
+		}
+		
+		serializer.Read(EditorOnly);
+		serializer.Read(Locked);
+		serializer.Read(AllowDamage);
+		serializer.Read(Simulate);
 		
 		return true;
 	}
