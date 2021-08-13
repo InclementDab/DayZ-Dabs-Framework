@@ -11,9 +11,10 @@ class CfgPatches
 
 class CfgVehicles
 {
-    class Static;
-    class NetworkLightBase: Static
+    class House;
+    class NetworkLightBase: House
     {
+        displayName = "NetworkLight";
         scope=2;
     };
 

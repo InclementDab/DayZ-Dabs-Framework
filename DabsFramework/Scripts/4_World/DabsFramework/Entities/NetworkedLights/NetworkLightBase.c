@@ -1,30 +1,31 @@
-class NetworkLightBase: EntityAI
+class NetworkLightBase: Building
 {
 	protected ScriptedLightBase m_Light;
 	
-	bool CastShadow;// = GetCastShadow();
+	// All of these are assigned to the default light parameters
+	bool CastShadow = true;
 	bool EnableSpecular = true;
 	bool EnableLinear = true;
 	float PulseCoef = 0.0;
-	bool VisibleDuringDay;// = IsVisibleDuringDaylight();
-	float Radius;// = GetRadius();
+	bool VisibleDuringDay = false;
+	float Radius = 50;
 	
 	// Heat Haze
 	bool HeatHaze = false;
-	float HeatHazeRadius;// = GetHeatHazeRadius();
-	float HeatHazePower;// = GetHeatHazePower();
+	float HeatHazeRadius = 0;
+	float HeatHazePower = 0;
 	
 	// Colors and brightness
-	int DiffuseColor = COLOR_WHITE; // todo default these
+	int DiffuseColor = COLOR_WHITE;
 	int AmbientColor = COLOR_WHITE;
-	float Brightness;// = GetBrightness();
+	float Brightness = 1.0;
 	
 	// Flare
-	bool FlareVisible;// = IsFlareVisible();
+	bool FlareVisible = true;
 	vector FlareRelativePosition;// = GetFlareRelPosition();
 	
 	// Spotlight
-	float SpotLightAngle;// = GetSpotLightAngle();
+	float SpotLightAngle = 90;
 	
 	void NetworkLightBase()
 	{
