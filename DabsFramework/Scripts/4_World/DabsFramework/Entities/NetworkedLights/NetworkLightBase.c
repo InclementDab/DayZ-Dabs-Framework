@@ -16,8 +16,8 @@ class NetworkLightBase: Building
 	float HeatHazePower = 0;
 	
 	// Colors and brightness
-	int DiffuseColor = COLOR_WHITE;
-	int AmbientColor = COLOR_WHITE;
+	int DiffuseColor = ARGB(255, 255, 255, 255);
+	int AmbientColor = ARGB(255, 255, 255, 255);
 	float Brightness = 1.0;
 	
 	// Flare
