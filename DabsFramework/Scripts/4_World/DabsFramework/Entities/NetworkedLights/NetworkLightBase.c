@@ -57,6 +57,13 @@ class NetworkLightBase: Building
 		}
 	}
 	
+	void ~NetworkLightBase()
+	{
+		if (m_Light) {
+			m_Light.Destroy();
+		}
+	}
+	
 	ScriptedLightBase CreateLight(vector global_pos = "0 0 0", float fade_in_time_in_s = 0)
 	{
 		return ScriptedLightBase.CreateLight(ScriptedLightBase, global_pos, fade_in_time_in_s);
