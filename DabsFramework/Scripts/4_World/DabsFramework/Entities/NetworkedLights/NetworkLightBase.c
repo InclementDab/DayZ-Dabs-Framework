@@ -102,6 +102,44 @@ class NetworkLightBase: Building
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 	
+	void Write(Serializer serializer)
+	{
+		serializer.Write(CastShadow);
+		serializer.Write(EnableSpecular);
+		serializer.Write(EnableLinear);
+		serializer.Write(PulseCoef);
+		serializer.Write(VisibleDuringDay);
+		serializer.Write(Radius);
+		serializer.Write(HeatHaze);
+		serializer.Write(HeatHazeRadius);
+		serializer.Write(HeatHazePower);
+		serializer.Write(DiffuseColor);
+		serializer.Write(AmbientColor);
+		serializer.Write(Brightness);
+		serializer.Write(FlareVisible);
+		serializer.Write(FlareRelativePosition);
+		serializer.Write(SpotLightAngle);
+	}
+	
+	void Read(Serializer serializer)
+	{
+		serializer.Read(CastShadow);
+		serializer.Read(EnableSpecular);
+		serializer.Read(EnableLinear);
+		serializer.Read(PulseCoef);
+		serializer.Read(VisibleDuringDay);
+		serializer.Read(Radius);
+		serializer.Read(HeatHaze);
+		serializer.Read(HeatHazeRadius);
+		serializer.Read(HeatHazePower);
+		serializer.Read(DiffuseColor);
+		serializer.Read(AmbientColor);
+		serializer.Read(Brightness);
+		serializer.Read(FlareVisible);
+		serializer.Read(FlareRelativePosition);
+		serializer.Read(SpotLightAngle);
+	}
+	
 	void PropertyChanged(string property_name)
 	{
 		float a, r, g, b;
