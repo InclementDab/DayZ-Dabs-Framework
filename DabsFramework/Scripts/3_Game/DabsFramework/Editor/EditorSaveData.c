@@ -3,7 +3,7 @@ class EditorSaveData
 	[NonSerialized()]
 	static const string BIN_CHECK = "EditorBinned";
 	
-	int Version = 2;
+	int Version = 3;
 	string MapName;
 	vector CameraPosition;
 	
