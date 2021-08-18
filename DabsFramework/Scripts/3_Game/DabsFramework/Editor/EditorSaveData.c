@@ -3,7 +3,7 @@ class EditorSaveData
 	[NonSerialized()]
 	static const string BIN_CHECK = "EditorBinned";
 	
-	int Version = 3;
+	static const int Version = 3;
 	string MapName;
 	vector CameraPosition;
 	
@@ -42,7 +42,8 @@ class EditorSaveData
 			return false;
 		}
 		
-		serializer.Read(Version);
+		int read_version;
+		serializer.Read(read_version);
 		serializer.Read(MapName);
 		serializer.Read(CameraPosition);
 		
@@ -50,7 +51,7 @@ class EditorSaveData
 		serializer.Read(editor_object_count);
 		for (int i = 0; i < editor_object_count; i++) {
 			EditorObjectData data();
-			data.Read(serializer, Version);
+			data.Read(serializer, read_version);
 			EditorObjects.Insert(data);
 		}
 		
@@ -58,7 +59,7 @@ class EditorSaveData
 		serializer.Read(editor_deleted_object_count);
 		for (int j = 0; j < editor_deleted_object_count; j++) {
 			EditorDeletedObjectData deleted_data();
-			deleted_data.Read(serializer, Version);
+			deleted_data.Read(serializer, read_version);
 			EditorDeletedObjects.Insert(deleted_data);
 		}
 		
