@@ -22,7 +22,7 @@ class NetworkLightBase: Building
 	
 	// Flare
 	bool FlareVisible = true;
-	vector FlareRelativePosition;// = GetFlareRelPosition();
+	//vector FlareRelativePosition;// = GetFlareRelPosition();
 	
 	// Spotlight
 	float SpotLightAngle = 90;
@@ -98,48 +98,74 @@ class NetworkLightBase: Building
 		m_Light.SetAmbientAlpha(a);
 		m_Light.SetBrightnessTo(Brightness);
 		m_Light.SetFlareVisible(FlareVisible);
-		m_Light.SetFlareRelPosition(FlareRelativePosition);
+		//m_Light.SetFlareRelPosition(FlareRelativePosition);
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 	
-	void Write(Serializer serializer)
+	void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
-		serializer.Write(CastShadow);
-		serializer.Write(EnableSpecular);
-		serializer.Write(EnableLinear);
-		serializer.Write(PulseCoef);
-		serializer.Write(VisibleDuringDay);
-		serializer.Write(Radius);
-		serializer.Write(HeatHaze);
-		serializer.Write(HeatHazeRadius);
-		serializer.Write(HeatHazePower);
-		serializer.Write(DiffuseColor);
-		serializer.Write(AmbientColor);
-		serializer.Write(Brightness);
-		serializer.Write(FlareVisible);
-		serializer.Write(FlareRelativePosition);
-		serializer.Write(SpotLightAngle);
+		serializable_data["CastShadow"] = SerializableParam1<bool>.Create(CastShadow);
+		serializable_data["EnableSpecular"] = SerializableParam1<bool>.Create(EnableSpecular);
+		serializable_data["EnableLinear"] = SerializableParam1<bool>.Create(EnableLinear);
+		serializable_data["VisibleDuringDay"] = SerializableParam1<bool>.Create(VisibleDuringDay);
+		serializable_data["HeatHaze"] = SerializableParam1<bool>.Create(HeatHaze);
+		serializable_data["FlareVisible"] = SerializableParam1<bool>.Create(FlareVisible);
+		
+		serializable_data["DiffuseColor"] = SerializableParam1<int>.Create(DiffuseColor);
+		serializable_data["AmbientColor"] = SerializableParam1<int>.Create(AmbientColor);
+		
+		serializable_data["PulseCoef"] = SerializableParam1<float>.Create(PulseCoef);
+		serializable_data["Radius"] = SerializableParam1<float>.Create(Radius);
+		serializable_data["HeatHazeRadius"] = SerializableParam1<float>.Create(HeatHazeRadius);
+		serializable_data["HeatHazePower"] = SerializableParam1<float>.Create(HeatHazePower);
+		serializable_data["Brightness"] = SerializableParam1<float>.Create(Brightness);
+		serializable_data["SpotLightAngle"] = SerializableParam1<float>.Create(SpotLightAngle);
 	}
 	
-	void Read(Serializer serializer)
-	{
-		serializer.Read(CastShadow);
-		serializer.Read(EnableSpecular);
-		serializer.Read(EnableLinear);
-		serializer.Read(PulseCoef);
-		serializer.Read(VisibleDuringDay);
-		serializer.Read(Radius);
-		serializer.Read(HeatHaze);
-		serializer.Read(HeatHazeRadius);
-		serializer.Read(HeatHazePower);
-		serializer.Read(DiffuseColor);
-		serializer.Read(AmbientColor);
-		serializer.Read(Brightness);
-		serializer.Read(FlareVisible);
-		serializer.Read(FlareRelativePosition);
-		serializer.Read(SpotLightAngle);
+	void Read(map<string, ref SerializableParam> serializable_data)
+	{		
+		CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;
+		EnableSpecular = SerializableParam1<bool>.Cast(serializable_data["EnableSpecular"]).param1;
+		EnableLinear = SerializableParam1<bool>.Cast(serializable_data["EnableLinear"]).param1;
+		VisibleDuringDay = SerializableParam1<bool>.Cast(serializable_data["VisibleDuringDay"]).param1;
+		HeatHaze = SerializableParam1<bool>.Cast(serializable_data["HeatHaze"]).param1;
+		FlareVisible = SerializableParam1<bool>.Cast(serializable_data["FlareVisible"]).param1;
+		
+		DiffuseColor = SerializableParam1<int>.Cast(serializable_data["DiffuseColor"]).param1;
+		AmbientColor = SerializableParam1<int>.Cast(serializable_data["AmbientColor"]).param1;
+		
+		PulseCoef = SerializableParam1<float>.Cast(serializable_data["PulseCoef"]).param1;
+		Radius = SerializableParam1<float>.Cast(serializable_data["Radius"]).param1;
+		HeatHazeRadius = SerializableParam1<float>.Cast(serializable_data["HeatHazeRadius"]).param1;
+		HeatHazePower = SerializableParam1<float>.Cast(serializable_data["HeatHazePower"]).param1;
+		Brightness = SerializableParam1<float>.Cast(serializable_data["Brightness"]).param1;
+		SpotLightAngle = SerializableParam1<float>.Cast(serializable_data["SpotLightAngle"]).param1;
+		
+		// Update
+		m_Light.SetCastShadow(CastShadow);
+		m_Light.EnableSpecular(EnableSpecular);
+		m_Light.EnableLinear(EnableLinear);
+		m_Light.SetPulseCoef(PulseCoef);
+		m_Light.SetVisibleDuringDaylight(VisibleDuringDay);	
+		m_Light.SetRadiusTo(Radius);
+		m_Light.EnableHeatHaze(HeatHaze);
+		m_Light.SetHeatHazeRadius(HeatHazeRadius);
+		m_Light.SetHeatHazePower(HeatHazePower);
+
+		float a, r, g, b;
+		InverseARGBF(DiffuseColor, a, r, g, b);
+		m_Light.SetDiffuseColor(r, g, b);
+		m_Light.SetDiffuseAlpha(a);
+
+		InverseARGBF(AmbientColor, a, r, g, b);
+		m_Light.SetAmbientColor(r, g, b);
+		m_Light.SetAmbientAlpha(a);
+		m_Light.SetBrightnessTo(Brightness);
+		m_Light.SetFlareVisible(FlareVisible);
+		//m_Light.SetFlareRelPosition(FlareRelativePosition);
+		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
-	
+		
 	void PropertyChanged(string property_name)
 	{
 		float a, r, g, b;
@@ -214,7 +240,7 @@ class NetworkLightBase: Building
 			}
 			
 			case "FlareRelativePosition": {
-				m_Light.SetFlareRelPosition(FlareRelativePosition);
+				//m_Light.SetFlareRelPosition(FlareRelativePosition);
 				break;
 			}
 			
