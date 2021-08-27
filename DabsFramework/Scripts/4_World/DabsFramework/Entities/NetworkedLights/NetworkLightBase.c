@@ -69,6 +69,11 @@ class NetworkLightBase: Building
 		return ScriptedLightBase.CreateLight(ScriptedLightBase, global_pos, fade_in_time_in_s);
 	}
 	
+	ScriptedLightBase GetLight()
+	{
+		return m_Light;
+	}
+	
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
