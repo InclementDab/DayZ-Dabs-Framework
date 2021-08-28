@@ -71,7 +71,6 @@ class EditorSaveData
 		FileSerializer serializer();
 		
 		if (!serializer.Open(file)) {
-			Error("Bincheck Failed, could not open " + file);
 			return false;
 		}
 		
