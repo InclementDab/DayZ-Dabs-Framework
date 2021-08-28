@@ -95,7 +95,7 @@ PanelWidgetClass EditorPosElement {
        clipchildren 1
        ignorepointer 1
        color 0.7647 0.1804 0.102 0.0784
-       position 8 0
+       position 20 0
        size 0.9 1
        valign center_ref
        hexactpos 1
@@ -108,8 +108,8 @@ PanelWidgetClass EditorPosElement {
          visible 1
          clipchildren 1
          color 1 1 1 0.9608
+         position 2 0
          size 0.965 16
-         halign right_ref
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -188,7 +188,7 @@ PanelWidgetClass EditorPosElement {
       PanelWidgetClass txt_y {
        ignorepointer 1
        color 0.5765 0.8157 0.2196 0.0784
-       position 10 0
+       position 20 0
        size 0.9 1
        valign center_ref
        hexactpos 1
@@ -201,9 +201,8 @@ PanelWidgetClass EditorPosElement {
          visible 1
          keepsafezone 0
          color 1 1 1 0.9608
-         position 0 0
+         position 2 0
          size 0.97 16
-         halign right_ref
          valign center_ref
          hexactpos 1
          vexactpos 1
