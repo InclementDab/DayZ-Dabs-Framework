@@ -1,7 +1,6 @@
 class DialogBase: ScriptView
 {
-	static const vector MIN_SIZE = "200 0 100";
-	static const vector MAX_SIZE = "800 0 600";
+	static const int MAX_HEIGHT = 300;
 	
 	// Private members
 	protected DialogResult m_DialogResult = DialogResult.None;
@@ -13,6 +12,8 @@ class DialogBase: ScriptView
 	protected ScrollWidget DialogScroll;
 	protected WrapSpacerWidget WindowDragWrapper;
 	protected ImageWidget TitleIcon;
+	
+	protected int m_ContentSize;
 	
 	void DialogBase(string title)
 	{
@@ -59,10 +60,35 @@ class DialogBase: ScriptView
 	{
 		delete this;
 	}
+	
+	// Groups are special!
+	ScriptView AddContent(GroupPrefab content)
+	{
+		float x, y;
+		content.GetLayoutRoot().GetScreenSize(x, y);
+		m_ContentSize += y;
+		
+		array<ref ScriptView> children = content.GetChildren();
+		foreach (ScriptView child: children) {
+			child.GetLayoutRoot().GetScreenSize(x, y);
+			m_ContentSize += y;
+		}
+		
+		m_ContentSize = Math.Min(m_ContentSize, MAX_HEIGHT);
+				
+		content.SetParent(this);		
+		m_DialogBaseController.DialogContentData.Insert(content);
+		return content;
+	}
 		
 	ScriptView AddContent(ScriptView content)
 	{
-		content.SetParent(this);
+		float x, y;
+		content.GetLayoutRoot().GetScreenSize(x, y);
+		m_ContentSize += y;
+		m_ContentSize = Math.Min(m_ContentSize, MAX_HEIGHT);
+				
+		content.SetParent(this);		
 		m_DialogBaseController.DialogContentData.Insert(content);
 		return content;
 	}
@@ -152,34 +178,18 @@ class DialogBase: ScriptView
 	}
 	
 	/*
+		Format for size, maybe?
 		vector[0] = X
 		vector[1] = sort level
 		vector[2] = Y
 	*/
-	void SetSize(vector size)
+	
+	void AutoSize()
 	{
 		Trace("SetSize");
-		m_LayoutRoot.SetSize(size[0], 0, false); // importante!
-		m_LayoutRoot.SetSort((float)size[1], false); // float cast avoids syntax error, idk
-		m_LayoutRoot.Update();
-		DialogScroll.SetSize(1, size[2]);				
+		DialogScroll.SetSize(1, m_ContentSize);
 	}
-	
-	vector GetAutoSize()
-	{
-		Trace("GetAutoSize");
-		vector result;
-		for (int i = 0; i < m_DialogBaseController.DialogContentData.Count(); i++) {
-			float x, y;
-			m_DialogBaseController.DialogContentData[i].GetLayoutRoot().GetScreenSize(x, y);
-			result[0] = Math.Max(result[0], x);
-			result[2] = result[2] + y;
-		}
-		
-		result[1] = 998; // priority
-		return result;
-	}
-	
+			
 	// Abstract
 	string GetIcon()
 	{
