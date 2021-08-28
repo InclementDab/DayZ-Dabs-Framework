@@ -1,5 +1,8 @@
 class DialogBase: ScriptView
 {
+	static const vector MIN_SIZE = "200 0 100";
+	static const vector MAX_SIZE = "800 0 600";
+	
 	// Private members
 	protected DialogResult m_DialogResult = DialogResult.None;
 
@@ -7,6 +10,7 @@ class DialogBase: ScriptView
 	protected DialogBaseController m_DialogBaseController;
 	
 	// View Properties	
+	protected ScrollWidget DialogScroll;
 	protected WrapSpacerWidget WindowDragWrapper;
 	protected ImageWidget TitleIcon;
 	
@@ -145,6 +149,35 @@ class DialogBase: ScriptView
 	    }		
 		
 		return false;
+	}
+	
+	/*
+		vector[0] = X
+		vector[1] = sort level
+		vector[2] = Y
+	*/
+	void SetSize(vector size)
+	{
+		Trace("SetSize");
+		m_LayoutRoot.SetSize(size[0], 0, false); // importante!
+		m_LayoutRoot.SetSort((float)size[1], false); // float cast avoids syntax error, idk
+		m_LayoutRoot.Update();
+		DialogScroll.SetSize(1, size[2]);				
+	}
+	
+	vector GetAutoSize()
+	{
+		Trace("GetAutoSize");
+		vector result;
+		for (int i = 0; i < m_DialogBaseController.DialogContentData.Count(); i++) {
+			float x, y;
+			m_DialogBaseController.DialogContentData[i].GetLayoutRoot().GetScreenSize(x, y);
+			result[0] = Math.Max(result[0], x);
+			result[2] = result[2] + y;
+		}
+		
+		result[1] = 998; // priority
+		return result;
 	}
 	
 	// Abstract

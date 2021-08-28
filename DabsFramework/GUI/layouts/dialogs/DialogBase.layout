@@ -168,12 +168,13 @@ WrapSpacerWidgetClass EditorDialog {
    ignorepointer 0
    keepsafezone 0
    color 0.3137 0.3137 0.3137 0.5882
-   size 538 230
+   position 0 0
+   size 1 230
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
-   hexactsize 1
+   hexactsize 0
    vexactsize 1
    "Scrollbar V" 1
    {
