@@ -1,6 +1,6 @@
 class DialogBase: ScriptView
 {
-	static const int MAX_HEIGHT = 300;
+	static const int MAX_HEIGHT = 600;
 	
 	// Private members
 	protected DialogResult m_DialogResult = DialogResult.None;
@@ -61,24 +61,17 @@ class DialogBase: ScriptView
 		delete this;
 	}
 	
-	// Groups are special!
 	ScriptView AddContent(GroupPrefab content)
-	{
-		float x, y;
-		content.GetLayoutRoot().GetScreenSize(x, y);
-		m_ContentSize += y;
-		
+	{		
 		array<ref ScriptView> children = content.GetChildren();
 		foreach (ScriptView child: children) {
+			float x, y;
 			child.GetLayoutRoot().GetScreenSize(x, y);
 			m_ContentSize += y;
 		}
-		
-		m_ContentSize = Math.Min(m_ContentSize, MAX_HEIGHT);
-				
-		content.SetParent(this);		
-		m_DialogBaseController.DialogContentData.Insert(content);
-		return content;
+	
+		// wow this works
+		return AddContent((ScriptView)content);
 	}
 		
 	ScriptView AddContent(ScriptView content)
