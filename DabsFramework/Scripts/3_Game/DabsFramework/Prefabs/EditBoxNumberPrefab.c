@@ -32,7 +32,7 @@ class EditBoxNumberPrefab: PrefabBase<StringEvaluater>
 			}
 		}
 		
-		return false;
+		return true;
 	}
 	
 	override StringEvaluater GetDefaultValue(Class binding_context, string binding_name)
