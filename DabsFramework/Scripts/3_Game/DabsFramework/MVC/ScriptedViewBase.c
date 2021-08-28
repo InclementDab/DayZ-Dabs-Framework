@@ -61,12 +61,12 @@ class ScriptedViewBase : Managed
 
 	void ScriptedViewBase()
 	{
-		if (Debug_Logging)
+		if (Debug_Logging) {
 			PrintFormat("[Log] %1", this);
+		}
 
 		m_TypeConverter = MVC.GetTypeConversion(Type());
-		if (!m_TypeConverter)
-		{
+		if (!m_TypeConverter) {
 			Error("Could not generate TypeConverter on %1", Type().ToString());
 			return;
 		}
@@ -77,8 +77,9 @@ class ScriptedViewBase : Managed
 
 	void ~ScriptedViewBase()
 	{
-		if (Debug_Logging)
+		if (Debug_Logging) {
 			PrintFormat("[Log] ~%1", this);
+		}
 	}
 
 	void OnWidgetScriptInit(Widget w)
@@ -88,8 +89,7 @@ class ScriptedViewBase : Managed
 		m_LayoutRoot.SetHandler(m_ScriptedViewBaseHandler);
 
 		m_WidgetController = MVC.GetWidgetController(m_LayoutRoot);
-		if (!m_WidgetController)
-		{
+		if (!m_WidgetController) {
 			Error("Could not find WidgetController for type %1\n\nOverride MVC.RegisterWidgetControllers to register custom WidgetControllers", m_LayoutRoot.GetTypeName());
 			return;
 		}

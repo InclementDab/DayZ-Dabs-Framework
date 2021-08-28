@@ -1,6 +1,7 @@
 class DialogBase: ScriptView
 {
 	static const int MAX_HEIGHT = 600;
+	static const int MIN_HEIGHT = 0;
 	
 	// Private members
 	protected DialogResult m_DialogResult = DialogResult.None;
@@ -84,6 +85,28 @@ class DialogBase: ScriptView
 		content.SetParent(this);		
 		m_DialogBaseController.DialogContentData.Insert(content);
 		return content;
+	}
+	
+	void RemoveContent(ScriptView content)
+	{
+		float x, y;
+		content.GetLayoutRoot().GetScreenSize(x, y);
+		m_ContentSize -= y;
+		m_ContentSize = Math.Max(m_ContentSize, MIN_HEIGHT);
+		
+		if (m_DialogBaseController.DialogContentData.Find(content) == -1) {
+			Error("RemoveContent could not find content");
+			return;
+		}
+		
+		m_DialogBaseController.DialogContentData.Remove(m_DialogBaseController.DialogContentData.Find(content));
+		delete content;
+	}
+	
+	void ClearContent()
+	{
+		m_DialogBaseController.DialogContentData.Clear();
+		m_ContentSize = 0;
 	}
 	
 	DialogButton AddButton(DialogResult result)
