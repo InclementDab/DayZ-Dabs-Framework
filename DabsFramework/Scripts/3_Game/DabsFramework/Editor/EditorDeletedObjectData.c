@@ -17,6 +17,11 @@ class EditorDeletedObjectData: SerializableBase
 		ID = DeletedObjectId;
 	}
 	
+	int GetID()
+	{
+		return ID;
+	}
+	
 	static EditorDeletedObjectData Create(string type, vector position)
 	{		
 		EditorDeletedObjectData data();
