@@ -144,11 +144,11 @@ WrapSpacerWidgetClass EditorDialog {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
    position 0 0
-   size 540 60
+   size 1 60
    halign center_ref
    hexactpos 0
    vexactpos 0
-   hexactsize 1
+   hexactsize 0
    vexactsize 1
    scaled 1
    priority 3
@@ -208,10 +208,10 @@ WrapSpacerWidgetClass EditorDialog {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 0.9412
    position 10 10
-   size 538 1
+   size 1 1
    hexactpos 1
    vexactpos 1
-   hexactsize 1
+   hexactsize 0
    vexactsize 1
    style rover_sim_colorable
   }
