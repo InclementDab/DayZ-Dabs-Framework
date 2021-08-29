@@ -54,6 +54,11 @@ class NetworkLightBase: Building
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 			m_Light = CreateLight();
 			m_Light.AttachOnObject(this);
+			
+			// Update for clients
+			if (GetGame().IsMultiplayer()) {
+				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(OnVariablesSynchronized, 1000, false);
+			}
 		}
 	}
 	
@@ -77,8 +82,7 @@ class NetworkLightBase: Building
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-		
-		if (!GetGame().IsMultiplayer() || !m_Light) {
+		if (!m_Light) { // !GetGame().IsMultiplayer()
 			return;
 		}
 		
@@ -145,6 +149,11 @@ class NetworkLightBase: Building
 		HeatHazePower = SerializableParam1<float>.Cast(serializable_data["HeatHazePower"]).param1;
 		Brightness = SerializableParam1<float>.Cast(serializable_data["Brightness"]).param1;
 		SpotLightAngle = SerializableParam1<float>.Cast(serializable_data["SpotLightAngle"]).param1;
+		
+		if (GetGame().IsServer() && GetGame().IsMultiplayer()) {
+			SetSynchDirty();
+			return;
+		}
 		
 		// Update
 		m_Light.SetCastShadow(CastShadow);
