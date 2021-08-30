@@ -11,8 +11,6 @@
 *
 */
 
-#define EVENT_MANAGER_DEBUG
-
 class EventBase
 {
 	protected int m_EventState = -1;
