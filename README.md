@@ -7,6 +7,8 @@ MVC
 
 ..more?
 
+Please note this mod is **not** permissable to repack. This information is below is for modders to use if they want to add DF as a dependency. Do not repack, it will be DMCA'd
+
 ### If you are cloning this and the mod already exists
 ```
 1.) Clone into hard drive outside of your P drive
