@@ -77,8 +77,8 @@ class EventManager
 		m_EventFreqMax = max_between_events;
 		
 #ifdef EVENT_MANAGER_DEBUG
-		m_EventFreqMin *= 0.05;
-		m_EventFreqMax *= 0.05;
+		//m_EventFreqMin *= 0.05;
+		//m_EventFreqMax *= 0.05;
 #endif
 		
 		m_EventCooldownTimer.Run(1.0, this, "ServerCooldownThread", null, true);

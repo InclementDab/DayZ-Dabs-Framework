@@ -11,6 +11,8 @@
 *
 */
 
+#define EVENT_MANAGER_DEBUG
+
 class EventBase
 {
 	protected int m_EventState = -1;
@@ -124,10 +126,10 @@ class EventBase
 		}
 		
 		m_EventState = phase;
-		EventDebug("SwitchPhase %1", m_EventState.ToString());
+		EventDebug("SwitchPhase %1", typename.EnumToString(EventPhase, m_EventState));
 		
 		if (GetGame().IsServer()) {		
-			m_PhaseTimeRemaining = GetCurrentPhaseLength();	
+			m_PhaseTimeRemaining = GetPhaseLength(phase);	
 			switch (m_EventState) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();
