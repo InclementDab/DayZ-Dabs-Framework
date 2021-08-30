@@ -118,7 +118,7 @@ class EventBase
 		
 	void SwitchPhase(EventPhase phase, float time_remaining = 0)
 	{
-		if (m_EventState == phase) {
+		if (m_EventState <= phase) {
 			EventDebug("Event was already in phase %1, exiting...", phase.ToString());
 			return;
 		}
