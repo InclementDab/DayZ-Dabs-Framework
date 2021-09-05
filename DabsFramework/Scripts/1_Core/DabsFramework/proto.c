@@ -41,25 +41,28 @@ static void RGBFtoHSV(float r, float g, float b, out float h, out float s, out f
     float cmax = Math.Max(r, Math.Max(g, b)); // maximum of r, g, b
     float cmin = Math.Min(r, Math.Min(g, b)); // minimum of r, g, b
     float diff = cmax - cmin; // diff of cmax and cmin.
-        
-    // if cmax and cmax are equal then h = 0
-    if (cmax == cmin) {
-        h = 0;
-	}
+    
+	switch (cmax) {
+		// if cmax and cmax are equal then h = 0
+		case cmin: {
+			h = 0;
+			break;
+		}
 
-    // if cmax equal r then compute h
-    else if (cmax == r) {
-		h = Math.FMod(60 * ((g - b) / diff) + 360, 360);
-	}
+		case r: {
+			h = Math.FMod(60 * ((g - b) / diff) + 360, 360);
+			break;
+		}
 
-    // if cmax equal g then compute h
-    else if (cmax == g) {
-		h = Math.FMod(60 * ((b - r) / diff) + 120, 360);
-	}
+		case g: {
+			h = Math.FMod(60 * ((b - r) / diff) + 120, 360);
+			break;
+		}
 
-       // if cmax equal b then compute h
-    else if (cmax == b) {
-		h = Math.FMod(60 * ((r - g) / diff) + 240, 360);
+		case b: {
+			h = Math.FMod(60 * ((r - g) / diff) + 240, 360);
+			break;
+		}
 	}
 	
 	if (cmax == 0) {
