@@ -16,10 +16,8 @@ typedef map<typename, ref EventBase> TEventMap;
 class EventManager
 {			
 	// Enable / Disable the multiple event system
-	protected int m_MaxEventCount;
+	protected int m_MaxEventCount, m_EventFreqMin, m_EventFreqMax;
 	protected float m_NextEventIn;
-	protected int m_EventFreqMin;
-	protected int m_EventFreqMax;
 	protected typename m_LastEventType;
 	
 	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
@@ -90,7 +88,7 @@ class EventManager
 		EventManagerInfo("EventManager is now running");
 	}
 	
-	private void ServerCooldownThread()
+	protected void ServerCooldownThread()
 	{
 		foreach (typename event_type, int event_cooldown: m_EventCooldowns) {
 			m_EventCooldowns[event_type] = event_cooldown - 1;
@@ -100,7 +98,7 @@ class EventManager
 		}
 	}
 			
-	private void ServerEventThread()
+	protected void ServerEventThread()
 	{	
 		EventManagerInfo("Trying to select a new event...");												
 		// Just a quick check to make sure we dont run the same event twice
@@ -332,6 +330,12 @@ class EventManager
 		foreach (typename type, float freq: m_PossibleEventTypes) {
 			float value = ((1 / total_freq) * freq) * 100;
 			EventManagerInfo("Chance of %1 is %2 percent", type.ToString(), value.ToString());
+		}
+		
+		EventManagerInfo("There are %1 events running", m_ActiveEvents.Count().ToString());
+		
+		foreach (typename typey, EventBase evnt: m_ActiveEvents) {
+			EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", evnt.ToString(), evnt.GetActivePhaseID().ToString(), evnt.GetCurrentPhaseTimeRemaining().ToString());
 		}
 	}
 			
