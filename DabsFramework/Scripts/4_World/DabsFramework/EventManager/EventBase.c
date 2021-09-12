@@ -283,6 +283,8 @@ class EventBase
 		
 		m_PhaseTimeRemaining -= PHASE_TIME_REMAINING_PRECISION;
 		if (m_PhaseTimeRemaining <= 0) {
+			m_PhaseTimeRemaining = 0;
+			
 			if (GetGame().IsServer()) {
 				EventDebug("Attempting to naturally switch to the next phase");
 				SwitchPhase(GetCurrentPhase() + 1);
@@ -296,8 +298,6 @@ class EventBase
 				}
 			}
 		}
-		
-		m_PhaseTimeRemaining = Math.Max(0, m_PhaseTimeRemaining);
 	}
 	
 	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
