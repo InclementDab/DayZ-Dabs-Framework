@@ -11,14 +11,13 @@
 *
 */
 
-
 class EventBase
 {
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
 	protected EventManager m_EventManager;
 	protected bool m_IsPaused;
-	protected EventPhase m_EventPhase = -1;
+	protected EventPhase m_EventPhase = EventPhase.INVALID; // starting at -1 will let it naturally reach 0 when the Start function is called
 	protected float m_PhaseTimeRemaining;
 	
 	protected Weather m_Weather;
@@ -132,7 +131,6 @@ class EventBase
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
-			Print(m_PhaseTimeRemaining);
 			// Dispatch data to all clients
 			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining);
 			
@@ -160,9 +158,6 @@ class EventBase
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndServer();
-					
-					// this is dumb, but ok
-					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 50, false, Type());
 					break;
 				}
 			}
@@ -250,28 +245,6 @@ class EventBase
 		
 		// Start TimeRemaining timer
 		m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
-		
-		// Phase updates
-		// 3rd phase calls event_end
-		/*
-		for (int i = 0; i < 4; i++) {
-			// looks like the phase has been updated elsewhere
-			if (GetActivePhaseID() >= i) {
-				Print("Setting phase");
-				i = GetActivePhaseID();
-			} else {
-				Print("Changing phase");
-				SwitchPhase(i);
-			}
-			
-			// The event time accuracy will be 0.1 seconds for now since the entire system was built on this running the event
-			// there is obviously a more time caring solution to fix this but im not going to update this right now
-			EventInfo("%1: Phase %3 Length %2", ToString(), GetCurrentPhaseLength().ToString(), typename.EnumToString(EventPhase, i));
-			while (GetCurrentPhaseTimeRemaining() > 0 && GetActivePhaseID() == i) {
-				Sleep(100);
-			}
-		}
-		*/
 	}
 	
 	void SetPaused(bool state)
@@ -303,11 +276,19 @@ class EventBase
 		}
 		
 		m_PhaseTimeRemaining -= PHASE_TIME_REMAINING_PRECISION;
-
 		if (m_PhaseTimeRemaining <= 0) {
 			if (GetGame().IsServer()) {
 				EventDebug("Attempting to naturally switch to the next phase");
-				SwitchPhase(m_EventPhase + 1);
+				SwitchPhase(GetActivePhaseID() + 1);
+				
+				// maybe call delete this;
+				if (GetActivePhaseID() == EventPhase.DELETE) {
+					m_TimeRemainingTimer.Stop();
+					
+					// not calling this a whole cycle later causes some crashes
+					// perhaps find a way to resolve?
+					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(m_EventManager.DeleteEvent, PHASE_TIME_REMAINING_PRECISION * 1000, false, Type());
+				}
 			}
 		}
 	}
