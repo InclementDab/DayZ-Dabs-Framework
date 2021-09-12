@@ -188,6 +188,12 @@ class EventBase
 				}
 			}
 		}
+		
+		// This was in Start() but it was not being called on clients so i moved it here
+		// there may be some better ways to do this, if so, acquire cookie
+		if (!m_TimeRemainingTimer.IsRunning()) {
+			m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
+		}
 	}
 		
 	float GetCurrentPhaseTimeRemaining()
@@ -243,8 +249,7 @@ class EventBase
 	{
 		m_EventManager = event_manager;
 		
-		// Start TimeRemaining timer
-		m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
+		SwitchPhase(EventPhase.INIT);
 	}
 	
 	void SetPaused(bool state)
@@ -270,8 +275,7 @@ class EventBase
 	}
 		
 	protected void UpdateTimeRemaining()
-	{		
-		Print(m_PhaseTimeRemaining);
+	{
 		// Dont try to decrease value if paused
 		if (IsPaused()) {
 			return;
@@ -292,6 +296,8 @@ class EventBase
 				}
 			}
 		}
+		
+		m_PhaseTimeRemaining = Math.Max(0, m_PhaseTimeRemaining);
 	}
 	
 	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
