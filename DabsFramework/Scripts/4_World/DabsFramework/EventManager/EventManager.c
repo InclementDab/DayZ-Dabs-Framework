@@ -137,37 +137,6 @@ class EventManager
 			return;
 		}
 		
-		thread _StartEvent(event_type, force);
-	}
-	
-	void CancelEvent(typename event_type)
-	{
-		if (!GetGame().IsServer()) {
-			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
-			return;
-		}
-		
-		if (!m_ActiveEvents[event_type]) {
-			EventManagerInfo("Event %1 is not active", event_type.ToString());
-			return;
-		}
-		
-		SendActiveEventData(event_type, 3, 0); // 3 is cancel for clients
-		DeleteEvent(event_type);
-	}
-	
-	void DeleteEvent(typename event_type)
-	{
-		if (!m_ActiveEvents) {
-			return;
-		}
-		
-		delete m_ActiveEvents[event_type];
-		m_ActiveEvents.Remove(event_type);
-	}
-	
-	private void _StartEvent(typename event_type, bool force = false)
-	{
 		if (m_ActiveEvents[event_type]) { 
 			EventManagerInfo("Could not start %1 as one is already active", event_type.ToString());
 			return;
@@ -209,6 +178,37 @@ class EventManager
 		
 		// start the event
 		m_ActiveEvents[event_type].Start(this);
+	}
+	
+	void CancelEvent(typename event_type)
+	{
+		if (!GetGame().IsServer()) {
+			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
+			return;
+		}
+		
+		if (!m_ActiveEvents[event_type]) {
+			EventManagerInfo("Event %1 is not active", event_type.ToString());
+			return;
+		}
+		
+		SendActiveEventData(event_type, 3, 0); // 3 is cancel for clients
+		DeleteEvent(event_type);
+	}
+	
+	void DeleteEvent(typename event_type)
+	{
+		if (!m_ActiveEvents) {
+			return;
+		}
+		
+		delete m_ActiveEvents[event_type];
+		m_ActiveEvents.Remove(event_type);
+	}
+	
+	private void _StartEvent(typename event_type, bool force = false)
+	{
+
 	}
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
@@ -272,9 +272,9 @@ class EventManager
 		}
 	}
 	
-	static void SendActiveEventData(typename event_type, int phase_id, float time_remaining)
+	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining)
 	{
-		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), phase_id.ToString());
+		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
 		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining), true, null);
 	}
 	
