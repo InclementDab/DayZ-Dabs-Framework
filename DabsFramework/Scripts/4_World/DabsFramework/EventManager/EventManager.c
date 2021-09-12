@@ -1,5 +1,3 @@
-typedef map<typename, ref EventBase> TEventMap;
-
 /*
 *
 *	EventManager.c
@@ -21,7 +19,7 @@ class EventManager
 	protected typename m_LastEventType;
 	
 	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
-	protected ref TEventMap m_ActiveEvents = new TEventMap();
+	protected ref map<typename, ref EventBase> m_ActiveEvents = new map<typename, ref EventBase>();
 
 	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
