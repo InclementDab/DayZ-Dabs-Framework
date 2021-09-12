@@ -132,8 +132,6 @@ class EventBase
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);	
-			Print(typename.EnumToString(EventPhase, m_EventState));
-			Print(m_PhaseTimeRemaining);
 			switch (m_EventState) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();

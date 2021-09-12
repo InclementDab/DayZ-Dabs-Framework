@@ -212,10 +212,14 @@ class EventManager
 				
 				// looks like the phase has been updated elsewhere
 				if (m_ActiveEvents[event_type].GetActivePhaseID() >= i) {
+					Print("Setting phase");
 					i = m_ActiveEvents[event_type].GetActivePhaseID();
 				} else {
+					Print("Changing phase");
 					m_ActiveEvents[event_type].SwitchPhase(i);
 				}
+				
+				Print(i);
 								
 				// Dispatch data to all clients
 				SendActiveEventData(event_type, i, m_ActiveEvents[event_type].GetCurrentPhaseTimeRemaining());
