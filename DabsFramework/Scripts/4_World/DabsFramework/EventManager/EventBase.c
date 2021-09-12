@@ -13,16 +13,20 @@
 
 class EventBase
 {
+	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
+	
+	protected bool m_IsPaused;
 	protected int m_EventState = -1;
+	protected float m_PhaseTimeRemaining;
 	
 	protected Weather m_Weather;
 	protected PlayerBase m_Player;
 
+	// used for client / server update abstraction
 	protected ref Timer m_ClientUpdate = new Timer(CALL_CATEGORY_SYSTEM);
 	protected ref Timer m_ServerUpdate = new Timer(CALL_CATEGORY_SYSTEM);
 	
-	// Phase Time Remaining
-	protected float m_PhaseTimeRemaining;
+	// used for Phase Time Remaining, always static at 1 second
 	protected ref Timer m_TimeRemainingTimer = new Timer(CALL_CATEGORY_SYSTEM);
 
 	void EventBase()
@@ -41,7 +45,7 @@ class EventBase
 			m_ServerUpdate.Run(GetServerTick(), this, "UpdateServer", null, true);
 		}
 		
-		m_TimeRemainingTimer.Run(1.0, this, "UpdateTimeRemaining", null, true);
+		m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
 	}
 	
 	void ~EventBase()
@@ -226,6 +230,21 @@ class EventBase
 	{
 		return 0;
 	}
+		
+	void SetPaused(bool state)
+	{
+		if (!GetGame().IsServer()) {
+			EventDebug("SetPaused can only be called on server!");
+			return;
+		}
+		
+		m_IsPaused = state;
+	}
+	
+	bool IsPaused()
+	{
+		return m_IsPaused;
+	}
 	
 	// It will immediately destroy the Event if one of these is already running
 	TTypenameArray GetDisallowedEvents()
@@ -233,9 +252,14 @@ class EventBase
 		return {};
 	}
 	
-	private void UpdateTimeRemaining()
-	{
-		m_PhaseTimeRemaining -= 1.0;
+	protected void UpdateTimeRemaining()
+	{		
+		// Dont try to decrease value if paused
+		if (m_IsPaused) {
+			return;
+		}
+		
+		m_PhaseTimeRemaining -= PHASE_TIME_REMAINING_PRECISION;
 
 		if (m_PhaseTimeRemaining <= 0) {
 			EventDebug("Phase lasting too long! Is the server out of sync?");
@@ -254,4 +278,4 @@ class EventBase
 	{
 		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 	}
-};
+}
