@@ -11,12 +11,14 @@
 *
 */
 
+
 class EventBase
 {
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
+	protected EventManager m_EventManager;
 	protected bool m_IsPaused;
-	protected EventPhase m_EventState = -1;
+	protected EventPhase m_EventPhase = -1;
 	protected float m_PhaseTimeRemaining;
 	
 	protected Weather m_Weather;
@@ -44,8 +46,6 @@ class EventBase
 		if (GetGame().IsServer()) {
 			m_ServerUpdate.Run(GetServerTick(), this, "UpdateServer", null, true);
 		}
-		
-		m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
 	}
 	
 	void ~EventBase()
@@ -86,7 +86,7 @@ class EventBase
 	
 	float GetCurrentPhaseLength()
 	{
-		return GetPhaseLength(m_EventState);
+		return GetPhaseLength(m_EventPhase);
 	}
 	
 	float GetPhaseLength(EventPhase phase)
@@ -117,22 +117,31 @@ class EventBase
 	
 	EventPhase GetActivePhaseID()
 	{
-		return m_EventState;
+		return m_EventPhase;
 	}
 		
 	void SwitchPhase(EventPhase phase, float time_remaining = 0)
 	{
-		if (m_EventState >= phase) {
+		if (m_EventPhase >= phase) {
 			EventDebug("Event was already in phase %1, exiting...", phase.ToString());
 			return;
 		}
 		
-		m_EventState = phase;
-		EventDebug("SwitchPhase %1", typename.EnumToString(EventPhase, m_EventState));
+		m_EventPhase = phase;
+		EventDebug("SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
 		
 		if (GetGame().IsServer()) {		
-			m_PhaseTimeRemaining = GetPhaseLength(phase);	
-			switch (m_EventState) {
+			m_PhaseTimeRemaining = GetPhaseLength(phase);
+			Print(m_PhaseTimeRemaining);
+			// Dispatch data to all clients
+			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining);
+			
+			if (!m_EventManager) {
+				EventInfo("SwitchPhase could not find event manager");
+				return;
+			}
+			
+			switch (m_EventPhase) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();
 					break;
@@ -151,6 +160,9 @@ class EventBase
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndServer();
+					
+					// this is dumb, but ok
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 50, false, Type());
 					break;
 				}
 			}
@@ -158,7 +170,7 @@ class EventBase
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {	
 			m_PhaseTimeRemaining = time_remaining;		
-			switch (m_EventState) {
+			switch (m_EventPhase) {
 				case EventPhase.INIT: {
 					thread InitPhaseClient(time_remaining);
 					break;
@@ -182,7 +194,7 @@ class EventBase
 			}
 		}
 	}
-	
+		
 	float GetCurrentPhaseTimeRemaining()
 	{
 		return m_PhaseTimeRemaining;
@@ -231,6 +243,37 @@ class EventBase
 		return 0;
 	}
 		
+	// Do not call this, let the EventManager do it
+	void Start(EventManager event_manager)
+	{
+		m_EventManager = event_manager;
+		
+		// Start TimeRemaining timer
+		m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
+		
+		// Phase updates
+		// 3rd phase calls event_end
+		/*
+		for (int i = 0; i < 4; i++) {
+			// looks like the phase has been updated elsewhere
+			if (GetActivePhaseID() >= i) {
+				Print("Setting phase");
+				i = GetActivePhaseID();
+			} else {
+				Print("Changing phase");
+				SwitchPhase(i);
+			}
+			
+			// The event time accuracy will be 0.1 seconds for now since the entire system was built on this running the event
+			// there is obviously a more time caring solution to fix this but im not going to update this right now
+			EventInfo("%1: Phase %3 Length %2", ToString(), GetCurrentPhaseLength().ToString(), typename.EnumToString(EventPhase, i));
+			while (GetCurrentPhaseTimeRemaining() > 0 && GetActivePhaseID() == i) {
+				Sleep(100);
+			}
+		}
+		*/
+	}
+	
 	void SetPaused(bool state)
 	{
 		if (!GetGame().IsServer()) {
@@ -251,7 +294,7 @@ class EventBase
 	{
 		return {};
 	}
-	
+		
 	protected void UpdateTimeRemaining()
 	{		
 		// Dont try to decrease value if paused
@@ -262,8 +305,10 @@ class EventBase
 		m_PhaseTimeRemaining -= PHASE_TIME_REMAINING_PRECISION;
 
 		if (m_PhaseTimeRemaining <= 0) {
-			EventDebug("Phase lasting too long! Is the server out of sync?");
-			m_PhaseTimeRemaining = 0;
+			if (GetGame().IsServer()) {
+				EventDebug("Attempting to naturally switch to the next phase");
+				SwitchPhase(m_EventPhase + 1);
+			}
 		}
 	}
 	

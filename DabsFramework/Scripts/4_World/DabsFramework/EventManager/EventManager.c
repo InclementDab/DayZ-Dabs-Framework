@@ -156,7 +156,7 @@ class EventManager
 		DeleteEvent(event_type);
 	}
 	
-	private void DeleteEvent(typename event_type)
+	void DeleteEvent(typename event_type)
 	{
 		if (!m_ActiveEvents) {
 			return;
@@ -199,48 +199,16 @@ class EventManager
 			}
 		}
 		
-		if (m_ActiveEvents[event_type] && m_ActiveEvents[event_type].EventActivateCondition()) {
-			// Register event for cooldown
-			m_EventCooldowns.Insert(event_type, m_ActiveEvents[event_type].GetEventCooldown());
-			
-			// Phase updates
-			// 3rd phase calls event_end
-			for (int i = 0; i < 4; i++) {				
-				if (!m_ActiveEvents[event_type]) {
-					continue;
-				}
-				
-				// looks like the phase has been updated elsewhere
-				if (m_ActiveEvents[event_type].GetActivePhaseID() >= i) {
-					Print("Setting phase");
-					i = m_ActiveEvents[event_type].GetActivePhaseID();
-				} else {
-					Print("Changing phase");
-					m_ActiveEvents[event_type].SwitchPhase(i);
-				}
-				
-				Print(i);
-								
-				// Dispatch data to all clients
-				SendActiveEventData(event_type, i, m_ActiveEvents[event_type].GetCurrentPhaseTimeRemaining());
-				
-				if (m_ActiveEvents[event_type]) {
-					EventManagerInfo("%1: Phase %3 Length %2", event_type.ToString(), m_ActiveEvents[event_type].GetCurrentPhaseLength().ToString(), typename.EnumToString(EventPhase, i));
-					// The event time accuracy will be 0.1 seconds for now since the entire system was built on this running the event
-					// there is obviously a more time caring solution to fix this but im not going to update this right now
-					while (m_ActiveEvents[event_type].GetCurrentPhaseTimeRemaining() > 0 && m_ActiveEvents[event_type].GetActivePhaseID() == i) {
-						Sleep(100);
-					}
-				}
-				
-				// Event was cancelled
-				if (!m_ActiveEvents[event_type]) {
-					return;
-				}
-			}
+		if (!m_ActiveEvents[event_type] || !m_ActiveEvents[event_type].EventActivateCondition()) {
+			DeleteEvent(event_type);
+			return;
 		}
-
-		DeleteEvent(event_type);
+		
+		// Register event for cooldown
+		m_EventCooldowns.Insert(event_type, m_ActiveEvents[event_type].GetEventCooldown());
+		
+		// start the event
+		m_ActiveEvents[event_type].Start(this);
 	}
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
@@ -304,7 +272,7 @@ class EventManager
 		}
 	}
 	
-	protected void SendActiveEventData(typename event_type, int phase_id, float time_remaining)
+	static void SendActiveEventData(typename event_type, int phase_id, float time_remaining)
 	{
 		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), phase_id.ToString());
 		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining), true, null);
