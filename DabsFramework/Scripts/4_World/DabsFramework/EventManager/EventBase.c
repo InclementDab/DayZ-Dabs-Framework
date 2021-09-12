@@ -16,7 +16,7 @@ class EventBase
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
 	protected bool m_IsPaused;
-	protected int m_EventState = -1;
+	protected EventPhase m_EventState = -1;
 	protected float m_PhaseTimeRemaining;
 	
 	protected Weather m_Weather;
@@ -132,6 +132,8 @@ class EventBase
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);	
+			Print(typename.EnumToString(EventPhase, m_EventState));
+			Print(m_PhaseTimeRemaining);
 			switch (m_EventState) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();

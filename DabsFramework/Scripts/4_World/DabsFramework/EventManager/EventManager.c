@@ -205,17 +205,28 @@ class EventManager
 			
 			// Phase updates
 			// 3rd phase calls event_end
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {				
+				if (!m_ActiveEvents[event_type]) {
+					continue;
+				}
 				
-				// Server event
-				m_ActiveEvents[event_type].SwitchPhase(i);
-				
+				// looks like the phase has been updated elsewhere
+				if (m_ActiveEvents[event_type].GetActivePhaseID() >= i) {
+					i = m_ActiveEvents[event_type].GetActivePhaseID();
+				} else {
+					m_ActiveEvents[event_type].SwitchPhase(i);
+				}
+								
 				// Dispatch data to all clients
 				SendActiveEventData(event_type, i, m_ActiveEvents[event_type].GetCurrentPhaseTimeRemaining());
 				
 				if (m_ActiveEvents[event_type]) {
-					EventManagerInfo("%1: Phase Length %2", event_type.ToString(), m_ActiveEvents[event_type].GetCurrentPhaseLength().ToString());
-					Sleep(m_ActiveEvents[event_type].GetCurrentPhaseLength() * 1000);
+					EventManagerInfo("%1: Phase %3 Length %2", event_type.ToString(), m_ActiveEvents[event_type].GetCurrentPhaseLength().ToString(), typename.EnumToString(EventPhase, i));
+					// The event time accuracy will be 0.1 seconds for now since the entire system was built on this running the event
+					// there is obviously a more time caring solution to fix this but im not going to update this right now
+					while (m_ActiveEvents[event_type].GetCurrentPhaseTimeRemaining() > 0 && m_ActiveEvents[event_type].GetActivePhaseID() == i) {
+						Sleep(100);
+					}
 				}
 				
 				// Event was cancelled
