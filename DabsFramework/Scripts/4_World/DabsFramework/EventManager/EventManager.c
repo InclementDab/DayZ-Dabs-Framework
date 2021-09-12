@@ -192,7 +192,7 @@ class EventManager
 			return;
 		}
 		
-		SendActiveEventData(event_type, 3, 0); // 3 is cancel for clients
+		SendActiveEventData(event_type, EventPhase.DELETE, 0); // 3 is cancel for clients
 		DeleteEvent(event_type);
 	}
 	
@@ -204,11 +204,6 @@ class EventManager
 		
 		delete m_ActiveEvents[event_type];
 		m_ActiveEvents.Remove(event_type);
-	}
-	
-	private void _StartEvent(typename event_type, bool force = false)
-	{
-
 	}
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
