@@ -273,7 +273,7 @@ class EventBase
 	{		
 		Print(m_PhaseTimeRemaining);
 		// Dont try to decrease value if paused
-		if (m_IsPaused) {
+		if (IsPaused()) {
 			return;
 		}
 		
@@ -283,8 +283,7 @@ class EventBase
 				EventDebug("Attempting to naturally switch to the next phase");
 				SwitchPhase(GetCurrentPhase() + 1);
 				
-				// maybe call delete this;
-				if (GetCurrentPhase() == EventPhase.DELETE) {
+				if (GetCurrentPhase() >= EventPhase.DELETE) {
 					m_TimeRemainingTimer.Stop();
 					
 					// not calling this a whole cycle later causes some crashes
