@@ -13,16 +13,21 @@
 
 class EventBase
 {
-	protected int m_EventState = -1;
+	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
+	
+	protected EventManager m_EventManager;
+	protected bool m_IsPaused;
+	protected EventPhase m_EventPhase = EventPhase.INVALID; // starting at -1 will let it naturally reach 0 when the Start function is called
+	protected float m_PhaseTimeRemaining;
 	
 	protected Weather m_Weather;
 	protected PlayerBase m_Player;
 
+	// used for client / server update abstraction
 	protected ref Timer m_ClientUpdate = new Timer(CALL_CATEGORY_SYSTEM);
 	protected ref Timer m_ServerUpdate = new Timer(CALL_CATEGORY_SYSTEM);
 	
-	// Phase Time Remaining
-	protected float m_PhaseTimeRemaining;
+	// used for Phase Time Remaining, always static at 1 second
 	protected ref Timer m_TimeRemainingTimer = new Timer(CALL_CATEGORY_SYSTEM);
 
 	void EventBase()
@@ -40,8 +45,6 @@ class EventBase
 		if (GetGame().IsServer()) {
 			m_ServerUpdate.Run(GetServerTick(), this, "UpdateServer", null, true);
 		}
-		
-		m_TimeRemainingTimer.Run(1.0, this, "UpdateTimeRemaining", null, true);
 	}
 	
 	void ~EventBase()
@@ -82,7 +85,7 @@ class EventBase
 	
 	float GetCurrentPhaseLength()
 	{
-		return GetPhaseLength(m_EventState);
+		return GetPhaseLength(m_EventPhase);
 	}
 	
 	float GetPhaseLength(EventPhase phase)
@@ -111,24 +114,32 @@ class EventBase
 		return 5.0;
 	}
 	
-	EventPhase GetActivePhaseID()
+	EventPhase GetCurrentPhase()
 	{
-		return m_EventState;
+		return m_EventPhase;
 	}
 		
 	void SwitchPhase(EventPhase phase, float time_remaining = 0)
 	{
-		if (m_EventState >= phase) {
+		if (m_EventPhase >= phase) {
 			EventDebug("Event was already in phase %1, exiting...", phase.ToString());
 			return;
 		}
 		
-		m_EventState = phase;
-		EventDebug("SwitchPhase %1", typename.EnumToString(EventPhase, m_EventState));
+		m_EventPhase = phase;
+		EventDebug("SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
 		
 		if (GetGame().IsServer()) {		
-			m_PhaseTimeRemaining = GetPhaseLength(phase);	
-			switch (m_EventState) {
+			m_PhaseTimeRemaining = GetPhaseLength(phase);
+			// Dispatch data to all clients
+			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused);
+			
+			if (!m_EventManager) {
+				EventInfo("SwitchPhase could not find event manager");
+				return;
+			}
+			
+			switch (m_EventPhase) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();
 					break;
@@ -154,7 +165,7 @@ class EventBase
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {	
 			m_PhaseTimeRemaining = time_remaining;		
-			switch (m_EventState) {
+			switch (m_EventPhase) {
 				case EventPhase.INIT: {
 					thread InitPhaseClient(time_remaining);
 					break;
@@ -177,8 +188,14 @@ class EventBase
 				}
 			}
 		}
+		
+		// This was in Start() but it was not being called on clients so i moved it here
+		// there may be some better ways to do this, if so, acquire cookie
+		if (!m_TimeRemainingTimer.IsRunning()) {
+			m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
+		}
 	}
-	
+		
 	float GetCurrentPhaseTimeRemaining()
 	{
 		return m_PhaseTimeRemaining;
@@ -226,20 +243,60 @@ class EventBase
 	{
 		return 0;
 	}
+		
+	// Do not call this, let the EventManager do it
+	void Start(EventManager event_manager)
+	{
+		m_EventManager = event_manager;
+		
+		SwitchPhase(EventPhase.INIT);
+	}
+	
+	void SetPaused(bool state)
+	{
+		if (!GetGame().IsServer()) {
+			EventDebug("SetPaused can only be called on server!");
+			return;
+		}
+		
+		m_IsPaused = state;
+		EventManager.SendEventPauseData(Type(), m_IsPaused);
+	}
+	
+	bool IsPaused()
+	{
+		return m_IsPaused;
+	}
 	
 	// It will immediately destroy the Event if one of these is already running
 	TTypenameArray GetDisallowedEvents()
 	{
 		return {};
 	}
-	
-	private void UpdateTimeRemaining()
+		
+	protected void UpdateTimeRemaining()
 	{
-		m_PhaseTimeRemaining -= 1.0;
-
+		// Dont try to decrease value if paused
+		if (IsPaused()) {
+			return;
+		}
+		
+		m_PhaseTimeRemaining -= PHASE_TIME_REMAINING_PRECISION;
 		if (m_PhaseTimeRemaining <= 0) {
-			EventDebug("Phase lasting too long! Is the server out of sync?");
 			m_PhaseTimeRemaining = 0;
+			
+			if (GetGame().IsServer()) {
+				EventDebug("Attempting to naturally switch to the next phase");
+				SwitchPhase(GetCurrentPhase() + 1);
+				
+				if (GetCurrentPhase() >= EventPhase.DELETE) {
+					m_TimeRemainingTimer.Stop();
+					
+					// not calling this a whole cycle later causes some crashes
+					// perhaps find a way to resolve?
+					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(m_EventManager.DeleteEvent, PHASE_TIME_REMAINING_PRECISION * 1000, false, Type());
+				}
+			}
 		}
 	}
 	
@@ -254,4 +311,4 @@ class EventBase
 	{
 		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 	}
-};
+}
