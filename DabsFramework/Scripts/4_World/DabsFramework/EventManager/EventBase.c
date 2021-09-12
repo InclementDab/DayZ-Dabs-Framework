@@ -114,7 +114,7 @@ class EventBase
 		return 5.0;
 	}
 	
-	EventPhase GetActivePhaseID()
+	EventPhase GetCurrentPhase()
 	{
 		return m_EventPhase;
 	}
@@ -132,7 +132,7 @@ class EventBase
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
 			// Dispatch data to all clients
-			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining);
+			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused);
 			
 			if (!m_EventManager) {
 				EventInfo("SwitchPhase could not find event manager");
@@ -255,6 +255,7 @@ class EventBase
 		}
 		
 		m_IsPaused = state;
+		EventManager.SendEventPauseData(Type(), m_IsPaused);
 	}
 	
 	bool IsPaused()
@@ -270,6 +271,7 @@ class EventBase
 		
 	protected void UpdateTimeRemaining()
 	{		
+		Print(m_PhaseTimeRemaining);
 		// Dont try to decrease value if paused
 		if (m_IsPaused) {
 			return;
@@ -279,10 +281,10 @@ class EventBase
 		if (m_PhaseTimeRemaining <= 0) {
 			if (GetGame().IsServer()) {
 				EventDebug("Attempting to naturally switch to the next phase");
-				SwitchPhase(GetActivePhaseID() + 1);
+				SwitchPhase(GetCurrentPhase() + 1);
 				
 				// maybe call delete this;
-				if (GetActivePhaseID() == EventPhase.DELETE) {
+				if (GetCurrentPhase() == EventPhase.DELETE) {
 					m_TimeRemainingTimer.Stop();
 					
 					// not calling this a whole cycle later causes some crashes

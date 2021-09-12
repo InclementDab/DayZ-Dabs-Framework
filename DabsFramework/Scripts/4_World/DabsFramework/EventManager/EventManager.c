@@ -190,7 +190,7 @@ class EventManager
 			return;
 		}
 		
-		SendActiveEventData(event_type, EventPhase.DELETE, 0); // 3 is cancel for clients
+		SendActiveEventData(event_type, EventPhase.DELETE, 0, false);
 		DeleteEvent(event_type);
 	}
 	
@@ -208,6 +208,24 @@ class EventManager
 	{	
 		switch (rpc_type) {
 			
+			case ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE: {
+				EventManagerPauseParams event_pause_params;
+				if (!ctx.Read(event_pause_params)) {
+					break;
+				}
+				
+				typename eventp_type = event_pause_params.param1.ToType();
+				bool eventp_paused = event_pause_params.param2;
+				
+				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
+					// Forced setting for clients since this needs to be controlled separately
+					// the client does not have authority to pause events directly, but we do
+					EnScript.SetClassVar(m_ActiveEvents[eventp_type], "m_IsPaused", 0, eventp_paused);
+				}
+				
+				break;
+			}
+			
 			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {
 				
 				EventManagerUpdateParams event_update_params;
@@ -221,6 +239,7 @@ class EventManager
 					typename event_type = event_update_params.param1.ToType();
 					int event_phase = event_update_params.param2;
 					float event_phase_time = event_update_params.param3;
+					bool event_paused = event_update_params.param4;
 					
 					// Case for JIP players	
 					if (!m_ActiveEvents[event_type]) {
@@ -236,12 +255,16 @@ class EventManager
 					
 					// Play catch-up to the current phase
 					if (m_ActiveEvents[event_type].JIPRunPreviousPhases()) {
-						for (int i = m_ActiveEvents[event_type].GetActivePhaseID(); i < event_phase; i++) {
+						for (int i = m_ActiveEvents[event_type].GetCurrentPhase(); i < event_phase; i++) {
 							m_ActiveEvents[event_type].SwitchPhase(i);
 						}					
 					}
 					
 					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time);
+					
+					// Forced setting for clients since this needs to be controlled separately
+					// the client does not have authority to pause events directly, but we do
+					EnScript.SetClassVar(m_ActiveEvents[event_type], "m_IsPaused", 0, event_paused);
 				}
 				
 				break;
@@ -260,15 +283,21 @@ class EventManager
 		EventManagerDebug("Sending In Progress info to %1", player.ToString());
 		foreach (typename event_type, EventBase event_base: m_ActiveEvents) {
 			if (event_base) {
-				GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetActivePhaseID(), event_base.GetCurrentPhaseTimeRemaining()), true, player.GetIdentity());
+				GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetCurrentPhase(), event_base.GetCurrentPhaseTimeRemaining(), event_base.IsPaused()), true, player.GetIdentity());
 			}
 		}
 	}
 	
-	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining)
+	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused)
 	{
 		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
-		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining), true, null);
+		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining, is_paused), true, null);
+	}
+	
+	static void SendEventPauseData(typename event_type, bool is_paused)
+	{
+		EventManagerDebug("Sending Event Pause Data: %1, Paused: %2", event_type.ToString(), is_paused.ToString());
+		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused), true, null);
 	}
 	
 	bool IsEventActive(typename event_type)
@@ -335,7 +364,7 @@ class EventManager
 		EventManagerInfo("There are %1 events running", m_ActiveEvents.Count().ToString());
 		
 		foreach (typename typey, EventBase evnt: m_ActiveEvents) {
-			EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", evnt.ToString(), evnt.GetActivePhaseID().ToString(), evnt.GetCurrentPhaseTimeRemaining().ToString());
+			EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", evnt.ToString(), evnt.GetCurrentPhase().ToString(), evnt.GetCurrentPhaseTimeRemaining().ToString());
 		}
 	}
 			

@@ -100,7 +100,7 @@ class WeatherEvent: EventBase
 			WeatherEvent weather_event;
 			if (Class.CastTo(weather_event, fog_event)) {
 				if (weather_event != this && weather_event.GetWeatherTarget(weather_type) != -1) {
-					if (change < weather_event.GetWeatherTarget(weather_type) && weather_event.GetActivePhaseID() <= 1) {
+					if (change < weather_event.GetWeatherTarget(weather_type) && weather_event.GetCurrentPhase() <= 1) {
 						EventDebug("Weather Change Request Denied");
 						return;
 					}
@@ -142,7 +142,7 @@ class WeatherEvent: EventBase
 				continue;
 			}
 			
-			if (active_event == this || active_event.GetActivePhaseID() > 1) {
+			if (active_event == this || active_event.GetCurrentPhase() > 1) {
 				continue;
 			}
 			
