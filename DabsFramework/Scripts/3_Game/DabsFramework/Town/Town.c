@@ -5,7 +5,8 @@ class Town
 	vector Position;
 	
 	// default world_name parameter will load the active world
-	static array<ref Town> GetMapTowns(TownFlags flags = (TownFlags.CAPITAL | TownFlags.CITY), string world_name = "")
+	// 3 is TownFlags.CAPITAL | TownFlags.CITY, but Enfusion is big silly
+	static array<ref Town> GetMapTowns(TownFlags flags = 3, string world_name = "")
 	{
 		if (world_name == string.Empty) {
 			GetGame().GetWorldName(world_name);
@@ -23,10 +24,7 @@ class Town
 			city_position[1] = GetGame().SurfaceY(city_position[0], city_position[2]);
 			
 			TownFlags flag = GetTownFlag(GetGame().ConfigGetTextOut(string.Format("%1 %2 type", cfg, city)));
-			Print(typename.EnumToString(TownFlags, flag));
-			Print(flags & flag);
-			if ((flags & flag) == flag) {
-				Print("different castle");
+			if ((flags & flag) != flag) {
 				continue;
 			}
 			
