@@ -61,6 +61,9 @@ class Town
 	
 	static int GetTownFlag(string town_type)
 	{
+		// For those who poorly configure their maps
+		town_type.Replace("Name", "");
+		
 		switch (town_type) {
 			case "Capital": 	return TownFlags.CAPITAL;
 			case "City": 		return TownFlags.CITY;
