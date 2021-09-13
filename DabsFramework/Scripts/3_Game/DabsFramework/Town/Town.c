@@ -1,5 +1,6 @@
 class Town
 {
+	string Entry;
 	string Name;
 	TownFlags Type;
 	vector Position;
@@ -29,6 +30,7 @@ class Town
 			}
 			
 			Town town_entry();
+			town_entry.Entry = city;
 			town_entry.Type = flag;
 			town_entry.Name = GetGame().ConfigGetTextOut(string.Format("%1 %2 name", cfg, city));
 			town_entry.Position = city_position;
