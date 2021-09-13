@@ -60,30 +60,29 @@ class Town
 	static int GetTownFlag(string town_type)
 	{
 		switch (town_type) {
-			case "Capital": return TownFlags.CAPITAL;
-			case "City": return TownFlags.CITY;
-			case "Village": return TownFlags.VILLAGE;
-			case "Camp": return TownFlags.CAMP;
-			case "Local": return TownFlags.LOCAL;
-			case "Hill": return TownFlags.HILL;
-			case "Marine": return TownFlags.MARINE;
-			case "Ruin": return TownFlags.RUIN;
+			case "Capital": 	return TownFlags.CAPITAL;
+			case "City": 		return TownFlags.CITY;
+			case "Village": 	return TownFlags.VILLAGE;
+			case "Camp": 		return TownFlags.CAMP;
+			case "Local": 		return TownFlags.LOCAL;
+			case "Hill": 		return TownFlags.HILL;
+			case "Marine": 		return TownFlags.MARINE;
+			case "Ruin": 		return TownFlags.RUIN;
 			case "RailroadStation": return TownFlags.RAILROAD;
 			case "LocalOffice": return TownFlags.OFFICE;
-			case "ViewPoint": return TownFlags.VIEWPOINT;
+			case "ViewPoint": 	return TownFlags.VIEWPOINT;
 		}
 		
 		return 0;
 	}
 	
+	// Should be expanded or modded
 	int GetSize()
 	{
 		switch (Type) {
 			case TownFlags.CAPITAL: return 500;
 			case TownFlags.CITY: 	return 300;
 			case TownFlags.VILLAGE: return 100;
-			
-			// This is for incorrectly configured maps
 		}
 		
 		return 0;
