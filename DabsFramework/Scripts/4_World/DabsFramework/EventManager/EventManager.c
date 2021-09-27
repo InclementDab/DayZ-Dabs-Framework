@@ -11,6 +11,8 @@
 *
 */
 
+#define EVENT_MANAGER_DEBUG
+
 class EventManager
 {			
 	// Enable / Disable the multiple event system
@@ -73,8 +75,8 @@ class EventManager
 		m_EventFreqMax = max_between_events;
 		
 #ifdef EVENT_MANAGER_DEBUG
-		//m_EventFreqMin *= 0.05;
-		//m_EventFreqMax *= 0.05;
+		m_EventFreqMin *= 0.05;
+		m_EventFreqMax *= 0.05;
 #endif
 		
 		m_EventCooldownTimer.Run(1.0, this, "ServerCooldownThread", null, true);
@@ -305,8 +307,9 @@ class EventManager
 	
 	EventBase SpawnEvent(typename event_type)
 	{
-		if (!event_type.IsInherited(EventBase))
+		if (!event_type.IsInherited(EventBase)) {
 			return null;
+		}
 		
 		return EventBase.Cast(event_type.Spawn());
 	}

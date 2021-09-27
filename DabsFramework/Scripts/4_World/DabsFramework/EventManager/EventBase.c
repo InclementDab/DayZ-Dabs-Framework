@@ -131,6 +131,11 @@ class EventBase
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
+			
+#ifdef EVENT_MANAGER_DEBUG
+			m_PhaseTimeRemaining *= 0.05;
+#endif
+			
 			// Dispatch data to all clients
 			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused);
 			
