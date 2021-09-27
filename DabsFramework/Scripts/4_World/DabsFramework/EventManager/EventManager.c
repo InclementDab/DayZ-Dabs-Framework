@@ -196,6 +196,7 @@ class EventManager
 	
 	void DeleteEvent(typename event_type)
 	{
+		EventManagerDebug("Deleting %1", event_type.ToString());
 		if (!m_ActiveEvents) {
 			return;
 		}
