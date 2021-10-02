@@ -23,6 +23,7 @@ WrapSpacerWidgetClass EditBoxPrefab {
    vexactsize 1
    {
     TextWidgetClass Caption {
+     clipchildren 0
      ignorepointer 0
      position 7 0
      size 1 16
@@ -33,7 +34,8 @@ WrapSpacerWidgetClass EditBoxPrefab {
      vexactsize 1
      priority 1
      scriptclass "ViewBinding"
-     style Bold
+     style Normal
+     text "Caption"
      "text offset" 3 0
      "size to text h" 0
      "text valign" center
