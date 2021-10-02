@@ -1,6 +1,6 @@
 WrapSpacerWidgetClass SelectItemList {
  color 0.1765 0.1765 0.1765 0
- size 1 24
+ size 1 22
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -20,12 +20,13 @@ WrapSpacerWidgetClass SelectItemList {
    {
     TextWidgetClass EditorSelectItemListLabel {
      ignorepointer 1
-     position 0 0
-     size 0.8 1
+     position 15 0
+     size 0.8 18
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
-     vexactsize 0
+     vexactsize 1
      scriptclass "ViewBinding"
      text "ChernarusPlus"
      font "gui/fonts/sdf_MetronLight24"
