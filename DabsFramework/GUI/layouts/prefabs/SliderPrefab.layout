@@ -197,6 +197,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      "text valign" center
      {
       EditBoxWidgetClass EditorOptionSliderInput {
+       visible 0
        color 0.8627 0.8627 0.8627 1
        position 10 0
        size 40 1
