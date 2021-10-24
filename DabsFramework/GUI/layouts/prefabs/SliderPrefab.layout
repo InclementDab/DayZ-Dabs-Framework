@@ -196,6 +196,31 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      "text halign" center
      "text valign" center
      {
+      EditBoxWidgetClass EditorOptionSliderInput {
+       color 0.8627 0.8627 0.8627 1
+       position 10 0
+       size 40 1
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 0
+       scriptclass "ViewBinding"
+       style Default
+       text "10000"
+       "limit visible" 0
+       "exact text" 0
+       font "gui/fonts/sdf_MetronLight42"
+       {
+        ScriptParamsClass {
+         Binding_Name "CalculatedValue"
+         Two_Way_Binding 1
+        }
+       }
+      }
+     }
+     {
       ScriptParamsClass {
        Binding_Name "CalculatedValue"
        Two_Way_Binding 0
