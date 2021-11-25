@@ -892,7 +892,7 @@
         </Style>
     </Widget>
     <Widget Name="EditBoxWidget">
-        <Style Name="Green_Hightlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
+        <Style Name="Green_Hightlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -927,7 +927,7 @@
                 <Item Name="Top" Image="" />
             </State>
         </Style>
-        <Style Name="Blue_Highlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
+        <Style Name="Blue_Highlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -962,7 +962,7 @@
                 <Item Name="Top" Image="" />
             </State>
         </Style>
-        <Style Name="No_Highlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
+        <Style Name="No_Highlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -1045,6 +1045,32 @@
                 <Item Name="RightBottom" Image="1px_Outline_BlackCenter_BottomRight" />
                 <Item Name="RightTop" Image="1px_Outline_BlackCenter_TopRight" />
                 <Item Name="Top" Image="1px_Outline_BlackCenter_Top" />
+            </State>
+        </Style>
+    </Widget>
+    <Widget Name="GridSpacerWidget">
+        <Style Name="1px_Outline" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="4294967295">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="OutlineBottom_1px" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="OutlineLeft_1px" />
+                <Item Name="LeftBottom" Image="OutlineBottomLeft_1px" />
+                <Item Name="LeftTop" Image="OutlineTopLeft_1px" />
+                <Item Name="Right" Image="OutlineRight_1px" />
+                <Item Name="RightBottom" Image="OutlineBottomRight_1px" />
+                <Item Name="RightTop" Image="OutlineTopRight_1px" />
+                <Item Name="Top" Image="OutlineTop_1px" />
             </State>
         </Style>
     </Widget>
