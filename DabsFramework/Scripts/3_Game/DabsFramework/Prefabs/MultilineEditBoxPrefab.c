@@ -1,4 +1,4 @@
-class MultilineEditBoxPrefab: ScriptView
+class MultilineEditBoxPrefab: PrefabBase<string>
 {	
 	MultilineEditBoxWidget ContentText;
 		

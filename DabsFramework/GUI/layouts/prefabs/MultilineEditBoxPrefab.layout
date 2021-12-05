@@ -2,7 +2,7 @@ PanelWidgetClass ContentPanel {
  visible 1
  color 0.5882 0.5882 0.5882 0.1961
  position 0 0
- size 1 640
+ size 1 320
  halign center_ref
  valign center_ref
  hexactpos 0
@@ -35,7 +35,7 @@ PanelWidgetClass ContentPanel {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     scriptclass ""
+     scriptclass "ViewBinding"
      style DayZNormal
      font "gui/fonts/Metron16"
      "exact text" 0
@@ -43,6 +43,12 @@ PanelWidgetClass ContentPanel {
      "size to text v" 0
      lines 100
      "limit visible" 1
+     {
+      ScriptParamsClass {
+       Binding_Name "Content"
+       Two_Way_Binding 1
+      }
+     }
     }
    }
   }
