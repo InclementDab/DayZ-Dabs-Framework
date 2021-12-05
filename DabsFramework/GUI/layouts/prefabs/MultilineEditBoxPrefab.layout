@@ -45,7 +45,8 @@ PanelWidgetClass ContentPanel {
      "limit visible" 1
      {
       ScriptParamsClass {
-       Binding_Name "Content"
+       Debug_Logging 0
+       Binding_Name "Value"
        Two_Way_Binding 1
       }
      }

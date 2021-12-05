@@ -336,6 +336,16 @@ class ViewController : ScriptedViewBase
 
 		return super.OnChange(w, x, y, finished);
 	}
+	
+	override bool OnKeyPress(Widget w, int x, int y, int key)
+	{
+		ViewBinding view_binding = m_ViewBindingHashMap.Get(w);
+		if (view_binding) {
+			view_binding.UpdateController(this);
+		}
+
+		return super.OnKeyPress(w, x, y, key);
+	}
 
 	// Two way binding interfaces
 	// Specifically for SpacerBaseWidget
