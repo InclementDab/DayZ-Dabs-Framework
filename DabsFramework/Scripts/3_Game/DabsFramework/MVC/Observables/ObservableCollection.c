@@ -85,6 +85,12 @@ class ObservableCollection<Class TValue> : Observable
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(_data.Get(index))));
 		_data.Remove(index);
 	}
+	
+	void RemoveOrdered(int index)
+	{	// not sure if anything other than the Editor Log Entries removal needs this. but it works
+		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(_data.Get(index))));
+		_data.RemoveOrdered(index);
+	}
 
 	void RemoveRange(int start, int end)
 	{
