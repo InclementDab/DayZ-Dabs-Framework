@@ -452,6 +452,24 @@ ImageSetClass {
    Size 64 64
    Flags 0
   }
+  ImageSetDefClass CheckBox_Disabled_62px {
+   Name "CheckBox_Disabled_62px"
+   Pos 125 65
+   Size 64 64
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Disabled_22px {
+   Name "CheckBox_Disabled_22px"
+   Pos 95 42
+   Size 22 22
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Disabled_16px {
+   Name "CheckBox_Disabled_16px"
+   Pos 4 72
+   Size 16 16
+   Flags 0
+  }
  }
  Groups {
  }
