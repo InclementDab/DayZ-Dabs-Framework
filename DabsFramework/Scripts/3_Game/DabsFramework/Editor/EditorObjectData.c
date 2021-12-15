@@ -64,10 +64,10 @@ class EditorObjectData: SerializableBase
 	
 	static EditorObjectData Create(string type, vector position, vector orientation, float scale, EditorObjectFlags flags)
 	{				
-		if (GetGame().GetModelName(type) == "UNKNOWN_P3D_FILE") {
+		//if (GetGame().GetModelName(type) == "UNKNOWN_P3D_FILE") {
 			//EditorLog.Warning(string.Format("EditorObjectData::Create %1 is not a valid Object Type!", type));
 			//return null;
-		}
+		//}
 		
 		EditorObjectData data = new EditorObjectData();
 		data.Type = type; 

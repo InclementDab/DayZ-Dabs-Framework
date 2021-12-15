@@ -20,4 +20,10 @@ class CfgVehicles
 
     class NetworkSpotLight: NetworkLightBase {};
     class NetworkPointLight: NetworkLightBase {};
+
+    class NetworkParticleBase: House
+    {
+        displayName = "NetworkParticle";
+        scope=2;
+    };
 };
