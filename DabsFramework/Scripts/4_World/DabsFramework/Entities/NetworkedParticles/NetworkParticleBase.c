@@ -2,7 +2,7 @@ class NetworkParticleBase: Building
 {
 	protected Particle m_Particle;
 	
-	int ParticleType;
+	int ParticleType = ParticleList.NONE;
 	
 	void NetworkParticleBase()
 	{
@@ -32,9 +32,9 @@ class NetworkParticleBase: Building
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {			
 			// Update for clients
-			if (GetGame().IsMultiplayer()) {
+			//if (GetGame().IsMultiplayer()) {
 				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(OnVariablesSynchronized, 1000, false);
-			}
+			//}
 		}
 	}
 	
@@ -51,19 +51,21 @@ class NetworkParticleBase: Building
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-		
-		if (!m_Particle) { // !GetGame().IsMultiplayer()
-			return;
-		}
-		
+				
 		// we have to delay the creation since the Particle Type is required for CreateParticle
-		if (GetGame().IsClient() && !m_Particle) {
+		if ((GetGame().IsClient() || !GetGame().IsMultiplayer()) && !m_Particle) {
 			m_Particle = CreateParticle();
 		}
+		
+		/*if (!m_Particle) { // !GetGame().IsMultiplayer()
+			return;
+		}*/
 	}
 	
 	void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
+		serializable_data["ParticleType"] = SerializableParam1<int>.Create(ParticleType);
+		
 		/*
 		serializable_data["CastShadow"] = SerializableParam1<bool>.Create(CastShadow);
 		serializable_data["EnableSpecular"] = SerializableParam1<bool>.Create(EnableSpecular);
@@ -86,6 +88,8 @@ class NetworkParticleBase: Building
 	
 	void Read(map<string, ref SerializableParam> serializable_data)
 	{		
+		ParticleType = SerializableParam1<int>.Cast(serializable_data["ParticleType"]).param1;
+		
 		/*
 		CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;
 		EnableSpecular = SerializableParam1<bool>.Cast(serializable_data["EnableSpecular"]).param1;
@@ -142,10 +146,11 @@ class NetworkParticleBase: Building
 		switch (property_name) {
 			case "ParticleType": {
 				if (m_Particle) {
-					m_Particle.Delete();
+					m_Particle.Stop();
+					GetGame().ObjectDelete(m_Particle);
 				}
 				
-				if (GetGame().IsClient()) {
+				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					m_Particle = CreateParticle();
 				}
 			}
