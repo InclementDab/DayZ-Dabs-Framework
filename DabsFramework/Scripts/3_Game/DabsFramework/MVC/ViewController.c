@@ -116,7 +116,9 @@ class ViewController : ScriptedViewBase
 
 		if (m_DataBindingHashMap[property_name]) {
 			foreach (ViewBinding view: m_DataBindingHashMap[property_name]) {
-				view.UpdateView(this);
+				if (view) {
+					view.UpdateView(this);
+				}
 			}
 		}
 
