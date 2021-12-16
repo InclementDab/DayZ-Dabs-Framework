@@ -81,14 +81,20 @@ class ViewBinding : ScriptedViewBase
 
 		// Binding_Name handler
 		if (m_PropertyConverter) {
-			Log("Updating %1 to the value of %2", m_LayoutRoot.GetName(), Binding_Name);
+			if (m_LayoutRoot) {
+				Log("Updating %1 to the value of %2", m_LayoutRoot.GetName(), Binding_Name);
+			}
+			
 			m_PropertyConverter.GetFromController(controller, Binding_Name, 0);
 			m_WidgetController.Set(m_PropertyConverter);
 		}
 
 		// Selected_Item handler
 		if (m_SelectedConverter) {
-			Log("Updating %1 to the value of %2", m_LayoutRoot.GetName(), Selected_Item);
+			if (m_LayoutRoot) {
+				Log("Updating %1 to the value of %2", m_LayoutRoot.GetName(), Selected_Item);
+			}
+			
 			m_SelectedConverter.GetFromController(controller, Selected_Item, 0);
 			m_WidgetController.SetSelection(m_SelectedConverter);
 		}
