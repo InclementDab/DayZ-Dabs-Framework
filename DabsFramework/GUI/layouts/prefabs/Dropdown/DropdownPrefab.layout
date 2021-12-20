@@ -1,6 +1,7 @@
 FrameWidgetClass DropdownPrefab {
+ clipchildren 0
  position 0 0
- size 500 18
+ size 500 16
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -36,7 +37,7 @@ FrameWidgetClass DropdownPrefab {
    ignorepointer 1
    color 0.7059 0.7059 0.7059 1
    position 25 0
-   size 150 18
+   size 200 16
    halign right_ref
    valign center_ref
    hexactpos 1
@@ -51,12 +52,12 @@ FrameWidgetClass DropdownPrefab {
      ignorepointer 0
      color 0.1961 0.1961 0.1961 0.3922
      position 0 0
-     size 150 18
+     size 1 14
      halign right_ref
      valign center_ref
      hexactpos 0
      vexactpos 0
-     hexactsize 1
+     hexactsize 0
      vexactsize 1
      scriptclass "ViewBinding"
      style EmptyHighlight
@@ -65,7 +66,7 @@ FrameWidgetClass DropdownPrefab {
       TextWidgetClass DropdownText {
        clipchildren 1
        ignorepointer 1
-       size 1 16
+       size 1 12
        halign center_ref
        valign center_ref
        hexactpos 1
@@ -129,6 +130,38 @@ FrameWidgetClass DropdownPrefab {
      {
       ScriptParamsClass {
        Relay_Command "DropdownPrefabExecute"
+      }
+     }
+    }
+   }
+  }
+  ScrollWidgetClass DropdownScroll {
+   ignorepointer 1
+   color 0 0 0 1
+   position 25 16
+   size 200 250
+   halign right_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style blank
+   {
+    WrapSpacerWidgetClass DropdownContent {
+     ignorepointer 1
+     position 0 0
+     size 1 0
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     scriptclass "ViewBinding"
+     Padding 0
+     Margin 0
+     "Size To Content H" 1
+     "Size To Content V" 1
+     {
+      ScriptParamsClass {
       }
      }
     }

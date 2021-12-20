@@ -1,63 +1,82 @@
-PanelWidgetClass DropdownElement {
+GridSpacerWidgetClass DropdownElement {
  ignorepointer 1
  color 0 0 0 1
  position 0 0
- size 150 18
+ size 150 15
  hexactpos 1
  vexactpos 1
  hexactsize 1
  vexactsize 1
  priority 999
- style rover_sim_colorable
+ style Colorable
  "no focus" 0
+ "Size To Content H" 1
+ "Size To Content V" 1
  {
-  ButtonWidgetClass DropdownElementButton {
-   clipchildren 0
-   color 0.7529 0.3686 0.3255 0.902
-   size 1 16
+  TextWidgetClass DropdownElementText {
+   clipchildren 1
+   ignorepointer 1
+   color 0.9412 0.9412 0.9412 0.9412
+   size 1 12
    valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 1
    scriptclass "ViewBinding"
-   style Default
-   "no focus" 0
-   text_proportion 0.7
-   text_halign left
-   text_valign top
-   font "gui/fonts/etelkatextpro16"
+   text "Trace"
+   font "gui/fonts/sdf_MetronLight42"
+   "text offset" 5 0
+   "exact text" 0
+   "size to text h" 1
+   "size to text v" 1
    {
-    TextWidgetClass DropdownElementText {
-     clipchildren 1
-     ignorepointer 1
-     color 0.9412 0.9412 0.9412 0.9412
-     size 1 14
+    ButtonWidgetClass DropdownElementButton {
+     visible 1
+     clipchildren 0
+     color 0.7529 0.3686 0.3255 0.902
+     size 1 16
      valign center_ref
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 1
      scriptclass "ViewBinding"
-     text "Trace"
-     font "gui/fonts/sdf_MetronLight42"
-     "text offset" 12 0
-     "exact text" 0
-     "size to text h" 0
-     "size to text v" 1
+     style Default
+     "no focus" 0
+     text_proportion 0.7
+     text_halign left
+     text_valign top
+     font "gui/fonts/etelkatextpro16"
      {
       ScriptParamsClass {
-       Debug_Logging 0
-       Binding_Name "Text"
+       Relay_Command "DropdownElementExecute"
       }
      }
     }
    }
    {
     ScriptParamsClass {
-     Relay_Command "DropdownElementExecute"
+     Debug_Logging 0
+     Binding_Name "Text"
     }
    }
+  }
+  GridSpacerWidgetClass GridSpacerWidget0 {
+   visible 1
+   ignorepointer 1
+   color 1 1 0 1
+   position 10 10
+   size 48 48
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   style Colorable
+   Padding 0
+   Margin 0
+   "Size To Content H" 1
+   "Size To Content V" 1
   }
  }
 }
