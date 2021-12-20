@@ -1,5 +1,5 @@
 GridSpacerWidgetClass DropdownElement {
- ignorepointer 1
+ ignorepointer 0
  color 0 0 0 1
  position 0 0
  size 150 15
@@ -10,7 +10,6 @@ GridSpacerWidgetClass DropdownElement {
  priority 999
  style Colorable
  "no focus" 0
- "Size To Content H" 1
  "Size To Content V" 1
  {
   TextWidgetClass DropdownElementText {

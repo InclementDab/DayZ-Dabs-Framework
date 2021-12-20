@@ -1,5 +1,6 @@
 FrameWidgetClass DropdownPrefab {
  clipchildren 0
+ ignorepointer 1
  size 500 16
  hexactpos 1
  vexactpos 1
