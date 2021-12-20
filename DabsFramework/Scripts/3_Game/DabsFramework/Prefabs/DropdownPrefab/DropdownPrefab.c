@@ -23,14 +23,14 @@ class DropdownListPrefab<Class TValue>: ScriptView
 			
 	bool DropdownPrefabExecute(ButtonCommandArgs args)
 	{
-		ShowList(!IsListShown());
+		DropdownScroll.Show(!DropdownScroll.IsVisible());
 		return true;
 	}
 	
 	bool DropdownElementExecute(DropdownListPrefabItemBase item)
 	{
 		SetActiveListItem(item);
-		ShowList(false);
+		DropdownScroll.Show(false);
 		return true;
 	}
 	
@@ -39,17 +39,7 @@ class DropdownListPrefab<Class TValue>: ScriptView
 		m_DropdownPrefabController.Value = item;
 		m_DropdownPrefabController.NotifyPropertyChanged("Value");
 	}
-	
-	void ShowList(bool state)
-	{
-		DropdownScroll.Show(state);
-	}
-	
-	bool IsListShown()
-	{
-		return DropdownScroll.IsVisible();
-	}
-	
+		
 	void Set(string item_text, TValue user_data)
 	{
 		DropdownListPrefabItem<TValue> element = new DropdownListPrefabItem<TValue>(item_text, user_data);
