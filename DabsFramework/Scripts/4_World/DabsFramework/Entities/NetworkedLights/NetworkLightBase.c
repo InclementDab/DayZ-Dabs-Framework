@@ -1,4 +1,4 @@
-class NetworkLightBase: Building
+class NetworkLightBase: SerializedBuilding
 {
 	protected ScriptedLightBase m_Light;
 	
@@ -111,7 +111,7 @@ class NetworkLightBase: Building
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 	
-	void Write(inout map<string, ref SerializableParam> serializable_data)
+	override void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
 		serializable_data["CastShadow"] = SerializableParam1<bool>.Create(CastShadow);
 		serializable_data["EnableSpecular"] = SerializableParam1<bool>.Create(EnableSpecular);
@@ -131,7 +131,7 @@ class NetworkLightBase: Building
 		serializable_data["SpotLightAngle"] = SerializableParam1<float>.Create(SpotLightAngle);
 	}
 	
-	void Read(map<string, ref SerializableParam> serializable_data)
+	override void Read(map<string, ref SerializableParam> serializable_data)
 	{		
 		CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;
 		EnableSpecular = SerializableParam1<bool>.Cast(serializable_data["EnableSpecular"]).param1;

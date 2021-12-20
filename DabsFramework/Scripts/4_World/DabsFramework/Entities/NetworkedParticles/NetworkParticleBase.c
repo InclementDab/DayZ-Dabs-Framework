@@ -1,4 +1,4 @@
-class NetworkParticleBase: Building
+class NetworkParticleBase: SerializedBuilding
 {
 	protected Particle m_Particle;
 	
@@ -13,9 +13,9 @@ class NetworkParticleBase: Building
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {			
 			// Update for clients
-			//if (GetGame().IsMultiplayer()) {
+			if (GetGame().IsMultiplayer()) {
 				GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(OnVariablesSynchronized, 1000, false);
-			//}
+			}
 		}
 	}
 	
@@ -24,11 +24,16 @@ class NetworkParticleBase: Building
 		if (m_Particle) {
 			m_Particle.Stop();
 			m_Particle.Delete();
-		}
+		}	
 	}
 	
 	Particle CreateParticle(vector local_pos = "0 0 0", vector local_ori = "0 0 0", bool force_world_position = false)
 	{
+		// very important
+		if (ParticleType == ParticleList.NONE) {
+			return null;
+		}
+		
 		return Particle.PlayOnObject(ParticleType, this, local_pos, local_ori, force_world_position);
 	}
 	
@@ -40,7 +45,8 @@ class NetworkParticleBase: Building
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-				
+		Print(ParticleType);		
+		
 		// we have to delay the creation since the Particle Type is required for CreateParticle
 		if ((GetGame().IsClient() || !GetGame().IsMultiplayer()) && !m_Particle) {
 			m_Particle = CreateParticle();
@@ -51,14 +57,15 @@ class NetworkParticleBase: Building
 		}*/
 	}
 	
-	void Write(inout map<string, ref SerializableParam> serializable_data)
+	override void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
 		serializable_data["ParticleType"] = SerializableParam1<int>.Create(ParticleType);
 	}
 	
-	void Read(map<string, ref SerializableParam> serializable_data)
+	override void Read(map<string, ref SerializableParam> serializable_data)
 	{		
 		ParticleType = SerializableParam1<int>.Cast(serializable_data["ParticleType"]).param1;
+		Print(ParticleType);	
 		if (GetGame().IsServer() && GetGame().IsMultiplayer()) {
 			SetSynchDirty();
 			return;
