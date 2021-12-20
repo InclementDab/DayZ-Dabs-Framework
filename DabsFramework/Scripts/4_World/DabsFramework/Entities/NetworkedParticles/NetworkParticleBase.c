@@ -45,7 +45,6 @@ class NetworkParticleBase: SerializedBuilding
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-		Print(ParticleType);		
 		
 		// we have to delay the creation since the Particle Type is required for CreateParticle
 		if ((GetGame().IsClient() || !GetGame().IsMultiplayer()) && !m_Particle) {
@@ -64,8 +63,7 @@ class NetworkParticleBase: SerializedBuilding
 	
 	override void Read(map<string, ref SerializableParam> serializable_data)
 	{		
-		ParticleType = SerializableParam1<int>.Cast(serializable_data["ParticleType"]).param1;
-		Print(ParticleType);	
+		ParticleType = SerializableParam1<int>.Cast(serializable_data["ParticleType"]).param1;	
 		if (GetGame().IsServer() && GetGame().IsMultiplayer()) {
 			SetSynchDirty();
 			return;
