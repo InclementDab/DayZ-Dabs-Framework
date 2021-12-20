@@ -1,4 +1,4 @@
-GridSpacerWidgetClass DropdownElement {
+PanelWidgetClass DropdownElement {
  ignorepointer 0
  color 0 0 0 1
  position 0 0
@@ -8,12 +8,11 @@ GridSpacerWidgetClass DropdownElement {
  hexactsize 1
  vexactsize 1
  priority 999
- style Colorable
+ style rover_sim_colorable
  "no focus" 0
- "Size To Content V" 1
  {
   TextWidgetClass DropdownElementText {
-   clipchildren 1
+   clipchildren 0
    ignorepointer 1
    color 0.9412 0.9412 0.9412 0.9412
    size 1 12
@@ -27,14 +26,14 @@ GridSpacerWidgetClass DropdownElement {
    font "gui/fonts/sdf_MetronLight42"
    "text offset" 5 0
    "exact text" 0
-   "size to text h" 1
+   "size to text h" 0
    "size to text v" 1
    {
     ButtonWidgetClass DropdownElementButton {
      visible 1
      clipchildren 0
      color 0.7529 0.3686 0.3255 0.902
-     size 1 16
+     size 1 15
      valign center_ref
      hexactpos 0
      vexactpos 0
@@ -60,22 +59,6 @@ GridSpacerWidgetClass DropdownElement {
      Binding_Name "Text"
     }
    }
-  }
-  GridSpacerWidgetClass GridSpacerWidget0 {
-   visible 1
-   ignorepointer 1
-   color 1 1 0 1
-   position 10 10
-   size 48 48
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   style Colorable
-   Padding 0
-   Margin 0
-   "Size To Content H" 1
-   "Size To Content V" 1
   }
  }
 }
