@@ -20,19 +20,6 @@ class DropdownListPrefab<Class TValue>: ScriptView
 		
 		EnScript.GetClassVar(m_BindingContext, m_BindingName, 0, m_DefaultValue);
 	}
-		
-	void Set(string item_text, TValue user_data)
-	{
-		DropdownListPrefabItem<TValue> element = new DropdownListPrefabItem<TValue>(item_text, user_data);
-		element.SetParent(this);			
-
-		// Assign default item when you find it (cant assign something that doesnt exist)
-		if (user_data == m_DefaultValue) {
-			SetActiveListItem(element);
-		}
-		
-		m_DropdownPrefabController.ItemList.Insert(element);
-	}
 			
 	bool DropdownPrefabExecute(ButtonCommandArgs args)
 	{
@@ -53,7 +40,30 @@ class DropdownListPrefab<Class TValue>: ScriptView
 		m_DropdownPrefabController.NotifyPropertyChanged("Value");
 	}
 	
-	DropdownListPrefabItem<TValue> GetListItem(TValue value)
+	void ShowList(bool state)
+	{
+		DropdownScroll.Show(state);
+	}
+	
+	bool IsListShown()
+	{
+		return DropdownScroll.IsVisible();
+	}
+	
+	void Set(string item_text, TValue user_data)
+	{
+		DropdownListPrefabItem<TValue> element = new DropdownListPrefabItem<TValue>(item_text, user_data);
+		element.SetParent(this);			
+
+		// Assign default item when you find it (cant assign something that doesnt exist)
+		if (user_data == m_DefaultValue) {
+			SetActiveListItem(element);
+		}
+		
+		m_DropdownPrefabController.ItemList.Insert(element);
+	}
+	
+	DropdownListPrefabItem<TValue> Get(TValue value)
 	{
 		for (int i = 0; i < m_DropdownPrefabController.ItemList.Count(); i++) {
 			if (!m_DropdownPrefabController.ItemList[i]) {
@@ -68,14 +78,19 @@ class DropdownListPrefab<Class TValue>: ScriptView
 		return null;
 	}
 	
-	void ShowList(bool state)
+	DropdownListPrefabItem<TValue> Get(string value)
 	{
-		DropdownScroll.Show(state);
-	}
-	
-	bool IsListShown()
-	{
-		return DropdownScroll.IsVisible();
+		for (int i = 0; i < m_DropdownPrefabController.ItemList.Count(); i++) {
+			if (!m_DropdownPrefabController.ItemList[i]) {
+				continue;
+			}
+			
+			if (m_DropdownPrefabController.ItemList[i].GetText() == value) {
+				return m_DropdownPrefabController.ItemList[i];
+			}
+		}
+				
+		return null;
 	}
 	
 	void PrefabPropertyChanged(string property_name)
