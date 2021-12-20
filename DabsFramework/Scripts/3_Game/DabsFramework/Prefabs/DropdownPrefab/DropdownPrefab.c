@@ -2,16 +2,12 @@ class DropdownListPrefab<Class TValue>: ScriptView
 {	
 	private static const TValue EMPTY_VALUE;
 	
-	protected TValue m_DefaultValue;
-	
-	protected DropdownListPrefabController<TValue> m_DropdownPrefabController;
-	
-	protected ref array<ref DropdownListPrefabItem<TValue>> m_ItemList = {};
-	
-	protected bool m_IsListVisible;
-	
+	protected TValue m_DefaultValue;	
+	protected DropdownListPrefabController<TValue> m_DropdownPrefabController;	
 	protected Class m_BindingContext;
 	protected string m_BindingName;
+	
+	ScrollWidget DropdownScroll;
 	
 	void DropdownListPrefab(string caption, Class binding_context, string binding_name)
 	{
@@ -24,12 +20,7 @@ class DropdownListPrefab<Class TValue>: ScriptView
 		
 		EnScript.GetClassVar(m_BindingContext, m_BindingName, 0, m_DefaultValue);
 	}
-	
-	void ~DropdownListPrefab()
-	{
-		delete m_ItemList;
-	}
-	
+		
 	void Set(string item_text, TValue user_data)
 	{
 		DropdownListPrefabItem<TValue> element = new DropdownListPrefabItem<TValue>(item_text, user_data);
@@ -40,13 +31,12 @@ class DropdownListPrefab<Class TValue>: ScriptView
 			SetActiveListItem(element);
 		}
 		
-		element.GetLayoutRoot().Show(false);
-		m_ItemList.Insert(element);
+		m_DropdownPrefabController.ItemList.Insert(element);
 	}
 			
 	bool DropdownPrefabExecute(ButtonCommandArgs args)
 	{
-		ShowList(!m_IsListVisible);
+		ShowList(!IsListShown());
 		return true;
 	}
 	
@@ -65,9 +55,13 @@ class DropdownListPrefab<Class TValue>: ScriptView
 	
 	DropdownListPrefabItem<TValue> GetListItem(TValue value)
 	{
-		foreach (DropdownListPrefabItem<TValue> list_item: m_ItemList) {
-			if (list_item.GetValue() == value) {
-				return list_item;
+		for (int i = 0; i < m_DropdownPrefabController.ItemList.Count(); i++) {
+			if (!m_DropdownPrefabController.ItemList[i]) {
+				continue;
+			}
+			
+			if (m_DropdownPrefabController.ItemList[i].GetValue() == value) {
+				return m_DropdownPrefabController.ItemList[i];
 			}
 		}
 				
@@ -76,17 +70,12 @@ class DropdownListPrefab<Class TValue>: ScriptView
 	
 	void ShowList(bool state)
 	{
-		m_IsListVisible = state;
-
-		for (int i = 0; i < m_ItemList.Count(); i++) {
-			float s_x, s_y, s_l, s_h, p_x, p_y, p_h, p_l;
-			GetLayoutRoot().GetScreenPos(s_x, s_y);
-			GetLayoutRoot().FindAnyWidget("DropdownPrefabButton").GetScreenPos(p_x, p_y);
-			GetLayoutRoot().FindAnyWidget("DropdownPrefabButton").GetScreenSize(p_l, p_h);
-			m_ItemList[i].GetLayoutRoot().GetScreenSize(s_l, s_h);
-			m_ItemList[i].GetLayoutRoot().SetPos(p_x, p_y + s_h + (s_h * i));
-			m_ItemList[i].GetLayoutRoot().Show(state);
-		}
+		DropdownScroll.Show(state);
+	}
+	
+	bool IsListShown()
+	{
+		return DropdownScroll.IsVisible();
 	}
 	
 	void PrefabPropertyChanged(string property_name)

@@ -1,9 +1,6 @@
 FrameWidgetClass DropdownPrefab {
  clipchildren 0
- position 0 0
  size 500 16
- halign center_ref
- valign center_ref
  hexactpos 1
  vexactpos 1
  hexactsize 1
@@ -44,7 +41,7 @@ FrameWidgetClass DropdownPrefab {
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style PanelOutline_1px_BlackBackground
+   style blank
    {
     ButtonWidgetClass DropdownPrefabButton {
      clipchildren 1
@@ -136,6 +133,8 @@ FrameWidgetClass DropdownPrefab {
    }
   }
   ScrollWidgetClass DropdownScroll {
+   visible 0
+   clipchildren 0
    ignorepointer 1
    color 0 0 0 1
    position 25 16
@@ -145,9 +144,12 @@ FrameWidgetClass DropdownPrefab {
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style blank
+   priority 500
+   style Colorable
+   "Scrollbar V" 1
    {
     WrapSpacerWidgetClass DropdownContent {
+     clipchildren 0
      ignorepointer 1
      position 0 0
      size 1 0
@@ -158,10 +160,10 @@ FrameWidgetClass DropdownPrefab {
      scriptclass "ViewBinding"
      Padding 0
      Margin 0
-     "Size To Content H" 1
      "Size To Content V" 1
      {
       ScriptParamsClass {
+       Binding_Name "ItemList"
       }
      }
     }

@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass EditorDialogOption {
- clipchildren 1
+ clipchildren 0
  inheritalpha 0
  ignorepointer 0
  color 1 1 1 0.3137
