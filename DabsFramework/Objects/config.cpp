@@ -15,8 +15,7 @@ class CfgVehicles
     class NetworkLightBase: House
     {
         displayName = "NetworkLight";
-        scope=2;
-        model = "";
+        scope = 2;
     };
 
     class NetworkSpotLight: NetworkLightBase {};
@@ -25,7 +24,6 @@ class CfgVehicles
     class NetworkParticleBase: House
     {
         displayName = "NetworkParticle";
-        scope=2;
-        model = "";
+        scope = 2;
     };
 };
