@@ -7,7 +7,7 @@ class DropdownListPrefab<Class TValue>: ScriptView
 	protected Class m_BindingContext;
 	protected string m_BindingName;
 	
-	ScrollWidget DropdownScroll;
+	WrapSpacerWidget DropDownCollapse;
 	
 	void DropdownListPrefab(string caption, Class binding_context, string binding_name)
 	{
@@ -23,14 +23,14 @@ class DropdownListPrefab<Class TValue>: ScriptView
 			
 	bool DropdownPrefabExecute(ButtonCommandArgs args)
 	{
-		DropdownScroll.Show(!DropdownScroll.IsVisible());
+		DropDownCollapse.Show(!DropDownCollapse.IsVisible());
 		return true;
 	}
 	
 	bool DropdownElementExecute(DropdownListPrefabItemBase item)
 	{
 		SetActiveListItem(item);
-		DropdownScroll.Show(false);
+		DropDownCollapse.Show(false);
 		return true;
 	}
 	
