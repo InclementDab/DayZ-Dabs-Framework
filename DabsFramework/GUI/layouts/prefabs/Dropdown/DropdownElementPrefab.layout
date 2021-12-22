@@ -2,7 +2,7 @@ PanelWidgetClass DropdownElement {
  ignorepointer 0
  color 0 0 0 1
  position 0 0
- size 150 15
+ size 250 15
  hexactpos 1
  vexactpos 1
  hexactsize 1
@@ -12,7 +12,7 @@ PanelWidgetClass DropdownElement {
  "no focus" 0
  {
   TextWidgetClass DropdownElementText {
-   clipchildren 0
+   clipchildren 1
    ignorepointer 1
    color 0.9412 0.9412 0.9412 0.9412
    size 1 12
@@ -31,7 +31,7 @@ PanelWidgetClass DropdownElement {
    {
     ButtonWidgetClass DropdownElementButton {
      visible 1
-     clipchildren 0
+     clipchildren 1
      color 0.7529 0.3686 0.3255 0.902
      size 1 15
      valign center_ref
