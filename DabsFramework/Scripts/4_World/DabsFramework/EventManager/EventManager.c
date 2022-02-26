@@ -188,7 +188,7 @@ class EventManager
 			return;
 		}
 		
-		SendActiveEventData(event_type, EventPhase.DELETE, 0, false);
+		SendActiveEventData(event_type, EventPhase.DELETE, 0, false, null);
 		DeleteEvent(event_type);
 	}
 	
@@ -239,6 +239,7 @@ class EventManager
 					int event_phase = event_update_params.param2;
 					float event_phase_time = event_update_params.param3;
 					bool event_paused = event_update_params.param4;
+					Param event_data = event_update_params.param5;
 					
 					// Case for JIP players	
 					if (!m_ActiveEvents[event_type]) {
@@ -259,7 +260,7 @@ class EventManager
 						}					
 					}
 					
-					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time);
+					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time, event_data);
 					
 					// Forced setting for clients since this needs to be controlled separately
 					// the client does not have authority to pause events directly, but we do
@@ -282,15 +283,15 @@ class EventManager
 		EventManagerDebug("Sending In Progress info to %1", player.ToString());
 		foreach (typename event_type, EventBase event_base: m_ActiveEvents) {
 			if (event_base) {
-				GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetCurrentPhase(), event_base.GetCurrentPhaseTimeRemaining(), event_base.IsPaused()), true, player.GetIdentity());
+				GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetCurrentPhase(), event_base.GetCurrentPhaseTimeRemaining(), event_base.IsPaused(), event_base.GetClientSyncData(event_base.GetCurrentPhase())), true, player.GetIdentity());
 			}
 		}
 	}
 	
-	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused)
+	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused, Param data)
 	{
 		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
-		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining, is_paused), true, null);
+		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining, is_paused, data), true, null);
 	}
 	
 	static void SendEventPauseData(typename event_type, bool is_paused)

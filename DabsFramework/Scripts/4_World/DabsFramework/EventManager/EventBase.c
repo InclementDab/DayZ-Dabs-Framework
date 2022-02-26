@@ -66,9 +66,9 @@ class EventBase
 	}
 	
 	// Abstract methods
-	protected void InitPhaseClient(float phase_time);
-	protected void MidPhaseClient(float phase_time);
-	protected void EndPhaseClient(float phase_time);
+	protected void InitPhaseClient(float phase_time, Param data);
+	protected void MidPhaseClient(float phase_time, Param data);
+	protected void EndPhaseClient(float phase_time, Param data);
 	
 	protected void InitPhaseServer();
 	protected void MidPhaseServer();
@@ -80,6 +80,8 @@ class EventBase
 	// Update Loops
 	protected void UpdateClient();
 	protected void UpdateServer();
+	
+	Param GetClientSyncData(EventPhase phase);
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx);
 	
@@ -119,7 +121,7 @@ class EventBase
 		return m_EventPhase;
 	}
 		
-	void SwitchPhase(EventPhase phase, float time_remaining = 0)
+	void SwitchPhase(EventPhase phase, float time_remaining = 0, Param client_data = null)
 	{
 		if (m_EventPhase >= phase) {
 			EventDebug("Event was already in phase %1, exiting...", phase.ToString());
@@ -137,7 +139,7 @@ class EventBase
 #endif
 			
 			// Dispatch data to all clients
-			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused);
+			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused, GetClientSyncData(m_EventPhase));
 			
 			if (!m_EventManager) {
 				EventInfo("SwitchPhase could not find event manager");
@@ -172,17 +174,17 @@ class EventBase
 			m_PhaseTimeRemaining = time_remaining;		
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
-					thread InitPhaseClient(time_remaining);
+					thread InitPhaseClient(time_remaining, client_data);
 					break;
 				}
 				
 				case EventPhase.MID: {
-					thread MidPhaseClient(time_remaining);
+					thread MidPhaseClient(time_remaining, client_data);
 					break;
 				}
 				
 				case EventPhase.END: {
-					thread EndPhaseClient(time_remaining);
+					thread EndPhaseClient(time_remaining, client_data);
 					break;
 				}
 				
