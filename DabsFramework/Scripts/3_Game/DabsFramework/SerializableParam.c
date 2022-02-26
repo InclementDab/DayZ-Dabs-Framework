@@ -14,6 +14,11 @@ class SerializableParam: Managed
 	{
 		return false;
 	}
+	
+	Param ToParam()
+	{
+		return null;
+	}
 }
 
 // Parameterless constructor is REQUIRED! due to using .spawn
@@ -36,6 +41,11 @@ class SerializableParam1<Class T1>: SerializableParam
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1);
+	}
+		
+	override Param ToParam()
+	{
+		return new Param1<T1>(param1);
 	}
 }
 
@@ -60,6 +70,11 @@ class SerializableParam2<Class T1, Class T2>: SerializableParam
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2);
+	}
+	
+	override Param ToParam()
+	{
+		return new Param2<T1, T2>(param1, param2);
 	}
 }
 
@@ -86,6 +101,11 @@ class SerializableParam3<Class T1, Class T2, Class T3>: SerializableParam
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3);
+	}
+	
+	override Param ToParam()
+	{
+		return new Param3<T1, T2, T3>(param1, param2, param3);
 	}
 }
 
@@ -114,6 +134,11 @@ class SerializableParam4<Class T1, Class T2, Class T3, Class T4>: SerializablePa
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4);
+	}
+	
+	override Param ToParam()
+	{
+		return new Param4<T1, T2, T3, T4>(param1, param2, param3, param4);
 	}
 }
 
@@ -144,6 +169,11 @@ class SerializableParam5<Class T1, Class T2, Class T3, Class T4, Class T5>: Seri
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5);
+	}
+	
+	override Param ToParam()
+	{
+		return new Param5<T1, T2, T3, T4, T5>(param1, param2, param3, param4, param5);
 	}
 }
 
@@ -176,6 +206,11 @@ class SerializableParam6<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5) && ctx.Read(param6);
+	}
+
+	override Param ToParam()
+	{
+		return new Param6<T1, T2, T3, T4, T5, T6>(param1, param2, param3, param4, param5, param6);
 	}
 }
 
@@ -210,6 +245,11 @@ class SerializableParam7<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5) && ctx.Read(param6) && ctx.Read(param7);
+	}
+	
+	override Param ToParam()
+	{
+		return new Param7<T1, T2, T3, T4, T5, T6, T7>(param1, param2, param3, param4, param5, param6, param7);
 	}
 }
 
@@ -246,5 +286,10 @@ class SerializableParam8<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 	override bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5) && ctx.Read(param6) && ctx.Read(param7) && ctx.Read(param8);
+	}
+	
+	override Param ToParam()
+	{
+		return new Param8<T1, T2, T3, T4, T5, T6, T7, T8>(param1, param2, param3, param4, param5, param6, param7, param8);
 	}
 }
