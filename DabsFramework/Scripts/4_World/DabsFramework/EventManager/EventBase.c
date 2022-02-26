@@ -81,7 +81,7 @@ class EventBase
 	protected void UpdateClient();
 	protected void UpdateServer();
 	
-	Param GetClientSyncData(EventPhase phase);
+	SerializableParam GetClientSyncData(EventPhase phase);
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx);
 	

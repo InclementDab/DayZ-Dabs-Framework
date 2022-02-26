@@ -225,22 +225,44 @@ class EventManager
 				break;
 			}
 			
-			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {
-				
-				EventManagerUpdateParams event_update_params;
-				if (!ctx.Read(event_update_params)) {
-					break;
-				}
-								
+			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {								
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					
-					EventManagerInfo("Client received event manager update %1: %2", event_update_params.param1, event_update_params.param2.ToString());
-					typename event_type = event_update_params.param1.ToType();
-					int event_phase = event_update_params.param2;
-					float event_phase_time = event_update_params.param3;
-					bool event_paused = event_update_params.param4;
-					Param event_data = event_update_params.param5;
+					string str_event_type;
+					if (!ctx.Read(str_event_type)) {
+						break;
+					}
+
+					typename event_type = str_event_type.ToType();
+					int event_phase;
+					if (!ctx.Read(event_phase)) {
+						break;
+					}
 					
+					float event_phase_time;
+					if (!ctx.Read(event_phase_time)) {
+						break;
+					}
+					
+					bool event_paused;
+					if (!ctx.Read(event_paused)) {
+						break;
+					}
+					
+					string event_param_type;
+					if (!ctx.Read(event_param_type)) {
+						break;
+					}
+					
+					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());
+					
+					Print(event_param_type);
+					
+					
+					// Set up serialized data
+					SerializableParam serializeable_param = SerializableParam.Cast(event_param_type.ToType().Spawn());
+					serializeable_param.Read(ctx);
+										
 					// Case for JIP players	
 					if (!m_ActiveEvents[event_type]) {
 						m_ActiveEvents[event_type] = SpawnEvent(event_type);
@@ -260,7 +282,7 @@ class EventManager
 						}					
 					}
 					
-					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time, event_data);
+					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time, serializeable_param.ToParam());
 					
 					// Forced setting for clients since this needs to be controlled separately
 					// the client does not have authority to pause events directly, but we do
@@ -282,16 +304,36 @@ class EventManager
 	{
 		EventManagerDebug("Sending In Progress info to %1", player.ToString());
 		foreach (typename event_type, EventBase event_base: m_ActiveEvents) {
-			if (event_base) {
-				GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetCurrentPhase(), event_base.GetCurrentPhaseTimeRemaining(), event_base.IsPaused(), event_base.GetClientSyncData(event_base.GetCurrentPhase())), true, player.GetIdentity());
+			if (!event_base) {
+				continue;
 			}
+			
+			SerializableParam data = event_base.GetClientSyncData(event_base.GetCurrentPhase());	
+			ScriptRPC rpc = new ScriptRPC();
+			rpc.Write(event_type.ToString());
+			rpc.Write(event_base.GetCurrentPhase());
+			rpc.Write(event_base.GetCurrentPhaseTimeRemaining());
+			rpc.Write(event_base.IsPaused());
+			rpc.Write(data.GetSerializeableType());
+			data.Write(rpc);
+			rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
+			//GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetCurrentPhase(), event_base.GetCurrentPhaseTimeRemaining(), event_base.IsPaused(), serialized_param.GetSerializeableType(), client_sync_data), true, player.GetIdentity());
 		}
 	}
 	
-	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused, Param data)
+	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused, SerializableParam data)
 	{
 		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
-		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), phase_id, time_remaining, is_paused, data), true, null);
+				
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(event_type.ToString());
+		rpc.Write(phase_id);
+		rpc.Write(time_remaining);
+		rpc.Write(is_paused);
+		rpc.Write(data.GetSerializeableType());
+		data.Write(rpc);
+		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
+		//GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(, , , , , client_sync_data), true, null);
 	}
 	
 	static void SendEventPauseData(typename event_type, bool is_paused)

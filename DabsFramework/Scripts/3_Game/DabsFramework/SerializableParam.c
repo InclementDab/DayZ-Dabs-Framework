@@ -32,7 +32,7 @@ class SerializableParam1<Class T1>: SerializableParam
 		param.param1 = value1;
 		return param;
 	}
-	
+		
 	override bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1);
