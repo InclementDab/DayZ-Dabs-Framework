@@ -246,7 +246,7 @@ class EventBase
 	
 	// If you want the Event to have a CD, override this
 	// return: value in seconds
-	int GetEventCooldown()
+	float GetEventCooldown()
 	{
 		return 0;
 	}

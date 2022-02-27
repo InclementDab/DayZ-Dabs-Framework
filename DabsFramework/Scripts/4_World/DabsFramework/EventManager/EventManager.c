@@ -23,7 +23,7 @@ class EventManager
 
 	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
-	protected ref map<typename, int> m_EventCooldowns = new map<typename, int>();
+	protected ref map<typename, float> m_EventCooldowns = new map<typename, float>();
 	
 	protected static ref EventManager m_Instance;
 	
@@ -88,8 +88,8 @@ class EventManager
 	
 	protected void ServerCooldownThread()
 	{
-		foreach (typename event_type, int event_cooldown: m_EventCooldowns) {
-			m_EventCooldowns[event_type] = event_cooldown - 1;
+		foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
+			m_EventCooldowns[event_type] = event_cooldown - 1.0;
 			if (event_cooldown <= 0) {
 				m_EventCooldowns.Remove(event_type);
 			}
