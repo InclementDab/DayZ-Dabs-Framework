@@ -256,9 +256,6 @@ class EventManager
 					
 					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());
 					
-					Print(event_param_type);
-					
-					
 					// Set up serialized data
 					SerializableParam serializeable_param = SerializableParam.Cast(event_param_type.ToType().Spawn());
 					serializeable_param.Read(ctx);
@@ -317,14 +314,12 @@ class EventManager
 			rpc.Write(data.GetSerializeableType());
 			data.Write(rpc);
 			rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
-			//GetGame().RPCSingleParam(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(event_type.ToString(), event_base.GetCurrentPhase(), event_base.GetCurrentPhaseTimeRemaining(), event_base.IsPaused(), serialized_param.GetSerializeableType(), client_sync_data), true, player.GetIdentity());
 		}
 	}
 	
 	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused, SerializableParam data)
 	{
 		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
-				
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(event_type.ToString());
 		rpc.Write(phase_id);
@@ -333,7 +328,6 @@ class EventManager
 		rpc.Write(data.GetSerializeableType());
 		data.Write(rpc);
 		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
-		//GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, new EventManagerUpdateParams(, , , , , client_sync_data), true, null);
 	}
 	
 	static void SendEventPauseData(typename event_type, bool is_paused)
