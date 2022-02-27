@@ -123,7 +123,7 @@ class EventManager
 			return;
 		}
 		
-		m_PossibleEventTypes.Insert(event_type, frequency);
+		m_PossibleEventTypes[event_type] = frequency;
 	}
 
 	void StartEvent(typename event_type, bool force = false)
