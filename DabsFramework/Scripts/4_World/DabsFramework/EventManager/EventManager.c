@@ -252,9 +252,15 @@ class EventManager
 					// Set up serialized data
 					// this parameter can be null so we check if the ctx reads it successfully
 					string event_param_type;
-					if (ctx.Read(event_param_type)) {
+					if (!ctx.Read(event_param_type)) {
+						break;
+					}
+					
+					Param client_param;
+					if (event_param_type != "null") {
 						SerializableParam serializeable_param = SerializableParam.Cast(event_param_type.ToType().Spawn());
 						serializeable_param.Read(ctx);
+						client_param = serializeable_param.ToParam();
 					}
 					
 					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
@@ -278,7 +284,7 @@ class EventManager
 						}					
 					}
 					
-					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time, serializeable_param.ToParam());
+					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time, client_param);
 					
 					// Forced setting for clients since this needs to be controlled separately
 					// the client does not have authority to pause events directly, but we do
@@ -313,6 +319,8 @@ class EventManager
 			if (data) {
 				rpc.Write(data.GetSerializeableType());
 				data.Write(rpc);
+			} else {
+				rpc.Write("null");
 			}
 			
 			rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
@@ -330,7 +338,10 @@ class EventManager
 		if (data) {
 			rpc.Write(data.GetSerializeableType());
 			data.Write(rpc);
+		} else {
+			rpc.Write("null");
 		}
+		
 		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
 	}
 	
