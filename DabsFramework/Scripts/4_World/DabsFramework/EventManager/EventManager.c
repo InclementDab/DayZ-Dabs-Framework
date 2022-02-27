@@ -249,16 +249,15 @@ class EventManager
 						break;
 					}
 					
+					// Set up serialized data
+					// this parameter can be null so we check if the ctx reads it successfully
 					string event_param_type;
-					if (!ctx.Read(event_param_type)) {
-						break;
+					if (ctx.Read(event_param_type)) {
+						SerializableParam serializeable_param = SerializableParam.Cast(event_param_type.ToType().Spawn());
+						serializeable_param.Read(ctx);
 					}
 					
-					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());
-					
-					// Set up serialized data
-					SerializableParam serializeable_param = SerializableParam.Cast(event_param_type.ToType().Spawn());
-					serializeable_param.Read(ctx);
+					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
 										
 					// Case for JIP players	
 					if (!m_ActiveEvents[event_type]) {
@@ -311,8 +310,11 @@ class EventManager
 			rpc.Write(event_base.GetCurrentPhase());
 			rpc.Write(event_base.GetCurrentPhaseTimeRemaining());
 			rpc.Write(event_base.IsPaused());
-			rpc.Write(data.GetSerializeableType());
-			data.Write(rpc);
+			if (data) {
+				rpc.Write(data.GetSerializeableType());
+				data.Write(rpc);
+			}
+			
 			rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
 		}
 	}
@@ -325,8 +327,10 @@ class EventManager
 		rpc.Write(phase_id);
 		rpc.Write(time_remaining);
 		rpc.Write(is_paused);
-		rpc.Write(data.GetSerializeableType());
-		data.Write(rpc);
+		if (data) {
+			rpc.Write(data.GetSerializeableType());
+			data.Write(rpc);
+		}
 		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
 	}
 	
