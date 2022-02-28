@@ -1075,7 +1075,7 @@
         </Style>
     </Widget>
     <Widget Name="TextListboxWidget">
-        <Style Name="TH_TextListBox" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="4294967295">
+        <Style Name="TextListBox_NoScroll" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="BottomCenter" Image="" />
                 <Item Name="BottomSeparator" Image="" />
@@ -1178,7 +1178,7 @@
         </Style>
     </Widget>
     <Widget Name="XComboBoxWidget">
-        <Style Name="TH_XComboBox" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="rover_imageset" Color="4294967295">
+        <Style Name="XComboBox_NoHighlight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="rover_imageset" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="ArrowLeft" Image="ArrowLeftBlack" />
                 <Item Name="ArrowRight" Image="ArrowRightBlack" />
