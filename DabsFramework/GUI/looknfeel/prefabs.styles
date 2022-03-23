@@ -96,9 +96,33 @@
                 <Item Name="Top" Image="1px_Outline_BlackCenter_Top" />
             </State>
         </Style>
+        <Style Name="RoundedPanel_Colorable" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="4294967295">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="RoundButtonHighlight_Bottom" />
+                <Item Name="Center" Image="RoundButtonHighlight_Center" />
+                <Item Name="Left" Image="RoundButtonHighlight_Left" />
+                <Item Name="LeftBottom" Image="RoundButtonHighlight_BottomLeft" />
+                <Item Name="LeftTop" Image="RoundButtonHighlight_TopLeft" />
+                <Item Name="Right" Image="RoundButtonHighlight_Right" />
+                <Item Name="RightBottom" Image="RoundButtonHighlight_BottomRight" />
+                <Item Name="RightTop" Image="RoundButtonHighlight_TopRight" />
+                <Item Name="Top" Image="RoundButtonHighlight_Top" />
+            </State>
+        </Style>
     </Widget>
     <Widget Name="ButtonWidget">
-        <Style Name="RoundedButtonHightlight" Font="gui/fonts/MetronBook" ImageSet="prefabs" Color="2147483647">
+        <Style Name="RoundedButtonHightlight_50" Font="gui/fonts/MetronBook" ImageSet="prefabs" Color="2147483647">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -123,7 +147,7 @@
             </State>
             <State Name="Highlight">
                 <Item Name="Bottom" Image="RoundButtonHighlight50TopLeft" />
-                <Item Name="Center" Image="Alpha 50" />
+                <Item Name="Center" Image="RoundedButtonHighlight_50_Center" />
                 <Item Name="Left" Image="RoundButtonHighlight_50_Left" />
                 <Item Name="LeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
                 <Item Name="LeftTop" Image="RoundButtonHighlight_50_TopLeft" />
@@ -134,7 +158,7 @@
             </State>
             <State Name="Normal">
                 <Item Name="Bottom" Image="RoundButtonHighlight50TopLeft" />
-                <Item Name="Center" Image="Alpha 50" />
+                <Item Name="Center" Image="RoundedButtonHighlight_50_Center" />
                 <Item Name="Left" Image="RoundButtonHighlight_50_Left" />
                 <Item Name="LeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
                 <Item Name="LeftTop" Image="RoundButtonHighlight_50_TopLeft" />
@@ -145,7 +169,7 @@
             </State>
             <State Name="Pushed">
                 <Item Name="Bottom" Image="RoundButtonHighlight50TopLeft" />
-                <Item Name="Center" Image="Alpha 50" />
+                <Item Name="Center" Image="RoundedButtonHighlight_50_Center" />
                 <Item Name="Left" Image="RoundButtonHighlight_50_Left" />
                 <Item Name="LeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
                 <Item Name="LeftTop" Image="RoundButtonHighlight_50_TopLeft" />
@@ -780,6 +804,63 @@
                 <Item Name="RightBottom" Image="" />
                 <Item Name="RightTop" Image="" />
                 <Item Name="Top" Image="" />
+            </State>
+        </Style>
+        <Style Name="RoundedButton" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="4294967295">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="RoundButtonHighlight_Bottom" />
+                <Item Name="Center" Image="RoundButtonHighlight_Center" />
+                <Item Name="Left" Image="RoundButtonHighlight_Left" />
+                <Item Name="LeftBottom" Image="RoundButtonHighlight_BottomLeft" />
+                <Item Name="LeftTop" Image="RoundButtonHighlight_TopLeft" />
+                <Item Name="Right" Image="RoundButtonHighlight_Right" />
+                <Item Name="RightBottom" Image="RoundButtonHighlight_BottomRight" />
+                <Item Name="RightTop" Image="RoundButtonHighlight_TopRight" />
+                <Item Name="Top" Image="RoundButtonHighlight_Top" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="RoundButtonHighlight_Bottom" />
+                <Item Name="Center" Image="RoundButtonHighlight_Center" />
+                <Item Name="Left" Image="RoundButtonHighlight_Left" />
+                <Item Name="LeftBottom" Image="RoundButtonHighlight_BottomLeft" />
+                <Item Name="LeftTop" Image="RoundButtonHighlight_TopLeft" />
+                <Item Name="Right" Image="RoundButtonHighlight_Right" />
+                <Item Name="RightBottom" Image="RoundButtonHighlight_BottomRight" />
+                <Item Name="RightTop" Image="RoundButtonHighlight_TopRight" />
+                <Item Name="Top" Image="RoundButtonHighlight_Top" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="RoundButtonHighlight_Bottom" />
+                <Item Name="Center" Image="RoundButtonHighlight_Center" />
+                <Item Name="Left" Image="RoundButtonHighlight_Left" />
+                <Item Name="LeftBottom" Image="RoundButtonHighlight_BottomLeft" />
+                <Item Name="LeftTop" Image="RoundButtonHighlight_TopLeft" />
+                <Item Name="Right" Image="RoundButtonHighlight_Right" />
+                <Item Name="RightBottom" Image="RoundButtonHighlight_BottomRight" />
+                <Item Name="RightTop" Image="RoundButtonHighlight_TopRight" />
+                <Item Name="Top" Image="RoundButtonHighlight_Top" />
             </State>
         </Style>
     </Widget>

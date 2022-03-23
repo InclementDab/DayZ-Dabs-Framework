@@ -470,6 +470,66 @@ ImageSetClass {
    Size 16 16
    Flags 0
   }
+  ImageSetDefClass RoundedButtonHighlight_50_Center {
+   Name "RoundedButtonHighlight_50_Center"
+   Pos 53 29
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_TopLeft {
+   Name "RoundButtonHighlight_TopLeft"
+   Pos 66 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_TopRight {
+   Name "RoundButtonHighlight_TopRight"
+   Pos 78 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_BottomLeft {
+   Name "RoundButtonHighlight_BottomLeft"
+   Pos 66 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_BottomRight {
+   Name "RoundButtonHighlight_BottomRight"
+   Pos 78 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Right {
+   Name "RoundButtonHighlight_Right"
+   Pos 78 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Left {
+   Name "RoundButtonHighlight_Left"
+   Pos 66 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Top {
+   Name "RoundButtonHighlight_Top"
+   Pos 74 21
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Bottom {
+   Name "RoundButtonHighlight_Bottom"
+   Pos 74 33
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Center {
+   Name "RoundButtonHighlight_Center"
+   Pos 74 29
+   Size 4 4
+   Flags 0
+  }
  }
  Groups {
  }
