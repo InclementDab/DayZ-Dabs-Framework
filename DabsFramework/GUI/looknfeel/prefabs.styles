@@ -194,7 +194,7 @@
                 <Item Name="Top" Image="" />
             </State>
             <State Name="Highlight">
-                <Item Name="Bottom" Image="RoundButtonHighlight50TopLeft" />
+                <Item Name="Bottom" Image="RoundButtonHighlight_50_Bottom" />
                 <Item Name="Center" Image="RoundedButtonHighlight_50_Center" />
                 <Item Name="Left" Image="RoundButtonHighlight_50_Left" />
                 <Item Name="LeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
@@ -1127,7 +1127,7 @@
                 <Item Name="Top" Image="" />
             </State>
             <State Name="Normal">
-                <Item Name="BarBottom" Image="1px_Outline_Alpha_Center_Bottom" />
+                <Item Name="BarBottom" Image="" />
                 <Item Name="BarCenter" Image="Alpha 40" />
                 <Item Name="BarLeft" Image="" />
                 <Item Name="BarLeftBottom" Image="" />
@@ -1145,6 +1145,68 @@
                 <Item Name="RightBottom" Image="OutlineBottomRight_1px" />
                 <Item Name="RightTop" Image="OutlineTopRight_1px" />
                 <Item Name="Top" Image="OutlineTop_1px" />
+            </State>
+        </Style>
+        <Style Name="RoundedSlider" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="prefabs" Color="0">
+            <State Name="Disabled">
+                <Item Name="BarBottom" Image="" />
+                <Item Name="BarCenter" Image="" />
+                <Item Name="BarLeft" Image="" />
+                <Item Name="BarLeftBottom" Image="" />
+                <Item Name="BarLeftTop" Image="" />
+                <Item Name="BarRight" Image="" />
+                <Item Name="BarRightBottom" Image="" />
+                <Item Name="BarRightTop" Image="" />
+                <Item Name="BarTop" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="BarBottom" Image="" />
+                <Item Name="BarCenter" Image="" />
+                <Item Name="BarLeft" Image="" />
+                <Item Name="BarLeftBottom" Image="" />
+                <Item Name="BarLeftTop" Image="" />
+                <Item Name="BarRight" Image="" />
+                <Item Name="BarRightBottom" Image="" />
+                <Item Name="BarRightTop" Image="" />
+                <Item Name="BarTop" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="BarBottom" Image="RoundButtonHighlight_50_Bottom" />
+                <Item Name="BarCenter" Image="RoundedButtonHighlight_50_Center" />
+                <Item Name="BarLeft" Image="RoundButtonHighlight_50_Left" />
+                <Item Name="BarLeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
+                <Item Name="BarLeftTop" Image="RoundButtonHighlight_50_TopLeft" />
+                <Item Name="BarRight" Image="RoundButtonHighlight_50_Right" />
+                <Item Name="BarRightBottom" Image="RoundButtonHighlight_50_BottomRight" />
+                <Item Name="BarRightTop" Image="RoundButtonHighlight_50_TopRight" />
+                <Item Name="BarTop" Image="RoundButtonHighlight_50_Top" />
+                <Item Name="Bottom" Image="Round_Outline_Bottom" />
+                <Item Name="Center" Image="InvertedRound_Center_Outline" />
+                <Item Name="Left" Image="Round_Outline_Left" />
+                <Item Name="LeftBottom" Image="Round_Outline_BottomLeft" />
+                <Item Name="LeftTop" Image="Round_Outline_TopLeft" />
+                <Item Name="Right" Image="Round_Outline_Right" />
+                <Item Name="RightBottom" Image="Round_Outline_BottomRight" />
+                <Item Name="RightTop" Image="Round_Outline_TopRight" />
+                <Item Name="Top" Image="Round_Outline_Top" />
             </State>
         </Style>
     </Widget>

@@ -242,8 +242,8 @@ ImageSetClass {
    Size 8 4
    Flags 0
   }
-  ImageSetDefClass RoundButtonHighlight50TopLeft {
-   Name "RoundButtonHighlight50TopLeft"
+  ImageSetDefClass RoundButtonHighlight_50_Bottom {
+   Name "RoundButtonHighlight_50_Bottom"
    Pos 53 33
    Size 4 8
    Flags 0
@@ -724,8 +724,8 @@ ImageSetClass {
   }
   ImageSetDefClass LeftOpen_Top {
    Name "LeftOpen_Top"
-   Pos 94 1
-   Size 9 3
+   Pos 90 1
+   Size 5 3
    Flags 0
   }
   ImageSetDefClass LeftOpen_TopRight {
