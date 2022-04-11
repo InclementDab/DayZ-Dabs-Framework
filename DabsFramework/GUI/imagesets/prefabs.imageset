@@ -770,6 +770,18 @@ ImageSetClass {
    Size 5 3
    Flags 0
   }
+  ImageSetDefClass left_arrow {
+   Name "left_arrow"
+   Pos 168 224
+   Size 31 31
+   Flags 0
+  }
+  ImageSetDefClass right_arrow {
+   Name "right_arrow"
+   Pos 199 224
+   Size 31 31
+   Flags 0
+  }
  }
  Groups {
  }
