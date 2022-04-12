@@ -23,7 +23,6 @@ class NetworkParticleBase: SerializedBuilding
 	{
 		if (m_Particle) {
 			m_Particle.Stop();
-			m_Particle.Delete();
 		}	
 	}
 	
