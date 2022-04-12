@@ -242,8 +242,8 @@ ImageSetClass {
    Size 8 4
    Flags 0
   }
-  ImageSetDefClass RoundButtonHighlight50TopLeft {
-   Name "RoundButtonHighlight50TopLeft"
+  ImageSetDefClass RoundButtonHighlight_50_Bottom {
+   Name "RoundButtonHighlight_50_Bottom"
    Pos 53 33
    Size 4 8
    Flags 0
@@ -468,6 +468,318 @@ ImageSetClass {
    Name "CheckBox_Disabled_16px"
    Pos 4 72
    Size 16 16
+   Flags 0
+  }
+  ImageSetDefClass RoundedButtonHighlight_50_Center {
+   Name "RoundedButtonHighlight_50_Center"
+   Pos 53 29
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_TopLeft {
+   Name "RoundButtonHighlight_TopLeft"
+   Pos 66 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_TopRight {
+   Name "RoundButtonHighlight_TopRight"
+   Pos 78 21
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_BottomLeft {
+   Name "RoundButtonHighlight_BottomLeft"
+   Pos 66 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_BottomRight {
+   Name "RoundButtonHighlight_BottomRight"
+   Pos 78 33
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Right {
+   Name "RoundButtonHighlight_Right"
+   Pos 78 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Left {
+   Name "RoundButtonHighlight_Left"
+   Pos 66 29
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Top {
+   Name "RoundButtonHighlight_Top"
+   Pos 74 21
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Bottom {
+   Name "RoundButtonHighlight_Bottom"
+   Pos 74 33
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass RoundButtonHighlight_Center {
+   Name "RoundButtonHighlight_Center"
+   Pos 74 29
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Disabled_30px {
+   Name "CheckBox_Disabled_30px"
+   Pos 4 89
+   Size 30 30
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_30px {
+   Name "CheckBox_30px"
+   Pos 4 120
+   Size 30 30
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Highlight_30px {
+   Name "CheckBox_Highlight_30px"
+   Pos 4 151
+   Size 30 30
+   Flags 0
+  }
+  ImageSetDefClass CheckBox_Mark_30px {
+   Name "CheckBox_Mark_30px"
+   Pos 35 89
+   Size 30 30
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_TopLeft_Outline {
+   Name "InvertedRound_TopLeft_Outline"
+   Pos 24 0
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_TopRight_Outline {
+   Name "InvertedRound_TopRight_Outline"
+   Pos 36 0
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_BottomLeft_Outline {
+   Name "InvertedRound_BottomLeft_Outline"
+   Pos 24 12
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_BottomRight_Outline {
+   Name "InvertedRound_BottomRight_Outline"
+   Pos 36 12
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Right_Outline {
+   Name "InvertedRound_Right_Outline"
+   Pos 36 8
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Left_Outline {
+   Name "InvertedRound_Left_Outline"
+   Pos 24 8
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Top_Outline {
+   Name "InvertedRound_Top_Outline"
+   Pos 32 0
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Bottom_Outline {
+   Name "InvertedRound_Bottom_Outline"
+   Pos 32 12
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Center_Outline {
+   Name "InvertedRound_Center_Outline"
+   Pos 32 8
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_TopLeft_Highlight_50 {
+   Name "InvertedRound_TopLeft_Highlight_50"
+   Pos 45 0
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Top_Highlight_50 {
+   Name "InvertedRound_Top_Highlight_50"
+   Pos 53 0
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Right_Highlight_50 {
+   Name "InvertedRound_Right_Highlight_50"
+   Pos 57 8
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_TopRight_Highlight_50 {
+   Name "InvertedRound_TopRight_Highlight_50"
+   Pos 57 0
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Left_Highlight_50 {
+   Name "InvertedRound_Left_Highlight_50"
+   Pos 45 8
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Bottom_Highlight_50 {
+   Name "InvertedRound_Bottom_Highlight_50"
+   Pos 53 12
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_TopLeft_Highlight {
+   Name "InvertedRound_TopLeft_Highlight"
+   Pos 66 0
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_BottomLeft_Highlight_50 {
+   Name "InvertedRound_BottomLeft_Highlight_50"
+   Pos 45 12
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Center_Highlight_50 {
+   Name "InvertedRound_Center_Highlight_50"
+   Pos 53 8
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_BottomRight_Highlight_50 {
+   Name "InvertedRound_BottomRight_Highlight_50"
+   Pos 57 12
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_BottomLeft_Highlight {
+   Name "InvertedRound_BottomLeft_Highlight"
+   Pos 66 12
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_TopRight_Highlight {
+   Name "InvertedRound_TopRight_Highlight"
+   Pos 78 0
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Right_Highlight {
+   Name "InvertedRound_Right_Highlight"
+   Pos 78 8
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_BottomRight_Highlight {
+   Name "InvertedRound_BottomRight_Highlight"
+   Pos 78 12
+   Size 8 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Left_Highlight {
+   Name "InvertedRound_Left_Highlight"
+   Pos 66 8
+   Size 8 4
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Top_Highlight {
+   Name "InvertedRound_Top_Highlight"
+   Pos 74 0
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Bottom_Highlight {
+   Name "InvertedRound_Bottom_Highlight"
+   Pos 74 12
+   Size 4 8
+   Flags 0
+  }
+  ImageSetDefClass InvertedRound_Center_Highlight {
+   Name "InvertedRound_Center_Highlight"
+   Pos 74 8
+   Size 4 4
+   Flags 0
+  }
+  ImageSetDefClass Left_BarIndicaitor {
+   Name "Left_BarIndicaitor"
+   Pos 90 6
+   Size 5 3
+   Flags 0
+  }
+  ImageSetDefClass LeftOpen_Top {
+   Name "LeftOpen_Top"
+   Pos 90 1
+   Size 5 3
+   Flags 0
+  }
+  ImageSetDefClass LeftOpen_TopRight {
+   Name "LeftOpen_TopRight"
+   Pos 103 1
+   Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass LeftOpen_Center {
+   Name "LeftOpen_Center"
+   Pos 100 6
+   Size 2 2
+   Flags 0
+  }
+  ImageSetDefClass LeftOpen_Bottom {
+   Name "LeftOpen_Bottom"
+   Pos 94 10
+   Size 9 3
+   Flags 0
+  }
+  ImageSetDefClass LeftOpen_BottomRight {
+   Name "LeftOpen_BottomRight"
+   Pos 103 10
+   Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass LeftOpen_Right {
+   Name "LeftOpen_Right"
+   Pos 103 6
+   Size 3 3
+   Flags 0
+  }
+  ImageSetDefClass Left_BarIndicaitor_Top {
+   Name "Left_BarIndicaitor_Top"
+   Pos 90 1
+   Size 5 3
+   Flags 0
+  }
+  ImageSetDefClass Left_BarIndicaitor_Bottom {
+   Name "Left_BarIndicaitor_Bottom"
+   Pos 90 10
+   Size 5 3
+   Flags 0
+  }
+  ImageSetDefClass left_arrow {
+   Name "left_arrow"
+   Pos 168 224
+   Size 31 31
+   Flags 0
+  }
+  ImageSetDefClass right_arrow {
+   Name "right_arrow"
+   Pos 199 224
+   Size 31 31
    Flags 0
   }
  }

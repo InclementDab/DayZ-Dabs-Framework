@@ -25,6 +25,8 @@ WrapSpacerWidgetClass UNUSED {
      vexactpos 1
      hexactsize 0
      vexactsize 1
+    "fill in" 1
+    "listen to input" 1
      scriptclass "ViewBinding"
      style Slider_1px_alpha_50
      {
