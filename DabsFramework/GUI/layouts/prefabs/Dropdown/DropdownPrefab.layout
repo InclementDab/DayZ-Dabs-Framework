@@ -147,7 +147,7 @@ WrapSpacerWidgetClass DropdownPrefab {
   WrapSpacerWidgetClass DropDownCollapse {
    visible 0
    ignorepointer 1
-   size 1 90
+   size 1 120
    halign center_ref
    hexactpos 1
    vexactpos 1
@@ -155,12 +155,11 @@ WrapSpacerWidgetClass DropdownPrefab {
    vexactsize 1
    Padding 0
    Margin 0
-   "Size To Content V" 1
    {
     FrameWidgetClass FrameWidget2 {
      visible 1
      ignorepointer 1
-     size 1 105
+     size 1 120
      valign center_ref
      hexactpos 1
      vexactpos 1
@@ -172,7 +171,8 @@ WrapSpacerWidgetClass DropdownPrefab {
        clipchildren 1
        ignorepointer 1
        color 0 0 0 1
-       size 250 105
+       position 0 0
+       size 250 120
        halign right_ref
        valign center_ref
        hexactpos 1
