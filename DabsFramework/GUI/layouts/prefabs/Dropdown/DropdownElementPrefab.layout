@@ -2,7 +2,7 @@ PanelWidgetClass DropdownElement {
  ignorepointer 0
  color 0 0 0 1
  position 0 0
- size 250 15
+ size 250 12
  hexactpos 1
  vexactpos 1
  hexactsize 1
@@ -33,7 +33,7 @@ PanelWidgetClass DropdownElement {
      visible 1
      clipchildren 1
      color 0.7529 0.3686 0.3255 0.902
-     size 1 15
+     size 1 12
      valign center_ref
      hexactpos 0
      vexactpos 0
