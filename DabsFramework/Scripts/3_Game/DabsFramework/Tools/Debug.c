@@ -57,6 +57,10 @@ modded class Debug
 				break;
 			}
 			
+			case 8: {
+				DestroyAllShapes();
+			}
+			
 			default: {
 				ctx.Read(v1);
 				ctx.Read(v2);
@@ -245,5 +249,23 @@ modded class Debug
 		Shape shape = Shape.CreateArrow(from, to, size, color, flags);
 		m_DebugShapes.Insert(shape);
 		return shape;
+	}
+	
+	static void DestroyAllShapes()
+	{
+		if (GetGame().IsDedicatedServer()) {
+			ScriptRPC rpc = new ScriptRPC();
+			rpc.Write(8); // 8 means destroy
+			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);		
+			return;
+		}
+		
+		for (int i = 0; i < m_DebugShapes.Count(); ++i) {
+			if (m_DebugShapes[i]) {
+				m_DebugShapes[i].Destroy();
+			}
+		}
+		
+		m_DebugShapes.Clear();
 	}
 }
