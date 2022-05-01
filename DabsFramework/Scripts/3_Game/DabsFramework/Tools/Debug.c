@@ -1,9 +1,3 @@
-class ServerShape
-{
-	int ShapeID;
-	
-}
-
 modded class Debug
 {	
 	static const int RPC_UPDATE_DEBUG_SHAPE = 26893386;
