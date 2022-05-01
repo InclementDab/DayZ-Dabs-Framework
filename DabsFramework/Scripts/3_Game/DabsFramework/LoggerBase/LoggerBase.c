@@ -16,6 +16,15 @@ class LoggerBase
 	{
 		m_LoggerManager = LoggerManager.GetInstance();
 		
+		if ((GetLogMask() & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsServer()) {
+			return;
+		}
+		
+		if ((GetLogMask() & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && GetGame().IsClient()) {
+			return;
+		}
+		
+		// Create folder
 		string folder_name = BASE_DIRECTORY + GetFolderName();
 		if (!MakeDirectory(folder_name)) {
 			Error("LoggerBase failed to make directory, exiting");
