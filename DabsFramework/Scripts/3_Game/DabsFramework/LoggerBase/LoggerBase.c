@@ -16,6 +16,10 @@ class LoggerBase
 	{
 		m_LoggerManager = LoggerManager.GetInstance();
 		
+		if (!GetGame()) {
+			return;
+		}
+		
 		if ((GetLogMask() & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsServer()) {
 			return;
 		}
