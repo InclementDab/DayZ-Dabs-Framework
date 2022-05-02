@@ -1,10 +1,3 @@
-enum LoggerInstanceMask
-{
-	SERVER,
-	CLIENT,
-	ALL = SERVER | CLIENT
-}
-
 class LoggerBase
 {
 	static const string BASE_DIRECTORY = "$profile:\\";
@@ -114,3 +107,15 @@ class LoggerBase
 		return "%t%_%y%-%m%-%d%_%hh%-%mm%-%ss%";
 	}
 }
+
+/* 
+	** Example Logger **
+[RegisterLogger(KeycardLogger)]
+class KeycardLogger: LoggerBase
+{	
+	override static void Log(string log)
+	{
+		DoLog(KeycardLogger, log);
+	}
+}
+*/
