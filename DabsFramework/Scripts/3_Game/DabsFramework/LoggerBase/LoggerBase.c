@@ -33,14 +33,14 @@ class LoggerBase
 		
 		int y, m, d, hh, mm, ss;
 		GetYearMonthDay(y, m, d);
-		file_name.Replace("%y%", y.ToString());
-		file_name.Replace("%m%", m.ToString());
-		file_name.Replace("%d%", d.ToString());
+		file_name.Replace("%y%", y.ToStringLen(2));
+		file_name.Replace("%m%", m.ToStringLen(2));
+		file_name.Replace("%d%", d.ToStringLen(2));
 		
 		GetHourMinuteSecond(hh, mm, ss);		
-		file_name.Replace("%hh%", hh.ToString());
-		file_name.Replace("%mm%", mm.ToString());
-		file_name.Replace("%ss%", ss.ToString());
+		file_name.Replace("%hh%", hh.ToStringLen(2));
+		file_name.Replace("%mm%", mm.ToStringLen(2));
+		file_name.Replace("%ss%", ss.ToStringLen(2));
 		
 		m_FileName = folder_name + "\\" + file_name + GetFileExtension();
 				
