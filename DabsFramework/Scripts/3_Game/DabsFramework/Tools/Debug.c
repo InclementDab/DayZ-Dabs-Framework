@@ -71,12 +71,12 @@ modded class Debug
 		}
 	}
 	
-	static Shape DrawBox(vector pos1, vector pos2, int color = 0x1fff7f7f)
+	static override Shape DrawBox(vector pos1, vector pos2, int color = 0x1fff7f7f)
 	{
 		return DrawBoxEx(pos1, pos2, color, ShapeFlags.TRANSP|ShapeFlags.NOZWRITE);
 	}
 	
-	static Shape DrawBoxEx(vector pos1, vector pos2, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOZWRITE)
+	static override Shape DrawBoxEx(vector pos1, vector pos2, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOZWRITE)
 	{
 		if (GetGame().IsDedicatedServer()) {
 			ScriptRPC rpc = new ScriptRPC();
@@ -95,7 +95,7 @@ modded class Debug
 		return shape;
 	}
 	
-	static Shape DrawCube(vector pos, float size = 1, int color = 0x1fff7f7f)
+	static override Shape DrawCube(vector pos, float size = 1, int color = 0x1fff7f7f)
 	{		
 		vector min = pos;
 		vector max = pos;
@@ -126,7 +126,7 @@ modded class Debug
 		return shape;
 	}
 	
-	static Shape DrawSphere(vector pos, float size = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE)
+	static override Shape DrawSphere(vector pos, float size = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE)
 	{
 		if (GetGame().IsDedicatedServer()) {
 			ScriptRPC rpc = new ScriptRPC();
@@ -145,7 +145,7 @@ modded class Debug
 		return shape;
 	}
 	
-	static Shape DrawCylinder(vector pos, float radius, float height = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE )
+	static override Shape DrawCylinder(vector pos, float radius, float height = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE )
 	{
 		if (GetGame().IsDedicatedServer()) {
 			ScriptRPC rpc = new ScriptRPC();
@@ -165,7 +165,7 @@ modded class Debug
 		return shape;
 	}
 	
-	static array<Shape> DrawCone(vector pos, float lenght, float halfAngle, float offsetAngle, int color = 0xFFFFFFFF, int flags = 0)
+	static override array<Shape> DrawCone(vector pos, float lenght, float halfAngle, float offsetAngle, int color = 0xFFFFFFFF, int flags = 0)
 	{
 		array<Shape> shapes = new array<Shape>;
 		
@@ -184,7 +184,7 @@ modded class Debug
 		return shapes;
 	}
 	
-	static Shape DrawLine(vector from, vector to, int color = 0xFFFFFFFF, int flags = 0)
+	static override Shape DrawLine(vector from, vector to, int color = 0xFFFFFFFF, int flags = 0)
 	{
 		if (GetGame().IsDedicatedServer()) {
 			ScriptRPC rpc = new ScriptRPC();
@@ -208,7 +208,7 @@ modded class Debug
 		return shape;
 	}
 
-	static Shape DrawLines(vector[] positions, int count, int color = 0xFFFFFFFF, int flags = 0)
+	static override Shape DrawLines(vector[] positions, int count, int color = 0xFFFFFFFF, int flags = 0)
 	{
 		if (GetGame().IsDedicatedServer()) {
 			for (int i = 0; i < count; i++) {
@@ -232,7 +232,7 @@ modded class Debug
 		return shape;
 	}
 	
-	static Shape DrawArrow(vector from, vector to, float size = 0.5, int color = 0xFFFFFFFF, int flags = 0)
+	static override Shape DrawArrow(vector from, vector to, float size = 0.5, int color = 0xFFFFFFFF, int flags = 0)
 	{
 		if (GetGame().IsDedicatedServer()) {
 			ScriptRPC rpc = new ScriptRPC();
@@ -251,7 +251,7 @@ modded class Debug
 		return shape;
 	}
 	
-	static void DestroyAllShapes()
+	static override void DestroyAllShapes()
 	{
 		if (GetGame().IsDedicatedServer()) {
 			ScriptRPC rpc = new ScriptRPC();
