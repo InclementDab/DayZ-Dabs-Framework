@@ -62,6 +62,10 @@ class PrefabBase<Class TValue>: ScriptView
 	
 	static typename GetVariableTypeOfClass(Class cls, string variable_name) 
 	{
+		if (!cls) {
+			return EMPTY_TYPENAME;
+		}
+		
 		typename binding_ctx_type = cls.Type();
 		for (int i = 0; i < binding_ctx_type.GetVariableCount(); i++) {
 			if (binding_ctx_type.GetVariableName(i) == variable_name) {

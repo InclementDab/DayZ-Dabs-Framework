@@ -55,26 +55,18 @@ class MVC
 	
 	void MVC()
 	{
-		Log("MVC");
-		
 		m_TypeConverterHashMap = new TypeConversionHashMap();
 		RegisterConversionTemplates(m_TypeConverterHashMap);
 		
 		m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 		RegisterWidgetControllers(m_WidgetControllerHashMap);
 	}
-	
-	void ~MVC() 
-	{ 
-		Log("~MVC"); 
-	}
-	
+		
 	// Override THIS to add your own Custom Conversion Templates
 	// this determines how data is represented in the UI itself
 	// i.e. you can assign a TextWidget to float, due to the TypeConversion's GetString()
 	void RegisterConversionTemplates(out TypeConversionHashMap type_conversions)
 	{
-		Log("MVC::RegisterConversionTemplates");
 		type_conversions.Insert(bool, TypeConversionBool);
 		type_conversions.Insert(int, TypeConversionInt);
 		type_conversions.Insert(float, TypeConversionFloat);
@@ -92,8 +84,6 @@ class MVC
 	// Great for prefabs
 	void RegisterWidgetControllers(out TTypeNameTypenameMap widget_controllers)
 	{
-		Log("MVC::RegisterWidgetControllers");
-		
 		widget_controllers.Insert(Widget, WidgetBaseController);
 		widget_controllers.Insert(SpacerBaseWidget, SpacerBaseWidgetController);
 		widget_controllers.Insert(WrapSpacerWidget, SpacerBaseWidgetController);
