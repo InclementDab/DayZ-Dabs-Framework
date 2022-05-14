@@ -62,9 +62,7 @@ class EditBoxNumberPrefab: PrefabBase<StringEvaluater>
 		switch (m_BindingVariableType) {
 			case int: {
 				// needs to be exact type, engine wont cast for us
-				int int_value = raw_value;
-				Print(int_value);
-				EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, int_value); 
+				EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, (int)raw_value); 
 				break;
 			}
 			
