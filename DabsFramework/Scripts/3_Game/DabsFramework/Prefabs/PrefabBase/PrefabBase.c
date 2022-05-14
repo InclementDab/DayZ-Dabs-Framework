@@ -3,11 +3,13 @@ class PrefabBase<Class TValue>: ScriptView
 	protected PrefabBaseController<TValue> m_PrefabBaseController;
 	protected Class m_BindingContext;
 	protected string m_BindingName;
+	protected typename m_BindingVariableType;
 	
 	void PrefabBase(string caption, Class binding_context, string binding_name)
 	{
 		m_BindingName = binding_name;
 		m_BindingContext = binding_context;
+		m_BindingVariableType = GetVariableTypeOfClass(m_BindingContext, m_BindingName);
 	
 		Class.CastTo(m_PrefabBaseController, m_Controller);
 		m_PrefabBaseController.Caption = caption;
@@ -56,5 +58,17 @@ class PrefabBase<Class TValue>: ScriptView
 	PrefabBaseController<TValue> GetPrefabController() 
 	{
 		return m_PrefabBaseController;
+	}
+	
+	static typename GetVariableTypeOfClass(Class cls, string variable_name) 
+	{
+		typename binding_ctx_type = cls.Type();
+		for (int i = 0; i < binding_ctx_type.GetVariableCount(); i++) {
+			if (binding_ctx_type.GetVariableName(i) == variable_name) {
+				return binding_ctx_type.GetVariableType(i);
+			}
+		}
+		
+		return EMPTY_TYPENAME;
 	}
 }

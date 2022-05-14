@@ -121,3 +121,6 @@ static int HSVtoARGB(float h, float s, float v, int a)
 	
 	return ARGBF(a / 255, r, g, b);
 }
+
+// typename is a nullable type but once its assigned, its un-unassignable
+static const typename EMPTY_TYPENAME;
