@@ -15,6 +15,7 @@ class EventBase
 {
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
+	protected int m_Id;
 	protected EventManager m_EventManager;
 	protected ref Param m_StartParams; // startup params, passed from EventManager::StartEvent
 	protected bool m_IsPaused;
@@ -140,7 +141,7 @@ class EventBase
 #endif
 			
 			// Dispatch data to all clients
-			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused, GetClientSyncData(m_EventPhase));
+			EventManager.SendActiveEventData(Type(), GetID(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused, GetClientSyncData(m_EventPhase));
 			
 			if (!m_EventManager) {
 				EventInfo("SwitchPhase could not find event manager");
@@ -220,6 +221,13 @@ class EventBase
 		return true;
 	}
 	
+	// can multiple of the same event type run?
+	// when false, EventID will always be ZERO
+	bool AllowParallelEvents()
+	{
+		return false;
+	}
+	
 	vector GetEventPosition();
 	
 	/* 
@@ -269,7 +277,7 @@ class EventBase
 		}
 		
 		m_IsPaused = state;
-		EventManager.SendEventPauseData(Type(), m_IsPaused);
+		EventManager.SendEventPauseData(Type(), GetID(), m_IsPaused);
 	}
 	
 	bool IsPaused()
@@ -319,5 +327,16 @@ class EventBase
 	void EventInfo(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
+	}
+	
+	void SetID(int id)
+	{
+		EventDebug("[%1] assigned id: %2", Type().ToString(), id.ToString());
+		m_Id = id;
+	}
+	
+	int GetID()
+	{
+		return m_Id;
 	}
 }
