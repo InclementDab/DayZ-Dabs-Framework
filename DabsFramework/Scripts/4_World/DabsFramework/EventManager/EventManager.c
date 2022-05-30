@@ -126,7 +126,7 @@ class EventManager
 		m_PossibleEventTypes[event_type] = frequency;
 	}
 
-	void StartEvent(typename event_type, bool force = false)
+	void StartEvent(typename event_type, bool force = false, Param startup_params = null)
 	{
 		if (!GetGame().IsServer()) {
 			EventManagerInfo("StartEvent must be called on SERVER, exiting");
@@ -173,7 +173,7 @@ class EventManager
 		m_EventCooldowns.Insert(event_type, m_ActiveEvents[event_type].GetEventCooldown());
 		
 		// start the event
-		m_ActiveEvents[event_type].Start(this);
+		m_ActiveEvents[event_type].Start(this, startup_params);
 	}
 	
 	void CancelEvent(typename event_type)

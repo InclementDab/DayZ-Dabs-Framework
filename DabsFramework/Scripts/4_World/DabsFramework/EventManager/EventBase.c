@@ -16,6 +16,7 @@ class EventBase
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
 	protected EventManager m_EventManager;
+	protected ref Param m_StartParams; // startup params, passed from EventManager::StartEvent
 	protected bool m_IsPaused;
 	protected EventPhase m_EventPhase = EventPhase.INVALID; // starting at -1 will let it naturally reach 0 when the Start function is called
 	protected float m_PhaseTimeRemaining;
@@ -252,9 +253,10 @@ class EventBase
 	}
 		
 	// Do not call this, let the EventManager do it
-	void Start(EventManager event_manager)
+	void Start(EventManager event_manager, Param start_params)
 	{
 		m_EventManager = event_manager;
+		m_StartParams = start_params;
 		
 		SwitchPhase(EventPhase.INIT);
 	}
