@@ -67,6 +67,17 @@ class EventBase
 		}
 	}
 	
+	void SetID(int id)
+	{
+		EventDebug("[%1] assigned id: %2", Type().ToString(), id.ToString());
+		m_Id = id;
+	}
+	
+	int GetID()
+	{
+		return m_Id;
+	}
+	
 	// Abstract methods
 	protected void InitPhaseClient(float phase_time, Param data);
 	protected void MidPhaseClient(float phase_time, Param data);
@@ -135,10 +146,6 @@ class EventBase
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
-			
-#ifdef EVENT_MANAGER_DEBUG
-			m_PhaseTimeRemaining *= 0.05;
-#endif
 			
 			// Dispatch data to all clients
 			EventManager.SendActiveEventData(Type(), GetID(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused, GetClientSyncData(m_EventPhase));
@@ -261,7 +268,7 @@ class EventBase
 	}
 		
 	// Do not call this, let the EventManager do it
-	void Start(EventManager event_manager, Param start_params)
+	void OnStart(EventManager event_manager, Param start_params)
 	{
 		m_EventManager = event_manager;
 		m_StartParams = start_params;
@@ -327,16 +334,5 @@ class EventBase
 	void EventInfo(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
-	}
-	
-	void SetID(int id)
-	{
-		EventDebug("[%1] assigned id: %2", Type().ToString(), id.ToString());
-		m_Id = id;
-	}
-	
-	int GetID()
-	{
-		return m_Id;
 	}
 }

@@ -69,7 +69,7 @@ class EventManager
 	
 		0 (int): Minimum time between events
 		1 (int): Maximum time between events
-		2 (int): Maximum amount of parallel events
+		2 (int): Maximum amount of parallel events // DEPRICATED
 	*/
 	void Run(int min_between_events = 550, int max_between_events = 3500, int max_event_count = 2)
 	{
@@ -78,11 +78,6 @@ class EventManager
 		m_MaxEventCount = max_event_count;
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
-		
-#ifdef EVENT_MANAGER_DEBUG
-		m_EventFreqMin *= 0.05;
-		m_EventFreqMax *= 0.05;
-#endif
 		
 		m_EventCooldownTimer.Run(1.0, this, "ServerCooldownThread", null, true);
 		
@@ -206,7 +201,7 @@ class EventManager
 		m_EventCooldowns.Insert(event_type, event_base.GetEventCooldown());
 		
 		// start the event
-		event_base.Start(this, startup_params);
+		event_base.OnStart(this, startup_params);
 	}
 	
 	// you only need to worry about event_id if you allow parralel events
@@ -375,7 +370,7 @@ class EventManager
 	
 	static void SendActiveEventData(typename event_type, int event_id, EventPhase phase_id, float time_remaining, bool is_paused, SerializableParam data)
 	{
-		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
+		EventManagerDebug("Sending active Event Data: %1, idx: %2, Phase: %3", event_type.ToString(), event_id.ToString(), typename.EnumToString(EventPhase, phase_id));
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(event_type.ToString());
 		rpc.Write(event_id);
@@ -394,7 +389,7 @@ class EventManager
 	
 	static void SendEventPauseData(typename event_type, int event_id, bool is_paused)
 	{
-		EventManagerDebug("Sending Event Pause Data: %1, Paused: %2", event_type.ToString(), is_paused.ToString());
+		EventManagerDebug("Sending Event Pause Data: %1, idx: %2, Paused: %3", event_type.ToString(), event_id.ToString(), is_paused.ToString());
 		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused, event_id), true, null);
 	}
 	
@@ -435,6 +430,22 @@ class EventManager
 	EventBase GetEvent(typename event_type, int event_id = 0)
 	{
 		return m_ActiveEvents[event_type][event_id];
+	}
+	
+	array<EventBase> GetEvents(typename event_type) 
+	{
+		array<EventBase> active_events = {};
+		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+			if (event_checked_type != event_type) {
+				continue;
+			}
+			
+			foreach (int event_id, EventBase event_base: event_map) {
+				active_events.Insert(event_base);
+			}
+		}
+		
+		return active_events;
 	}
 	
 	array<EventBase> GetActiveEvents()
