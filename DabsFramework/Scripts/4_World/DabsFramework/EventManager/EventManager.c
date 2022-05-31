@@ -11,8 +11,6 @@
 *
 */
 
-#define EVENT_MANAGER_DEBUG
-
 class EventManager
 {			
 	// Enable / Disable the multiple event system

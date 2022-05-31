@@ -267,7 +267,7 @@ class EventBase
 		return 0;
 	}
 		
-	// Do not call this, let the EventManager do it
+	// safe place to work with the start_params
 	void OnStart(EventManager event_manager, Param start_params)
 	{
 		m_EventManager = event_manager;
@@ -275,7 +275,7 @@ class EventBase
 		
 		SwitchPhase(EventPhase.INIT);
 	}
-	
+		
 	void SetPaused(bool state)
 	{
 		if (!GetGame().IsServer()) {
