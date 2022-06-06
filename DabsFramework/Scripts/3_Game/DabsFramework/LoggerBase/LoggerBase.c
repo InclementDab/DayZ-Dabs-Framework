@@ -8,19 +8,23 @@ class LoggerBase
 	void LoggerBase()
 	{
 		m_LoggerManager = LoggerManager.GetInstance();
-		
-		if (!GetGame()) {
+	}
+	
+	// called in ctor of DayZGame
+	void OnGameStart(notnull DayZGame game)
+	{		
+		if (!game) {
 			return;
 		}
 		
-		if ((GetLogMask() & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsServer()) {
+		if ((GetLogMask() & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && game.IsServer()) {
 			return;
 		}
 		
-		if ((GetLogMask() & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && GetGame().IsClient()) {
+		if ((GetLogMask() & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && game.IsClient()) {
 			return;
 		}
-		
+				
 		// Create folder
 		string folder_name = BASE_DIRECTORY + GetFolderName();
 		if (!MakeDirectory(folder_name)) {
@@ -55,7 +59,7 @@ class LoggerBase
 			Error("No logger found with type " + logger_type);
 			return;
 		}
-		
+				
 		int log_mask = logger_base.GetLogMask();
 		if ((log_mask & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsServer()) {
 			return;
