@@ -1,6 +1,6 @@
 enum LoggerInstanceMask
 {
-	SERVER,
-	CLIENT,
+	SERVER = 1,
+	CLIENT = 2,
 	ALL = SERVER | CLIENT
 };
