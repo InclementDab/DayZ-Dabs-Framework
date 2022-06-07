@@ -299,6 +299,10 @@ class EventManager
 					
 					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
 										
+					if (!m_ActiveEvents[event_type]) {
+						m_ActiveEvents[event_type] = new map<int, ref EventBase>();
+					}
+					
 					// Case for JIP players	
 					if (!m_ActiveEvents[event_type][event_id]) {
 						m_ActiveEvents[event_type][event_id] = SpawnEvent(event_type);
@@ -432,7 +436,13 @@ class EventManager
 	
 	array<EventBase> GetEvents(typename event_type) 
 	{
+		if (!m_ActiveEvents[event_type]) {
+			return {};
+		}
+		
+		return m_ActiveEvents[event_type].GetValueArray();
 		array<EventBase> active_events = {};
+		
 		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
 			if (event_checked_type != event_type) {
 				continue;
@@ -460,7 +470,6 @@ class EventManager
 	
 	void DumpInfo()
 	{
-		/*
 		if (m_PossibleEventTypes.Count() == 0) {
 			EventManagerInfo("Cannot debug Event Percentages with no events registered");
 			return;
@@ -480,9 +489,11 @@ class EventManager
 		
 		EventManagerInfo("There are %1 events running", m_ActiveEvents.Count().ToString());
 		
-		foreach (typename typey, EventBase evnt: m_ActiveEvents) {
-			EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", evnt.ToString(), evnt.GetCurrentPhase().ToString(), evnt.GetCurrentPhaseTimeRemaining().ToString());
-		}*/
+		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {			
+			foreach (int event_id, EventBase event_base: event_map) {
+				EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
+			}
+		}
 	}
 			
 	static void EventManagerDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
