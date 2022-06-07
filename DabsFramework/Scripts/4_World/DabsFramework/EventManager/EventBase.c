@@ -148,7 +148,7 @@ class EventBase
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
 			
 			// Dispatch data to all clients
-			EventManager.SendActiveEventData(Type(), GetID(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused, GetClientSyncData(m_EventPhase));
+			EventManager.SendActiveEventData(this);
 			
 			if (!m_EventManager) {
 				EventInfo("SwitchPhase could not find event manager");
@@ -322,6 +322,30 @@ class EventBase
 				}
 			}
 		}
+	}
+	
+	void Write(ParamsWriteContext ctx)
+	{
+		EventDebug("%1 writing", Type().ToString());
+		ctx.Write(Type().ToString());
+		ctx.Write(GetID());
+		ctx.Write(GetCurrentPhase());
+		ctx.Write(GetCurrentPhaseTimeRemaining());
+		ctx.Write(IsPaused());
+		
+		// handle data
+		SerializableParam data = GetClientSyncData(GetCurrentPhase());
+		if (data) {
+			ctx.Write(data.GetSerializeableType());
+			data.Write(ctx);
+		} else {
+			ctx.Write("null");
+		}
+	}
+	
+	void Read(ParamsReadContext ctx)
+	{
+		
 	}
 	
 	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")

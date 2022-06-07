@@ -205,6 +205,33 @@ class EventManager
 		return true;
 	}
 	
+	bool CancelEvent(EventBase event_base)
+	{
+		if (!GetGame().IsServer()) {
+			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
+			return false;
+		}
+		
+		// set to discard
+		event_base.SwitchPhase(EventPhase.DELETE);
+		
+		SendActiveEventData(event_base);
+		DeleteEvent(event_base);
+		return true;
+	}
+	
+	void DeleteEvent(EventBase event_base)
+	{
+		EventManagerDebug("Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
+		if (!m_ActiveEvents || !m_ActiveEvents[event_base.Type()]) {
+			return;
+		}
+
+		// delete just this specific event
+		delete m_ActiveEvents[event_base.Type()][event_base.GetID()];
+		m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
+	}
+	
 	// you only need to worry about event_id if you allow parralel events
 	// returns if event was succesfully cancelled
 	bool CancelEvent(typename event_type, int event_id = 0)
@@ -219,8 +246,13 @@ class EventManager
 			return false;
 		}
 		
-		SendActiveEventData(event_type, event_id, EventPhase.DELETE, 0, false, null);
-		DeleteEvent(event_type, event_id);
+		if (!m_ActiveEvents[event_type][event_id]) {
+			EventManagerInfo("Event %1 is not active", event_type.ToString());
+			return false;
+		}
+		
+		SendActiveEventData(m_ActiveEvents[event_type][event_id]);
+		DeleteEvent(m_ActiveEvents[event_type][event_id]);
 		return true;
 	}
 	
@@ -345,7 +377,7 @@ class EventManager
 			}
 		}
 	}
-	
+		
 	void DispatchEventInfo(PlayerBase player)
 	{
 		EventManagerDebug("Sending In Progress info to %1", player.ToString());
@@ -357,42 +389,24 @@ class EventManager
 				
 				SerializableParam data = event_base.GetClientSyncData(event_base.GetCurrentPhase());	
 				ScriptRPC rpc = new ScriptRPC();
-				rpc.Write(event_type.ToString());
-				rpc.Write(event_base.GetID());
-				rpc.Write(event_base.GetCurrentPhase());
-				rpc.Write(event_base.GetCurrentPhaseTimeRemaining());
-				rpc.Write(event_base.IsPaused());
-				if (data) {
-					rpc.Write(data.GetSerializeableType());
-					data.Write(rpc);
-				} else {
-					rpc.Write("null");
-				}
-				
+				event_base.Write(rpc);	
 				rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
 			}
 		}
 	}
 	
-	static void SendActiveEventData(typename event_type, int event_id, EventPhase phase_id, float time_remaining, bool is_paused, SerializableParam data)
+	static void SendActiveEventData(EventBase event_base)
 	{
-		EventManagerDebug("Sending active Event Data: %1, idx: %2, Phase: %3", event_type.ToString(), event_id.ToString(), typename.EnumToString(EventPhase, phase_id));
-		ScriptRPC rpc = new ScriptRPC();
-		rpc.Write(event_type.ToString());
-		rpc.Write(event_id);
-		rpc.Write(phase_id);
-		rpc.Write(time_remaining);
-		rpc.Write(is_paused);
-		if (data) {
-			rpc.Write(data.GetSerializeableType());
-			data.Write(rpc);
-		} else {
-			rpc.Write("null");
+		EventManagerDebug("Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
+		if (!event_base) {
+			return;
 		}
 		
+		ScriptRPC rpc = new ScriptRPC();
+		event_base.Write(rpc);
 		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
 	}
-	
+		
 	static void SendEventPauseData(typename event_type, int event_id, bool is_paused)
 	{
 		EventManagerDebug("Sending Event Pause Data: %1, idx: %2, Paused: %3", event_type.ToString(), event_id.ToString(), is_paused.ToString());
@@ -479,7 +493,7 @@ class EventManager
 	
 	void DumpInfo()
 	{
-		if (m_PossibleEventTypes.Count() == 0) {
+		if (m_PossibleEventTypes.Count() == 0 && GetGame().IsServer()) {
 			EventManagerInfo("Cannot debug Event Percentages with no events registered");
 			return;
 		}
