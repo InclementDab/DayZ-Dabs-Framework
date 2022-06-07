@@ -229,10 +229,10 @@ class EventBase
 	}
 	
 	// how many of the same events can be run in parallel
-	// when 0, EventID will always be ZERO
-	int MaxParallelEvents()
+	// when 1, EventID will always be ZERO
+	int MaxEventCount()
 	{
-		return 0;
+		return 1;
 	}
 	
 	vector GetEventPosition();
