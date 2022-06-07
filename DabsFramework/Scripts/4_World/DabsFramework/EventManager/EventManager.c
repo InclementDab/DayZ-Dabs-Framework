@@ -125,12 +125,14 @@ class EventManager
 		
 		m_PossibleEventTypes[event_type] = frequency;
 	}
-
-	void StartEvent(typename event_type, bool force = false, Param startup_params = null)
+	
+	// startup_params are passed to OnStart of the event
+	// returns if the event started succesfully
+	bool StartEvent(typename event_type, bool force = false, Param startup_params = null)
 	{
 		if (!GetGame().IsServer()) {
 			EventManagerInfo("StartEvent must be called on SERVER, exiting");
-			return;
+			return false;
 		}
 		
 		// register the map associated with this event type, probably the first time running an event like this
@@ -149,12 +151,12 @@ class EventManager
 		
 		if (active_event_count >= m_MaxEventCount && !force) {
 			EventManagerInfo("Could not start event as we reached the maximum event limit %1", m_MaxEventCount.ToString());
-			return;
+			return false;
 		}
 		
 		if (m_EventCooldowns.Contains(event_type) && !force) {
 			EventManagerInfo("Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
-			return;
+			return false;
 		}
 		
 		// increment the amount of these events ran
@@ -164,7 +166,7 @@ class EventManager
 		EventBase event_base = SpawnEvent(event_type);
 		if (!event_base) {
 			EventManagerInfo("Failed to start event %1", event_type.ToString());
-			return;
+			return false;
 		}
 		
 		// event_id is ALWAYS 0 when parallel events are disallowed
@@ -173,7 +175,7 @@ class EventManager
 		if (m_ActiveEvents[event_type].Count() >= event_base.MaxParallelEvents()) {  // do not put force here, even FORCE wont allow multiple events to be run
 			EventManagerInfo("Could not start %1 as the max amount of parallel events has been achieved (%2)", event_type.ToString(), event_base.MaxParallelEvents().ToString());
 			delete event_base; // dont need to call delete here, its not ref'd yet
-			return;
+			return false;
 		}
 		
 		event_base.SetID(event_id);
@@ -186,13 +188,13 @@ class EventManager
 			if (event_base.GetDisallowedEvents().Find(etype) != -1 && !force) {
 				EventManagerInfo("Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
 				DeleteEvent(event_type, event_id);
-				return;
+				return false;
 			}
 		}
 		
 		if (!event_base.EventActivateCondition()) {
 			DeleteEvent(event_type, event_id);
-			return;
+			return false;
 		}
 		
 		// Register event for cooldown
@@ -200,23 +202,26 @@ class EventManager
 		
 		// start the event
 		event_base.OnStart(this, startup_params);
+		return true;
 	}
 	
 	// you only need to worry about event_id if you allow parralel events
-	void CancelEvent(typename event_type, int event_id = 0)
+	// returns if event was succesfully cancelled
+	bool CancelEvent(typename event_type, int event_id = 0)
 	{
 		if (!GetGame().IsServer()) {
 			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
-			return;
+			return false;
 		}
 		
 		if (!m_ActiveEvents[event_type]) {
 			EventManagerInfo("Event %1 is not active", event_type.ToString());
-			return;
+			return false;
 		}
 		
 		SendActiveEventData(event_type, event_id, EventPhase.DELETE, 0, false, null);
 		DeleteEvent(event_type, event_id);
+		return true;
 	}
 	
 	void DeleteEvent(typename event_type, int event_id)
@@ -234,7 +239,6 @@ class EventManager
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{	
 		switch (rpc_type) {
-			
 			case ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE: {
 				EventManagerPauseParams event_pause_params;
 				if (!ctx.Read(event_pause_params)) {
@@ -395,9 +399,14 @@ class EventManager
 		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused, event_id), true, null);
 	}
 	
+	bool IsEventActive(typename event_type)
+	{
+		return (m_ActiveEvents[event_type] && m_ActiveEvents[event_type].Count() > 0);
+	}
+	
 	bool IsEventActive(typename event_type, int event_id)
 	{
-		return m_ActiveEvents[event_type].Count() > 0;
+		return (m_ActiveEvents[event_type] && m_ActiveEvents[event_type][event_id]);
 	}
 	
 	EventBase SpawnEvent(typename event_type)
