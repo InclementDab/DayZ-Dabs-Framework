@@ -228,11 +228,11 @@ class EventBase
 		return true;
 	}
 	
-	// can multiple of the same event type run?
-	// when false, EventID will always be ZERO
-	bool AllowParallelEvents()
+	// how many of the same events can be run in parallel
+	// when 0, EventID will always be ZERO
+	int MaxParallelEvents()
 	{
-		return false;
+		return 0;
 	}
 	
 	vector GetEventPosition();

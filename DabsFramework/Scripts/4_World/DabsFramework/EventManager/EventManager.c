@@ -168,10 +168,10 @@ class EventManager
 		}
 		
 		// event_id is ALWAYS 0 when parallel events are disallowed
-		int event_id = m_AmountOfEventsRan[event_type] * event_base.AllowParallelEvents();
+		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxParallelEvents() > 0);
 		
-		if (m_ActiveEvents[event_type].Count() > 0 && !event_base.AllowParallelEvents()) {  // do not put force here, even FORCE wont allow multiple events to be run
-			EventManagerInfo("Could not start %1 as one is already active and parallel events are not allowed", event_type.ToString());
+		if (m_ActiveEvents[event_type].Count() >= event_base.MaxParallelEvents()) {  // do not put force here, even FORCE wont allow multiple events to be run
+			EventManagerInfo("Could not start %1 as the max amount of parallel events has been achieved (%2)", event_type.ToString(), event_base.MaxParallelEvents().ToString());
 			delete event_base; // dont need to call delete here, its not ref'd yet
 			return;
 		}
