@@ -17,11 +17,11 @@ class LoggerBase
 			return;
 		}
 		
-		if ((GetLogMask() & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && game.IsServer()) {
+		if ((GetLogMask() & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && game.IsDedicatedServer()) {
 			return;
 		}
 		
-		if ((GetLogMask() & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && game.IsClient()) {
+		if ((GetLogMask() & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && !game.IsDedicatedServer()) {
 			return;
 		}
 				
@@ -61,11 +61,13 @@ class LoggerBase
 		}
 				
 		int log_mask = logger_base.GetLogMask();
-		if ((log_mask & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsServer()) {
+		if ((log_mask & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsDedicatedServer()) {
+			Print("B");
 			return;
 		}
 		
-		if ((log_mask & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && GetGame().IsClient()) {
+		if ((log_mask & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && !GetGame().IsDedicatedServer()) {
+			Print("A");
 			return;
 		}
 
@@ -92,7 +94,7 @@ class LoggerBase
 		return ".log";
 	}
 	
-	int GetLogMask()
+	LoggerInstanceMask GetLogMask()
 	{
 		return LoggerInstanceMask.SERVER;
 	}
