@@ -1,6 +1,19 @@
 modded class DayZGame
 {	
-	protected LoggerManager m_LoggerManager = LoggerManager.Start();
+	protected LoggerManager m_LoggerManager;
+	
+	void DayZGame()
+	{
+		// get instance of logger manager
+		m_LoggerManager = LoggerManager.GetInstance();
+		
+		// this is likely if no loggers are registered
+		if (!m_LoggerManager) {
+			m_LoggerManager = LoggerManager.Start();
+		}
+		
+		m_LoggerManager.OnGameStart(this);
+	}
 
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{

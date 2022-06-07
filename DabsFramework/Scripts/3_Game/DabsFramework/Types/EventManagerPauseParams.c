@@ -1,3 +1,4 @@
 // 0: Event Type
 // 1: Event Paused
-typedef Param2<string, bool> EventManagerPauseParams;
+// 2: Event ID
+typedef Param3<string, bool, int> EventManagerPauseParams;

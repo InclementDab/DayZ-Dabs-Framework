@@ -15,6 +15,7 @@ class EventBase
 {
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
+	protected int m_Id;
 	protected EventManager m_EventManager;
 	protected ref Param m_StartParams; // startup params, passed from EventManager::StartEvent
 	protected bool m_IsPaused;
@@ -64,6 +65,17 @@ class EventBase
 			m_TimeRemainingTimer.Stop();
 			delete m_TimeRemainingTimer;
 		}
+	}
+	
+	void SetID(int id)
+	{
+		EventDebug("[%1] assigned id: %2", Type().ToString(), id.ToString());
+		m_Id = id;
+	}
+	
+	int GetID()
+	{
+		return m_Id;
 	}
 	
 	// Abstract methods
@@ -135,18 +147,9 @@ class EventBase
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
 			
-#ifdef EVENT_MANAGER_DEBUG
-			m_PhaseTimeRemaining *= 0.05;
-#endif
-			
 			// Dispatch data to all clients
-			EventManager.SendActiveEventData(Type(), m_EventPhase, m_PhaseTimeRemaining, m_IsPaused, GetClientSyncData(m_EventPhase));
-			
-			if (!m_EventManager) {
-				EventInfo("SwitchPhase could not find event manager");
-				return;
-			}
-			
+			EventManager.SendActiveEventData(this);
+						
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();
@@ -220,6 +223,13 @@ class EventBase
 		return true;
 	}
 	
+	// how many of the same events can be run in parallel
+	// when 1, EventID will always be ZERO
+	int MaxEventCount()
+	{
+		return 1;
+	}
+	
 	vector GetEventPosition();
 	
 	/* 
@@ -252,15 +262,15 @@ class EventBase
 		return 0;
 	}
 		
-	// Do not call this, let the EventManager do it
-	void Start(EventManager event_manager, Param start_params)
+	// safe place to work with the start_params
+	void OnStart(EventManager event_manager, Param start_params)
 	{
 		m_EventManager = event_manager;
 		m_StartParams = start_params;
 		
 		SwitchPhase(EventPhase.INIT);
 	}
-	
+		
 	void SetPaused(bool state)
 	{
 		if (!GetGame().IsServer()) {
@@ -269,7 +279,7 @@ class EventBase
 		}
 		
 		m_IsPaused = state;
-		EventManager.SendEventPauseData(Type(), m_IsPaused);
+		EventManager.SendEventPauseData(Type(), GetID(), m_IsPaused);
 	}
 	
 	bool IsPaused()
@@ -309,6 +319,26 @@ class EventBase
 		}
 	}
 	
+	// corresponds to EventManager::OnRPC, may change this but for now its good
+	void Write(ParamsWriteContext ctx)
+	{
+		EventDebug("%1 writing", Type().ToString());
+		ctx.Write(Type().ToString());
+		ctx.Write(GetID());
+		ctx.Write(GetCurrentPhase());
+		ctx.Write(GetCurrentPhaseTimeRemaining());
+		ctx.Write(IsPaused());
+		
+		// handle data
+		SerializableParam data = GetClientSyncData(GetCurrentPhase());
+		if (data) {
+			ctx.Write(data.GetSerializeableType());
+			data.Write(ctx);
+		} else {
+			ctx.Write("null");
+		}
+	}
+		
 	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 #ifdef EVENT_MANAGER_DEBUG		

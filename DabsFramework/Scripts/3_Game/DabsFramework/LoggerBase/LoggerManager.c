@@ -13,7 +13,7 @@ class RegisterLogger
 }
 
 class LoggerManager
-{	
+{
 	protected ref map<typename, ref LoggerBase> m_Loggers = new map<typename, ref LoggerBase>();
 		
 	void RegisterLogger(typename logger_type)
@@ -24,6 +24,15 @@ class LoggerManager
 	LoggerBase GetLogger(typename logger)
 	{
 		return m_Loggers[logger];
+	}
+	
+	void OnGameStart(DayZGame game)
+	{
+		foreach (typename logger_type, LoggerBase logger_instance: m_Loggers) {
+			if (logger_instance) {
+				logger_instance.OnGameStart(game);
+			}
+		}
 	}
 	
 	// Static singleton stuff

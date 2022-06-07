@@ -19,10 +19,15 @@ class EventManager
 	protected typename m_LastEventType;
 	
 	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
-	protected ref map<typename, ref EventBase> m_ActiveEvents = new map<typename, ref EventBase>();
+	
+	//				 EVRStorm
+	//								0,  EVRStorm ptr
+	//								1,  EVRStorm ptr
+	protected ref map<typename, ref map<int, ref EventBase>> m_ActiveEvents = new map<typename, ref map<int, ref EventBase>>();
 
 	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
+	protected ref map<typename, int> m_AmountOfEventsRan = new map<typename, int>(); // amount of event type ran
 	protected ref map<typename, float> m_EventCooldowns = new map<typename, float>();
 	
 	protected static ref EventManager m_Instance;
@@ -62,7 +67,7 @@ class EventManager
 	
 		0 (int): Minimum time between events
 		1 (int): Maximum time between events
-		2 (int): Maximum amount of parallel events
+		2 (int): Maximum amount of parallel events // DEPRICATED
 	*/
 	void Run(int min_between_events = 550, int max_between_events = 3500, int max_event_count = 2)
 	{
@@ -71,11 +76,6 @@ class EventManager
 		m_MaxEventCount = max_event_count;
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
-		
-#ifdef EVENT_MANAGER_DEBUG
-		m_EventFreqMin *= 0.05;
-		m_EventFreqMax *= 0.05;
-#endif
 		
 		m_EventCooldownTimer.Run(1.0, this, "ServerCooldownThread", null, true);
 		
@@ -125,88 +125,152 @@ class EventManager
 		
 		m_PossibleEventTypes[event_type] = frequency;
 	}
-
-	void StartEvent(typename event_type, bool force = false, Param startup_params = null)
+	
+	// startup_params are passed to OnStart of the event
+	// returns if the event started succesfully
+	bool StartEvent(typename event_type, bool force = false, Param startup_params = null)
 	{
 		if (!GetGame().IsServer()) {
 			EventManagerInfo("StartEvent must be called on SERVER, exiting");
-			return;
+			return false;
 		}
 		
-		if (m_ActiveEvents[event_type]) { 
-			EventManagerInfo("Could not start %1 as one is already active", event_type.ToString());
-			return;
+		// register the map associated with this event type, probably the first time running an event like this
+		if (!m_ActiveEvents[event_type]) {
+			m_ActiveEvents[event_type] = new map<int, ref EventBase>();
 		}
-				
-		if (m_ActiveEvents.Count() >= m_MaxEventCount && !force) {
+		
+		int active_event_count;
+		foreach (typename type, map<int, ref EventBase> events: m_ActiveEvents) {
+			if (!events) {
+				continue;
+			}
+			
+			active_event_count += events.Count();
+		}
+		
+		if (active_event_count >= m_MaxEventCount && !force) {
 			EventManagerInfo("Could not start event as we reached the maximum event limit %1", m_MaxEventCount.ToString());
-			return;
+			return false;
 		}
 		
 		if (m_EventCooldowns.Contains(event_type) && !force) {
 			EventManagerInfo("Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
-			return;
+			return false;
 		}
 		
+		// increment the amount of these events ran
+		m_AmountOfEventsRan[event_type] = m_AmountOfEventsRan[event_type] + 1;
+				
 		EventManagerInfo("Starting event %1", event_type.ToString());
-		m_ActiveEvents[event_type] = SpawnEvent(event_type);
-		
-		if (!m_ActiveEvents[event_type]) {
+		EventBase event_base = SpawnEvent(event_type);
+		if (!event_base) {
 			EventManagerInfo("Failed to start event %1", event_type.ToString());
-			return;
+			return false;
 		}
 		
-		foreach (typename etype, EventBase ebase: m_ActiveEvents) {
-			if (m_ActiveEvents[event_type].GetDisallowedEvents().Find(etype) != -1 && !force) {
+		// event_id is ALWAYS 0 when parallel events are disallowed
+		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
+		
+		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
+			EventManagerInfo("Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
+			delete event_base; // dont need to call delete here, its not ref'd yet
+			return false;
+		}
+		
+		event_base.SetID(event_id);
+		
+		// assign the event to the map now that we know the id is valid
+		m_ActiveEvents[event_type][event_id] = event_base;
+		
+		// check for disallowed evemts		
+		foreach (typename etype, map<int, ref EventBase> ebase: m_ActiveEvents) {
+			if (event_base.GetDisallowedEvents().Find(etype) != -1 && !force) {
 				EventManagerInfo("Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
-				DeleteEvent(event_type);
-				return;
+				DeleteEvent(event_type, event_id);
+				return false;
 			}
 		}
 		
-		if (!m_ActiveEvents[event_type] || !m_ActiveEvents[event_type].EventActivateCondition()) {
-			DeleteEvent(event_type);
-			return;
+		if (!event_base.EventActivateCondition()) {
+			DeleteEvent(event_type, event_id);
+			return false;
 		}
 		
 		// Register event for cooldown
-		m_EventCooldowns.Insert(event_type, m_ActiveEvents[event_type].GetEventCooldown());
+		m_EventCooldowns.Insert(event_type, event_base.GetEventCooldown());
 		
 		// start the event
-		m_ActiveEvents[event_type].Start(this, startup_params);
+		event_base.OnStart(this, startup_params);
+		return true;
 	}
 	
-	void CancelEvent(typename event_type)
+	bool CancelEvent(EventBase event_base)
 	{
 		if (!GetGame().IsServer()) {
 			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
+			return false;
+		}
+		
+		// set to discard
+		event_base.SwitchPhase(EventPhase.DELETE);
+		
+		SendActiveEventData(event_base);
+		DeleteEvent(event_base);
+		return true;
+	}
+	
+	void DeleteEvent(EventBase event_base)
+	{
+		EventManagerDebug("Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
+		if (!m_ActiveEvents || !m_ActiveEvents[event_base.Type()]) {
 			return;
+		}
+
+		// delete just this specific event
+		delete m_ActiveEvents[event_base.Type()][event_base.GetID()];
+		m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
+	}
+	
+	// you only need to worry about event_id if you allow parralel events
+	// returns if event was succesfully cancelled
+	bool CancelEvent(typename event_type, int event_id = 0)
+	{
+		if (!GetGame().IsServer()) {
+			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
+			return false;
 		}
 		
 		if (!m_ActiveEvents[event_type]) {
 			EventManagerInfo("Event %1 is not active", event_type.ToString());
-			return;
+			return false;
 		}
 		
-		SendActiveEventData(event_type, EventPhase.DELETE, 0, false, null);
-		DeleteEvent(event_type);
+		if (!m_ActiveEvents[event_type][event_id]) {
+			EventManagerInfo("Event %1 is not active", event_type.ToString());
+			return false;
+		}
+		
+		SendActiveEventData(m_ActiveEvents[event_type][event_id]);
+		DeleteEvent(m_ActiveEvents[event_type][event_id]);
+		return true;
 	}
 	
-	void DeleteEvent(typename event_type)
+	void DeleteEvent(typename event_type, int event_id)
 	{
-		EventManagerDebug("Deleting %1", event_type.ToString());
-		if (!m_ActiveEvents) {
+		EventManagerDebug("Deleting %1, idx: %2", event_type.ToString(), event_id.ToString());
+		if (!m_ActiveEvents || !m_ActiveEvents[event_type]) {
 			return;
 		}
-		
-		delete m_ActiveEvents[event_type];
-		m_ActiveEvents.Remove(event_type);
+
+		// delete just this specific event
+		delete m_ActiveEvents[event_type][event_id];
+		m_ActiveEvents[event_type].Remove(event_id);
 	}
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{	
 		switch (rpc_type) {
-			
 			case ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE: {
 				EventManagerPauseParams event_pause_params;
 				if (!ctx.Read(event_pause_params)) {
@@ -215,11 +279,12 @@ class EventManager
 				
 				typename eventp_type = event_pause_params.param1.ToType();
 				bool eventp_paused = event_pause_params.param2;
+				int eventp_id = event_pause_params.param3;
 				
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					// Forced setting for clients since this needs to be controlled separately
 					// the client does not have authority to pause events directly, but we do
-					EnScript.SetClassVar(m_ActiveEvents[eventp_type], "m_IsPaused", 0, eventp_paused);
+					EnScript.SetClassVar(m_ActiveEvents[eventp_type][eventp_id], "m_IsPaused", 0, eventp_paused);
 				}
 				
 				break;
@@ -227,13 +292,17 @@ class EventManager
 			
 			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {								
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
-					
 					string str_event_type;
 					if (!ctx.Read(str_event_type)) {
 						break;
 					}
-
+					
 					typename event_type = str_event_type.ToType();
+					int event_id;
+					if (!ctx.Read(event_id)) {
+						break;
+					}
+
 					int event_phase;
 					if (!ctx.Read(event_phase)) {
 						break;
@@ -265,95 +334,92 @@ class EventManager
 					
 					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
 										
-					// Case for JIP players	
 					if (!m_ActiveEvents[event_type]) {
-						m_ActiveEvents[event_type] = SpawnEvent(event_type);
-						if (!m_ActiveEvents[event_type]) return;
+						m_ActiveEvents[event_type] = new map<int, ref EventBase>();
+					}
+					
+					// Case for JIP players	
+					if (!m_ActiveEvents[event_type][event_id]) {
+						m_ActiveEvents[event_type][event_id] = SpawnEvent(event_type);
+						if (!m_ActiveEvents[event_type][event_id]) return;
 					}						
 					
 					// Event finished
 					if (event_phase == EventPhase.DELETE) {
-						DeleteEvent(event_type);
+						DeleteEvent(event_type, event_id);
 						break;
 					}
 					
 					// Play catch-up to the current phase
-					if (m_ActiveEvents[event_type].JIPRunPreviousPhases()) {
-						for (int i = m_ActiveEvents[event_type].GetCurrentPhase(); i < event_phase; i++) {
-							m_ActiveEvents[event_type].SwitchPhase(i);
+					if (m_ActiveEvents[event_type][event_id].JIPRunPreviousPhases()) {
+						for (int i = m_ActiveEvents[event_type][event_id].GetCurrentPhase(); i < event_phase; i++) {
+							m_ActiveEvents[event_type][event_id].SwitchPhase(i);
 						}					
 					}
 					
-					m_ActiveEvents[event_type].SwitchPhase(event_phase, event_phase_time, client_param);
+					m_ActiveEvents[event_type][event_id].SwitchPhase(event_phase, event_phase_time, client_param);
 					
 					// Forced setting for clients since this needs to be controlled separately
 					// the client does not have authority to pause events directly, but we do
-					EnScript.SetClassVar(m_ActiveEvents[event_type], "m_IsPaused", 0, event_paused);
+					EnScript.SetClassVar(m_ActiveEvents[event_type][event_id], "m_IsPaused", 0, event_paused);
 				}
 				
 				break;
 			}				
 		}
 		
-		foreach (typename et, EventBase event_base: m_ActiveEvents) {
-			if (event_base) {
-				event_base.OnRPC(sender, target, rpc_type, ctx);
+		foreach (typename et, map<int, ref EventBase> event_base_map: m_ActiveEvents) {
+			foreach (int id, EventBase event_base: event_base_map) {
+				if (event_base) {
+					event_base.OnRPC(sender, target, rpc_type, ctx);
+				}
 			}
 		}
 	}
-	
+		
 	void DispatchEventInfo(PlayerBase player)
 	{
 		EventManagerDebug("Sending In Progress info to %1", player.ToString());
-		foreach (typename event_type, EventBase event_base: m_ActiveEvents) {
-			if (!event_base) {
-				continue;
+		foreach (typename event_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+			foreach (int event_id, EventBase event_base: event_map) {
+				if (!event_base) {
+					continue;
+				}
+				
+				SerializableParam data = event_base.GetClientSyncData(event_base.GetCurrentPhase());	
+				ScriptRPC rpc = new ScriptRPC();
+				event_base.Write(rpc);	
+				rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
 			}
-			
-			SerializableParam data = event_base.GetClientSyncData(event_base.GetCurrentPhase());	
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(event_type.ToString());
-			rpc.Write(event_base.GetCurrentPhase());
-			rpc.Write(event_base.GetCurrentPhaseTimeRemaining());
-			rpc.Write(event_base.IsPaused());
-			if (data) {
-				rpc.Write(data.GetSerializeableType());
-				data.Write(rpc);
-			} else {
-				rpc.Write("null");
-			}
-			
-			rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
 		}
 	}
 	
-	static void SendActiveEventData(typename event_type, EventPhase phase_id, float time_remaining, bool is_paused, SerializableParam data)
+	static void SendActiveEventData(EventBase event_base)
 	{
-		EventManagerDebug("Sending active Event Data: %1, Phase: %2", event_type.ToString(), typename.EnumToString(EventPhase, phase_id));
-		ScriptRPC rpc = new ScriptRPC();
-		rpc.Write(event_type.ToString());
-		rpc.Write(phase_id);
-		rpc.Write(time_remaining);
-		rpc.Write(is_paused);
-		if (data) {
-			rpc.Write(data.GetSerializeableType());
-			data.Write(rpc);
-		} else {
-			rpc.Write("null");
+		EventManagerDebug("Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
+		if (!event_base) {
+			return;
 		}
 		
+		ScriptRPC rpc = new ScriptRPC();
+		event_base.Write(rpc);
 		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
 	}
-	
-	static void SendEventPauseData(typename event_type, bool is_paused)
+		
+	static void SendEventPauseData(typename event_type, int event_id, bool is_paused)
 	{
-		EventManagerDebug("Sending Event Pause Data: %1, Paused: %2", event_type.ToString(), is_paused.ToString());
-		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused), true, null);
+		EventManagerDebug("Sending Event Pause Data: %1, idx: %2, Paused: %3", event_type.ToString(), event_id.ToString(), is_paused.ToString());
+		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused, event_id), true, null);
 	}
 	
 	bool IsEventActive(typename event_type)
 	{
-		return m_ActiveEvents[event_type] != null;
+		return (m_ActiveEvents[event_type] && m_ActiveEvents[event_type].Count() > 0);
+	}
+	
+	bool IsEventActive(typename event_type, int event_id)
+	{
+		return (m_ActiveEvents[event_type] && m_ActiveEvents[event_type][event_id]);
 	}
 	
 	EventBase SpawnEvent(typename event_type)
@@ -384,19 +450,56 @@ class EventManager
 		return Math.Clamp(Math.RandomInt(m_EventFreqMin, m_EventFreqMax), 10, int.MAX);
 	}
 	
-	EventBase GetEvent(typename event_type)
+	// again, you only need to worry about event_id if you allow parralel events
+	EventBase GetEvent(typename event_type, int event_id = 0)
 	{
-		return m_ActiveEvents[event_type];
+		if (!m_ActiveEvents[event_type]) {
+			return null;
+		}
+		
+		return m_ActiveEvents[event_type][event_id];
+	}
+	
+	array<EventBase> GetEvents(typename event_type) 
+	{
+		if (!m_ActiveEvents[event_type]) {
+			return {};
+		}
+		
+		return m_ActiveEvents[event_type].GetValueArray();
+	}
+	
+	array<EventBase> GetEventsInherited(typename event_type) 
+	{		
+		array<EventBase> active_events = {};
+		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+			if (!event_checked_type.IsInherited(event_type)) {
+				continue;
+			}
+			
+			foreach (int event_id, EventBase event_base: event_map) {
+				active_events.Insert(event_base);
+			}
+		}
+		
+		return active_events;
 	}
 	
 	array<EventBase> GetActiveEvents()
 	{
-		return m_ActiveEvents.GetValueArray();
+		array<EventBase> active_events = {};
+		foreach (typename event_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+			foreach (int event_id, EventBase event_base: event_map) {
+				active_events.Insert(event_base);
+			}
+		}
+		
+		return active_events;
 	}
 	
 	void DumpInfo()
 	{
-		if (m_PossibleEventTypes.Count() == 0) {
+		if (m_PossibleEventTypes.Count() == 0 && GetGame().IsServer()) {
 			EventManagerInfo("Cannot debug Event Percentages with no events registered");
 			return;
 		}
@@ -415,8 +518,10 @@ class EventManager
 		
 		EventManagerInfo("There are %1 events running", m_ActiveEvents.Count().ToString());
 		
-		foreach (typename typey, EventBase evnt: m_ActiveEvents) {
-			EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", evnt.ToString(), evnt.GetCurrentPhase().ToString(), evnt.GetCurrentPhaseTimeRemaining().ToString());
+		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {			
+			foreach (int event_id, EventBase event_base: event_map) {
+				EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
+			}
 		}
 	}
 			
