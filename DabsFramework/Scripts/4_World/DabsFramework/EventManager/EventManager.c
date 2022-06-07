@@ -292,7 +292,6 @@ class EventManager
 			
 			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {								
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
-					
 					string str_event_type;
 					if (!ctx.Read(str_event_type)) {
 						break;

@@ -324,6 +324,7 @@ class EventBase
 		}
 	}
 	
+	// corresponds to EventManager::OnRPC, may change this but for now its good
 	void Write(ParamsWriteContext ctx)
 	{
 		EventDebug("%1 writing", Type().ToString());
@@ -342,12 +343,7 @@ class EventBase
 			ctx.Write("null");
 		}
 	}
-	
-	void Read(ParamsReadContext ctx)
-	{
 		
-	}
-	
 	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
 #ifdef EVENT_MANAGER_DEBUG		
