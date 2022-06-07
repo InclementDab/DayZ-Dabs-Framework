@@ -478,6 +478,28 @@ class EventManager
 		return active_events;
 	}
 	
+	array<EventBase> GetEventsInherited(typename event_type) 
+	{
+		if (!m_ActiveEvents[event_type]) {
+			return {};
+		}
+		
+		return m_ActiveEvents[event_type].GetValueArray();
+		array<EventBase> active_events = {};
+		
+		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+			if (!event_checked_type.IsInherited(event_type)) {
+				continue;
+			}
+			
+			foreach (int event_id, EventBase event_base: event_map) {
+				active_events.Insert(event_base);
+			}
+		}
+		
+		return active_events;
+	}
+	
 	array<EventBase> GetActiveEvents()
 	{
 		array<EventBase> active_events = {};
