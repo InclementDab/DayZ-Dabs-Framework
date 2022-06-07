@@ -149,12 +149,7 @@ class EventBase
 			
 			// Dispatch data to all clients
 			EventManager.SendActiveEventData(this);
-			
-			if (!m_EventManager) {
-				EventInfo("SwitchPhase could not find event manager");
-				return;
-			}
-			
+						
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
 					thread InitPhaseServer();
