@@ -11,6 +11,8 @@
 *
 */
 
+#define EVENT_MANAGER_DEBUG
+
 class EventManager
 {			
 	// Enable / Disable the multiple event system
@@ -67,7 +69,7 @@ class EventManager
 	
 		0 (int): Minimum time between events
 		1 (int): Maximum time between events
-		2 (int): Maximum amount of parallel events // DEPRICATED
+		2 (int): Maximum amount of parallel events
 	*/
 	void Run(int min_between_events = 550, int max_between_events = 3500, int max_event_count = 2)
 	{
@@ -80,10 +82,10 @@ class EventManager
 		m_EventCooldownTimer.Run(1.0, this, "ServerCooldownThread", null, true);
 		
 		m_NextEventIn = GetNextEventTime();
-		EventManagerInfo("Next selection will occur in %1 seconds", m_NextEventIn.ToString());	
+		EventManagerLog.Info("Next selection will occur in %1 seconds", m_NextEventIn.ToString());	
 		m_ServerEventTimer.Run(m_NextEventIn, this, "ServerEventThread");
 		
-		EventManagerInfo("EventManager is now running");
+		EventManagerLog.Info("EventManager is now running");
 	}
 	
 	protected void ServerCooldownThread()
@@ -98,11 +100,11 @@ class EventManager
 			
 	protected void ServerEventThread()
 	{	
-		EventManagerInfo("Trying to select a new event...");												
+		EventManagerLog.Info("Trying to select a new event...");												
 		// Just a quick check to make sure we dont run the same event twice
 		typename current_type = GetRandomEvent();
 		while (current_type == m_LastEventType && m_PossibleEventTypes.Count() > 1) {
-			EventManagerDebug("Random event selected was the same as last %1", current_type.ToString());
+			EventManagerLog.Debug("Random event selected was the same as last %1", current_type.ToString());
 			current_type = GetRandomEvent();
 		}
 		
@@ -112,7 +114,7 @@ class EventManager
 		StartEvent(current_type);
 		
 		m_NextEventIn = GetNextEventTime();
-		EventManagerInfo("Next selection will occur in %1 seconds", m_NextEventIn.ToString());
+		EventManagerLog.Info("Next selection will occur in %1 seconds", m_NextEventIn.ToString());
 		
 		m_ServerEventTimer.Run(m_NextEventIn, this, "ServerEventThread");
 	}
@@ -131,7 +133,7 @@ class EventManager
 	bool StartEvent(typename event_type, bool force = false, Param startup_params = null)
 	{
 		if (!GetGame().IsServer()) {
-			EventManagerInfo("StartEvent must be called on SERVER, exiting");
+			EventManagerLog.Info("StartEvent must be called on SERVER, exiting");
 			return false;
 		}
 		
@@ -150,22 +152,22 @@ class EventManager
 		}
 		
 		if (active_event_count >= m_MaxEventCount && !force) {
-			EventManagerInfo("Could not start event as we reached the maximum event limit %1", m_MaxEventCount.ToString());
+			EventManagerLog.Info("Could not start event as we reached the maximum event limit %1", m_MaxEventCount.ToString());
 			return false;
 		}
 		
 		if (m_EventCooldowns.Contains(event_type) && !force) {
-			EventManagerInfo("Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
+			EventManagerLog.Info("Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
 			return false;
 		}
 		
 		// increment the amount of these events ran
 		m_AmountOfEventsRan[event_type] = m_AmountOfEventsRan[event_type] + 1;
 				
-		EventManagerInfo("Starting event %1", event_type.ToString());
+		EventManagerLog.Info("Starting event %1", event_type.ToString());
 		EventBase event_base = SpawnEvent(event_type);
 		if (!event_base) {
-			EventManagerInfo("Failed to start event %1", event_type.ToString());
+			EventManagerLog.Info("Failed to start event %1", event_type.ToString());
 			return false;
 		}
 		
@@ -173,7 +175,7 @@ class EventManager
 		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
 		
 		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
-			EventManagerInfo("Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
+			EventManagerLog.Info("Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
 			delete event_base; // dont need to call delete here, its not ref'd yet
 			return false;
 		}
@@ -186,7 +188,7 @@ class EventManager
 		// check for disallowed evemts		
 		foreach (typename etype, map<int, ref EventBase> ebase: m_ActiveEvents) {
 			if (event_base.GetDisallowedEvents().Find(etype) != -1 && !force) {
-				EventManagerInfo("Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
+				EventManagerLog.Info("Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
 				DeleteEvent(event_type, event_id);
 				return false;
 			}
@@ -208,7 +210,7 @@ class EventManager
 	bool CancelEvent(EventBase event_base)
 	{
 		if (!GetGame().IsServer()) {
-			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
+			EventManagerLog.Info("CancelEvent must be called on SERVER, exiting");
 			return false;
 		}
 		
@@ -222,7 +224,7 @@ class EventManager
 	
 	void DeleteEvent(EventBase event_base)
 	{
-		EventManagerDebug("Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
+		EventManagerLog.Debug("Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
 		if (!m_ActiveEvents || !m_ActiveEvents[event_base.Type()]) {
 			return;
 		}
@@ -237,17 +239,17 @@ class EventManager
 	bool CancelEvent(typename event_type, int event_id = 0)
 	{
 		if (!GetGame().IsServer()) {
-			EventManagerInfo("CancelEvent must be called on SERVER, exiting");
+			EventManagerLog.Info("CancelEvent must be called on SERVER, exiting");
 			return false;
 		}
 		
 		if (!m_ActiveEvents[event_type]) {
-			EventManagerInfo("Event %1 is not active", event_type.ToString());
+			EventManagerLog.Info("Event %1 is not active", event_type.ToString());
 			return false;
 		}
 		
 		if (!m_ActiveEvents[event_type][event_id]) {
-			EventManagerInfo("Event %1 is not active", event_type.ToString());
+			EventManagerLog.Info("Event %1 is not active", event_type.ToString());
 			return false;
 		}
 		
@@ -258,7 +260,7 @@ class EventManager
 	
 	void DeleteEvent(typename event_type, int event_id)
 	{
-		EventManagerDebug("Deleting %1, idx: %2", event_type.ToString(), event_id.ToString());
+		EventManagerLog.Debug("Deleting %1, idx: %2", event_type.ToString(), event_id.ToString());
 		if (!m_ActiveEvents || !m_ActiveEvents[event_type]) {
 			return;
 		}
@@ -332,7 +334,7 @@ class EventManager
 						client_param = serializeable_param.ToParam();
 					}
 					
-					EventManagerInfo("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
+					EventManagerLog.Info("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
 										
 					if (!m_ActiveEvents[event_type]) {
 						m_ActiveEvents[event_type] = new map<int, ref EventBase>();
@@ -379,7 +381,7 @@ class EventManager
 		
 	void DispatchEventInfo(PlayerBase player)
 	{
-		EventManagerDebug("Sending In Progress info to %1", player.ToString());
+		EventManagerLog.Debug("Sending In Progress info to %1", player.ToString());
 		foreach (typename event_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
 			foreach (int event_id, EventBase event_base: event_map) {
 				if (!event_base) {
@@ -396,7 +398,7 @@ class EventManager
 	
 	static void SendActiveEventData(EventBase event_base)
 	{
-		EventManagerDebug("Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
+		EventManagerLog.Debug("Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
 		if (!event_base) {
 			return;
 		}
@@ -408,7 +410,7 @@ class EventManager
 		
 	static void SendEventPauseData(typename event_type, int event_id, bool is_paused)
 	{
-		EventManagerDebug("Sending Event Pause Data: %1, idx: %2, Paused: %3", event_type.ToString(), event_id.ToString(), is_paused.ToString());
+		EventManagerLog.Debug("Sending Event Pause Data: %1, idx: %2, Paused: %3", event_type.ToString(), event_id.ToString(), is_paused.ToString());
 		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused, event_id), true, null);
 	}
 	
@@ -500,12 +502,12 @@ class EventManager
 	void DumpInfo()
 	{
 		if (m_PossibleEventTypes.Count() == 0 && GetGame().IsServer()) {
-			EventManagerInfo("Cannot debug Event Percentages with no events registered");
+			EventManagerLog.Info("Cannot debug Event Percentages with no events registered");
 			return;
 		}
 		
-		EventManagerInfo("New events will be selected between %1 and %2 minutes", (m_EventFreqMin / 60).ToString(), (m_EventFreqMax / 60).ToString());
-		EventManagerInfo("There is a maximum event count of %1", m_MaxEventCount.ToString());
+		EventManagerLog.Info("New events will be selected between %1 and %2 minutes", (m_EventFreqMin / 60).ToString(), (m_EventFreqMax / 60).ToString());
+		EventManagerLog.Info("There is a maximum event count of %1", m_MaxEventCount.ToString());
 		float total_freq;
 		foreach (typename typet, float freqt: m_PossibleEventTypes) {
 			total_freq += freqt;
@@ -513,27 +515,15 @@ class EventManager
 		
 		foreach (typename type, float freq: m_PossibleEventTypes) {
 			float value = ((1 / total_freq) * freq) * 100;
-			EventManagerInfo("Chance of %1 is %2 percent", type.ToString(), value.ToString());
+			EventManagerLog.Info("Chance of %1 is %2 percent", type.ToString(), value.ToString());
 		}
 		
-		EventManagerInfo("There are %1 events running", m_ActiveEvents.Count().ToString());
+		EventManagerLog.Info("There are %1 events running", m_ActiveEvents.Count().ToString());
 		
 		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {			
 			foreach (int event_id, EventBase event_base: event_map) {
-				EventManagerInfo("Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
+				EventManagerLog.Info("Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
 			}
 		}
-	}
-			
-	static void EventManagerDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
-	{
-#ifdef EVENT_MANAGER_DEBUG		
-		PrintFormat("[DF][EventManager]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
-#endif
-	}
-	
-	static void EventManagerInfo(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
-	{
-		PrintFormat("[DF][EventManager]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 	}
 }

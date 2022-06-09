@@ -62,18 +62,24 @@ class LoggerBase
 				
 		int log_mask = logger_base.GetLogMask();
 		if ((log_mask & LoggerInstanceMask.SERVER) != LoggerInstanceMask.SERVER && GetGame().IsDedicatedServer()) {
-			Print("B");
 			return;
 		}
 		
 		if ((log_mask & LoggerInstanceMask.CLIENT) != LoggerInstanceMask.CLIENT && !GetGame().IsDedicatedServer()) {
-			Print("A");
 			return;
 		}
 
 		FileHandle handle = OpenFile(logger_base.GetFileName(), FileMode.APPEND);
 		FPrintln(handle, log);
 		CloseFile(handle);
+		
+		if (logger_base.DuplicateToConsole()) {
+			Print(log);
+		}
+		
+		if (logger_base.DuplicateToRPT()) {
+			PrintToRPT(log);
+		}
 	}
 		
 	// override this
@@ -111,6 +117,18 @@ class LoggerBase
 	string GetFileFormat()
 	{
 		return "%t%_%y%-%m%-%d%_%hh%-%mm%-%ss%";
+	}
+	
+	// duplicates logs to the script console, not recommended for use on live servers
+	bool DuplicateToConsole()
+	{
+		return false;
+	}
+	
+	// duplicates logs to the RPT console, also not recommended for use on live servers
+	bool DuplicateToRPT()
+	{
+		return false;
 	}
 }
 
