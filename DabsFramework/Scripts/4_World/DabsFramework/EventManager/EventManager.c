@@ -162,7 +162,6 @@ class EventManager
 			return false;
 		}
 						
-		EventManagerLog.Info(this, "Starting event %1", event_type.ToString());
 		EventBase event_base = SpawnEvent(event_type);
 		if (!event_base) {
 			EventManagerLog.Info(this, "Failed to start event %1", event_type.ToString());
@@ -174,12 +173,11 @@ class EventManager
 		
 		// event_id is ALWAYS 0 when parallel events are disallowed
 		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
-		Print(m_ActiveEvents[event_type]);
 		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
 			EventManagerLog.Info(this, "Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
 			return false;
 		}
-		
+				
 		event_base.SetID(event_id);
 		
 		// assign the event to the map now that we know the id is valid
@@ -203,6 +201,7 @@ class EventManager
 		m_EventCooldowns.Insert(event_type, event_base.GetEventCooldown());
 		
 		// start the event
+		EventManagerLog.Info(this, "Starting event %1", event_type.ToString());
 		event_base.OnStart(this, startup_params);
 		return true;
 	}
@@ -398,7 +397,7 @@ class EventManager
 	
 	static void SendActiveEventData(EventBase event_base)
 	{
-		EventManagerLog.Debug(null, "Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
+		EventManagerLog.Debug(event_base, "Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
 		if (!event_base) {
 			return;
 		}

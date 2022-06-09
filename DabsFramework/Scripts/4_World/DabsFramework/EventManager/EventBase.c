@@ -313,7 +313,7 @@ class EventBase
 					
 					// not calling this a whole cycle later causes some crashes
 					// perhaps find a way to resolve?
-					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(m_EventManager.DeleteEvent, PHASE_TIME_REMAINING_PRECISION * 1000, false, Type());
+					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(m_EventManager.DeleteEvent, PHASE_TIME_REMAINING_PRECISION * 1000, false, this);
 				}
 			}
 		}
