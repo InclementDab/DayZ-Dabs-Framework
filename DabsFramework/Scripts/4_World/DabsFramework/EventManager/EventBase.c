@@ -69,7 +69,7 @@ class EventBase
 	
 	void SetID(int id)
 	{
-		EventManagerLog.EventDebug(this, "assigned id: %1", id.ToString());
+		EventManagerLog.Debug(this, "assigned id: %1", id.ToString());
 		m_Id = id;
 	}
 	
@@ -137,12 +137,12 @@ class EventBase
 	void SwitchPhase(EventPhase phase, float time_remaining = 0, Param client_data = null)
 	{
 		if (m_EventPhase >= phase) {
-			EventManagerLog.EventDebug(this, "Event was already in phase %1, exiting...", phase.ToString());
+			EventManagerLog.Debug(this, "Event was already in phase %1, exiting...", phase.ToString());
 			return;
 		}
 		
 		m_EventPhase = phase;
-		EventManagerLog.EventDebug(this, "SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
+		EventManagerLog.Debug(this, "SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
@@ -274,7 +274,7 @@ class EventBase
 	void SetPaused(bool state)
 	{
 		if (!GetGame().IsServer()) {
-			EventManagerLog.EventDebug(this, "SetPaused can only be called on server!");
+			EventManagerLog.Debug(this, "SetPaused can only be called on server!");
 			return;
 		}
 		
@@ -305,7 +305,7 @@ class EventBase
 			m_PhaseTimeRemaining = 0;
 			
 			if (GetGame().IsServer()) {
-				EventManagerLog.EventDebug(this, "Attempting to naturally switch to the next phase");
+				EventManagerLog.Debug(this, "Attempting to naturally switch to the next phase");
 				SwitchPhase(GetCurrentPhase() + 1);
 				
 				if (GetCurrentPhase() >= EventPhase.DELETE) {
@@ -322,7 +322,7 @@ class EventBase
 	// corresponds to EventManager::OnRPC, may change this but for now its good
 	void Write(ParamsWriteContext ctx)
 	{
-		EventManagerLog.EventDebug(this, "%1 writing", Type().ToString());
+		EventManagerLog.Debug(this, "%1 writing", Type().ToString());
 		ctx.Write(Type().ToString());
 		ctx.Write(GetID());
 		ctx.Write(GetCurrentPhase());

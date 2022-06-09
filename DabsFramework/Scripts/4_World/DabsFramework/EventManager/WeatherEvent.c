@@ -94,21 +94,21 @@ class WeatherEvent: EventBase
 	// Safe way of requesting a change in weather events
 	protected bool RequestWeatherChange(EWeatherPhenomenon weather_type, float change, float time, float duration)
 	{
-		EventManagerLog.EventDebug(this, "Requested Weather Change %1, value %2", typename.EnumToString(EWeatherPhenomenon, weather_type), change.ToString());		
+		EventManagerLog.Debug(this, "Requested Weather Change %1, value %2", typename.EnumToString(EWeatherPhenomenon, weather_type), change.ToString());		
 		array<EventBase> active_events = EventManager.GetInstance().GetActiveEvents();
 		foreach (EventBase fog_event: active_events) {
 			WeatherEvent weather_event;
 			if (Class.CastTo(weather_event, fog_event)) {
 				if (weather_event != this && weather_event.GetWeatherTarget(weather_type) != -1) {
 					if (change < weather_event.GetWeatherTarget(weather_type) && weather_event.GetCurrentPhase() <= 1) {
-						EventManagerLog.EventDebug(this, "Weather Change Request Denied");
+						EventManagerLog.Debug(this, "Weather Change Request Denied");
 						return false;
 					}
 				}
 			}
 		}
 				
-		EventManagerLog.EventDebug(this, "Weather Change Approved");
+		EventManagerLog.Debug(this, "Weather Change Approved");
 		WeatherPhenomenon weather_phenomenon = GetWeatherPhenomenon(weather_type);
 		if (!weather_phenomenon) {
 			Error("Invalid Weather Phenomenon");
@@ -122,7 +122,7 @@ class WeatherEvent: EventBase
 		// we only want this value to go higher if the requested change is higher than something already active
 		// we let the lower value changes occur in OnEventEndServer
 		if (change > high) {
-			EventManagerLog.EventDebug(this, "Changing limits to [0, %2]", low.ToString(), change.ToString());			
+			EventManagerLog.Debug(this, "Changing limits to [0, %2]", low.ToString(), change.ToString());			
 			weather_phenomenon.SetLimits(0, change);
 		}
 		
