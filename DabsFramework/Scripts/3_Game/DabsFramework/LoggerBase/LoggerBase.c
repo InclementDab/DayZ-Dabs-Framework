@@ -74,11 +74,11 @@ class LoggerBase
 		CloseFile(handle);
 		
 		if (logger_base.DuplicateToConsole()) {
-			Print(log);
+			Print(log.ToString());
 		}
 		
 		if (logger_base.DuplicateToRPT()) {
-			PrintToRPT(log);
+			PrintToRPT(log.ToString());
 		}
 	}
 		

@@ -69,7 +69,7 @@ class EventBase
 	
 	void SetID(int id)
 	{
-		EventManagerLog.EventDebug(this, "[%1] assigned id: %2", Type().ToString(), id.ToString());
+		EventManagerLog.EventDebug(this, "assigned id: %1", id.ToString());
 		m_Id = id;
 	}
 	

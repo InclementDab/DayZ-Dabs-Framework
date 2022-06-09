@@ -28,7 +28,7 @@ class EventManagerLog: LoggerBase
 #endif
 	}
 	
-	override void Log(string log)
+	static override void Log(string log)
 	{
 		DoLog(EventManagerLog, log);
 	}

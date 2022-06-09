@@ -13,6 +13,8 @@
 
 #define EVENT_MANAGER_DEBUG
 
+typedef map<int, ref EventBase> EventMap;
+
 class EventManager
 {			
 	// Enable / Disable the multiple event system
@@ -25,7 +27,7 @@ class EventManager
 	//				 EVRStorm
 	//								0,  EVRStorm ptr
 	//								1,  EVRStorm ptr
-	protected ref map<typename, ref map<int, ref EventBase>> m_ActiveEvents = new map<typename, ref map<int, ref EventBase>>();
+	protected ref map<typename, ref EventMap> m_ActiveEvents = new map<typename, ref EventMap>();
 
 	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
@@ -139,11 +141,11 @@ class EventManager
 		
 		// register the map associated with this event type, probably the first time running an event like this
 		if (!m_ActiveEvents[event_type]) {
-			m_ActiveEvents[event_type] = new map<int, ref EventBase>();
+			m_ActiveEvents[event_type] = new EventMap();
 		}
 		
 		int active_event_count;
-		foreach (typename type, map<int, ref EventBase> events: m_ActiveEvents) {
+		foreach (typename type, EventMap events: m_ActiveEvents) {
 			if (!events) {
 				continue;
 			}
@@ -160,10 +162,7 @@ class EventManager
 			EventManagerLog.Info("Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
 			return false;
 		}
-		
-		// increment the amount of these events ran
-		m_AmountOfEventsRan[event_type] = m_AmountOfEventsRan[event_type] + 1;
-				
+						
 		EventManagerLog.Info("Starting event %1", event_type.ToString());
 		EventBase event_base = SpawnEvent(event_type);
 		if (!event_base) {
@@ -171,12 +170,14 @@ class EventManager
 			return false;
 		}
 		
+		// increment the amount of these events ran
+		m_AmountOfEventsRan[event_type] = m_AmountOfEventsRan[event_type] + 1;
+		
 		// event_id is ALWAYS 0 when parallel events are disallowed
 		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
-		
+		Print(m_ActiveEvents[event_type]);
 		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
 			EventManagerLog.Info("Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
-			delete event_base; // dont need to call delete here, its not ref'd yet
 			return false;
 		}
 		
@@ -186,7 +187,7 @@ class EventManager
 		m_ActiveEvents[event_type][event_id] = event_base;
 		
 		// check for disallowed evemts		
-		foreach (typename etype, map<int, ref EventBase> ebase: m_ActiveEvents) {
+		foreach (typename etype, EventMap ebase: m_ActiveEvents) {
 			if (event_base.GetDisallowedEvents().Find(etype) != -1 && !force) {
 				EventManagerLog.Info("Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
 				DeleteEvent(event_type, event_id);
@@ -337,7 +338,7 @@ class EventManager
 					EventManagerLog.Info("Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
 										
 					if (!m_ActiveEvents[event_type]) {
-						m_ActiveEvents[event_type] = new map<int, ref EventBase>();
+						m_ActiveEvents[event_type] = new EventMap();
 					}
 					
 					// Case for JIP players	
@@ -370,7 +371,7 @@ class EventManager
 			}				
 		}
 		
-		foreach (typename et, map<int, ref EventBase> event_base_map: m_ActiveEvents) {
+		foreach (typename et, EventMap event_base_map: m_ActiveEvents) {
 			foreach (int id, EventBase event_base: event_base_map) {
 				if (event_base) {
 					event_base.OnRPC(sender, target, rpc_type, ctx);
@@ -382,7 +383,7 @@ class EventManager
 	void DispatchEventInfo(PlayerBase player)
 	{
 		EventManagerLog.Debug("Sending In Progress info to %1", player.ToString());
-		foreach (typename event_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+		foreach (typename event_type, EventMap event_map: m_ActiveEvents) {
 			foreach (int event_id, EventBase event_base: event_map) {
 				if (!event_base) {
 					continue;
@@ -474,7 +475,7 @@ class EventManager
 	array<EventBase> GetEventsInherited(typename event_type) 
 	{		
 		array<EventBase> active_events = {};
-		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+		foreach (typename event_checked_type, EventMap event_map: m_ActiveEvents) {
 			if (!event_checked_type.IsInherited(event_type)) {
 				continue;
 			}
@@ -490,7 +491,7 @@ class EventManager
 	array<EventBase> GetActiveEvents()
 	{
 		array<EventBase> active_events = {};
-		foreach (typename event_type, map<int, ref EventBase> event_map: m_ActiveEvents) {
+		foreach (typename event_type, EventMap event_map: m_ActiveEvents) {
 			foreach (int event_id, EventBase event_base: event_map) {
 				active_events.Insert(event_base);
 			}
@@ -520,7 +521,7 @@ class EventManager
 		
 		EventManagerLog.Info("There are %1 events running", m_ActiveEvents.Count().ToString());
 		
-		foreach (typename event_checked_type, map<int, ref EventBase> event_map: m_ActiveEvents) {			
+		foreach (typename event_checked_type, EventMap event_map: m_ActiveEvents) {			
 			foreach (int event_id, EventBase event_base: event_map) {
 				EventManagerLog.Info("Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
 			}
