@@ -177,25 +177,25 @@ class EventManager
 			EventManagerLog.Info(this, "Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
 			return false;
 		}
-				
-		event_base.SetID(event_id);
-		
-		// assign the event to the map now that we know the id is valid
-		m_ActiveEvents[event_type][event_id] = event_base;
-		
+						
 		// check for disallowed evemts		
 		foreach (typename etype, EventMap ebase: m_ActiveEvents) {
 			if (event_base.GetDisallowedEvents().Find(etype) != -1 && !force) {
 				EventManagerLog.Info(this, "Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
-				DeleteEvent(event_type, event_id);
 				return false;
 			}
 		}
 		
 		if (!event_base.EventActivateCondition()) {
-			DeleteEvent(event_type, event_id);
+			EventManagerLog.Debug(this, "Could not run %1, failed ActivateCondition", event_type.ToString());
 			return false;
 		}
+		
+		// congrats, the event will now be run
+		event_base.SetID(event_id);
+		
+		// assign the event to the map now that we know the id is valid
+		m_ActiveEvents[event_type][event_id] = event_base;
 		
 		// Register event for cooldown
 		m_EventCooldowns.Insert(event_type, event_base.GetEventCooldown());
@@ -224,13 +224,11 @@ class EventManager
 	void DeleteEvent(EventBase event_base)
 	{
 		EventManagerLog.Debug(this, "Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
-		if (!m_ActiveEvents || !m_ActiveEvents[event_base.Type()]) {
-			return;
+		if (m_ActiveEvents && m_ActiveEvents[event_base.Type()]) {
+			m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
 		}
 
-		// delete just this specific event
-		delete m_ActiveEvents[event_base.Type()][event_base.GetID()];
-		m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
+		delete event_base;
 	}
 	
 	// you only need to worry about event_id if you allow parralel events
@@ -256,19 +254,7 @@ class EventManager
 		DeleteEvent(m_ActiveEvents[event_type][event_id]);
 		return true;
 	}
-	
-	void DeleteEvent(typename event_type, int event_id)
-	{
-		EventManagerLog.Debug(this, "Deleting %1, idx: %2", event_type.ToString(), event_id.ToString());
-		if (!m_ActiveEvents || !m_ActiveEvents[event_type]) {
-			return;
-		}
-
-		// delete just this specific event
-		delete m_ActiveEvents[event_type][event_id];
-		m_ActiveEvents[event_type].Remove(event_id);
-	}
-	
+		
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{	
 		switch (rpc_type) {
@@ -347,7 +333,7 @@ class EventManager
 					
 					// Event finished
 					if (event_phase == EventPhase.DELETE) {
-						DeleteEvent(event_type, event_id);
+						DeleteEvent(m_ActiveEvents[event_type][event_id]);
 						break;
 					}
 					
@@ -500,12 +486,12 @@ class EventManager
 	
 	void DumpInfo()
 	{
-		EventManagerLog.Info(this, "There are %1 events running", m_ActiveEvents.Count().ToString());
+		array<EventBase> active_events = GetActiveEvents();
 		
-		foreach (typename event_checked_type, EventMap event_map: m_ActiveEvents) {			
-			foreach (int event_id, EventBase event_base: event_map) {
-				EventManagerLog.Info(this, "Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
-			}
+		EventManagerLog.Info(this, "There are %1 events running", active_events.Count().ToString());
+		
+		foreach (EventBase event_base: active_events) {						
+			EventManagerLog.Info(this, "Event %1 is running in phase %2 with %3 seconds remaining", event_base.ToString(), event_base.GetCurrentPhase().ToString(), event_base.GetCurrentPhaseTimeRemaining().ToString());
 		}
 		
 		if (m_PossibleEventTypes.Count() == 0 && GetGame().IsServer()) {

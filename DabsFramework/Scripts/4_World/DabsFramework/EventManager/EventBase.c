@@ -322,7 +322,7 @@ class EventBase
 	// corresponds to EventManager::OnRPC, may change this but for now its good
 	void Write(ParamsWriteContext ctx)
 	{
-		EventManagerLog.Debug(this, "%1 writing", Type().ToString());
+		EventManagerLog.Debug(this, "%1 serializing to client", Type().ToString());
 		ctx.Write(Type().ToString());
 		ctx.Write(GetID());
 		ctx.Write(GetCurrentPhase());
