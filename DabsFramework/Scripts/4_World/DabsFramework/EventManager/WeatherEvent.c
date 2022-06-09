@@ -143,7 +143,7 @@ class WeatherEvent: EventBase
 				continue;
 			}
 			
-			if (active_event == this || active_event.GetCurrentPhase() > 1) {
+			if (active_event == this || active_event.GetCurrentPhase() > EventPhase.MID) { 
 				continue;
 			}
 			
