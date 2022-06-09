@@ -205,7 +205,7 @@
                 <Item Name="Top" Image="RoundButtonHighlight_50_Top" />
             </State>
             <State Name="Normal">
-                <Item Name="Bottom" Image="RoundButtonHighlight50TopLeft" />
+                <Item Name="Bottom" Image="RoundButtonHighlight_50_Bottom" />
                 <Item Name="Center" Image="RoundedButtonHighlight_50_Center" />
                 <Item Name="Left" Image="RoundButtonHighlight_50_Left" />
                 <Item Name="LeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
@@ -216,7 +216,7 @@
                 <Item Name="Top" Image="RoundButtonHighlight_50_Top" />
             </State>
             <State Name="Pushed">
-                <Item Name="Bottom" Image="RoundButtonHighlight50TopLeft" />
+                <Item Name="Bottom" Image="RoundButtonHighlight_50_Bottom" />
                 <Item Name="Center" Image="RoundedButtonHighlight_50_Center" />
                 <Item Name="Left" Image="RoundButtonHighlight_50_Left" />
                 <Item Name="LeftBottom" Image="RoundButtonHighlight_50_BottomLeft" />
