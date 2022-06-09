@@ -92,27 +92,27 @@ class WeatherEvent: EventBase
 	}
 	
 	// Safe way of requesting a change in weather events
-	protected void RequestWeatherChange(EWeatherPhenomenon weather_type, float change, float time, float duration)
+	protected bool RequestWeatherChange(EWeatherPhenomenon weather_type, float change, float time, float duration)
 	{
-		EventDebug("Requested Weather Change %1, value %2", typename.EnumToString(EWeatherPhenomenon, weather_type), change.ToString());		
+		EventManagerLog.EventDebug(this, "Requested Weather Change %1, value %2", typename.EnumToString(EWeatherPhenomenon, weather_type), change.ToString());		
 		array<EventBase> active_events = EventManager.GetInstance().GetActiveEvents();
 		foreach (EventBase fog_event: active_events) {
 			WeatherEvent weather_event;
 			if (Class.CastTo(weather_event, fog_event)) {
 				if (weather_event != this && weather_event.GetWeatherTarget(weather_type) != -1) {
 					if (change < weather_event.GetWeatherTarget(weather_type) && weather_event.GetCurrentPhase() <= 1) {
-						EventDebug("Weather Change Request Denied");
-						return;
+						EventManagerLog.EventDebug(this, "Weather Change Request Denied");
+						return false;
 					}
 				}
 			}
 		}
 				
-		EventDebug("Weather Change Approved");
+		EventManagerLog.EventDebug(this, "Weather Change Approved");
 		WeatherPhenomenon weather_phenomenon = GetWeatherPhenomenon(weather_type);
 		if (!weather_phenomenon) {
 			Error("Invalid Weather Phenomenon");
-			return;
+			return false;
 		}
 				
 		// adjust limits
@@ -122,12 +122,13 @@ class WeatherEvent: EventBase
 		// we only want this value to go higher if the requested change is higher than something already active
 		// we let the lower value changes occur in OnEventEndServer
 		if (change > high) {
-			EventDebug("Changing limits to [0, %2]", low.ToString(), change.ToString());			
+			EventManagerLog.EventDebug(this, "Changing limits to [0, %2]", low.ToString(), change.ToString());			
 			weather_phenomenon.SetLimits(0, change);
 		}
 		
 		// Set weather to value
 		weather_phenomenon.Set(change, time, duration);
+		return true;
 	}
 	
 	float GetHighestRemainingWeatherValue(EWeatherPhenomenon change_type)

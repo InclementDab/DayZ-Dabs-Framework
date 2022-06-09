@@ -69,7 +69,7 @@ class EventBase
 	
 	void SetID(int id)
 	{
-		EventDebug("[%1] assigned id: %2", Type().ToString(), id.ToString());
+		EventManagerLog.EventDebug(this, "[%1] assigned id: %2", Type().ToString(), id.ToString());
 		m_Id = id;
 	}
 	
@@ -137,12 +137,12 @@ class EventBase
 	void SwitchPhase(EventPhase phase, float time_remaining = 0, Param client_data = null)
 	{
 		if (m_EventPhase >= phase) {
-			EventDebug("Event was already in phase %1, exiting...", phase.ToString());
+			EventManagerLog.EventDebug(this, "Event was already in phase %1, exiting...", phase.ToString());
 			return;
 		}
 		
 		m_EventPhase = phase;
-		EventDebug("SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
+		EventManagerLog.EventDebug(this, "SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
@@ -274,7 +274,7 @@ class EventBase
 	void SetPaused(bool state)
 	{
 		if (!GetGame().IsServer()) {
-			EventDebug("SetPaused can only be called on server!");
+			EventManagerLog.EventDebug(this, "SetPaused can only be called on server!");
 			return;
 		}
 		
@@ -305,7 +305,7 @@ class EventBase
 			m_PhaseTimeRemaining = 0;
 			
 			if (GetGame().IsServer()) {
-				EventDebug("Attempting to naturally switch to the next phase");
+				EventManagerLog.EventDebug(this, "Attempting to naturally switch to the next phase");
 				SwitchPhase(GetCurrentPhase() + 1);
 				
 				if (GetCurrentPhase() >= EventPhase.DELETE) {
@@ -322,7 +322,7 @@ class EventBase
 	// corresponds to EventManager::OnRPC, may change this but for now its good
 	void Write(ParamsWriteContext ctx)
 	{
-		EventDebug("%1 writing", Type().ToString());
+		EventManagerLog.EventDebug(this, "%1 writing", Type().ToString());
 		ctx.Write(Type().ToString());
 		ctx.Write(GetID());
 		ctx.Write(GetCurrentPhase());
@@ -337,17 +337,5 @@ class EventBase
 		} else {
 			ctx.Write("null");
 		}
-	}
-		
-	void EventDebug(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
-	{
-#ifdef EVENT_MANAGER_DEBUG		
-		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
-#endif
-	}
-	
-	void EventInfo(string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
-	{
-		PrintFormat("[DF][" + Type() + "]: " + msg, param1, param2, param3, param4, param5, param6, param7, param8, param9);
 	}
 }
