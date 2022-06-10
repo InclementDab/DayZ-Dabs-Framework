@@ -11,10 +11,6 @@
 *
 */
 
-#define EVENT_MANAGER_DEBUG
-
-typedef map<int, ref EventBase> EventMap;
-
 class EventManager
 {			
 	// Enable / Disable the multiple event system
