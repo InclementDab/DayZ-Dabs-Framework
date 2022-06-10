@@ -230,9 +230,7 @@ class EventBase
 	{
 		return 1;
 	}
-	
-	vector GetEventPosition();
-	
+		
 	/* 
 		When a player joins midway through an event, should the Event Manager play 'catch-up' and run all 
 		of the previously set phases? Or just the phase that it is currently active
