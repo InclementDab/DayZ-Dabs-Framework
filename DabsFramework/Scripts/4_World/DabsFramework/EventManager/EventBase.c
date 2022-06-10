@@ -142,7 +142,7 @@ class EventBase
 		}
 		
 		m_EventPhase = phase;
-		EventManagerLog.Debug(this, "SwitchPhase %1", typename.EnumToString(EventPhase, m_EventPhase));
+		EventManagerLog.Debug(this, "SwitchPhase %1, length: %2", typename.EnumToString(EventPhase, m_EventPhase), time_remaining.ToString());
 		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
