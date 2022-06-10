@@ -1,3 +1,5 @@
+//#define EVENT_MANAGER_DEBUG
+
 [RegisterLogger(EventManagerLog)]
 class EventManagerLog: LoggerBase
 {

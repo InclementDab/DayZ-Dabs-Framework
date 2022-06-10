@@ -11,6 +11,10 @@
 *
 */
 
+// 0: event id
+// 1: event
+typedef map<int, ref EventBase> EventMap;
+
 class EventBase
 {
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
@@ -67,18 +71,7 @@ class EventBase
 			delete m_TimeRemainingTimer;
 		}
 	}
-	
-	void SetID(int id)
-	{
-		EventManagerLog.Debug(this, "assigned id: %1", id.ToString());
-		m_Id = id;
-	}
-	
-	int GetID()
-	{
-		return m_Id;
-	}
-	
+		
 	// Abstract methods
 	protected void InitPhaseClient(float phase_time, Param data);
 	protected void MidPhaseClient(float phase_time, Param data);
@@ -270,6 +263,17 @@ class EventBase
 		SwitchPhase(EventPhase.INIT);
 	}
 		
+	void SetID(int id)
+	{
+		EventManagerLog.Debug(this, "assigned id: %1", id.ToString());
+		m_Id = id;
+	}
+	
+	int GetID()
+	{
+		return m_Id;
+	}
+	
 	void SetPaused(bool state)
 	{
 		if (!GetGame().IsServer()) {
