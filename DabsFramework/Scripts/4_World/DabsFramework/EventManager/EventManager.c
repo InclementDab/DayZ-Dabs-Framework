@@ -214,9 +214,9 @@ class EventManager
 		}
 		
 		// set to discard
-		event_base.SwitchPhase(EventPhase.DELETE);
+		event_base.SwitchPhase(EventPhase.DELETE);		
+		event_base.SyncToClient(null);
 		
-		SendActiveEventData(event_base);
 		DeleteEvent(event_base);
 		return true;
 	}
@@ -250,7 +250,7 @@ class EventManager
 			return false;
 		}
 		
-		SendActiveEventData(m_ActiveEvents[event_type][event_id]);
+		m_ActiveEvents[event_type][event_id].SyncToClient(null);
 		DeleteEvent(m_ActiveEvents[event_type][event_id]);
 		return true;
 	}
@@ -258,8 +258,8 @@ class EventManager
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{	
 		switch (rpc_type) {
-			case ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE: {
-				EventManagerPauseParams event_pause_params;
+			case ERPCsDabsFramework.EVENT_PAUSE: {
+				EventPauseParams event_pause_params;
 				if (!ctx.Read(event_pause_params)) {
 					break;
 				}
@@ -277,7 +277,7 @@ class EventManager
 				break;
 			}
 			
-			case ERPCsDabsFramework.EVENT_MANAGER_UPDATE: {								
+			case ERPCsDabsFramework.EVENT_UPDATE: {								
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					string str_event_type;
 					if (!ctx.Read(str_event_type)) {
@@ -373,32 +373,11 @@ class EventManager
 					continue;
 				}
 				
-				SerializableParam data = event_base.GetClientSyncData(event_base.GetCurrentPhase());	
-				ScriptRPC rpc = new ScriptRPC();
-				event_base.Write(rpc);	
-				rpc.Send(player, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true, player.GetIdentity());
+				event_base.SyncToClient(player.GetIdentity());
 			}
 		}
 	}
-	
-	static void SendActiveEventData(EventBase event_base)
-	{
-		EventManagerLog.Debug(event_base, "Sending active Event Data: %1, idx: %2, Phase: %3", event_base.Type().ToString(), event_base.GetID().ToString(), typename.EnumToString(EventPhase, event_base.GetCurrentPhase()));
-		if (!event_base) {
-			return;
-		}
-		
-		ScriptRPC rpc = new ScriptRPC();
-		event_base.Write(rpc);
-		rpc.Send(null, ERPCsDabsFramework.EVENT_MANAGER_UPDATE, true);
-	}
-		
-	static void SendEventPauseData(typename event_type, int event_id, bool is_paused)
-	{
-		EventManagerLog.Debug(null, "Sending Event Pause Data: %1, idx: %2, Paused: %3", event_type.ToString(), event_id.ToString(), is_paused.ToString());
-		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_MANAGER_SEND_PAUSE, new EventManagerPauseParams(event_type.ToString(), is_paused, event_id), true, null);
-	}
-	
+				
 	bool IsEventActive(typename event_type)
 	{
 		return (m_ActiveEvents[event_type] && m_ActiveEvents[event_type].Count() > 0);

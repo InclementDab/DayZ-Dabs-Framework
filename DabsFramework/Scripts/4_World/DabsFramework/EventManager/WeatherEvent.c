@@ -13,46 +13,59 @@
 
 class WeatherEvent: EventBase
 {
-	override void InitPhaseServer()
+	override void SwitchPhase(EventPhase phase, float time_remaining = 0, Param client_data = null)
 	{
-		// I mean... it works :)
-		for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {		
-			if (GetWeatherTarget(i) != -1) {
-				RequestWeatherChange(i, GetWeatherTarget(i), GetInitPhaseLength(), GetMidPhaseLength());
-			}
+		super.SwitchPhase(phase, time_remaining, client_data);
+				
+		if (!GetGame().IsServer()) {
+			return;
 		}
-	}
-
-	override void EndPhaseServer()
-	{
-		// Reset all weather
-		// This is resposible for the weather not looking totally choppy when events end
 		
-		// i.e. Snowfall brings fog to 0.5, HeavyFog then brings it to 1.0, after HeavyFog finishes,
-		// the fog level will be brought back down to 0.5, until Snowfall returns it back to 0
-		for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {
-			float highest_value = GetHighestRemainingWeatherValue(i);
-			if (highest_value == 0 && i == EWeatherPhenomenon.OVERCAST) {
-				highest_value = Math.RandomFloat(0, 0.15);
+		// handle all of the WeatherEvent logic
+		switch (phase) {
+			case EventPhase.INIT: {
+				// iterate through all weather phenomenons and request a weather change
+				for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {		
+					if (GetWeatherTarget(i) != -1) {
+						RequestWeatherChange(i, GetWeatherTarget(i), GetInitPhaseLength(), GetMidPhaseLength());
+					}
+				}
+				
+				break;
+			}	
+			
+			case EventPhase.END: {
+				// Reset all weather
+				// This is resposible for the weather not looking totally choppy when events end
+				
+				// i.e. Snowfall brings fog to 0.5, HeavyFog then brings it to 1.0, after HeavyFog finishes,
+				// the fog level will be brought back down to 0.5, until Snowfall returns it back to 0
+				for (int j = EWeatherPhenomenon.OVERCAST; j <= EWeatherPhenomenon.RAIN; j++) {
+					float highest_value_end = GetHighestRemainingWeatherValue(j);
+					if (highest_value_end == 0 && j == EWeatherPhenomenon.OVERCAST) {
+						highest_value_end = Math.RandomFloat(0, 0.15);
+					}
+					
+					RequestWeatherChange(j, highest_value_end, GetEndPhaseLength(), GetEndPhaseLength());
+				}
+				break;
 			}
 			
-			RequestWeatherChange(i, highest_value, GetEndPhaseLength(), GetEndPhaseLength());
-		}
-	}
-	
-	override void OnEventEndServer()
-	{
-		for (int i = EWeatherPhenomenon.OVERCAST; i <= EWeatherPhenomenon.RAIN; i++) {
-			WeatherPhenomenon weather_phenom = GetWeatherPhenomenon(i);
-			float highest_value = GetHighestRemainingWeatherValue(i);
-			if (highest_value == 0 && i == EWeatherPhenomenon.OVERCAST) {
-				highest_value = 0.15; // Keeps things spicy
+			case EventPhase.DELETE: {
+				for (int k = EWeatherPhenomenon.OVERCAST; k <= EWeatherPhenomenon.RAIN; k++) {
+					WeatherPhenomenon weather_phenom = GetWeatherPhenomenon(k);
+					float highest_value_delete = GetHighestRemainingWeatherValue(k);
+					if (highest_value_delete == 0 && k == EWeatherPhenomenon.OVERCAST) {
+						highest_value_delete = 0.15; // Keeps things spicy
+					}
+					
+					weather_phenom.SetLimits(0, highest_value_delete);
+				}
+				break;
 			}
-			
-			weather_phenom.SetLimits(0, highest_value);
 		}
 	}
-	
+		
 	// Override all of these magical values and everything else is handled above
 	float GetFogTarget()
 	{
@@ -72,9 +85,9 @@ class WeatherEvent: EventBase
 	float GetWeatherTarget(EWeatherPhenomenon change_type)
 	{
 		switch (change_type) {
-			case EWeatherPhenomenon.FOG: return GetFogTarget();
-			case EWeatherPhenomenon.RAIN: return GetRainTarget();
-			case EWeatherPhenomenon.OVERCAST: return GetOvercastTarget();
+			case EWeatherPhenomenon.FOG: 		return GetFogTarget();
+			case EWeatherPhenomenon.RAIN: 		return GetRainTarget();
+			case EWeatherPhenomenon.OVERCAST: 	return GetOvercastTarget();
 		}
 		
 		return -1;
@@ -83,9 +96,9 @@ class WeatherEvent: EventBase
 	static WeatherPhenomenon GetWeatherPhenomenon(EWeatherPhenomenon change_type)
 	{
 		switch (change_type) {
-			case EWeatherPhenomenon.FOG: return GetGame().GetWeather().GetFog();
-			case EWeatherPhenomenon.RAIN: return GetGame().GetWeather().GetRain();
-			case EWeatherPhenomenon.OVERCAST: return GetGame().GetWeather().GetOvercast();
+			case EWeatherPhenomenon.FOG: 		return GetGame().GetWeather().GetFog();
+			case EWeatherPhenomenon.RAIN: 		return GetGame().GetWeather().GetRain();
+			case EWeatherPhenomenon.OVERCAST: 	return GetGame().GetWeather().GetOvercast();
 		}
 		
 		return null;
@@ -100,7 +113,7 @@ class WeatherEvent: EventBase
 			WeatherEvent weather_event;
 			if (Class.CastTo(weather_event, fog_event)) {
 				if (weather_event != this && weather_event.GetWeatherTarget(weather_type) != -1) {
-					if (change < weather_event.GetWeatherTarget(weather_type) && weather_event.GetCurrentPhase() <= 1) {
+					if (change < weather_event.GetWeatherTarget(weather_type) && weather_event.GetCurrentPhase() <= EventPhase.MID) {
 						EventManagerLog.Debug(this, "Weather Change Request Denied");
 						return false;
 					}
@@ -136,14 +149,10 @@ class WeatherEvent: EventBase
 		// This does a few important things	//
 		// 1. Grabs ceiling weather value
 		// 2. If this is the last running event, value will be zero (back to sunny day)
-		array<EventBase> active_events = EventManager.GetInstance().GetActiveEvents();
+		array<EventBase> active_events = m_EventManager.GetActiveEvents();
 		float value = 0;
 		foreach (EventBase active_event: active_events) {
-			if (!active_event) {
-				continue;
-			}
-			
-			if (active_event == this || active_event.GetCurrentPhase() > EventPhase.MID) { 
+			if (!active_event || active_event == this || active_event.GetCurrentPhase() > EventPhase.MID) {
 				continue;
 			}
 			

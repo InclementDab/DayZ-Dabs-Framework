@@ -94,6 +94,7 @@ class EventBase
 	protected void UpdateClient();
 	protected void UpdateServer();
 	
+	// Corresponds to the `client_data` parameter of event calls
 	SerializableParam GetClientSyncData(EventPhase phase);
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx);
@@ -148,7 +149,7 @@ class EventBase
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
 			
 			// Dispatch data to all clients
-			EventManager.SendActiveEventData(this);
+			SyncToClient(null);
 						
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
@@ -279,7 +280,9 @@ class EventBase
 		}
 		
 		m_IsPaused = state;
-		EventManager.SendEventPauseData(Type(), GetID(), m_IsPaused);
+				
+		EventManagerLog.Debug(this, "Sending Event Pause Data, idx: %2, Paused: %3", GetID().ToString(), m_IsPaused.ToString());
+		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_PAUSE, new EventPauseParams(Type().ToString(), m_IsPaused, GetID()), true, null);
 	}
 	
 	bool IsPaused()
@@ -319,23 +322,27 @@ class EventBase
 		}
 	}
 	
-	// corresponds to EventManager::OnRPC, may change this but for now its good
-	void Write(ParamsWriteContext ctx)
+	// syncs a full package of this event to the client
+	void SyncToClient(PlayerIdentity identity)
 	{
-		EventManagerLog.Debug(this, "%1 serializing to client", Type().ToString());
-		ctx.Write(Type().ToString());
-		ctx.Write(GetID());
-		ctx.Write(GetCurrentPhase());
-		ctx.Write(GetCurrentPhaseTimeRemaining());
-		ctx.Write(IsPaused());
+		EventManagerLog.Debug(this, "Sending active Event Data: %1, idx: %2, Phase: %3", Type().ToString(), GetID().ToString(), typename.EnumToString(EventPhase, GetCurrentPhase()));		
+		ScriptRPC rpc = new ScriptRPC();
+		
+		rpc.Write(Type().ToString());
+		rpc.Write(GetID());
+		rpc.Write(GetCurrentPhase());
+		rpc.Write(GetCurrentPhaseTimeRemaining());
+		rpc.Write(IsPaused());
 		
 		// handle data
 		SerializableParam data = GetClientSyncData(GetCurrentPhase());
 		if (data) {
-			ctx.Write(data.GetSerializeableType());
-			data.Write(ctx);
+			rpc.Write(data.GetSerializeableType());
+			data.Write(rpc);
 		} else {
-			ctx.Write("null");
+			rpc.Write("null");
 		}
+	
+		rpc.Send(null, ERPCsDabsFramework.EVENT_UPDATE, true, identity);		 
 	}
 }
