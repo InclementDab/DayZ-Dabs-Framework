@@ -230,13 +230,8 @@ class EventManager
 			EventManagerLog.Info(this, "CancelEvent must be called on SERVER, exiting");
 			return false;
 		}
-		
-		if (!m_ActiveEvents[event_type]) {
-			EventManagerLog.Info(this, "Event %1 is not active", event_type.ToString());
-			return false;
-		}
-		
-		if (!m_ActiveEvents[event_type][event_id]) {
+				
+		if (!m_ActiveEvents[event_type] || !m_ActiveEvents[event_type][event_id]) {
 			EventManagerLog.Info(this, "Event %1 is not active", event_type.ToString());
 			return false;
 		}
