@@ -202,7 +202,7 @@ class EventManager
 		
 		// start the event
 		EventManagerLog.Info(this, "Starting event %1", event_type.ToString());
-		event_base.OnStart(this, startup_params);
+		event_base.OnStart(startup_params);
 		return true;
 	}
 	

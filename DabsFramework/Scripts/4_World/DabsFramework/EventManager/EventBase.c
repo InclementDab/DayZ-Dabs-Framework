@@ -34,6 +34,7 @@ class EventBase
 
 	void EventBase()
 	{
+		m_EventManager = EventManager.GetInstance();
 		m_Weather = GetGame().GetWeather();
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
@@ -254,7 +255,7 @@ class EventBase
 		return 0.01;
 	}
 	
-	// If you want the Event to have a CD, override this
+	// a minimum time between each of these events
 	// return: value in seconds
 	float GetEventCooldown()
 	{
@@ -262,9 +263,8 @@ class EventBase
 	}
 		
 	// safe place to work with the start_params
-	void OnStart(EventManager event_manager, Param start_params)
+	void OnStart(Param start_params)
 	{
-		m_EventManager = event_manager;
 		m_StartParams = start_params;
 		
 		SwitchPhase(EventPhase.INIT);
