@@ -18,16 +18,14 @@ class EventManager
 	protected float m_NextEventIn;
 	protected typename m_LastEventType;
 	
-	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
-	
 	//				 EVRStorm
 	//								0,  EVRStorm ptr
 	//								1,  EVRStorm ptr
 	protected ref map<typename, ref EventMap> m_ActiveEvents = new map<typename, ref EventMap>();
-
 	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref map<typename, int> m_AmountOfEventsRan = new map<typename, int>(); // amount of event type ran
+	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
 	protected ref map<typename, float> m_EventCooldowns = new map<typename, float>();
 	
 	protected static ref EventManager m_Instance;
