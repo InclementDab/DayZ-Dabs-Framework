@@ -131,6 +131,10 @@ class EventBase
 		
 	void SwitchPhase(EventPhase phase, float time_remaining = 0, Param client_data = null)
 	{
+		if (phase > EventPhase.DELETE || phase <= EventPhase.INVALID) {
+			return; // just doing a bounds check
+		}
+		
 		if (m_EventPhase >= phase) {
 			EventManagerLog.Debug(this, "Event was already in phase %1, exiting...", phase.ToString());
 			return;
@@ -318,6 +322,10 @@ class EventBase
 					
 					// not calling this a whole cycle later causes some crashes
 					// perhaps find a way to resolve?
+					
+					// todo: this should likely be moved to SwitchPhase, since the event takes a whole second
+					//		 to be cleaned up. just make sure its being called appropriately
+					//		 not changing now since update is live in 2 hours
 					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(m_EventManager.DeleteEvent, PHASE_TIME_REMAINING_PRECISION * 1000, false, this);
 				}
 			}
@@ -329,7 +337,6 @@ class EventBase
 	{
 		EventManagerLog.Debug(this, "Sending active Event Data: %1, idx: %2, Phase: %3", Type().ToString(), GetID().ToString(), typename.EnumToString(EventPhase, GetCurrentPhase()));		
 		ScriptRPC rpc = new ScriptRPC();
-		
 		rpc.Write(Type().ToString());
 		rpc.Write(GetID());
 		rpc.Write(GetCurrentPhase());

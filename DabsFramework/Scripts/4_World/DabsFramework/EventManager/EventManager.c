@@ -207,11 +207,8 @@ class EventManager
 			return false;
 		}
 		
-		// set to discard
-		event_base.SwitchPhase(EventPhase.DELETE);		
-		event_base.SyncToClient(null);
-		
-		DeleteEvent(event_base);
+		// set to discard, its really this simple :)
+		event_base.SwitchPhase(EventPhase.DELETE);
 		return true;
 	}
 	
@@ -244,8 +241,7 @@ class EventManager
 			return false;
 		}
 		
-		m_ActiveEvents[event_type][event_id].SyncToClient(null);
-		DeleteEvent(m_ActiveEvents[event_type][event_id]);
+		CancelEvent(m_ActiveEvents[event_type][event_id]);
 		return true;
 	}
 		
