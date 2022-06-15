@@ -93,6 +93,12 @@ class EventBase
 	
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx);
 	
+	// Triggers a function call on this class on all clients
+	bool CallFunctionOnClient(string function_name, SerializableParam params, PlayerIdentity identity = null)
+	{
+		return m_EventManager.CallFunctionOnClient(this, function_name, params, identity);
+	}
+	
 	float GetCurrentPhaseLength()
 	{
 		return GetPhaseLength(m_EventPhase);

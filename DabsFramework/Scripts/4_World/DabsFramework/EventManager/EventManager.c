@@ -338,6 +338,48 @@ class EventManager
 				
 				break;
 			}				
+			
+			case ERPCsDabsFramework.EVENT_FUNCTION: {
+				if (GetGame().IsDedicatedServer()) {
+					break;
+				}
+				
+				// the variable naming sucks bc this enf sucks
+				string str_event_type_fnc;
+				if (!ctx.Read(str_event_type_fnc)) {
+					break;
+				}
+				
+				typename event_type_fnc = str_event_type_fnc.ToType();
+				int event_id_fnc;
+				if (!ctx.Read(event_id_fnc)) {
+					break;
+				}
+				
+				if (!m_ActiveEvents[event_type_fnc] || !m_ActiveEvents[event_type_fnc][event_id_fnc]) {
+					EventManagerLog.Info(this, "Event not found when calling client function");
+					break; // failed
+				}
+				
+				string event_fnc_name;
+				if (!ctx.Read(event_fnc_name)) {
+					break;
+				}
+				
+				string event_param_type_fnc;
+				if (!ctx.Read(event_param_type_fnc)) {
+					break;
+				}
+				
+				SerializableParam client_fnc_param;
+				if (event_param_type_fnc != "null") {
+					client_fnc_param = SerializableParam.Cast(event_param_type_fnc.ToType().Spawn());
+					client_fnc_param.Read(ctx);
+				}
+				
+				g_Script.CallFunctionParams(m_ActiveEvents[event_type_fnc][event_id_fnc], event_fnc_name, null, client_fnc_param);				
+				break;
+			}
 		}
 		
 		foreach (typename et, EventMap event_base_map: m_ActiveEvents) {
@@ -347,6 +389,31 @@ class EventManager
 				}
 			}
 		}
+	}
+	
+	bool CallFunctionOnClient(EventBase target, string function_name, SerializableParam params, PlayerIdentity identity = null)
+	{
+		EventManagerLog.Debug(target, "Calling %1 on clients", function_name);
+		
+		if (!GetGame().IsServer()) {
+			return false;
+		}
+		
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(target.Type().ToString());
+		rpc.Write(target.GetID());
+		rpc.Write(function_name);	
+		
+		// handle data
+		if (params) {
+			rpc.Write(params.GetSerializeableType());
+			params.Write(rpc);
+		} else {
+			rpc.Write("null");
+		}
+		
+		rpc.Send(null, ERPCsDabsFramework.EVENT_FUNCTION, true, identity);
+		return true;
 	}
 		
 	void DispatchEventInfo(PlayerBase player)
