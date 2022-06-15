@@ -218,8 +218,6 @@ class EventManager
 		if (m_ActiveEvents && m_ActiveEvents[event_base.Type()]) {
 			m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
 		}
-
-		delete event_base;
 	}
 	
 	// you only need to worry about event_id if you allow parralel events

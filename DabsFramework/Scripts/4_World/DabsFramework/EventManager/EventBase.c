@@ -38,6 +38,8 @@ class EventBase
 
 	void EventBase()
 	{
+		EventManagerLog.Debug(this, "Create");
+		
 		m_EventManager = EventManager.GetInstance();
 		m_Weather = GetGame().GetWeather();
 		
@@ -56,6 +58,8 @@ class EventBase
 	
 	void ~EventBase()
 	{
+		EventManagerLog.Debug(this, "~Destroy");
+		
 		if (m_ClientUpdate) {
 			m_ClientUpdate.Stop();
 			delete m_ClientUpdate;
@@ -174,7 +178,9 @@ class EventBase
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndServer();
-					break;
+					// destroy the event
+					m_EventManager.DeleteEvent(this);		
+					return;
 				}
 			}
 		}
@@ -322,18 +328,6 @@ class EventBase
 			if (GetGame().IsServer()) {
 				EventManagerLog.Debug(this, "Attempting to naturally switch to the next phase");
 				SwitchPhase(GetCurrentPhase() + 1);
-				
-				if (GetCurrentPhase() >= EventPhase.DELETE) {
-					m_TimeRemainingTimer.Stop();
-					
-					// not calling this a whole cycle later causes some crashes
-					// perhaps find a way to resolve?
-					
-					// todo: this should likely be moved to SwitchPhase, since the event takes a whole second
-					//		 to be cleaned up. just make sure its being called appropriately
-					//		 not changing now since update is live in 2 hours
-					GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(m_EventManager.DeleteEvent, PHASE_TIME_REMAINING_PRECISION * 1000, false, this);
-				}
 			}
 		}
 	}
