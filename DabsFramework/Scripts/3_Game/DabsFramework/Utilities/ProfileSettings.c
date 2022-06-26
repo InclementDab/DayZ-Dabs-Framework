@@ -13,28 +13,28 @@ class ProfileSettings
 				case bool: {
 					bool _bool;
 					EnScript.GetClassVar(this, variable_name, 0, _bool);
-					GetGame().SetProfileString(variable_name, string.ToString(_bool));
+					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_bool));
 					break;
 				}
 				
 				case int: {
 					int _int;
 					EnScript.GetClassVar(this, variable_name, 0, _int);
-					GetGame().SetProfileString(variable_name, string.ToString(_int));
+					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_int));
 					break;
 				}
 				
 				case float: {
 					float _float;
 					EnScript.GetClassVar(this, variable_name, 0, _float);
-					GetGame().SetProfileString(variable_name, string.ToString(_float));
+					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_float));
 					break;
 				}
 				
 				case string: {
 					string _string;
 					EnScript.GetClassVar(this, variable_name, 0, _string);
-					GetGame().SetProfileString(variable_name, _string);
+					GetGame().SetProfileString(FormatSaveName(variable_name), _string);
 					break;
 				}
 			}
@@ -53,28 +53,28 @@ class ProfileSettings
 				case bool: {
 					bool _bool;
 					EnScript.GetClassVar(this, variable_name, 0, _bool);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileBool(variable_name, _bool));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileBool(FormatSaveName(variable_name), _bool));
 					break;
 				}
 				
 				case int: {					
 					int _int;
 					EnScript.GetClassVar(this, variable_name, 0, _int);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileInt(variable_name, _int));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileInt(FormatSaveName(variable_name), _int));
 					break;
 				}
 				
 				case float: {
 					float _float;
 					EnScript.GetClassVar(this, variable_name, 0, _float);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileFloat(variable_name, _float));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileFloat(FormatSaveName(variable_name), _float));
 					break;
 				}
 				
 				case string: {
 					string _string;
 					EnScript.GetClassVar(this, variable_name, 0, _string);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(variable_name, _string));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(FormatSaveName(variable_name), _string));
 					break;
 				}
 			}
@@ -139,5 +139,10 @@ class ProfileSettings
 		}
 		
 		return default;
+	}
+	
+	string FormatSaveName(string variable_name)
+	{
+		return string.Format("%1.%2", Type(), variable_name);
 	}
 }
