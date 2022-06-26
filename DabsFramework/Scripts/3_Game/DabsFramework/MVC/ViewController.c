@@ -250,8 +250,7 @@ class ViewController : ScriptedViewBase
 			return property_info.Type;
 		}
 
-		typename t;
-		return t;
+		return EMPTY_TYPENAME;
 	}
 
 	private	string GetVariableName(Class target_variable)
