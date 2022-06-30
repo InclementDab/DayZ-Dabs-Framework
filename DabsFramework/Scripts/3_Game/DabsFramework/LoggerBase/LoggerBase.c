@@ -53,7 +53,11 @@ class LoggerBase
 	}
 			
 	static void DoLog(typename logger_type, string log)
-	{		
+	{
+		if (!GetGame()) {
+			return;
+		}
+		
 		LoggerBase logger_base = LoggerManager.GetInstance().GetLogger(logger_type);
 		if (!logger_base) {
 			Error("No logger found with type " + logger_type);
