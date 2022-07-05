@@ -1,12 +1,10 @@
 modded class DayZGame
 {	
-	protected ref MVC m_MVC;
+	protected ref MVC m_MVC = new MVC();
 	protected LoggerManager m_LoggerManager;
 	
 	void DayZGame()
-	{
-		m_MVC = new MVC();
-		
+	{		
 		// get instance of logger manager
 		m_LoggerManager = LoggerManager.GetInstance();
 		

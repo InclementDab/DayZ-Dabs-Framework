@@ -12,12 +12,7 @@
 */
 
 class MVC
-{	
-	static MVC GetInstance()
-	{
-		return GetDayZGame().GetMVC();
-	}
-		
+{		
 	protected static ref TTypeNameTypenameMap m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 	static WidgetController GetWidgetController(Widget data) 
 	{	
