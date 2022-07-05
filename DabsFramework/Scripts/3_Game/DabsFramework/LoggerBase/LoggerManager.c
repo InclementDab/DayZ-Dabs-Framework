@@ -4,13 +4,10 @@ class LoggerManager
 	
 	void LoggerManager(notnull DayZGame game)
 	{
-		foreach (typename logger_instance_type: RegisterLogger.RegisteredLoggers) {
-			RegisterLogger(logger_instance_type);
-		}
-		
-		foreach (typename logger_type, LoggerBase logger_instance: m_Loggers) {
-			if (logger_instance) {
-				logger_instance.OnGameStart(game);
+		foreach (typename logger_type: RegisterLogger.RegisteredLoggers) {
+			m_Loggers[logger_type] = LoggerBase.Cast(logger_type.Spawn());
+			if (m_Loggers[logger_type]) {
+				m_Loggers[logger_type].OnGameStart(game);
 			}
 		}
 	}
@@ -19,7 +16,7 @@ class LoggerManager
 	{
 		delete m_Loggers;
 	}
-	
+		
 	void RegisterLogger(typename logger_type)
 	{
 		m_Loggers[logger_type] = LoggerBase.Cast(logger_type.Spawn());
