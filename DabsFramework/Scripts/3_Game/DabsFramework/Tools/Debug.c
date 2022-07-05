@@ -1,3 +1,4 @@
+#ifdef DIAG
 modded class Debug
 {	
 	static const int RPC_UPDATE_DEBUG_SHAPE = 26893386;
@@ -269,3 +270,4 @@ modded class Debug
 		m_DebugShapes.Clear();
 	}
 }
+#endif
