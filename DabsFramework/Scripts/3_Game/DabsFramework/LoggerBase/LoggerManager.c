@@ -17,11 +17,6 @@ class LoggerManager
 		delete m_Loggers;
 	}
 		
-	void RegisterLogger(typename logger_type)
-	{
-		m_Loggers[logger_type] = LoggerBase.Cast(logger_type.Spawn());
-	}
-	
 	LoggerBase GetLogger(typename logger)
 	{
 		return m_Loggers[logger];
