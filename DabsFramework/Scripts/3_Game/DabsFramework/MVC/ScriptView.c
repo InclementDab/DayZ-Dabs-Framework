@@ -22,6 +22,8 @@ class CustomDialogWindow: ScriptView
 
 class ScriptView: ScriptedViewBase
 {
+	static ref array<ScriptView> All = {};
+	
 	protected ref ViewController m_Controller;
 	ViewController GetController()
 	{
@@ -31,6 +33,12 @@ class ScriptView: ScriptedViewBase
 	// Maybe one day we'll get constructor overloading :)
 	void ScriptView()
 	{
+		if (!All) {
+			All = {};
+		}
+		
+		All.Insert(this);
+		
 		m_LayoutRoot = CreateWidget(null);
 
 		LoadViewProperties(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
@@ -60,6 +68,20 @@ class ScriptView: ScriptedViewBase
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);
 		//m_LayoutRoot.SetHandler(this);
+		
+		// Lock controls if needed
+		if (UseMouse()) {
+			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
+			GetGame().GetUIManager().ShowUICursor(true);
+		}
+
+		if (UseKeyboard()) {
+			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_KEYBOARD);
+		}
+		
+		if (UseGamepad()) {
+			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_GAMEPAD);
+		}
 	}
 
 	void ~ScriptView()
@@ -69,6 +91,31 @@ class ScriptView: ScriptedViewBase
 		if (m_LayoutRoot) {
 			Log("~" + m_LayoutRoot.GetName());
 			m_LayoutRoot.Unlink();
+		}
+		
+		if (All) {
+			All.RemoveItem(this);
+		}
+		
+		if (UseMouse()) {
+			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+		}
+		
+		bool parent_has_mouse;
+		foreach (ScriptView existing_view: All) {
+			if (existing_view.UseMouse()) {
+				parent_has_mouse = true;
+			}
+		}
+
+		GetGame().GetUIManager().ShowUICursor(parent_has_mouse);
+		
+		if (UseKeyboard()) {
+			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_KEYBOARD);
+		}
+		
+		if (UseGamepad()) {
+			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_GAMEPAD);
 		}
 	}
 
@@ -154,9 +201,24 @@ class ScriptView: ScriptedViewBase
 			}
 		}
 	}
-
+			
 	// Virtual Methods
 	protected string GetLayoutFile();
+	
+	bool UseMouse()
+	{
+		return false;
+	}
+	
+	bool UseKeyboard()
+	{
+		return false;
+	}
+	
+	bool UseGamepad()
+	{
+		return false;
+	}
 
 	protected typename GetControllerType()
 	{
