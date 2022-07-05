@@ -1,14 +1,8 @@
 class LoggerBase
 {
 	static const string BASE_DIRECTORY = "$profile:\\";
-	protected static LoggerManager m_LoggerManager;
-	
 	protected string m_FileName;
 	
-	void LoggerBase()
-	{
-		m_LoggerManager = LoggerManager.GetInstance();
-	}
 	
 	// called in ctor of DayZGame
 	void OnGameStart(notnull DayZGame game)
@@ -54,7 +48,7 @@ class LoggerBase
 			
 	static void DoLog(typename logger_type, string log)
 	{
-		if (!GetGame()) {
+		if (!g_Game) {
 			return;
 		}
 		

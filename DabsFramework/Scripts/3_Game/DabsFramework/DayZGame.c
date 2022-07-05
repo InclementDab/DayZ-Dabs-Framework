@@ -1,30 +1,28 @@
 modded class DayZGame
 {	
-	protected ref MVC m_MVC = new MVC();
-	protected LoggerManager m_LoggerManager;
+	protected ref MVC m_MVC;
+	protected ref LoggerManager m_LoggerManager;
 	
 	void DayZGame()
 	{		
-		// get instance of logger manager
-		m_LoggerManager = LoggerManager.GetInstance();
-		
-		// this is likely if no loggers are registered
-		if (!m_LoggerManager) {
-			m_LoggerManager = LoggerManager.Start();
-		}
-		
-		m_LoggerManager.OnGameStart(this);
+		m_MVC = new MVC();
+		m_LoggerManager = new LoggerManager(this);
 	}
 	
 	void ~DayZGame()
 	{
 		delete m_MVC;
-		LoggerManager.Stop();
+		delete m_LoggerManager;
 	}
 	
 	MVC GetMVC()
 	{
 		return m_MVC;
+	}
+	
+	LoggerManager GetLoggerManager()
+	{
+		return m_LoggerManager;
 	}
 
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
