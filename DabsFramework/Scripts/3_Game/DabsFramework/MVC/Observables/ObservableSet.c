@@ -2,6 +2,11 @@ class ObservableSet<Class TValue> : Observable
 {
 	private	ref set<TValue> _data = new set<TValue>();
 	
+	void ~ObservableSet()
+	{
+		delete _data;
+	}
+	
 	int Insert(TValue value)
 	{
 		int index = _data.Insert(value);

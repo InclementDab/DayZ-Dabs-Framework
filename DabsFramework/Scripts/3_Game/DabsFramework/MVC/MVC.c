@@ -12,54 +12,36 @@
 */
 
 class MVC
-{
-	static ref MVC m_Instance;
-	
-	static MVC Start()
-	{
-		m_Instance = new MVC();
-		return m_Instance;
-	}
-
-	static void Stop()
-	{
-		delete m_Instance;
-	}
-	
+{	
 	static MVC GetInstance()
 	{
-		return m_Instance;
+		return GetDayZGame().GetMVC();
 	}
 		
-	protected static ref TTypeNameTypenameMap m_WidgetControllerHashMap;
+	protected static ref TTypeNameTypenameMap m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 	static WidgetController GetWidgetController(Widget data) 
-	{
-		if (!m_Instance) {
-			MVC.Start();
-		}
-	
+	{	
 		WidgetController widgetController = WidgetController.Cast(m_WidgetControllerHashMap.Get(data.Type()).Spawn());
 		g_Script.Call(widgetController, "SetWidget", data);
 		return widgetController;
 	}	
 	
-	protected static ref TypeConversionHashMap m_TypeConverterHashMap;
+	protected static ref TypeConversionHashMap m_TypeConverterHashMap = new TypeConversionHashMap();
 	static TypeConverter GetTypeConversion(typename type) 
-	{
-		if (!m_Instance) {
-			MVC.Start();
-		}
-				
+	{				
 		return m_TypeConverterHashMap[type]; 
 	}
 	
 	void MVC()
 	{
-		m_TypeConverterHashMap = new TypeConversionHashMap();
-		RegisterConversionTemplates(m_TypeConverterHashMap);
-		
-		m_WidgetControllerHashMap = new TTypeNameTypenameMap();
+		RegisterConversionTemplates(m_TypeConverterHashMap); 
 		RegisterWidgetControllers(m_WidgetControllerHashMap);
+	}
+	
+	void ~MVC()
+	{
+		delete m_WidgetControllerHashMap;
+		delete m_TypeConverterHashMap;
 	}
 		
 	// Override THIS to add your own Custom Conversion Templates

@@ -1,9 +1,12 @@
 modded class DayZGame
 {	
+	protected ref MVC m_MVC;
 	protected LoggerManager m_LoggerManager;
 	
 	void DayZGame()
 	{
+		m_MVC = new MVC();
+		
 		// get instance of logger manager
 		m_LoggerManager = LoggerManager.GetInstance();
 		
@@ -13,6 +16,17 @@ modded class DayZGame
 		}
 		
 		m_LoggerManager.OnGameStart(this);
+	}
+	
+	void ~DayZGame()
+	{
+		delete m_MVC;
+		LoggerManager.Stop();
+	}
+	
+	MVC GetMVC()
+	{
+		return m_MVC;
 	}
 
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
