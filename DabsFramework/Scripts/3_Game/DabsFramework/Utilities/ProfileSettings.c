@@ -1,8 +1,5 @@
 class ProfileSettings
-{
-	// This is a HashMap of all of the properties in the type, often used on Controllers, very valuable
-	protected ref PropertyTypeHashMap m_SavedVariablesList = new PropertyTypeHashMap(Type());
-		
+{		
 	bool Save()
 	{
 		if (!GetGame()) {
