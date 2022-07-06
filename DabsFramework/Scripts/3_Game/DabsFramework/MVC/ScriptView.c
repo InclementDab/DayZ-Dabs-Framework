@@ -101,10 +101,14 @@ class ScriptView: ScriptedViewBase
 			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
 		}
 		
-		bool parent_has_mouse;
-		foreach (ScriptView existing_view: All) {
-			if (existing_view.UseMouse()) {
-				parent_has_mouse = true;
+		UIScriptedMenu current_menu = GetGame().GetUIManager().GetMenu();
+		bool parent_has_mouse = current_menu && (current_menu.UseMouse() || current_menu.GetParentMenu() && current_menu.GetParentMenu().UseMouse());
+		
+		if (!parent_has_mouse) {
+			foreach (ScriptView existing_view: All) {
+				if (existing_view.UseMouse()) {
+					parent_has_mouse = true;
+				}
 			}
 		}
 
