@@ -209,20 +209,9 @@ class ScriptView: ScriptedViewBase
 	// Virtual Methods
 	protected string GetLayoutFile();
 	
-	bool UseMouse()
-	{
-		return false;
-	}
-	
-	bool UseKeyboard()
-	{
-		return false;
-	}
-	
-	bool UseGamepad()
-	{
-		return false;
-	}
+	bool UseMouse();
+	bool UseKeyboard();	
+	bool UseGamepad();
 
 	protected typename GetControllerType()
 	{
