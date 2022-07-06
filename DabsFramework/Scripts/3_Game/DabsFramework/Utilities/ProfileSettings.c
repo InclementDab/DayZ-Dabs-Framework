@@ -3,8 +3,12 @@ class ProfileSettings
 	// This is a HashMap of all of the properties in the type, often used on Controllers, very valuable
 	protected ref PropertyTypeHashMap m_SavedVariablesList = new PropertyTypeHashMap(Type());
 		
-	void Save()
+	bool Save()
 	{
+		if (!GetGame()) {
+			return false;
+		}
+		
 		for (int i = 0; i < Type().GetVariableCount(); i++) {
 			string variable_name = Type().GetVariableName(i);
 			typename variable_type = Type().GetVariableType(i);
@@ -41,10 +45,15 @@ class ProfileSettings
 		}
 		
 		GetGame().SaveProfile();
+		return true;
 	}
 	
-	void Load()
+	bool Load()
 	{
+		if (!GetGame()) {
+			return false;
+		}
+		
 		for (int i = 0; i < Type().GetVariableCount(); i++) {
 			string variable_name = Type().GetVariableName(i);
 			typename variable_type = Type().GetVariableType(i);
@@ -79,6 +88,8 @@ class ProfileSettings
 				}
 			}
 		}
+		
+		return true;
 	}
 	
 	static void SetProfileBool(string variable, bool value)
