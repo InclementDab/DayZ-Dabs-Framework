@@ -7,7 +7,7 @@ WrapSpacerWidgetClass rootFrame {
  vexactpos 1
  hexactsize 0
  vexactsize 1
- style Outline_1px_BlackBackground
+ style Outline_1px
  {
   TextWidgetClass ColorPickerCaption {
    ignorepointer 1
@@ -266,11 +266,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-        "fill in" 1
-        "listen to input" 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
          maximum 255
+         "fill in" 1
+         "listen to input" 1
          {
           ScriptParamsClass {
            Binding_Name "Red"
@@ -343,11 +343,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-        "fill in" 1
-        "listen to input" 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
          maximum 255
+         "fill in" 1
+         "listen to input" 1
          {
           ScriptParamsClass {
            Binding_Name "Green"
@@ -420,11 +420,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-        "fill in" 1
-        "listen to input" 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
          maximum 255
+         "fill in" 1
+         "listen to input" 1
          {
           ScriptParamsClass {
            Binding_Name "Blue"
@@ -498,11 +498,11 @@ WrapSpacerWidgetClass rootFrame {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-        "fill in" 1
-        "listen to input" 1
          scriptclass "ViewBinding"
          style Slider_1px_alpha_50
          maximum 255
+         "fill in" 1
+         "listen to input" 1
          {
           ScriptParamsClass {
            Binding_Name "Alpha"
