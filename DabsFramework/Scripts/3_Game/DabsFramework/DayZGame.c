@@ -1,23 +1,27 @@
 modded class DayZGame
 {	
-	protected ref MVC m_MVC;
+	protected static ref MVC s_MVC;
 	protected ref LoggerManager m_LoggerManager;
 	
 	void DayZGame()
 	{		
-		m_MVC = new MVC();
+		s_MVC = new MVC();
 		m_LoggerManager = new LoggerManager(this);
 	}
 	
 	void ~DayZGame()
 	{
-		delete m_MVC;
+		delete s_MVC;
 		delete m_LoggerManager;
 	}
 	
-	MVC GetMVC()
+	static MVC GetMVC()
 	{
-		return m_MVC;
+		if (!s_MVC) {
+			s_MVC = new MVC();
+		}
+		
+		return s_MVC;
 	}
 	
 	LoggerManager GetLoggerManager()
