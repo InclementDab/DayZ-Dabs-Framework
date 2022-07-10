@@ -88,7 +88,7 @@ WrapSpacerWidgetClass ContentPanel {
         ScriptParamsClass {
          Debug_Logging 0
          Binding_Name "Value"
-         Two_Way_Binding 1
+         Two_Way_Binding 0
         }
        }
       }

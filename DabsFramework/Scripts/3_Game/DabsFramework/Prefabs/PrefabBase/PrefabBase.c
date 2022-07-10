@@ -23,7 +23,7 @@ class PrefabBase<Class TValue>: ScriptView
 	void PrefabPropertyChanged(string property_name)
 	{
 		EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.Value);		
-		g_Script.CallFunction(m_BindingContext, "PropertyChanged", null, m_BindingName);
+		g_Script.CallFunctionParams(m_BindingContext, "PropertyChanged", null, new Param2<ScriptView, string>(this, m_BindingName));
 	}
 		
 	// Abstractable, done in SliderPrefab and EditBoxNumberPrefab
