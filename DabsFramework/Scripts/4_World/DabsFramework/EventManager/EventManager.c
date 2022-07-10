@@ -124,12 +124,12 @@ class EventManager
 	}
 	
 	// startup_params are passed to OnStart of the event
-	// returns if the event started succesfully
-	bool StartEvent(typename event_type, bool force = false, Param startup_params = null)
+	// returns started event
+	EventBase StartEvent(typename event_type, bool force = false, Param startup_params = null)
 	{
 		if (!GetGame().IsServer()) {
 			EventManagerLog.Info(this, "StartEvent must be called on SERVER, exiting");
-			return false;
+			return null;
 		}
 		
 		// register the map associated with this event type, probably the first time running an event like this
@@ -148,18 +148,18 @@ class EventManager
 		
 		if (active_event_count >= m_MaxEventCount && !force) {
 			EventManagerLog.Info(this, "Could not start event as we reached the maximum event limit %1", m_MaxEventCount.ToString());
-			return false;
+			return null;
 		}
 		
 		if (m_EventCooldowns.Contains(event_type) && !force) {
 			EventManagerLog.Info(this, "Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
-			return false;
+			return null;
 		}
 						
 		EventBase event_base = SpawnEvent(event_type);
 		if (!event_base) {
 			EventManagerLog.Info(this, "Failed to start event %1", event_type.ToString());
-			return false;
+			return null;
 		}
 		
 		// increment the amount of these events ran
@@ -169,20 +169,20 @@ class EventManager
 		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
 		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
 			EventManagerLog.Info(this, "Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
-			return false;
+			return null;
 		}
 						
 		// check for disallowed evemts		
 		foreach (typename etype, EventMap ebase: m_ActiveEvents) {
 			if (event_base.GetDisallowedEvents().Find(etype) != -1 && !force) {
 				EventManagerLog.Info(this, "Could not run event %1 because it conflicts with event %2...", event_type.ToString(), etype.ToString());
-				return false;
+				return null;
 			}
 		}
 		
 		if (!event_base.EventActivateCondition()) {
 			EventManagerLog.Debug(this, "Could not run %1, failed ActivateCondition", event_type.ToString());
-			return false;
+			return null;
 		}
 		
 		// congrats, the event will now be run
@@ -197,7 +197,7 @@ class EventManager
 		// start the event
 		EventManagerLog.Info(this, "Starting event %1", event_type.ToString());
 		event_base.OnStart(startup_params);
-		return true;
+		return event_base;
 	}
 	
 	bool CancelEvent(EventBase event_base)
