@@ -43,14 +43,11 @@ class EventBase
 		m_EventManager = EventManager.GetInstance();
 		m_Weather = GetGame().GetWeather();
 		
-		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
+		if (!GetGame().IsDedicatedServer()) {
 			m_Player = PlayerBase.Cast(GetGame().GetPlayer());
-		}
-		
-		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 			m_ClientUpdate.Run(GetClientTick(), this, "UpdateClient", null, true);
 		}
-		
+				
 		if (GetGame().IsServer()) {
 			m_ServerUpdate.Run(GetServerTick(), this, "UpdateServer", null, true);
 		}
