@@ -15,7 +15,7 @@
 // 1: event
 typedef map<int, ref EventBase> EventMap;
 
-class EventBase
+class EventBase: Managed
 {
 	static const float PHASE_TIME_REMAINING_PRECISION = 1.0;
 	
@@ -57,20 +57,10 @@ class EventBase
 	{
 		EventManagerLog.Debug(this, "~Destroy");
 		
-		if (m_ClientUpdate) {
-			m_ClientUpdate.Stop();
-			delete m_ClientUpdate;
-		}
-		
-		if (m_ServerUpdate) {
-			m_ServerUpdate.Stop();
-			delete m_ServerUpdate;
-		}
-		
-		if (m_TimeRemainingTimer) {
-			m_TimeRemainingTimer.Stop();
-			delete m_TimeRemainingTimer;
-		}
+		delete m_StartParams;		
+		delete m_ClientUpdate;		
+		delete m_ServerUpdate;
+		delete m_TimeRemainingTimer;
 	}
 		
 	// Abstract methods
@@ -81,9 +71,6 @@ class EventBase
 	protected void InitPhaseServer();
 	protected void MidPhaseServer();
 	protected void EndPhaseServer();
-
-	protected void OnEventEndClient();
-	protected void OnEventEndServer();
 	
 	// Update Loops
 	protected void UpdateClient();
@@ -174,9 +161,9 @@ class EventBase
 				
 				case EventPhase.DELETE:
 				default: {
-					OnEventEndServer();
 					// destroy the event
-					m_EventManager.DeleteEvent(this);		
+					//m_EventManager.DeleteEvent(this);
+					delete this;
 					return;
 				}
 			}
@@ -202,8 +189,8 @@ class EventBase
 				
 				case EventPhase.DELETE:
 				default: {
-					OnEventEndClient();
-					break;
+					delete this;
+					return;
 				}
 			}
 		}
