@@ -27,7 +27,6 @@ class EventBase: Managed
 	protected float m_PhaseTimeRemaining;
 	
 	protected Weather m_Weather;
-	protected PlayerBase m_Player;
 
 	// used for client / server update abstraction
 	protected ref Timer m_ClientUpdate = new Timer(CALL_CATEGORY_SYSTEM);
@@ -44,7 +43,6 @@ class EventBase: Managed
 		m_Weather = GetGame().GetWeather();
 		
 		if (!GetGame().IsDedicatedServer()) {
-			m_Player = PlayerBase.Cast(GetGame().GetPlayer());
 			m_ClientUpdate.Run(GetClientTick(), this, "UpdateClient", null, true);
 		}
 				

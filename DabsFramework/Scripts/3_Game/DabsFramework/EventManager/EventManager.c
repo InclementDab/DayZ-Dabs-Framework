@@ -414,7 +414,7 @@ class EventManager
 		return true;
 	}
 		
-	void DispatchEventInfo(PlayerBase player)
+	void DispatchEventInfo(Man player)
 	{
 		EventManagerLog.Debug(this, "Sending In Progress info to %1", player.ToString());
 		foreach (typename event_type, EventMap event_map: m_ActiveEvents) {
