@@ -136,7 +136,7 @@ class EventBase: Managed
 		
 		m_EventPhase = phase;
 		EventManagerLog.Debug(this, "SwitchPhase %1, length: %2", typename.EnumToString(EventPhase, m_EventPhase), time_remaining.ToString());
-		
+				
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
 			
@@ -162,8 +162,8 @@ class EventBase: Managed
 				case EventPhase.DELETE:
 				default: {
 					// destroy the event
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 1000, false, this);
 					//m_EventManager.DeleteEvent(this);
-					delete this;
 					return;
 				}
 			}
@@ -189,7 +189,7 @@ class EventBase: Managed
 				
 				case EventPhase.DELETE:
 				default: {
-					delete this;
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 1000, false, this);
 					return;
 				}
 			}
