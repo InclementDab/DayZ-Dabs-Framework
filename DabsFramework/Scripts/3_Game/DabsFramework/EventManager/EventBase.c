@@ -70,6 +70,9 @@ class EventBase: Managed
 	protected void MidPhaseServer();
 	protected void EndPhaseServer();
 	
+	protected void OnEventEndClient();
+	protected void OnEventEndServer();
+	
 	// Update Loops
 	protected void UpdateClient();
 	protected void UpdateServer();
@@ -122,7 +125,7 @@ class EventBase: Managed
 	}
 		
 	void SwitchPhase(EventPhase phase, float time_remaining = 0, Param client_data = null)
-	{
+	{		
 		if (phase > EventPhase.DELETE || phase <= EventPhase.INVALID) {
 			return; // just doing a bounds check
 		}
@@ -160,6 +163,8 @@ class EventBase: Managed
 				case EventPhase.DELETE:
 				default: {
 					// destroy the event
+					// im still pissed that this shit takes a whole second
+					OnEventEndServer();
 					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 1000, false, this);
 					//m_EventManager.DeleteEvent(this);
 					return;
@@ -187,6 +192,7 @@ class EventBase: Managed
 				
 				case EventPhase.DELETE:
 				default: {
+					OnEventEndClient();
 					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 1000, false, this);
 					return;
 				}

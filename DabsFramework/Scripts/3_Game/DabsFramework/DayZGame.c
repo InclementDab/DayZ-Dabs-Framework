@@ -8,7 +8,11 @@ modded class DayZGame
 	{		
 		s_MVC = new MVC();
 		m_LoggerManager = new LoggerManager(this);
-		m_EventManager = new EventManager();
+		
+		// dedi and offline
+		if (IsServer()) {
+			m_EventManager = new EventManager();
+		}
 	}
 	
 	void ~DayZGame()
@@ -48,6 +52,23 @@ modded class DayZGame
 			}
 		}
 #endif
+	}
+	
+	override void OnEvent(EventType eventTypeId, Param params)
+	{
+		super.OnEvent(eventTypeId, params);
+
+		switch (eventTypeId) {
+			case MPSessionStartEventTypeID: {
+				m_EventManager = new EventManager();
+				break;
+			}
+			
+			case MPSessionEndEventTypeID: {
+				delete m_EventManager;
+				break;
+			}
+		}
 	}
 	
 	DayZPlayer GetPlayerByIdentity(notnull PlayerIdentity identity)
