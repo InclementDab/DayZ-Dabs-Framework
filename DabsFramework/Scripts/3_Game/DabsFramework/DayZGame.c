@@ -2,11 +2,13 @@ modded class DayZGame
 {	
 	protected static ref MVC s_MVC;
 	protected ref LoggerManager m_LoggerManager;
+	protected ref EventManager m_EventManager;
 	
 	void DayZGame()
 	{		
 		s_MVC = new MVC();
 		m_LoggerManager = new LoggerManager(this);
+		m_EventManager = new EventManager();
 	}
 	
 	void ~DayZGame()
@@ -27,6 +29,11 @@ modded class DayZGame
 	LoggerManager GetLoggerManager()
 	{
 		return m_LoggerManager;
+	}
+	
+	EventManager GetEventManager()
+	{
+		return m_EventManager;
 	}
 
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)

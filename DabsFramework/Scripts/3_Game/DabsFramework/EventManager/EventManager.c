@@ -27,23 +27,21 @@ class EventManager
 	protected ref map<typename, int> m_AmountOfEventsRan = new map<typename, int>(); // amount of event type ran
 	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
 	protected ref map<typename, float> m_EventCooldowns = new map<typename, float>();
-	
-	protected static ref EventManager m_Instance;
-	
+		
+	// deprecated
 	static EventManager Start()
 	{
-		m_Instance = new EventManager();
-		return m_Instance;
+		return GetInstance();
 	}
 	
+	// deprecated
 	static void Stop()
 	{
-		delete m_Instance;
 	}
 	
 	static EventManager GetInstance()
 	{
-		return m_Instance;
+		return GetDayZGame().GetEventManager();
 	}
 	
 	void EventManager()

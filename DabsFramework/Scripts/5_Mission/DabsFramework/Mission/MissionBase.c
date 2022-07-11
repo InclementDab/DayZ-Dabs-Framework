@@ -8,7 +8,7 @@ modded class MissionBase
 	{
 		super.OnInit();
 		
-		m_EventManager = EventManager.Start();
+		m_EventManager = GetDayZGame().GetEventManager();
 	}
 	
 	// Just another way to acquire it
