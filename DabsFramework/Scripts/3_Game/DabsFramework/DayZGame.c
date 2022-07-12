@@ -71,11 +71,15 @@ modded class DayZGame
 		}
 	}
 	
-	DayZPlayer GetPlayerByIdentity(notnull PlayerIdentity identity)
-	{
+	DayZPlayer GetPlayerByIdentity(PlayerIdentity identity)
+	{		
 		int high, low;
 		if (!IsMultiplayer()) {
 			return GetPlayer();
+		}
+		
+		if (!identity) {
+			return null;
 		}
 		
 		GetPlayerNetworkIDByIdentityID(identity.GetPlayerId(), low, high);
