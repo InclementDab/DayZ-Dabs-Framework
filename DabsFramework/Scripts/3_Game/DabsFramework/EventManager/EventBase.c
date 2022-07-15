@@ -29,17 +29,14 @@ class EventBase: Managed
 	protected Weather m_Weather;
 
 	// used for client / server update abstraction
-	protected ref Timer m_ClientUpdate = new Timer(CALL_CATEGORY_SYSTEM);
-	protected ref Timer m_ServerUpdate = new Timer(CALL_CATEGORY_SYSTEM);
+	protected ref Timer m_ClientUpdate = new Timer(CALL_CATEGORY_GAMEPLAY);
+	protected ref Timer m_ServerUpdate = new Timer(CALL_CATEGORY_GAMEPLAY);
 	
-	// used for Phase Time Remaining, always static at 1 second
-	protected ref Timer m_TimeRemainingTimer = new Timer(CALL_CATEGORY_SYSTEM);
-
 	void EventBase()
 	{
 		EventManagerLog.Debug(this, "Create");
 		
-		m_EventManager = EventManager.GetInstance();
+		m_EventManager = GetDayZGame().GetEventManager();
 		m_Weather = GetGame().GetWeather();
 		
 		if (!GetGame().IsDedicatedServer()) {
@@ -51,14 +48,15 @@ class EventBase: Managed
 		}
 	}
 	
+	
 	void ~EventBase()
 	{
 		EventManagerLog.Debug(this, "~Destroy");
-		
+		m_EventManager.DeleteEvent(this);
 		delete m_StartParams;		
 		delete m_ClientUpdate;		
 		delete m_ServerUpdate;
-		delete m_TimeRemainingTimer;
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
 	}
 		
 	// Abstract methods
@@ -137,7 +135,12 @@ class EventBase: Managed
 		
 		m_EventPhase = phase;
 		EventManagerLog.Debug(this, "SwitchPhase %1, length: %2", typename.EnumToString(EventPhase, m_EventPhase), time_remaining.ToString());
-				
+		
+		// This was in Start() but it was not being called on clients so i moved it here
+		// there may be some better ways to do this, if so, acquire cookie		
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(UpdateTimeRemaining, PHASE_TIME_REMAINING_PRECISION * 1000, true);
+		
 		if (GetGame().IsServer()) {		
 			m_PhaseTimeRemaining = GetPhaseLength(phase);
 			
@@ -162,11 +165,8 @@ class EventBase: Managed
 				
 				case EventPhase.DELETE:
 				default: {
-					// destroy the event
-					// im still pissed that this shit takes a whole second
 					OnEventEndServer();
-					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 1000, false, this);
-					//m_EventManager.DeleteEvent(this);
+					delete this;
 					return;
 				}
 			}
@@ -193,16 +193,10 @@ class EventBase: Managed
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndClient();
-					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(m_EventManager.DeleteEvent, 1000, false, this);
+					delete this;
 					return;
 				}
 			}
-		}
-		
-		// This was in Start() but it was not being called on clients so i moved it here
-		// there may be some better ways to do this, if so, acquire cookie
-		if (!m_TimeRemainingTimer.IsRunning()) {
-			m_TimeRemainingTimer.Run(PHASE_TIME_REMAINING_PRECISION, this, "UpdateTimeRemaining", null, true);
 		}
 	}
 		
@@ -303,7 +297,7 @@ class EventBase: Managed
 	}
 		
 	protected void UpdateTimeRemaining()
-	{
+	{		
 		// Dont try to decrease value if paused
 		if (IsPaused()) {
 			return;

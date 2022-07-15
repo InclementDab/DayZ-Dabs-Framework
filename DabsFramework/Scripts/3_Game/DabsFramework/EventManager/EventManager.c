@@ -149,7 +149,7 @@ class EventManager
 			return null;
 		}
 		
-		if (m_EventCooldowns.Contains(event_type) && !force) {
+		if (m_EventCooldowns[event_type] > 0 && !force) {
 			EventManagerLog.Info(this, "Could not start event %1 as it is on cooldown for %2 more seconds", event_type.ToString(), m_EventCooldowns[event_type].ToString());
 			return null;
 		}
