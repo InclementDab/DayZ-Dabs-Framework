@@ -70,17 +70,17 @@ class ScriptView: ScriptedViewBase
 		//m_LayoutRoot.SetHandler(this);
 		
 		// Lock controls if needed
-		if (UseMouse()) {
-			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
-			GetGame().GetUIManager().ShowUICursor(true);
+		if (UseMouse() && g_Game) {
+			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
+			g_Game.GetUIManager().ShowUICursor(true);
 		}
 
-		if (UseKeyboard()) {
-			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_KEYBOARD);
+		if (UseKeyboard() && g_Game) {
+			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_KEYBOARD);
 		}
 		
-		if (UseGamepad()) {
-			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_GAMEPAD);
+		if (UseGamepad() && g_Game) {
+			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_GAMEPAD);
 		}
 	}
 
@@ -97,29 +97,31 @@ class ScriptView: ScriptedViewBase
 			All.RemoveItem(this);
 		}
 		
-		if (UseMouse()) {
-			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+		if (UseMouse() && g_Game) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
 		}
 		
-		UIScriptedMenu current_menu = GetGame().GetUIManager().GetMenu();
-		bool parent_has_mouse = current_menu && (current_menu.UseMouse() || current_menu.GetParentMenu() && current_menu.GetParentMenu().UseMouse());
-		
-		if (!parent_has_mouse) {
-			foreach (ScriptView existing_view: All) {
-				if (existing_view.UseMouse()) {
-					parent_has_mouse = true;
+		if (g_Game) {
+			UIScriptedMenu current_menu = g_Game.GetUIManager().GetMenu();
+			bool parent_has_mouse = current_menu && (current_menu.UseMouse() || current_menu.GetParentMenu() && current_menu.GetParentMenu().UseMouse());
+			
+			if (!parent_has_mouse) {
+				foreach (ScriptView existing_view: All) {
+					if (existing_view.UseMouse()) {
+						parent_has_mouse = true;
+					}
 				}
 			}
 		}
 
 		GetGame().GetUIManager().ShowUICursor(parent_has_mouse);
 		
-		if (UseKeyboard()) {
-			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_KEYBOARD);
+		if (UseKeyboard() && g_Game) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_KEYBOARD);
 		}
 		
-		if (UseGamepad()) {
-			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_GAMEPAD);
+		if (UseGamepad() && g_Game) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_GAMEPAD);
 		}
 	}
 
