@@ -56,7 +56,10 @@ class EventBase: Managed
 		delete m_StartParams;		
 		delete m_ClientUpdate;		
 		delete m_ServerUpdate;
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
+		
+		if (GetGame()) {
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
+		}
 	}
 		
 	// Abstract methods
