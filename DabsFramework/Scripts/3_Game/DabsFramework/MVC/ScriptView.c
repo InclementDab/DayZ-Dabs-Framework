@@ -70,6 +70,8 @@ class ScriptView: ScriptedViewBase
 		//m_LayoutRoot.SetHandler(this);
 		
 		// Lock controls if needed
+		// note: this is temporarily removed due to compatibility issues with COT
+		/*
 		if (UseMouse() && g_Game) {
 			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
 			g_Game.GetUIManager().ShowUICursor(true);
@@ -81,7 +83,7 @@ class ScriptView: ScriptedViewBase
 		
 		if (UseGamepad() && g_Game) {
 			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_GAMEPAD);
-		}
+		}*/
 	}
 
 	void ~ScriptView()
@@ -97,6 +99,7 @@ class ScriptView: ScriptedViewBase
 			All.RemoveItem(this);
 		}
 		
+		/*
 		if (UseMouse() && g_Game) {
 			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
 		}
@@ -122,7 +125,7 @@ class ScriptView: ScriptedViewBase
 		
 		if (UseGamepad() && g_Game) {
 			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_GAMEPAD);
-		}
+		}*/
 	}
 
 	void SetParent(Widget parent)
@@ -211,10 +214,12 @@ class ScriptView: ScriptedViewBase
 	// Virtual Methods
 	protected string GetLayoutFile();
 	
+	/*
 	bool UseMouse();
 	bool UseKeyboard();	
 	bool UseGamepad();
-
+	*/
+	
 	protected typename GetControllerType()
 	{
 		return ViewController;
