@@ -20,9 +20,8 @@ class EventManager
 	
 	//				 EVRStorm
 	//								0,  EVRStorm ptr
-	//								1,  EVRStorm ptr
+	//								1,  EVRStom ptr
 	protected ref map<typename, ref EventMap> m_ActiveEvents = new map<typename, ref EventMap>();
-	protected ref Timer m_ServerEventTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref map<typename, int> m_AmountOfEventsRan = new map<typename, int>(); // amount of event type ran
 	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
@@ -55,7 +54,8 @@ class EventManager
 		delete m_PossibleEventTypes;
 		delete m_EventCooldownTimer;
 		delete m_EventCooldowns;
-		delete m_ServerEventTimer;
+		
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(ServerEventThread);
 	}
 
 	/*
@@ -76,7 +76,7 @@ class EventManager
 		
 		m_NextEventIn = GetNextEventTime();
 		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());	
-		m_ServerEventTimer.Run(m_NextEventIn, this, "ServerEventThread");
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ServerEventThread, m_NextEventIn * 1000);
 		
 		EventManagerLog.Info(this, "EventManager is now running");
 	}
@@ -108,8 +108,8 @@ class EventManager
 		
 		m_NextEventIn = GetNextEventTime();
 		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
-		
-		m_ServerEventTimer.Run(m_NextEventIn, this, "ServerEventThread");
+				
+		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ServerEventThread, m_NextEventIn * 1000);
 	}
 	
 	void RegisterEvent(typename event_type, float frequency = 1.0)
