@@ -71,7 +71,7 @@ class EditorObjectData: SerializableBase
 		
 		EditorObjectData data = new EditorObjectData();
 		data.Type = type; 
-		data.Model = GetGame().GetModelName(data.Type);
+		data.Model = GetModelName(data.Type);
 		data.Position = position; 
 		data.Orientation = orientation;
 		data.Scale = scale;
@@ -94,7 +94,7 @@ class EditorObjectData: SerializableBase
 		
 		EditorObjectData data = new EditorObjectData();
 		data.Type = target.GetType();
-		data.Model = GetGame().GetModelName(data.Type);
+		data.Model = GetModelName(data.Type);
 		data.WorldObject = target;
 		data.Position = data.WorldObject.GetPosition(); 
 		data.Orientation = data.WorldObject.GetOrientation(); 
@@ -200,5 +200,34 @@ class EditorObjectData: SerializableBase
 		serializer.Read(Simulate);
 		
 		return true;
+	}
+	
+	static string GetModelName(string class_name)
+	{
+		if (class_name == string.Empty) {
+			return "UNKNOWN_P3D_FILE";
+		}
+		
+
+		string model_path;
+		if (!GetGame().ConfigGetText("CfgVehicles " + class_name + " model", model_path)) {
+			return "UNKNOWN_P3D_FILE";
+		}
+		
+		int to_substring_end = model_path.Length() - 4; // -4 to leave out the '.p3d' suffix
+		if (to_substring_end < 0) {
+			return "UNKNOWN_P3D_FILE";
+		}
+		
+		int to_substring_start = 0;
+		
+		// Currently we have model path. To get the name out of it we need to parse this string from the end and stop at the first found '\' sign
+		for (int i = to_substring_end; i > 0; i--) {
+			if (model_path[i] == "\\") {
+				to_substring_start = i + 1;
+			}
+		}
+		
+		return model_path.Substring(to_substring_start, to_substring_end - to_substring_start);
 	}
 }

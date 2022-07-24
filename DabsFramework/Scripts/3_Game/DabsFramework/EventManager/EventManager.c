@@ -22,7 +22,6 @@ class EventManager
 	//								0,  EVRStorm ptr
 	//								1,  EVRStom ptr
 	protected ref map<typename, ref EventMap> m_ActiveEvents = new map<typename, ref EventMap>();
-	protected ref Timer m_EventCooldownTimer = new Timer(CALL_CATEGORY_GAMEPLAY);
 	protected ref map<typename, int> m_AmountOfEventsRan = new map<typename, int>(); // amount of event type ran
 	protected ref map<typename, float> m_PossibleEventTypes = new map<typename, float>();
 	protected ref map<typename, float> m_EventCooldowns = new map<typename, float>();
@@ -52,10 +51,12 @@ class EventManager
 	{
 		delete m_ActiveEvents;
 		delete m_PossibleEventTypes;
-		delete m_EventCooldownTimer;
 		delete m_EventCooldowns;
 		
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(ServerEventThread);
+		if (GetGame() && GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM)) {
+			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(ServerCooldownThread);
+			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(ServerEventThread);
+		}
 	}
 
 	/*
@@ -71,12 +72,11 @@ class EventManager
 		m_MaxEventCount = max_event_count;
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
-		
-		m_EventCooldownTimer.Run(1.0, this, "ServerCooldownThread", null, true);
-		
+				
 		m_NextEventIn = GetNextEventTime();
 		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());	
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ServerEventThread, m_NextEventIn * 1000);
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ServerEventThread, m_NextEventIn * 1000);
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ServerCooldownThread, 1000);
 		
 		EventManagerLog.Info(this, "EventManager is now running");
 	}
@@ -109,7 +109,7 @@ class EventManager
 		m_NextEventIn = GetNextEventTime();
 		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
 				
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ServerEventThread, m_NextEventIn * 1000);
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ServerEventThread, m_NextEventIn * 1000);
 	}
 	
 	void RegisterEvent(typename event_type, float frequency = 1.0)
