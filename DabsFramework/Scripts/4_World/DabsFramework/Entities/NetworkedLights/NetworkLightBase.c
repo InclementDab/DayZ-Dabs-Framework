@@ -130,25 +130,64 @@ class NetworkLightBase: SerializedBuilding
 		serializable_data["Brightness"] = SerializableParam1<float>.Create(Brightness);
 		serializable_data["SpotLightAngle"] = SerializableParam1<float>.Create(SpotLightAngle);
 	}
-	
+		
 	override void Read(map<string, ref SerializableParam> serializable_data)
 	{		
-		CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;
-		EnableSpecular = SerializableParam1<bool>.Cast(serializable_data["EnableSpecular"]).param1;
-		EnableLinear = SerializableParam1<bool>.Cast(serializable_data["EnableLinear"]).param1;
-		VisibleDuringDay = SerializableParam1<bool>.Cast(serializable_data["VisibleDuringDay"]).param1;
-		HeatHaze = SerializableParam1<bool>.Cast(serializable_data["HeatHaze"]).param1;
-		FlareVisible = SerializableParam1<bool>.Cast(serializable_data["FlareVisible"]).param1;
+		if (serializable_data["CastShadow"]) {
+			CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;
+		}
 		
-		DiffuseColor = SerializableParam1<int>.Cast(serializable_data["DiffuseColor"]).param1;
-		AmbientColor = SerializableParam1<int>.Cast(serializable_data["AmbientColor"]).param1;
+		if (serializable_data["EnableSpecular"]) {
+			EnableSpecular = SerializableParam1<bool>.Cast(serializable_data["EnableSpecular"]).param1;
+		}
 		
-		PulseCoef = SerializableParam1<float>.Cast(serializable_data["PulseCoef"]).param1;
-		Radius = SerializableParam1<float>.Cast(serializable_data["Radius"]).param1;
-		HeatHazeRadius = SerializableParam1<float>.Cast(serializable_data["HeatHazeRadius"]).param1;
-		HeatHazePower = SerializableParam1<float>.Cast(serializable_data["HeatHazePower"]).param1;
-		Brightness = SerializableParam1<float>.Cast(serializable_data["Brightness"]).param1;
-		SpotLightAngle = SerializableParam1<float>.Cast(serializable_data["SpotLightAngle"]).param1;
+		if (serializable_data["EnableLinear"]) {
+			EnableLinear = SerializableParam1<bool>.Cast(serializable_data["EnableLinear"]).param1;
+		}
+		
+		if (serializable_data["VisibleDuringDay"]) {
+			VisibleDuringDay = SerializableParam1<bool>.Cast(serializable_data["VisibleDuringDay"]).param1;
+		}
+		
+		if (serializable_data["HeatHaze"]) {
+			HeatHaze = SerializableParam1<bool>.Cast(serializable_data["HeatHaze"]).param1;
+		}
+		
+		if (serializable_data["FlareVisible"]) {
+			FlareVisible = SerializableParam1<bool>.Cast(serializable_data["FlareVisible"]).param1;
+		}
+		
+		if (serializable_data["DiffuseColor"]) {
+			DiffuseColor = SerializableParam1<int>.Cast(serializable_data["DiffuseColor"]).param1;
+		}
+		
+		if (serializable_data["AmbientColor"]) {
+			AmbientColor = SerializableParam1<int>.Cast(serializable_data["AmbientColor"]).param1;
+		}
+		
+		if (serializable_data["PulseCoef"]) {
+			PulseCoef = SerializableParam1<float>.Cast(serializable_data["PulseCoef"]).param1;
+		}
+		
+		if (serializable_data["Radius"]) {
+			Radius = SerializableParam1<float>.Cast(serializable_data["Radius"]).param1;
+		}
+		
+		if (serializable_data["HeatHazeRadius"]) {
+			HeatHazeRadius = SerializableParam1<float>.Cast(serializable_data["HeatHazeRadius"]).param1;
+		}
+		
+		if (serializable_data["HeatHazePower"]) {
+			HeatHazePower = SerializableParam1<float>.Cast(serializable_data["HeatHazePower"]).param1;
+		}
+		
+		if (serializable_data["Brightness"]) {
+			Brightness = SerializableParam1<float>.Cast(serializable_data["Brightness"]).param1;
+		}
+		
+		if (serializable_data["SpotLightAngle"]) {
+			SpotLightAngle = SerializableParam1<float>.Cast(serializable_data["SpotLightAngle"]).param1;
+		}
 		
 		if (GetGame().IsServer() && GetGame().IsMultiplayer()) {
 			SetSynchDirty();
@@ -180,7 +219,7 @@ class NetworkLightBase: SerializedBuilding
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 		
-	void PropertyChanged(string property_name)
+	void PropertyChanged(Class source, string property_name)
 	{
 		float a, r, g, b;
 		switch (property_name) {
