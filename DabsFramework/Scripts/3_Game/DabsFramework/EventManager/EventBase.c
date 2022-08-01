@@ -339,4 +339,20 @@ class EventBase: Managed
 	
 		rpc.Send(null, ERPCsDabsFramework.EVENT_UPDATE, true, identity);		 
 	}
+	
+	// some helpers that i use constantly
+	static string SecondsToTimeString(int seconds)
+	{		
+		int minutes = seconds / 60;
+		seconds = seconds % 60;
+		if (minutes == 0) {
+			return string.Format("%1 seconds", seconds);
+		}
+		
+		if (seconds == 0) {
+			return string.Format("%1 minutes", minutes);
+		}
+		
+		return string.Format("%1 minutes and %2 seconds", minutes, seconds);
+	}
 }
