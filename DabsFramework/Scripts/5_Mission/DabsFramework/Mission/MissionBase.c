@@ -16,4 +16,9 @@ modded class MissionBase
 	{
 		return m_EventManager;
 	}
+	
+	// idk why this isnt a vanilla function, all the events are all over the place
+	void OnPlayerJoined(PlayerBase player, PlayerIdentity identity)
+	{
+	}
 }

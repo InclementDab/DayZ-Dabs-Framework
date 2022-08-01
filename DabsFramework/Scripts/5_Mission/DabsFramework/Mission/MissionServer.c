@@ -26,9 +26,4 @@ modded class MissionServer
 			m_JoinedPlayers.Remove(m_JoinedPlayers.Find(identity.GetId()));
 		}
 	}
-	
-	// idk why this isnt a vanilla function, all the events are all over the place
-	void OnPlayerJoined(PlayerBase player, PlayerIdentity identity)
-	{
-	}
 }
