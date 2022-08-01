@@ -179,7 +179,7 @@ class EventManager
 		}
 		
 		if (!event_base.EventActivateCondition() && !force) {
-			EventManagerLog.Debug(this, "Could not run %1, failed ActivateCondition", event_type.ToString());
+			EventManagerLog.Info(this, "Could not run %1, failed ActivateCondition", event_type.ToString());
 			return null;
 		}
 		

@@ -54,6 +54,7 @@ modded class DayZGame
 #endif
 	}
 	
+	// this is the init of event manager for clients
 	override void OnEvent(EventType eventTypeId, Param params)
 	{
 		super.OnEvent(eventTypeId, params);
