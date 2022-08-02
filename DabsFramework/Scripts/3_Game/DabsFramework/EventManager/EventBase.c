@@ -57,7 +57,7 @@ class EventBase: Managed
 		delete m_ClientUpdate;		
 		delete m_ServerUpdate;
 		
-		if (GetGame()) {
+		if (GetGame() && GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY)) {
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
 		}
 	}
