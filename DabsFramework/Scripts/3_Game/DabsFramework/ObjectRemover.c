@@ -101,15 +101,38 @@ class ObjectRemover
 			return false;
 		}
 
-		// Added via p3d in TB with no config.
-		bool isStatic = (obj.GetType() == string.Empty) && (obj.Type() == Object);
 		// Inherits from House in Cfg class.
 		// Building, House, Wreck, Well, Tree, Bush, etc.
 		bool isHouse = obj.IsKindOf("House");
 		bool isVegetation = obj.IsTree() || obj.IsBush();
         bool isRock = obj.IsRock();
+		bool isStatic;
+		string type = obj.GetType();
+		if (type == string.Empty) {
+			// Added via p3d in TB with no config.
+			isStatic = (obj.Type() == Object);
+		} else if (!(isHouse || isVegetation || isRock)) {
+			// IsKindOf doesn't work for CfgNonAIVehicles :-(
+			isStatic = IsNonAIStatic(type);
+		}
 
 		return (isStatic || isHouse || isVegetation || isRock);
+	}
+
+	static bool IsNonAIStatic(string type)
+	{
+		string baseName;
+		while (type != string.Empty) {
+			string path = CFG_NONAI_VEHICLES + " " + type;
+			if (!GetGame().ConfigGetBaseName(path, baseName)) {
+				break;
+			}
+			if (baseName == "StaticObject") {
+				return true;
+			}
+			type = baseName;
+		}
+		return false;
 	}
 
 	/**
