@@ -40,8 +40,7 @@ class TypeConverter
 
 	ScriptCaller GetterFromType(typename type)
 	{
-		switch (type)
-		{
+		switch (type) {
 			case bool:
 				return ScriptCaller.Create(GetBool);
 			case int:
@@ -65,8 +64,7 @@ class TypeConverter
 
 	ScriptCaller SetterFromType(typename type)
 	{
-		switch (type)
-		{
+		switch (type) {
 			case bool:
 				return ScriptCaller.Create(SetBool);
 			case int:
