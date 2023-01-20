@@ -154,7 +154,7 @@ class ScriptedViewBase : Managed
 		Error2(header, msg);
 
 #ifdef COMPONENT_SYSTEM
-		Workbench.Dialog(header, msg);
+		//Workbench.Dialog(header, msg);
 #endif
 	}
 

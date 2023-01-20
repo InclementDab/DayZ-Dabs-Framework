@@ -38,54 +38,54 @@ class TypeConverter
 	void SetToController(Class context, string name, int index);
 	void GetFromController(Class context, string name, int index);
 
-	static func GetterFromType(typename type)
+	ScriptCaller GetterFromType(typename type)
 	{
 		switch (type)
 		{
 			case bool:
-				return GetBool;
+				return ScriptCaller.Create(GetBool);
 			case int:
-				return GetInt;
+				return ScriptCaller.Create(GetInt);
 			case float:
-				return GetFloat;
+				return ScriptCaller.Create(GetFloat);
 			case string:
-				return GetString;
+				return ScriptCaller.Create(GetString);
 			case vector:
-				return GetVector;
+				return ScriptCaller.Create(GetVector);
 			case Widget:
-				return GetWidget;
+				return ScriptCaller.Create(GetWidget);
 			case Object:
-				return GetObject;
+				return ScriptCaller.Create(GetObject);
 			case Param:
-				return GetParam;
+				return ScriptCaller.Create(GetParam);
 		}
 
-		return __NULL_FUNCT;
+		return null;
 	}
 
-	static func SetterFromType(typename type)
+	ScriptCaller SetterFromType(typename type)
 	{
 		switch (type)
 		{
 			case bool:
-				return SetBool;
+				return ScriptCaller.Create(SetBool);
 			case int:
-				return SetInt;
+				return ScriptCaller.Create(SetInt);
 			case float:
-				return SetFloat;
+				return ScriptCaller.Create(SetFloat);
 			case string:
-				return SetString;
+				return ScriptCaller.Create(SetString);
 			case vector:
-				return SetVector;
+				return ScriptCaller.Create(SetVector);
 			case Widget:
-				return SetWidget;
+				return ScriptCaller.Create(SetWidget);
 			case Object:
-				return SetObject;
+				return ScriptCaller.Create(SetObject);
 			case Param:
-				return SetParam;
+				return ScriptCaller.Create(SetParam);
 		}
 
-		return __NULL_FUNCT;
+		return null;
 	}
 }
 

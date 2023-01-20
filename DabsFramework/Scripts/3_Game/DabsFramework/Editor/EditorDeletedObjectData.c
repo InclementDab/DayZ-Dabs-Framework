@@ -16,6 +16,9 @@ class EditorDeletedObjectData: SerializableBase
 	int Flags;
 	
 	[NonSerialized()]
+	vector Orientation; // explicitly for expansion .map file
+	
+	[NonSerialized()]
 	Object WorldObject;
 	
 	void EditorDeletedObjectData()
@@ -29,11 +32,12 @@ class EditorDeletedObjectData: SerializableBase
 		return ID;
 	}
 	
-	static EditorDeletedObjectData Create(string type, vector position)
+	static EditorDeletedObjectData Create(string type, vector position, vector orientation = vector.Zero)
 	{		
 		EditorDeletedObjectData data = new EditorDeletedObjectData();
 		data.Type = type;
 		data.Position = position;
+		data.Orientation = orientation;
 		
 		// todo handle multiple objects of the same name in a 1m radius
 		data.WorldObject = data.FindObject();
@@ -50,6 +54,7 @@ class EditorDeletedObjectData: SerializableBase
 		data.Type = object.GetType();
 		data.Position = object.GetWorldPosition();
 		data.WorldObject = object;
+		data.Orientation = object.GetOrientation();
 		return data;
 	}
 	
