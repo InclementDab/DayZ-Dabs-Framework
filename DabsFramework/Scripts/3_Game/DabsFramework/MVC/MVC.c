@@ -62,6 +62,7 @@ class MVC
 	void RegisterWidgetControllers(out TTypeNameTypenameMap widget_controllers)
 	{
 		widget_controllers.Insert(Widget, WidgetBaseController);
+		widget_controllers.Insert(MapWidget, WidgetBaseController);
 		widget_controllers.Insert(SpacerBaseWidget, SpacerBaseWidgetController);
 		widget_controllers.Insert(WrapSpacerWidget, SpacerBaseWidgetController);
 		widget_controllers.Insert(GridSpacerWidget, SpacerBaseWidgetController);

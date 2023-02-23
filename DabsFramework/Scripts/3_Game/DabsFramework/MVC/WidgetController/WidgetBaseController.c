@@ -35,4 +35,55 @@ class WidgetBaseController: WidgetControllerTemplate<Widget>
 	{
 		// Since SetSelection is being used. This needs to override to avoid errors
 	}
+	
+	override void Insert(TypeConverter type_converter)
+	{
+		if (type_converter.GetWidget()) {
+			m_Widget.AddChild(type_converter.GetWidget());
+		}
+	}
+
+	override void Remove(int index, TypeConverter type_converter)
+	{
+		if (type_converter.GetWidget()) {
+			m_Widget.RemoveChild(type_converter.GetWidget());
+		}
+	}
+	
+	override void Clear()
+	{
+		Widget widget_a = m_Widget.GetChildren();
+		while (widget_a) {
+			m_Widget.RemoveChild(widget_a);
+			widget_a = widget_a.GetSibling();
+		}
+	}
+
+	override int Find(TypeConverter type_converter)
+	{
+		Widget widget_a = m_Widget.GetChildren();
+		int result;
+		while (widget_a) {
+			if (widget_a == type_converter.GetWidget()) {
+				return result;
+			}
+
+			widget_a = widget_a.GetSibling();
+			result++;
+		}
+
+		return -1;
+	}
+
+	override int Count()
+	{
+		Widget widget_a = m_Widget.GetChildren();
+		int result;
+		while (widget_a) {
+			widget_a = widget_a.GetSibling();
+			result++;
+		}
+
+		return result;
+	}
 }
