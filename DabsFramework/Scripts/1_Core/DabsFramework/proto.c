@@ -124,3 +124,24 @@ static int HSVtoARGB(float h, float s, float v, int a)
 
 // typename is a nullable type but once its assigned, its un-unassignable
 static const typename EMPTY_TYPENAME;
+
+
+// Ternary operator like in C# or C++
+/* 	Example:
+	string GetOpenSound()
+	{
+		return Ternary<string>.If(IsOpen(), "SlidingWoodDoor_Open_SoundSet", "SlidingWoodDoor_Close_SoundSet");
+	}
+*/
+
+class Ternary<Class T>
+{
+	static T If(bool state, T true_statement, T false_statement)
+	{
+		if (state) {
+			return true_statement;
+		}
+
+		return false_statement;
+	}
+}
