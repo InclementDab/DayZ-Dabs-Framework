@@ -71,6 +71,7 @@ class EditorDeletedObjectData: SerializableBase
 			}
 		}
 		
+		Error(string.Format("[DF] Failed to find %1 in %2m of %3", Type, radius, Position)); 
 		return null;
 	}
 	
