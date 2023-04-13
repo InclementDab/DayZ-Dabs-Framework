@@ -25,6 +25,8 @@ class ScriptView: ScriptedViewBase
 	static ref array<ScriptView> All = {};
 	
 	protected ref ViewController m_Controller;
+	protected ref ScriptViewMenu m_ScriptViewMenu;
+
 	ViewController GetController()
 	{
 		return m_Controller;
@@ -67,6 +69,10 @@ class ScriptView: ScriptedViewBase
 		m_Controller.Debug_Logging = Debug_Logging;
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);
+
+		// set up the wrapper for this
+		m_ScriptViewMenu = new ScriptViewMenu(this);
+
 		//m_LayoutRoot.SetHandler(this);
 		
 		// Lock controls if needed
@@ -98,6 +104,8 @@ class ScriptView: ScriptedViewBase
 		if (All) {
 			All.RemoveItem(this);
 		}
+
+		delete m_ScriptViewMenu;
 		
 		/*
 		if (UseMouse() && g_Game) {
@@ -227,5 +235,10 @@ class ScriptView: ScriptedViewBase
 	protected typename GetControllerType()
 	{
 		return ViewController;
+	}
+
+	UIScriptedMenu GetScriptedMenu()
+	{
+		return m_ScriptViewMenu;
 	}
 }
