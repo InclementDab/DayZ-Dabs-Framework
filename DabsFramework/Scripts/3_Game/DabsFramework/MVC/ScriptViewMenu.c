@@ -8,6 +8,16 @@ class ScriptViewMenu: UIScriptedMenu
 	{
 		m_ScriptView = script_view;
 	}
+	
+	override void OnShow()
+	{
+		m_ScriptView.GetLayoutRoot().Show(true);
+	}
+
+	override void OnHide()
+	{
+		m_ScriptView.GetLayoutRoot().Show(false);
+	}
 
 	override Widget Init()
 	{
