@@ -43,31 +43,14 @@ class ViewController : ScriptedViewBase
 	// All View Bindings
 	[NonSerialized()]
 	protected autoptr ViewBindingHashMap m_ViewBindingHashMap = new ViewBindingHashMap();
-	ViewBindingHashMap GetViewBindings()
-	{
-		return m_ViewBindingHashMap;
-	}
-
-	ViewBinding GetViewBinding(Widget source)
-	{
-		return m_ViewBindingHashMap[source];
-	}
 
 	// View Bindings indexed by their Binding_Name
 	[NonSerialized()]
 	protected autoptr DataBindingHashMap m_DataBindingHashMap = new DataBindingHashMap();
-	DataBindingHashMap GetDataBindings()
-	{
-		return m_DataBindingHashMap;
-	}
-
+	
 	// Hashmap of all properties in the Controller
 	[NonSerialized()]
 	protected autoptr PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
-	typename GetPropertyType(string property_name)
-	{
-		return m_PropertyTypeHashMap[property_name];
-	}
 
 	override void OnWidgetScriptInit(Widget w)
 	{
@@ -169,7 +152,7 @@ class ViewController : ScriptedViewBase
 	// Override this when you want to have an event AFTER collection is changed
 	void CollectionChanged(string collection_name, CollectionChangedEventArgs args);
 
-	private int LoadDataBindings(Widget w)
+	protected int LoadDataBindings(Widget w)
 	{
 		ScriptedViewBase view_base;
 		w.GetScript(view_base);
@@ -232,7 +215,7 @@ class ViewController : ScriptedViewBase
 		return m_DataBindingHashMap.Count();
 	}
 
-	private	typename GetControllerProperty(string property_name)
+	protected typename GetControllerProperty(string property_name)
 	{
 		if (m_PropertyTypeHashMap[property_name]) {
 			return m_PropertyTypeHashMap[property_name];
@@ -243,7 +226,7 @@ class ViewController : ScriptedViewBase
 		return GetControllerProperty(context, property_name);
 	}
 
-	private	typename GetControllerProperty(out Class context, string property_name)
+	protected typename GetControllerProperty(out Class context, string property_name)
 	{
 		PropertyInfo property_info = PropertyInfo.GetSubScope(context, property_name);
 		if (property_info) {
@@ -253,7 +236,7 @@ class ViewController : ScriptedViewBase
 		return EMPTY_TYPENAME;
 	}
 
-	private	string GetVariableName(Class target_variable)
+	protected string GetVariableName(Class target_variable)
 	{
 		typename type = Type();
 		for (int i = 0; i < type.GetVariableCount(); i++) {
@@ -373,5 +356,25 @@ class ViewController : ScriptedViewBase
 	void DebugPrint()
 	{
 		m_DataBindingHashMap.DebugPrint();
+	}
+	
+	DataBindingHashMap GetDataBindings()
+	{
+		return m_DataBindingHashMap;
+	}
+	
+	typename GetPropertyType(string property_name)
+	{
+		return m_PropertyTypeHashMap[property_name];
+	}
+	
+	ViewBindingHashMap GetViewBindings()
+	{
+		return m_ViewBindingHashMap;
+	}
+
+	ViewBinding GetViewBinding(Widget source)
+	{
+		return m_ViewBindingHashMap[source];
 	}
 }
