@@ -16,6 +16,7 @@ class ScriptViewMenu: UIScriptedMenu
 	// called by engine when ui manager hides / shows
 	override void OnShow()
 	{
+		LockControls();	
 		if (m_ScriptView) {
 			m_ScriptView.GetLayoutRoot().Show(true);
 			m_ScriptView.OnScriptViewMenuEnter(this);
@@ -24,10 +25,26 @@ class ScriptViewMenu: UIScriptedMenu
 
 	override void OnHide()
 	{
+		UnlockControls();
 		if (m_ScriptView) {
 			m_ScriptView.GetLayoutRoot().Show(false);
 			m_ScriptView.OnScriptViewMenuExit(this);
 		}
+	}
+	
+	override bool UseMouse()
+	{
+		return (m_ScriptView && m_ScriptView.UseMouse());
+	}
+	
+	override bool UseKeyboard()
+	{
+		return (m_ScriptView && m_ScriptView.UseKeyboard());
+	}
+	
+	override bool UseGamepad()
+	{
+		return (m_ScriptView && m_ScriptView.UseGamepad());
 	}
 
 	override Widget Init()

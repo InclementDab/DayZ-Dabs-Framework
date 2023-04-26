@@ -226,11 +226,22 @@ class ScriptView: ScriptedViewBase
 	// Virtual Methods
 	protected string GetLayoutFile();
 	
-	/*
-	bool UseMouse();
-	bool UseKeyboard();	
-	bool UseGamepad();
-	*/
+	
+	bool UseMouse()
+	{
+		return false;
+	}
+	
+	bool UseKeyboard()
+	{
+		return false;
+	}
+	
+	bool UseGamepad()
+	{
+		return false;
+	}
+	
 	
 	void OnScriptViewMenuEnter(ScriptViewMenu source);
 	void OnScriptViewMenuExit(ScriptViewMenu source);
