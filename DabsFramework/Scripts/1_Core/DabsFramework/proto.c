@@ -87,7 +87,7 @@ static void HSVtoRGBF(float h, float s, float v, out float r, out float g, out f
 	int vv = h / 60;		
     float x = c * (1 - Math.AbsFloat(Math.FMod(h / 60, 2) - 1));
     float m = v - c;
-	
+
     if (h >= 0 && h < 60) {
        	r = c; g = x; b = 0;
     }

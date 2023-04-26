@@ -71,7 +71,7 @@ class ScriptView: ScriptedViewBase
 		m_LayoutRoot.SetUserData(this);
 
 		// set up the wrapper for this
-		m_ScriptViewMenu = new ScriptViewMenu(this);
+		m_ScriptViewMenu = new ScriptViewMenu(this);		
 
 		//m_LayoutRoot.SetHandler(this);
 		
@@ -231,6 +231,14 @@ class ScriptView: ScriptedViewBase
 	bool UseKeyboard();	
 	bool UseGamepad();
 	*/
+	
+	void OnScriptViewMenuEnter(ScriptViewMenu source);
+	void OnScriptViewMenuExit(ScriptViewMenu source);
+	
+	bool UseUIManager()
+	{
+		return false;
+	}
 	
 	protected typename GetControllerType()
 	{

@@ -7,16 +7,27 @@ class ScriptViewMenu: UIScriptedMenu
 	void ScriptViewMenu(ScriptView script_view)
 	{
 		m_ScriptView = script_view;
+		
+		if (m_ScriptView.UseUIManager()) {
+			GetGame().GetUIManager().ShowScriptedMenu(this, null); // null, todo?
+		}
 	}
-	
+		
+	// called by engine when ui manager hides / shows
 	override void OnShow()
 	{
-		m_ScriptView.GetLayoutRoot().Show(true);
+		if (m_ScriptView) {
+			m_ScriptView.GetLayoutRoot().Show(true);
+			m_ScriptView.OnScriptViewMenuEnter(this);
+		}
 	}
 
 	override void OnHide()
 	{
-		m_ScriptView.GetLayoutRoot().Show(false);
+		if (m_ScriptView) {
+			m_ScriptView.GetLayoutRoot().Show(false);
+			m_ScriptView.OnScriptViewMenuExit(this);
+		}
 	}
 
 	override Widget Init()
