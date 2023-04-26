@@ -71,25 +71,7 @@ class ScriptView: ScriptedViewBase
 		m_LayoutRoot.SetUserData(this);
 
 		// set up the wrapper for this
-		m_ScriptViewMenu = new ScriptViewMenu(this);		
-
-		//m_LayoutRoot.SetHandler(this);
-		
-		// Lock controls if needed
-		// note: this is temporarily removed due to compatibility issues with COT
-		/*
-		if (UseMouse() && g_Game) {
-			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
-			g_Game.GetUIManager().ShowUICursor(true);
-		}
-
-		if (UseKeyboard() && g_Game) {
-			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_KEYBOARD);
-		}
-		
-		if (UseGamepad() && g_Game) {
-			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_GAMEPAD);
-		}*/
+		m_ScriptViewMenu = new ScriptViewMenu(this);
 	}
 
 	void ~ScriptView()
@@ -106,34 +88,6 @@ class ScriptView: ScriptedViewBase
 		}
 
 		delete m_ScriptViewMenu;
-		
-		/*
-		if (UseMouse() && g_Game) {
-			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
-		}
-		
-		if (g_Game) {
-			UIScriptedMenu current_menu = g_Game.GetUIManager().GetMenu();
-			bool parent_has_mouse = current_menu && (current_menu.UseMouse() || current_menu.GetParentMenu() && current_menu.GetParentMenu().UseMouse());
-			
-			if (!parent_has_mouse) {
-				foreach (ScriptView existing_view: All) {
-					if (existing_view.UseMouse()) {
-						parent_has_mouse = true;
-					}
-				}
-			}
-		}
-
-		GetGame().GetUIManager().ShowUICursor(parent_has_mouse);
-		
-		if (UseKeyboard() && g_Game) {
-			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_KEYBOARD);
-		}
-		
-		if (UseGamepad() && g_Game) {
-			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_GAMEPAD);
-		}*/
 	}
 
 	void SetParent(Widget parent)
@@ -226,29 +180,28 @@ class ScriptView: ScriptedViewBase
 	// Virtual Methods
 	protected string GetLayoutFile();
 	
-	protected bool UseMouse()
+	bool UseMouse()
 	{
 		return false;
 	}
 	
-	protected bool UseKeyboard()
+	bool UseKeyboard()
 	{
 		return false;
 	}
 	
-	protected bool UseGamepad()
+	bool UseGamepad()
 	{
 		return false;
 	}
 	
-	
-	protected void OnScriptViewMenuEnter(ScriptViewMenu source);
-	protected void OnScriptViewMenuExit(ScriptViewMenu source);
-	
-	protected bool UseUIManager()
+	bool UseUIManager()
 	{
 		return false;
 	}
+	
+	void OnScriptViewMenuEnter(ScriptViewMenu source);
+	void OnScriptViewMenuExit(ScriptViewMenu source);
 	
 	protected typename GetControllerType()
 	{
