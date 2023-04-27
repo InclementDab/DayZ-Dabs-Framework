@@ -18,7 +18,6 @@ class ScriptViewMenu: UIScriptedMenu
 	{
 		LockControls();	
 		if (m_ScriptView) {
-			m_ScriptView.GetLayoutRoot().Show(true);
 			m_ScriptView.OnScriptViewMenuEnter(this);
 		}
 	}
@@ -27,7 +26,6 @@ class ScriptViewMenu: UIScriptedMenu
 	{
 		UnlockControls();
 		if (m_ScriptView) {
-			m_ScriptView.GetLayoutRoot().Show(false);
 			m_ScriptView.OnScriptViewMenuExit(this);
 		}
 	}
