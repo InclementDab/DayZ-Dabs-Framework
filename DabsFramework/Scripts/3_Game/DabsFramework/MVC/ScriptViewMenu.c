@@ -7,16 +7,14 @@ class ScriptViewMenu: UIScriptedMenu
 	void ScriptViewMenu(ScriptView script_view)
 	{
 		m_ScriptView = script_view;
-		
-		if (m_ScriptView.UseUIManager()) {
-			GetGame().GetUIManager().ShowScriptedMenu(this, null); // null, todo?
-		}
+				
+		SetID(MENU_ANY);
 	}
 		
 	// called by engine when ui manager hides / shows
 	override void OnShow()
-	{
-		LockControls();	
+	{	
+		LockControls();
 		if (m_ScriptView) {
 			m_ScriptView.OnScriptViewMenuEnter(this);
 		}

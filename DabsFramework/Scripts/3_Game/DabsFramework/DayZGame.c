@@ -86,4 +86,12 @@ modded class DayZGame
 		GetPlayerNetworkIDByIdentityID(identity.GetPlayerId(), low, high);
 		return DayZPlayer.Cast(GetObjectByNetworkId(low, high));
 	}
+	
+	string GetFormattedWorldName()
+	{
+		string world_name;
+		GetGame().GetWorldName(world_name);
+		world_name.ToLower();
+		return world_name;
+	}
 }

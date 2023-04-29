@@ -70,24 +70,35 @@ class ScriptView: ScriptedViewBase
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);
 
-		// set up the wrapper for this
-		m_ScriptViewMenu = new ScriptViewMenu(this);
+		// @ Setting up UI management, we either use a dummy referenced object or let the engine manage it depending
+		if (UseUIManager()) {
+			m_ScriptViewMenu = GetGame().GetUIManager().ShowScriptedMenu(new ScriptViewMenu(this), null);
+		} else {
+			m_ScriptViewMenu = new ScriptViewMenu(this);	
+		}
 	}
 
 	void ~ScriptView()
 	{
-		delete m_Controller;
-
 		if (m_LayoutRoot) {
-			Log("~" + m_LayoutRoot.GetName());
+			Log("~" + m_LayoutRoot.GetName());	
+		}
+		
+		if (UseUIManager()) {
+			GetGame().GetUIManager().HideScriptedMenu(m_ScriptViewMenu);
+		} else {
+			delete m_ScriptViewMenu;
+		}
+		
+		delete m_Controller;
+		
+		if (m_LayoutRoot) {
 			m_LayoutRoot.Unlink();
 		}
 		
 		if (All) {
 			All.RemoveItem(this);
 		}
-
-		delete m_ScriptViewMenu;
 	}
 
 	void SetParent(Widget parent)

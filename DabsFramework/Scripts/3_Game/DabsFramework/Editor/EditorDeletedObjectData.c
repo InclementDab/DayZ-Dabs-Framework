@@ -6,6 +6,8 @@ static int DeletedObjectId;
 	however we need to backport all old information and handle empty Types from the past
 */
 
+
+
 class EditorDeletedObjectData: SerializableBase
 {
 	[NonSerialized()]
