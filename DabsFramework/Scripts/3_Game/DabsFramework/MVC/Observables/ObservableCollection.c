@@ -53,8 +53,7 @@ class ObservableCollection<Class TValue> : Observable
 	int Insert(TValue value)
 	{
 		int index = _data.Insert(value);
-		if (index != -1)
-		{
+		if (index != -1) {
 			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Insert, index, new Param1<TValue>(value)));
 		}
 
@@ -66,6 +65,13 @@ class ObservableCollection<Class TValue> : Observable
 		int new_index = _data.InsertAt(value, index);
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.InsertAt, index, new Param1<TValue>(value)));
 		return new_index;
+	}
+	
+	void InsertAll(notnull array<TValue> from)
+	{
+		for (int i = 0; i < from.Count(); i++) {
+			Insert(from[i]);
+		}
 	}
 	
 	// 0: TValue value
