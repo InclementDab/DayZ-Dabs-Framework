@@ -1,7 +1,7 @@
 // Abstract Class
 class RelayCommand
 {
-	private	bool m_CanExecute = true;
+	protected bool m_CanExecute = true;
 
 	protected ViewController m_Controller;
 	void SetController(ViewController controller)
@@ -10,9 +10,9 @@ class RelayCommand
 	}
 
 	protected ViewBinding m_ViewBinding;
-	void SetViewBinding(ViewBinding viewBinding)
+	void SetViewBinding(ViewBinding view_binding)
 	{
-		m_ViewBinding = viewBinding;
+		m_ViewBinding = view_binding;
 	}
 
 	// returns bool defining whether or not the Execute can be called

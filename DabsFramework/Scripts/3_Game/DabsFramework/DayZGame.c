@@ -57,8 +57,6 @@ modded class DayZGame
 	// this is the init of event manager for clients
 	override void OnEvent(EventType eventTypeId, Param params)
 	{
-		super.OnEvent(eventTypeId, params);
-
 		switch (eventTypeId) {
 			case MPSessionStartEventTypeID: {
 				m_EventManager = new EventManager();
@@ -70,6 +68,8 @@ modded class DayZGame
 				break;
 			}
 		}
+		
+		super.OnEvent(eventTypeId, params);
 	}
 	
 	DayZPlayer GetPlayerByIdentity(PlayerIdentity identity)

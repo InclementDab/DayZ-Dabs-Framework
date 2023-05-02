@@ -72,7 +72,7 @@ class ScriptView: ScriptedViewBase
 
 		// @ Setting up UI management, we either use a dummy referenced object or let the engine manage it depending
 		if (UseUIManager()) {
-			m_ScriptViewMenu = GetGame().GetUIManager().ShowScriptedMenu(new ScriptViewMenu(this), null);
+			m_ScriptViewMenu = ScriptViewMenu.Cast(GetGame().GetUIManager().ShowScriptedMenu(new ScriptViewMenu(this), null));
 		} else {
 			m_ScriptViewMenu = new ScriptViewMenu(this);	
 		}

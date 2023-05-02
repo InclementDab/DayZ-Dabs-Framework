@@ -38,19 +38,19 @@ class TestController: Controller
 */
 
 // Abstract Class
-class ViewController : ScriptedViewBase
+class ViewController: ScriptedViewBase
 {
 	// All View Bindings
 	[NonSerialized()]
-	protected autoptr ViewBindingHashMap m_ViewBindingHashMap = new ViewBindingHashMap();
+	protected ref ViewBindingHashMap m_ViewBindingHashMap = new ViewBindingHashMap();
 
 	// View Bindings indexed by their Binding_Name
 	[NonSerialized()]
-	protected autoptr DataBindingHashMap m_DataBindingHashMap = new DataBindingHashMap();
+	protected ref DataBindingHashMap m_DataBindingHashMap = new DataBindingHashMap();
 	
 	// Hashmap of all properties in the Controller
 	[NonSerialized()]
-	protected autoptr PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
+	protected ref PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
 
 	override void OnWidgetScriptInit(Widget w)
 	{
