@@ -104,9 +104,6 @@ class ScriptView: ScriptedViewBase
 	
 	void Update(float dt)
 	{
-		if (m_Controller) {
-			m_Controller.Update(dt);
-		}
 	}
 
 	void SetParent(Widget parent)
