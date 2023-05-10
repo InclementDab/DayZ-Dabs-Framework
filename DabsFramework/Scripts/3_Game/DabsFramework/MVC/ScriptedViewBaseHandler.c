@@ -1,10 +1,10 @@
-class ScriptedViewBaseHandler : ScriptedWidgetEventHandler
+class ScriptedViewBaseHandler: ScriptedWidgetEventHandler
 {
 	protected ScriptedViewBase m_ScriptedViewBase;
 
-	void ScriptedViewBaseHandler(ScriptedViewBase viewBase)
+	void ScriptedViewBaseHandler(ScriptedViewBase scripted_view_base)
 	{
-		m_ScriptedViewBase = viewBase;
+		m_ScriptedViewBase = scripted_view_base;
 	}
 
 	override bool OnClick(Widget w, int x, int y, int button)
