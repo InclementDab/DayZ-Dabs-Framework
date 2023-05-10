@@ -71,12 +71,18 @@ class ScriptView: ScriptedViewBase
 		} else {
 			m_ScriptViewMenu = new ScriptViewMenu(this);	
 		}
+		
+		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
 	}
 
 	void ~ScriptView()
 	{
+		if (GetGame() && GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM)) {
+			GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(Update);
+		}
+		
 		if (m_LayoutRoot) {
-			Log("~" + m_LayoutRoot.GetName());	
+			Log("~" + m_LayoutRoot.GetName());
 		}
 		
 		if (UseUIManager()) {
@@ -93,6 +99,13 @@ class ScriptView: ScriptedViewBase
 		
 		if (All) {
 			All.RemoveItem(this);
+		}
+	}
+	
+	void Update(float dt)
+	{
+		if (m_Controller) {
+			m_Controller.Update(dt);
 		}
 	}
 
