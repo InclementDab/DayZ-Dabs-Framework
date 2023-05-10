@@ -1,4 +1,4 @@
-// Attribute
+//@ RegisterLogger attribute, see LoggerBase for usage example
 class RegisterLogger
 {
 	static ref array<typename> RegisteredLoggers = {};
