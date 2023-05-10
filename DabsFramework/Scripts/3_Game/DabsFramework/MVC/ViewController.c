@@ -54,9 +54,7 @@ class ViewController: ScriptedViewBase
 
 	[NonSerialized()]
 	protected ref ScriptedViewBaseHandler m_ScriptedViewBaseHandler = new ScriptedViewBaseHandler(this);
-	
-	void Update(float dt);
-	
+		
 	override void OnWidgetScriptInit(Widget w)
 	{
 		super.OnWidgetScriptInit(w);
