@@ -309,26 +309,51 @@ class ViewController: ScriptedViewBase
 	// Update Controller on action from ViewBinding
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
+		Trace("OnClick");
 		ViewBinding view_binding = m_ViewBindingHashMap.Get(w);
 		if (view_binding) {
 			view_binding.UpdateController(this);
+			
+			switch (w.Type()) {
+				case ButtonWidget: { // only thing that isnt called in OnChange for some reason
+					if (view_binding.InvokeCommand(this, new ButtonCommandArgs(ButtonWidget.Cast(w), button))) {	
+						return true;
+					}
+	
+					break;
+				}
+			}
 		}
-
+		
 		return super.OnClick(w, x, y, button);
 	}
 
 	override bool OnChange(Widget w, int x, int y, bool finished)
 	{
+		Trace("OnChange");	
+		
 		ViewBinding view_binding = m_ViewBindingHashMap.Get(w);
 		if (view_binding) {
 			view_binding.UpdateController(this);
+			
+			switch (w.Type()) {
+				case CheckBoxWidget: {
+					if (view_binding.InvokeCommand(this, new CheckBoxCommandArgs(CheckBoxWidget.Cast(w)))) {						
+						return true;
+					}
+	
+					break;
+				}
+			}
 		}
 
 		return super.OnChange(w, x, y, finished);
 	}
 	
+	
 	override bool OnKeyPress(Widget w, int x, int y, int key)
 	{
+		Trace("OnKeyPress");
 		ViewBinding view_binding = m_ViewBindingHashMap.Get(w);
 		if (view_binding) {
 			view_binding.UpdateController(this);
@@ -336,6 +361,7 @@ class ViewController: ScriptedViewBase
 
 		return super.OnKeyPress(w, x, y, key);
 	}
+	
 
 	// Two way binding interfaces
 	// Specifically for SpacerBaseWidget

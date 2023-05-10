@@ -203,7 +203,7 @@ class ViewBinding : ScriptedViewBase
 		Log("Updating Collection from View: %1", m_LayoutRoot.Type().ToString());
 	}
 
-	private bool InvokeCommand(ScriptedViewBase context, CommandArgs args)
+	bool InvokeCommand(ScriptedViewBase context, CommandArgs args)
 	{
 		Trace("InvokeCommand");
 
@@ -228,51 +228,6 @@ class ViewBinding : ScriptedViewBase
 		}
 
 		return handled;
-	}
-
-	// Command interfaces
-	override bool OnClick(Widget w, int x, int y, int button)
-	{
-		Trace("OnClick");
-		switch (w.Type()) {
-			case ButtonWidget: { // only thing that isnt called in OnChange for some reason
-				if (InvokeCommand(this, new ButtonCommandArgs(ButtonWidget.Cast(w), button))) {
-					// Weird situation but I need to call UpdateController from Controller without calling OnClick
-					// if (w) is just an edge case if the object is deleted inside of the Command
-					if (w) {
-						super.OnClick(w, x, y, button);
-					}
-
-					return true;
-				}
-
-				break;
-			}
-		}
-
-		return super.OnClick(w, x, y, button);
-	}
-
-	override bool OnChange(Widget w, int x, int y, bool finished)
-	{
-		Trace("OnChange");
-		switch (w.Type()) {
-			case CheckBoxWidget: {
-				if (InvokeCommand(this, new CheckBoxCommandArgs(CheckBoxWidget.Cast(w)))) {
-					// Weird situation but I need to call UpdateController from Controller without calling OnChange
-					// if (w) is just an edge case if the object is deleted inside of the Command
-					if (w) {
-						super.OnChange(w, x, y, finished);
-					}
-					
-					return true;
-				}
-
-				break;
-			}
-		}
-
-		return super.OnChange(w, x, y, finished);
 	}
 	
 	bool HasBinding()
