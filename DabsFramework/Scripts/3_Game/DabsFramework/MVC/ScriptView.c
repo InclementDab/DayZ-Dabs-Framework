@@ -27,11 +27,6 @@ class ScriptView: ScriptedViewBase
 	protected ref ViewController m_Controller;
 	protected ref ScriptViewMenu m_ScriptViewMenu;
 
-	ViewController GetController()
-	{
-		return m_Controller;
-	}
-
 	// Maybe one day we'll get constructor overloading :)
 	void ScriptView()
 	{
@@ -222,5 +217,10 @@ class ScriptView: ScriptedViewBase
 	UIScriptedMenu GetScriptedMenu()
 	{
 		return m_ScriptViewMenu;
+	}
+	
+	ViewController GetController()
+	{
+		return m_Controller;
 	}
 }

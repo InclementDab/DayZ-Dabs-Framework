@@ -52,10 +52,16 @@ class ViewController: ScriptedViewBase
 	[NonSerialized()]
 	protected ref PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
 
+	[NonSerialized()]
+	protected ref ScriptedViewBaseHandler m_ScriptedViewBaseHandler = new ScriptedViewBaseHandler(this);
+	
 	override void OnWidgetScriptInit(Widget w)
 	{
 		super.OnWidgetScriptInit(w);
 
+		// ViewController controls the hierarchy events
+		m_LayoutRoot.SetHandler(m_ScriptedViewBaseHandler);
+		
 		//m_PropertyTypeHashMap.RemoveType(Controller); crashing?
 
 		// Load all child Widgets and obtain their DataBinding class
@@ -376,5 +382,10 @@ class ViewController: ScriptedViewBase
 	ViewBinding GetViewBinding(Widget source)
 	{
 		return m_ViewBindingHashMap[source];
+	}
+	
+	ScriptedViewBaseHandler GetHandler()
+	{
+		return m_ScriptedViewBaseHandler;
 	}
 }

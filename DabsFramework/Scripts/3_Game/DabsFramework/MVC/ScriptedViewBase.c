@@ -22,10 +22,6 @@ class ScriptedViewBase: Managed
 	[NonSerialized()]
 	protected ScriptedViewBase m_ParentScriptedViewBase;
 
-
-	[NonSerialized()]
-	protected autoptr ScriptedViewBaseHandler m_ScriptedViewBaseHandler;
-
 	void SetParent(ScriptedViewBase parent)
 	{
 		m_ParentScriptedViewBase = parent;
@@ -45,8 +41,7 @@ class ScriptedViewBase: Managed
 			Error("Could not generate TypeConverter on %1", Type().ToString());
 			return;
 		}
-
-		m_ScriptedViewBaseHandler = new ScriptedViewBaseHandler(this);
+		
 		m_TypeConverter.Set(this);
 	}
 
@@ -61,9 +56,8 @@ class ScriptedViewBase: Managed
 	{
 		Trace("OnWidgetScriptInit %1", w.ToString());
 		m_LayoutRoot = w;
-		m_LayoutRoot.SetHandler(m_ScriptedViewBaseHandler);
-
 		m_WidgetController = MVC.GetWidgetController(m_LayoutRoot);
+		
 		if (!m_WidgetController) {
 			Error("Could not find WidgetController for type %1\n\nOverride MVC.RegisterWidgetControllers to register custom WidgetControllers", m_LayoutRoot.GetTypeName());
 			return;
@@ -72,16 +66,16 @@ class ScriptedViewBase: Managed
 
 	ScriptedViewBase GetScriptedRoot()
 	{
-		ScriptedViewBase viewBase = this;
-		FindScriptedRoot(viewBase);
-		return viewBase;
+		ScriptedViewBase view_base = this;
+		FindScriptedRoot(view_base);
+		return view_base;
 	}
 
-	static void FindScriptedRoot(out ScriptedViewBase viewBase)
+	static void FindScriptedRoot(out ScriptedViewBase view_base)
 	{
-		if (viewBase && viewBase.GetParent()) {
-			viewBase = viewBase.GetParent();
-			FindScriptedRoot(viewBase);
+		if (view_base && view_base.GetParent()) {
+			view_base = view_base.GetParent();
+			FindScriptedRoot(view_base);
 		}
 	}
 	
@@ -130,6 +124,7 @@ class ScriptedViewBase: Managed
 #endif
 	}
 
+	// ### Events are invoked up heirarchy, starting at ViewController, and up to ScriptView
 	bool OnClick(Widget w, int x, int y, int button)
 	{
 		Trace("OnClick: %1", w.GetName());
@@ -393,12 +388,7 @@ class ScriptedViewBase: Managed
 
 		return false;
 	}
-	
-	ScriptedViewBaseHandler GetHandler()
-	{
-		return m_ScriptedViewBaseHandler;
-	}
-	
+		
 	ScriptedViewBase GetParent()
 	{
 		if (!m_ParentScriptedViewBase && m_LayoutRoot) 
