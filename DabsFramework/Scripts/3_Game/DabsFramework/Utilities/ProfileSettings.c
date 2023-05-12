@@ -5,13 +5,7 @@ class ProfileSettings: Class
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(Type());
 		foreach (string variable_name, typename variable_type: properties) {
-			string variable_name_formatted = GetFormattedSaveName(variable_name);
-			
-			string variable_value_string;
-			if (!g_Game.GetProfileString(variable_name_formatted, variable_value_string)) {
-				continue;
-			}
-						
+			string variable_name_formatted = GetFormattedSaveName(variable_name);						
 			switch (variable_type) {
 				case bool: {
 					EnScript.SetClassVar(this, variable_name, 0, GetProfileBool(variable_name_formatted, EnScriptVar<bool>.Get(this, variable_name)));
