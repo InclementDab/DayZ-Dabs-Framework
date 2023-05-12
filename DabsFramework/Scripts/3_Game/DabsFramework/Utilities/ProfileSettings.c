@@ -1,20 +1,29 @@
-class ProfileSettings
-{		
-	bool Save()
+class ProfileSettings: Class
+{
+	protected ref PropertyTypeHashMap m_PropertyTypeHashMap = new PropertyTypeHashMap(Type());
+	
+	private void ProfileSettings()
 	{
+	}
+	
+	private void ~ProfileSettings()
+	{
+		delete m_PropertyTypeHashMap;
+	}
+	
+	bool Save()
+	{		
 		if (!GetGame()) {
 			return false;
 		}
 		
-		for (int i = 0; i < Type().GetVariableCount(); i++) {
-			string variable_name = Type().GetVariableName(i);
-			typename variable_type = Type().GetVariableType(i);
-			
-			switch (variable_type) {				
+		foreach (string variable_name, typename variable_type: m_PropertyTypeHashMap) {
+			switch (variable_type) {
 				case bool: {
 					bool _bool;
 					EnScript.GetClassVar(this, variable_name, 0, _bool);
 					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_bool));
+					GetGame().SaveProfile();
 					break;
 				}
 				
@@ -22,6 +31,7 @@ class ProfileSettings
 					int _int;
 					EnScript.GetClassVar(this, variable_name, 0, _int);
 					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_int));
+					GetGame().SaveProfile();
 					break;
 				}
 				
@@ -29,6 +39,7 @@ class ProfileSettings
 					float _float;
 					EnScript.GetClassVar(this, variable_name, 0, _float);
 					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_float));
+					GetGame().SaveProfile();
 					break;
 				}
 				
@@ -36,12 +47,24 @@ class ProfileSettings
 					string _string;
 					EnScript.GetClassVar(this, variable_name, 0, _string);
 					GetGame().SetProfileString(FormatSaveName(variable_name), _string);
+					GetGame().SaveProfile();
 					break;
+				}
+				
+				case array: {
+					//array<string> string_casted_values = {};
+					
+					//GetGame().SetProfileStringList();
+					break;
+				}
+				
+				default: {
+					Error(string.Format("ProfileSettings::Save Unexpected variable type=%1 name=%2", variable_type, variable_name));
+					return false;
 				}
 			}
 		}
 		
-		GetGame().SaveProfile();
 		return true;
 	}
 	
@@ -51,10 +74,7 @@ class ProfileSettings
 			return false;
 		}
 		
-		for (int i = 0; i < Type().GetVariableCount(); i++) {
-			string variable_name = Type().GetVariableName(i);
-			typename variable_type = Type().GetVariableType(i);
-			
+		foreach (string variable_name, typename variable_type: m_PropertyTypeHashMap) {			
 			switch (variable_type) {				
 				case bool: {
 					bool _bool;
@@ -83,32 +103,17 @@ class ProfileSettings
 					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(FormatSaveName(variable_name), _string));
 					break;
 				}
+				
+				default: {
+					Error(string.Format("ProfileSettings::Load Unexpected variable type=%1 name=%2", variable_type, variable_name));
+					break;
+				}
 			}
 		}
 		
-		return true;
+		return false;
 	}
-	
-	static void SetProfileBool(string variable, bool value)
-	{
-		GetGame().SetProfileString(variable, value.ToString());	
-	}
-	
-	static void SetProfileInt(string variable, int value)
-	{
-		GetGame().SetProfileString(variable, value.ToString());
-	}
-	
-	static void SetProfileFloat(string variable, float value)
-	{
-		GetGame().SetProfileString(variable, value.ToString());
-	}
-	
-	static void SetProfileString(string variable, string value)
-	{
-		GetGame().SetProfileString(variable, value);
-	}
-	
+		
 	static bool GetProfileBool(string variable, bool default = false)
 	{
 		string value;
