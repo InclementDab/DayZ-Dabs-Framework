@@ -29,6 +29,7 @@ class ProfileSettings: Class
 				
 				case String("array<string>").ToType(): {
 					EnScript.SetClassVar(this, variable_name, 0, GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
+					break;
 				}
 				
 				default: {
