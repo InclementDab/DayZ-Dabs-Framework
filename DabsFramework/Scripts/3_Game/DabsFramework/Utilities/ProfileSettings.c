@@ -38,7 +38,7 @@ class ProfileSettings: Class
 				}
 				
 				default: {
-					Error(string.Format("ProfileSettings::Load Unexpected variable type=%1 name=%2", variable_type, variable_name));
+					Error(string.Format("ProfileSettings::Load Unsupported variable type=%1 name=%2", variable_type, variable_name));
 					break;
 				}
 			}
@@ -87,7 +87,7 @@ class ProfileSettings: Class
 				}
 												
 				default: {
-					Error(string.Format("ProfileSettings::Save Unexpected variable type=%1 name=%2", variable_type, variable_name));					
+					Error(string.Format("ProfileSettings::Save Unsupported variable type=%1 name=%2", variable_type, variable_name));					
 					break;
 				}
 			}
