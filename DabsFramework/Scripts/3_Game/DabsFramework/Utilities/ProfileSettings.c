@@ -3,6 +3,15 @@ class ProfileSettings: Class
 	// Ctor immediately loads all settings
 	private void ProfileSettings()
 	{
+		g_Game.GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(Load);
+	}
+	
+	private void ~ProfileSettings()
+	{
+	}
+	
+	void Load()
+	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(Type());
 		foreach (string variable_name, typename variable_type: properties) {
 			string variable_name_formatted = GetFormattedSaveName(variable_name);						
@@ -27,8 +36,9 @@ class ProfileSettings: Class
 					break;
 				}
 				
+				// known bug: you cant have default values for array types yet, since ctor order is whackadoodle
 				case String("array<string>").ToType(): {
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
+					EnScript.SetClassVar(this, variable_name, 0, g_Game.GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
 					break;
 				}
 				
@@ -38,10 +48,6 @@ class ProfileSettings: Class
 				}
 			}
 		}
-	}
-	
-	private void ~ProfileSettings()
-	{
 	}
 	
 	void Save()
@@ -130,18 +136,7 @@ class ProfileSettings: Class
 		
 		return default;
 	}
-	
-	static array<string> GetProfileStringList(string variable, array<string> default)
-	{
-		array<string> value = {};
-		g_Game.GetProfileStringList(variable, value);
-		if (!value) {
-			return default;
-		}
 		
-		return value;
-	}
-	
 	string GetFormattedSaveName(string variable_name)
 	{
 		return string.Format("%1.%2", Type(), variable_name);
