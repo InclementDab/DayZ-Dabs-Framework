@@ -117,7 +117,7 @@ modded class DayZGame
 		return m_EventManager;
 	}
 	
-	ProfileSettings GetProfileSettings(typename profile_settings_type)
+	ProfileSettings GetProfileSetting(typename profile_settings_type)
 	{
 		return m_ProfileSettings[profile_settings_type];
 	}
