@@ -1,5 +1,9 @@
-static vector ObjectGetSize(notnull Object object)
+static vector ObjectGetSize(Object object)
 {
+	if (!object) {
+		return vector.Zero;
+	}
+	
 	vector size[2], result;
 	object.ClippingInfo(size);
 	for (int i = 0; i < 3; i++) {
