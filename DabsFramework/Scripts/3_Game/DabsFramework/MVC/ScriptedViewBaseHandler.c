@@ -1,3 +1,4 @@
+//@ Interface class, simply calls functions on parent type
 class ScriptedViewBaseHandler: ScriptedWidgetEventHandler
 {
 	protected ScriptedViewBase m_ScriptedViewBase;

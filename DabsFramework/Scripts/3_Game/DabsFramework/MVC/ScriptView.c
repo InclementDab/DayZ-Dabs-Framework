@@ -63,7 +63,7 @@ class ScriptView: ScriptedViewBase
 
 		m_Controller.Debug_Logging = Debug_Logging;
 		m_Controller.SetParent(this);
-		m_LayoutRoot.SetUserData(this);
+		m_LayoutRoot.SetUserData(this);	
 
 		// @ Setting up UI management, we either use a dummy referenced object or let the engine manage it depending
 		if (UseUIManager()) {
@@ -77,18 +77,20 @@ class ScriptView: ScriptedViewBase
 
 	void ~ScriptView()
 	{
-		if (GetGame() && GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM)) {
-			GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(Update);
-		}
-		
 		if (m_LayoutRoot) {
 			Log("~" + m_LayoutRoot.GetName());
 		}
 		
-		if (UseUIManager()) {
-			GetGame().GetUIManager().HideScriptedMenu(m_ScriptViewMenu);
-		} else {
-			delete m_ScriptViewMenu;
+		if (GetGame()) {
+			if (GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM)) {
+				GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(Update);
+			}
+			
+			if (UseUIManager()) {
+				GetGame().GetUIManager().HideScriptedMenu(m_ScriptViewMenu);
+			} else {
+				delete m_ScriptViewMenu;
+			}
 		}
 		
 		delete m_Controller;
@@ -113,6 +115,9 @@ class ScriptView: ScriptedViewBase
 		}
 		
 		m_LayoutRoot = CreateWidget(parent);
+		m_LayoutRoot.SetUserData(this);
+		
+		m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 	}
 
 	protected Widget CreateWidget(Widget parent)

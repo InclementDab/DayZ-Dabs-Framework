@@ -1,4 +1,3 @@
-
 // Base type for all primary view Types (ScriptView, Controller, ViewBinding)
 class ScriptedViewBase: Managed
 {
