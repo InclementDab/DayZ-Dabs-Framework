@@ -38,7 +38,7 @@ class ScriptView: ScriptedViewBase
 		
 		m_LayoutRoot = CreateWidget(null);
 
-		LoadViewProperties(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
+		MVC.LoadWidgetsAsVariables(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
 
 		m_LayoutRoot.GetScript(m_Controller);
 
@@ -57,20 +57,21 @@ class ScriptView: ScriptedViewBase
 			}
 
 			// Since its not loaded in the WB, needs to be called here
-			LoadViewProperties(m_Controller, new PropertyTypeHashMap(GetControllerType()), m_LayoutRoot);
+			MVC.LoadWidgetsAsVariables(m_Controller, new PropertyTypeHashMap(GetControllerType()), m_LayoutRoot);
+			
+			// ViewController controls the hierarchy events
 			m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		}
-
-		m_Controller.Debug_Logging = Debug_Logging;
-		m_Controller.SetParent(this);
-		m_LayoutRoot.SetUserData(this);	
-
+		
 		// @ Setting up UI management, we either use a dummy referenced object or let the engine manage it depending
 		if (UseUIManager()) {
 			m_ScriptViewMenu = ScriptViewMenu.Cast(GetGame().GetUIManager().ShowScriptedMenu(new ScriptViewMenu(this), null));
 		} else {
 			m_ScriptViewMenu = new ScriptViewMenu(this);	
 		}
+		
+		m_Controller.SetParent(this);
+		m_LayoutRoot.SetUserData(this);	
 		
 		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
 	}
@@ -152,52 +153,9 @@ class ScriptView: ScriptedViewBase
 		m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		m_Controller.SetParent(this);
 	}
+				
+	//ShowDialog(string caption, string text, int id, int butts /*DBT_*/, int def/*DBB_*/, int type /*DMT_*/, UIScriptedMenu handler)
 	
-	// Loads .layout file Widgets into Properties of context (when they are the same name)
-	/*
-	Example:
-	
-	.layout file:
-	MenuBarRoot		FrameWidget
-		MenuBarFile   	ButtonWidget
-			MenuBarFileLabel	TextWidget
-	
-	
-	.c file:
-	class TestClass
-	{
-		ButtonWidget MenuBarFile; //<-- these properties will be assigned
-		private TextWidget MenuBarFileLabel;
-	}
-	*/
-	
-	static void LoadViewProperties(Class context, PropertyTypeHashMap property_map, Widget root_widget)
-	{
-		if (!root_widget) {
-			return;
-		}
-		
-		foreach (string property_name, typename property_type: property_map) {
-			if (!property_type.IsInherited(Widget)) {
-				continue;
-			}
-	
-			Widget target = root_widget.FindAnyWidget(property_name);
-	
-			// fixes bug that breaks everything
-			if (target && root_widget.GetName() != property_name) {
-				EnScript.SetClassVar(context, property_name, 0, target);
-				continue;
-			}
-	
-			// Allows you to define the layout root aswell within it
-			if (!target && root_widget.GetName() == property_name) {
-				EnScript.SetClassVar(context, property_name, 0, root_widget);
-				continue;
-			}
-		}
-	}
-			
 	// Virtual Methods
 	protected string GetLayoutFile();
 	

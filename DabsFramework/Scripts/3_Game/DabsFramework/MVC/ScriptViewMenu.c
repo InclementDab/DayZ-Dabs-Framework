@@ -18,6 +18,10 @@ class ScriptViewMenu: UIScriptedMenu
 		
 		SetID(MENU_ANY);
 	}
+	
+	void ~ScriptViewMenu()
+	{
+	}
 		
 	// called by engine when ui manager hides / shows
 	override void OnShow()
@@ -55,6 +59,11 @@ class ScriptViewMenu: UIScriptedMenu
 	{
 		layoutRoot = m_ScriptView.GetLayoutRoot();
 		return layoutRoot;
+	}
+	
+	override Widget GetLayoutRoot()
+	{
+		return m_ScriptView.GetLayoutRoot();
 	}
 
 	override bool OnClick(Widget w, int x, int y, int button)

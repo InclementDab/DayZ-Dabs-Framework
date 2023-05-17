@@ -137,6 +137,7 @@ class ScriptedViewBase: Managed
 	bool OnModalResult(Widget w, int x, int y, int code, int result)
 	{
 		Trace("OnModalResult: %1", w.GetName());
+		Print(m_ParentScriptedViewBase);
 		if (m_ParentScriptedViewBase) {
 			return m_ParentScriptedViewBase.OnModalResult(w, x, y, code, result);
 		}
