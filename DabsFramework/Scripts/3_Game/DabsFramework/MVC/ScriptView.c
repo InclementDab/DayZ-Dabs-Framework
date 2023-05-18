@@ -13,27 +13,51 @@ class CustomDialogWindow: ScriptView
 }
 
 	CustomDialogWindow window = new CustomDialogWindow();
-	window.Show();
+	window.FunctionsThatOccurOnUi();
 	....
 	....
-	window.Close();
-
 */
+
+
+//@ This menu exists due to an engine bug with dialogs. So I need to trick the game into using this as a routed arg, essentially
+//! Don't pass this class to the UIManager yourself, it has unknowable consequences
+class ScriptViewMenu: UIScriptedMenu
+{		
+	override bool OnModalResult(Widget w, int x, int y, int code, int result)
+	{
+		foreach (ScriptView script_view: ScriptView.All) {
+			if (!script_view) {
+				continue;
+			}
+			
+			if (script_view.GetController().GetHandler().OnModalResult(w, x, y, code, result)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+}
 
 class ScriptView: ScriptedViewBase
 {
 	static ref array<ScriptView> All = {};
 	
+	static ref ScriptViewMenu MENU;
+	
 	protected ref ViewController m_Controller;
 	protected ref ScriptViewMenu m_ScriptViewMenu;
-
-	// Maybe one day we'll get constructor overloading :)
+	
 	void ScriptView()
 	{
 		if (!All) {
 			All = {};
 		}
 		
+		if (!MENU) {
+			MENU = new ScriptViewMenu();
+		}
+				
 		All.Insert(this);
 		
 		m_LayoutRoot = CreateWidget(null);
@@ -63,16 +87,11 @@ class ScriptView: ScriptedViewBase
 			m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		}
 		
-		// @ Setting up UI management, we either use a dummy referenced object or let the engine manage it depending
-		if (UseUIManager()) {
-			m_ScriptViewMenu = ScriptViewMenu.Cast(GetGame().GetUIManager().ShowScriptedMenu(new ScriptViewMenu(this), null));
-		} else {
-			m_ScriptViewMenu = new ScriptViewMenu(this);	
-		}
-		
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);	
 		
+		//m_ScriptViewMenu = new ScriptViewMenu(this);
+				
 		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
 	}
 
@@ -82,24 +101,22 @@ class ScriptView: ScriptedViewBase
 			Log("~" + m_LayoutRoot.GetName());
 		}
 		
+		//1 Remove update first
 		if (GetGame()) {
 			if (GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM)) {
 				GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(Update);
 			}
-			
-			if (UseUIManager()) {
-				GetGame().GetUIManager().HideScriptedMenu(m_ScriptViewMenu);
-			} else {
-				delete m_ScriptViewMenu;
-			}
 		}
 		
+		//2 delete class instances
 		delete m_Controller;
-		
+
+		//3 unlink our layout, deleting it
 		if (m_LayoutRoot) {
 			m_LayoutRoot.Unlink();
 		}
 		
+		//4 remove from cache
 		if (All) {
 			All.RemoveItem(this);
 		}
@@ -153,43 +170,21 @@ class ScriptView: ScriptedViewBase
 		m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		m_Controller.SetParent(this);
 	}
-				
-	//ShowDialog(string caption, string text, int id, int butts /*DBT_*/, int def/*DBB_*/, int type /*DMT_*/, UIScriptedMenu handler)
 	
+	void ShowDialog(string caption, string text, int id, int butts /*DBT_*/, int def/*DBB_*/, int type /*DMT_*/)
+	{
+		GetGame().GetUIManager().ShowDialog(caption, text, id, butts, def, type, MENU);
+	}
+		
 	// Virtual Methods
-	protected string GetLayoutFile();
-	
-	bool UseMouse()
+	protected string GetLayoutFile()
 	{
-		return false;
+		return string.Empty;
 	}
-	
-	bool UseKeyboard()
-	{
-		return false;
-	}
-	
-	bool UseGamepad()
-	{
-		return false;
-	}
-	
-	bool UseUIManager()
-	{
-		return false;
-	}
-	
-	void OnScriptViewMenuEnter(ScriptViewMenu source);
-	void OnScriptViewMenuExit(ScriptViewMenu source);
-	
+			
 	protected typename GetControllerType()
 	{
 		return ViewController;
-	}
-
-	UIScriptedMenu GetScriptedMenu()
-	{
-		return m_ScriptViewMenu;
 	}
 	
 	ViewController GetController()
