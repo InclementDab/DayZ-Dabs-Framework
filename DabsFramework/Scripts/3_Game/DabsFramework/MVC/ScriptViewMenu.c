@@ -10,30 +10,9 @@ class ScriptViewMenu: ScriptView
 	{
 		// We are the parent menu
 		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, null);
-	}
-	
-	void ~ScriptViewMenu()
-	{
-		g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
-	}
-	
-	void ShowDialog(string caption, string text, int id, int buttons /*DBT_*/, int default_button /*DBB_*/, int type /*DMT_*/)
-	{
-		g_Game.GetUIManager().ShowDialog(caption, text, id, buttons, default_button, type, m_UIScriptViewMenu);
-	}
-	
-	//@ important functions called by the UI manager when entering and leaving child menus
-	//		as much as i want to put this in the constructor, you cant because menus can be hidden and shown as they juggle
-	//		back and fourth. and we dont want to delete a menu when showing a child menu
-	void OnMenuEnter()
-	{
-		g_Game.GetMission().AddActiveInputExcludes(GetInputExcludes());
 		
-		if (UseMouse()) {
-			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
-			g_Game.GetUIManager().ShowUICursor(true);
-		}
-		
+		// Handle input excludes
+		g_Game.GetMission().AddActiveInputExcludes(GetInputExcludes());		
 		array<int> input_restrictions = {};
 		foreach (int input_restriction: input_restrictions) {
 			UAInput input = GetUApi().GetInputByID(input_restriction);
@@ -46,14 +25,9 @@ class ScriptViewMenu: ScriptView
 		}
 	}
 	
-	void OnMenuExit()
-	{		
-		// Mouse control
-		if (UseMouse()) {
-			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
-		}
-
-		g_Game.GetUIManager().ShowUICursor(false); //GetParentMenu() && GetParentMenu().UseMouse()
+	void ~ScriptViewMenu()
+	{
+		g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
 		
 		// input excludes
 		if (g_Game.GetMission()) {
@@ -70,6 +44,32 @@ class ScriptViewMenu: ScriptView
 			
 			input.ForceEnable(false);
 		}
+	}
+	
+	void ShowDialog(string caption, string text, int id, int buttons /*DBT_*/, int default_button /*DBB_*/, int type /*DMT_*/)
+	{
+		g_Game.GetUIManager().ShowDialog(caption, text, id, buttons, default_button, type, m_UIScriptViewMenu);
+	}
+	
+	//@ important functions called by the UI manager when entering and leaving child menus
+	//		as much as i want to put this in the constructor, you cant because menus can be hidden and shown as they juggle
+	//		back and fourth. and we dont want to delete a menu when showing a child menu
+	void OnMenuEnter()
+	{
+		if (UseMouse()) {
+			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
+			g_Game.GetUIManager().ShowUICursor(true);
+		}
+	}
+	
+	void OnMenuExit()
+	{		
+		// Mouse control
+		if (UseMouse()) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+		}
+
+		g_Game.GetUIManager().ShowUICursor(m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
 	}
 	
 	void EnterChildMenu(int id)
