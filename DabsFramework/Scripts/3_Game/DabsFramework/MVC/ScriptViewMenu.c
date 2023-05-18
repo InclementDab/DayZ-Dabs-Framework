@@ -1,49 +1,37 @@
 //@ It is your responsibility to manage the memory for this menu object
 class ScriptViewMenu: ScriptView
 {		
-	protected ref UIScriptViewMenu m_UIScriptViewMenu;
+	protected ref UIScriptViewMenu m_UIScriptViewMenu = new UIScriptViewMenu(this);
 	
 	//@ This menu will control its subsequent children UI menus, but NOT children ScriptViewMenu!!!
 	protected ref UIScriptedMenu m_ChildMenu;
 	
-	void ScriptViewMenu()
+	private void ScriptViewMenu()
 	{
-		// Hiding automatically here since we need to let the UI "Manager" do its job
-		m_LayoutRoot.Show(false);
-		
-		m_UIScriptViewMenu = new UIScriptViewMenu(this);	
-		
-		GetGame().GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, null);
+		// We are the parent menu
+		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, null);
 	}
 	
 	void ~ScriptViewMenu()
 	{
-		if (m_ChildMenu) {
-			m_ChildMenu.Close();
-			delete m_ChildMenu;
-		}
-		
-		// Memory manage should lazy handle this but i'm force deleting so destructors are called in a predictable manner
-		m_UIScriptViewMenu.Close();
-		delete m_UIScriptViewMenu;
-		
-		//GetGame().GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+		g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
 	}
 	
 	void ShowDialog(string caption, string text, int id, int buttons /*DBT_*/, int default_button /*DBB_*/, int type /*DMT_*/)
 	{
-		GetGame().GetUIManager().ShowDialog(caption, text, id, buttons, default_button, type, m_UIScriptViewMenu);
+		g_Game.GetUIManager().ShowDialog(caption, text, id, buttons, default_button, type, m_UIScriptViewMenu);
 	}
 	
 	//@ important functions called by the UI manager when entering and leaving child menus
-	void OnShow()
+	//		as much as i want to put this in the constructor, you cant because menus can be hidden and shown as they juggle
+	//		back and fourth. and we dont want to delete a menu when showing a child menu
+	void OnMenuEnter()
 	{
-		Print("OnShow");
-		GetGame().GetMission().AddActiveInputExcludes(GetInputExcludes());
+		g_Game.GetMission().AddActiveInputExcludes(GetInputExcludes());
 		
 		if (UseMouse()) {
-			GetGame().GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
-			GetGame().GetUIManager().ShowUICursor(true);
+			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
+			g_Game.GetUIManager().ShowUICursor(true);
 		}
 		
 		array<int> input_restrictions = {};
@@ -58,19 +46,19 @@ class ScriptViewMenu: ScriptView
 		}
 	}
 	
-	void OnHide()
-	{
-		Print("OnHide");
-		
+	void OnMenuExit()
+	{		
 		// Mouse control
 		if (UseMouse()) {
-			GetGame().GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
 		}
 
-		GetGame().GetUIManager().ShowUICursor(false); //GetParentMenu() && GetParentMenu().UseMouse()
+		g_Game.GetUIManager().ShowUICursor(false); //GetParentMenu() && GetParentMenu().UseMouse()
 		
 		// input excludes
-		GetGame().GetMission().RemoveActiveInputExcludes(GetInputExcludes());
+		if (g_Game.GetMission()) {
+			g_Game.GetMission().RemoveActiveInputExcludes(GetInputExcludes());
+		}
 		
 		// input restrictions
 		array<int> input_restrictions = {};
@@ -83,24 +71,21 @@ class ScriptViewMenu: ScriptView
 			input.ForceEnable(false);
 		}
 	}
-
+	
 	void EnterChildMenu(int id)
 	{
-		m_ChildMenu = GetGame().GetMission().CreateScriptedMenu(id);
-		m_UIScriptViewMenu.SetSubMenu(m_ChildMenu);
+		EnterChildMenu(GetGame().GetMission().CreateScriptedMenu(id));
+	}
+		
+	void EnterChildMenu(ScriptViewMenu menu)
+	{
+		EnterChildMenu(menu.GetUIScriptViewMenu());
 	}
 	
 	void EnterChildMenu(UIScriptedMenu scripted_menu)
 	{
 		m_ChildMenu = scripted_menu;
-		//m_UIScriptViewMenu.SetSubMenu(m_ChildMenu);
-		GetGame().GetUIManager().ShowScriptedMenu(scripted_menu, m_UIScriptViewMenu);
-	}
-		
-	void EnterChildMenu(ScriptViewMenu menu)
-	{
-		m_ChildMenu = menu.GetUIScriptViewMenu();
-		m_UIScriptViewMenu.SetSubMenu(m_ChildMenu);
+		g_Game.GetUIManager().ShowScriptedMenu(m_ChildMenu, m_UIScriptViewMenu);
 	}
 	
 	bool UseMouse()
@@ -129,7 +114,7 @@ class ScriptViewMenu: ScriptView
 	{
 		delete this;
 	}
-	
+		
 	UIScriptViewMenu GetUIScriptViewMenu()
 	{
 		return m_UIScriptViewMenu;

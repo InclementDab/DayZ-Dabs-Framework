@@ -32,12 +32,12 @@ class UIScriptViewMenu: UIScriptedMenu
 	
 	override void OnShow()
 	{
-		m_ScriptViewMenu.OnShow();
+		m_ScriptViewMenu.OnMenuEnter();
 	}
 
 	override void OnHide()
 	{
-		m_ScriptViewMenu.OnHide();
+		m_ScriptViewMenu.OnMenuExit();
 	}
 		
 	override bool OnClick(Widget w, int x, int y, int button)
