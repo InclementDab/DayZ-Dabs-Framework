@@ -18,44 +18,16 @@ class CustomDialogWindow: ScriptView
 	....
 */
 
-
-//@ This menu exists due to an engine bug with dialogs. So I need to trick the game into using this as a routed arg, essentially
-//! Don't pass this class to the UIManager yourself, it has unknowable consequences
-class ScriptViewMenu: UIScriptedMenu
-{		
-	override bool OnModalResult(Widget w, int x, int y, int code, int result)
-	{
-		foreach (ScriptView script_view: ScriptView.All) {
-			if (!script_view) {
-				continue;
-			}
-			
-			if (script_view.GetController().GetHandler().OnModalResult(w, x, y, code, result)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-}
-
 class ScriptView: ScriptedViewBase
 {
 	static ref array<ScriptView> All = {};
-	
-	static ref ScriptViewMenu MENU;
-	
+		
 	protected ref ViewController m_Controller;
-	protected ref ScriptViewMenu m_ScriptViewMenu;
 	
 	void ScriptView()
 	{
 		if (!All) {
 			All = {};
-		}
-		
-		if (!MENU) {
-			MENU = new ScriptViewMenu();
 		}
 				
 		All.Insert(this);
@@ -90,8 +62,6 @@ class ScriptView: ScriptedViewBase
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);	
 		
-		//m_ScriptViewMenu = new ScriptViewMenu(this);
-				
 		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
 	}
 
@@ -170,12 +140,7 @@ class ScriptView: ScriptedViewBase
 		m_Controller.OnWidgetScriptInit(m_LayoutRoot);
 		m_Controller.SetParent(this);
 	}
-	
-	void ShowDialog(string caption, string text, int id, int butts /*DBT_*/, int def/*DBB_*/, int type /*DMT_*/)
-	{
-		GetGame().GetUIManager().ShowDialog(caption, text, id, butts, def, type, MENU);
-	}
-		
+			
 	// Virtual Methods
 	protected string GetLayoutFile()
 	{
