@@ -1,4 +1,4 @@
-//@ Dont create this class unless you know what you are doing
+//@ Wrapper class for ScriptViewMenu. Don't create this yourself
 class UIScriptViewMenu: UIScriptedMenu
 {
 	protected ScriptViewMenu m_ScriptViewMenu;

@@ -6,7 +6,7 @@ class ScriptViewMenu: ScriptView
 	//@ This menu will control its subsequent children UI menus, but NOT children ScriptViewMenu!!!
 	protected ref UIScriptedMenu m_ChildMenu;
 	
-	private void ScriptViewMenu()
+	void ScriptViewMenu()
 	{
 		// We are the parent menu
 		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, null);
