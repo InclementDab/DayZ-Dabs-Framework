@@ -30,13 +30,13 @@ modded class DayZGame
 		super.RegisterProfilesOptions();
 		
 		// Load all ProfileSettings classes
-		foreach (typename profile_settings_type: RegisterProfileSetting.Instances) {
-			ProfileSettings profile_settings = ProfileSettings.Cast(profile_settings_type.Spawn());
+		foreach (Param2<typename, string> profile_settings_type: RegisterProfileSetting.Instances) {
+			ProfileSettings profile_settings = ProfileSettings.Cast(profile_settings_type.param1.Spawn());
 			if (!profile_settings) {
 				continue;
 			}
 			
-			m_ProfileSettings[profile_settings_type] = profile_settings;
+			m_ProfileSettings[profile_settings_type.param1] = profile_settings;
 		}
 	}
 	
