@@ -9,7 +9,7 @@ class ScriptViewMenu: ScriptView
 	void ScriptViewMenu()
 	{
 		// We are the parent menu
-		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, null);
+		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, g_Game.GetUIManager().GetMenu());
 		
 		// Handle input excludes
 		g_Game.GetMission().AddActiveInputExcludes(GetInputExcludes());		
