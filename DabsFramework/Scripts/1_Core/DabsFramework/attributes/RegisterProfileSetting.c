@@ -7,7 +7,7 @@ class RegisterProfileSetting: Managed
 		if (!Instances) {
 			Instances = {};
 		}
-				
+						
 		Instances.Insert(type);
 	}
 }

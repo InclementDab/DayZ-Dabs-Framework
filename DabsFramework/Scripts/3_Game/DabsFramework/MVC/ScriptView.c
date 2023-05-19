@@ -96,18 +96,6 @@ class ScriptView: ScriptedViewBase
 	{
 	}
 
-	void SetParent(Widget parent)
-	{
-		if (m_LayoutRoot) {
-			m_LayoutRoot.Unlink();
-		}
-		
-		m_LayoutRoot = CreateWidget(parent);
-		m_LayoutRoot.SetUserData(this);
-		
-		m_Controller.OnWidgetScriptInit(m_LayoutRoot);
-	}
-
 	protected Widget CreateWidget(Widget parent)
 	{
 		Widget result;
