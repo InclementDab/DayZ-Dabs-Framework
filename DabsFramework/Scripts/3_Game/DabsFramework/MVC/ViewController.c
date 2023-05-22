@@ -54,15 +54,7 @@ class ViewController: ScriptedViewBase
 
 	[NonSerialized()]
 	protected ref ScriptedViewBaseHandler m_ScriptedViewBaseHandler = new ScriptedViewBaseHandler(this);
-	
-	void ~ViewController()
-	{
-		delete m_ViewBindingHashMap;
-		delete m_DataBindingHashMap;
-		delete m_PropertyTypeHashMap;
-		delete m_ScriptedViewBaseHandler;
-	}
-	
+		
 	override void OnWidgetScriptInit(Widget w)
 	{
 		super.OnWidgetScriptInit(w);
