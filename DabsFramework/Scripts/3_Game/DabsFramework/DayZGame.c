@@ -39,20 +39,20 @@ modded class DayZGame
 			m_ProfileSettings[profile_settings_type.param1] = profile_settings;
 		}
 	}
-	
+
+#ifdef DIAG_DEVELOEPR	
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{
 		super.OnRPC(sender, target, rpc_type, ctx);
 		
-#ifdef DIAG
 		switch (rpc_type) {
 			case Debug.RPC_UPDATE_DEBUG_SHAPE: {
 				Debug.OnDebugShapeRPC(ctx);		
 				break;
 			}
 		}
-#endif
 	}
+#endif
 	
 	// this is the init of event manager for clients
 	override void OnEvent(EventType eventTypeId, Param params)

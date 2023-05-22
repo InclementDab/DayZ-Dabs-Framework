@@ -1,13 +1,13 @@
-#ifdef DIAG
+#ifdef DIAG_DEVELOPER
 modded class Debug
 {	
 	static const int RPC_UPDATE_DEBUG_SHAPE = 26893386;
 	
 	static void OnDebugShapeRPC(ParamsReadContext ctx)
 	{
-		if (!GetGame().IsClient() || !GetGame().IsMultiplayer()) {
-			return;
-		}
+#ifdef SERVER
+		return;
+#endif
 		
 		int shape_type;
 		if (!ctx.Read(shape_type)) {
@@ -79,16 +79,16 @@ modded class Debug
 	
 	static override Shape DrawBoxEx(vector pos1, vector pos2, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOZWRITE)
 	{
-		if (GetGame().IsDedicatedServer()) {
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(ShapeType.BBOX);
-			rpc.Write(pos1);
-			rpc.Write(pos2);
-			rpc.Write(color);
-			rpc.Write(flags);
-			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
-			return null;
-		}
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(ShapeType.BBOX);
+		rpc.Write(pos1);
+		rpc.Write(pos2);
+		rpc.Write(color);
+		rpc.Write(flags);
+		rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
+		return null;
+#endif
 		
 		Shape shape = Shape.Create(ShapeType.BBOX, color, flags, pos1, pos2);
 		if (( flags & ShapeFlags.ONCE ) == 0)
@@ -111,16 +111,16 @@ modded class Debug
 		max[1] = max[1] + size_h;
 		max[2] = max[2] + size_h;
 		
-		if (GetGame().IsDedicatedServer()) {
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(ShapeType.DIAMOND);
-			rpc.Write(min);
-			rpc.Write(max);
-			rpc.Write(color);
-			rpc.Write(ShapeFlags.TRANSP|ShapeFlags.NOZWRITE);
-			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
-			return null;
-		}
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(ShapeType.DIAMOND);
+		rpc.Write(min);
+		rpc.Write(max);
+		rpc.Write(color);
+		rpc.Write(ShapeFlags.TRANSP|ShapeFlags.NOZWRITE);
+		rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
+		return null;
+#endif
 		
 		Shape shape = Shape.Create(ShapeType.DIAMOND, color, ShapeFlags.TRANSP|ShapeFlags.NOZWRITE, min, max);
 		m_DebugShapes.Insert(shape);
@@ -148,17 +148,17 @@ modded class Debug
 	
 	static override Shape DrawCylinder(vector pos, float radius, float height = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE )
 	{
-		if (GetGame().IsDedicatedServer()) {
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(ShapeType.CYLINDER);
-			rpc.Write(pos);
-			rpc.Write(radius);
-			rpc.Write(height);
-			rpc.Write(color);
-			rpc.Write(flags);
-			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
-			return null;
-		}
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(ShapeType.CYLINDER);
+		rpc.Write(pos);
+		rpc.Write(radius);
+		rpc.Write(height);
+		rpc.Write(color);
+		rpc.Write(flags);
+		rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
+		return null;
+#endif
 		
 		Shape shape = Shape.CreateCylinder(color, flags, pos, radius, height);
 		if (( flags & ShapeFlags.ONCE ) == 0)
@@ -187,16 +187,16 @@ modded class Debug
 	
 	static override Shape DrawLine(vector from, vector to, int color = 0xFFFFFFFF, int flags = 0)
 	{
-		if (GetGame().IsDedicatedServer()) {
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(ShapeType.LINE);
-			rpc.Write(from);
-			rpc.Write(to);
-			rpc.Write(color);
-			rpc.Write(flags);
-			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
-			return null;
-		}
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(ShapeType.LINE);
+		rpc.Write(from);
+		rpc.Write(to);
+		rpc.Write(color);
+		rpc.Write(flags);
+		rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
+		return null;
+#endif
 		
 		vector pts[2]
 		pts[0] = from;
@@ -211,41 +211,42 @@ modded class Debug
 
 	static override Shape DrawLines(vector[] positions, int count, int color = 0xFFFFFFFF, int flags = 0)
 	{
-		if (GetGame().IsDedicatedServer()) {
-			for (int i = 0; i < count; i++) {
-				ScriptRPC rpc = new ScriptRPC();
-				rpc.Write(ShapeType.LINE);
-				rpc.Write(positions[i]);
-				rpc.Write(positions[i + 1]);
-				rpc.Write(color);
-				rpc.Write(flags);
-				rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
-				i++; // extra i++ bc i cant do i += 2
-			}
-			
-			return null;
+#ifdef SERVER
+		for (int i = 0; i < count; i++) {
+			ScriptRPC rpc = new ScriptRPC();
+			rpc.Write(ShapeType.LINE);
+			rpc.Write(positions[i]);
+			rpc.Write(positions[i + 1]);
+			rpc.Write(color);
+			rpc.Write(flags);
+			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);
+			i++; // extra i++ bc i cant do i += 2
 		}
+		
+		return null;
+#endif
 		
 		
 		Shape shape = Shape.CreateLines(color, flags, positions, count);
 		if (( flags & ShapeFlags.ONCE ) == 0)
 			m_DebugShapes.Insert(shape);
+		
 		return shape;
 	}
 	
 	static override Shape DrawArrow(vector from, vector to, float size = 0.5, int color = 0xFFFFFFFF, int flags = 0)
 	{
-		if (GetGame().IsDedicatedServer()) {
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(7); // imaginary shapetype
-			rpc.Write(from);
-			rpc.Write(to);
-			rpc.Write(size);
-			rpc.Write(color);
-			rpc.Write(flags);
-			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);		
-			return null;
-		}
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(7); // imaginary shapetype
+		rpc.Write(from);
+		rpc.Write(to);
+		rpc.Write(size);
+		rpc.Write(color);
+		rpc.Write(flags);
+		rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);		
+		return null;
+#endif
 		
 		Shape shape = Shape.CreateArrow(from, to, size, color, flags);
 		m_DebugShapes.Insert(shape);
@@ -254,12 +255,12 @@ modded class Debug
 	
 	static override void DestroyAllShapes()
 	{
-		if (GetGame().IsDedicatedServer()) {
-			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(8); // 8 means destroy
-			rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);		
-			return;
-		}
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(8); // 8 means destroy
+		rpc.Send(null, RPC_UPDATE_DEBUG_SHAPE, false);		
+		return;
+#endif
 		
 		for (int i = 0; i < m_DebugShapes.Count(); ++i) {
 			if (m_DebugShapes[i]) {
