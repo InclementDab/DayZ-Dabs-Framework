@@ -1,4 +1,4 @@
-class RegisterProfileSetting: Managed
+class RegisterProfileSetting
 {
 	static ref array<ref Param2<typename, string>> Instances = {};
 	

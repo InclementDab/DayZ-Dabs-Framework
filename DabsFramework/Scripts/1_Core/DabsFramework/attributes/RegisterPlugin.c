@@ -5,7 +5,7 @@ enum PluginType
 	DEBUG
 };
 
-class RegisterPluginAttribute: Managed
+class RegisterPluginAttribute
 {
 	static ref array<ref Param4<typename, bool, bool, PluginType>> Instances = {};
 	
