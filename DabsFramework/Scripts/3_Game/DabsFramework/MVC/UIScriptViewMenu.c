@@ -15,6 +15,12 @@ class UIScriptViewMenu: UIScriptedMenu
 		SetID(m_ScriptViewMenu.ClassName().Hash());
 	}
 	
+	void ~UIScriptViewMenu()
+	{	
+		//@ If the engine cleans up the menu somehow, we need to force delete the instance of the menu
+		delete m_ScriptViewMenu;
+	}
+	
 	//@ ScriptViewMenu handles control locking
 	override void LockControls()
 	{
@@ -23,21 +29,25 @@ class UIScriptViewMenu: UIScriptedMenu
 	override void UnlockControls()
 	{
 	}
-	
+		
 	override Widget Init()
 	{
 		layoutRoot = m_ScriptViewMenu.GetLayoutRoot();
-		return layoutRoot;
+		return layoutRoot; 
 	}
 	
 	override void OnShow()
 	{
-		m_ScriptViewMenu.OnMenuEnter();
+		if (m_ScriptViewMenu) {
+			m_ScriptViewMenu.OnMenuEnter();
+		}
 	}
 
 	override void OnHide()
 	{
-		m_ScriptViewMenu.OnMenuExit();
+		if (m_ScriptViewMenu) {
+			m_ScriptViewMenu.OnMenuExit();
+		}
 	}
 		
 	override bool OnClick(Widget w, int x, int y, int button)

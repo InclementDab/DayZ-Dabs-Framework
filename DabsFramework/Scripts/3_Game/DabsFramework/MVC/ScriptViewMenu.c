@@ -27,7 +27,10 @@ class ScriptViewMenu: ScriptView
 	
 	void ~ScriptViewMenu()
 	{
-		g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+		// This lazy calls the destructor
+		if (m_UIScriptViewMenu) {
+			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+		}
 		
 		// input excludes
 		if (g_Game.GetMission()) {
