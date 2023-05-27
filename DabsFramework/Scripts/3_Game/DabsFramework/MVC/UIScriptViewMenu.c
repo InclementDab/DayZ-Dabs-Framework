@@ -18,7 +18,7 @@ class UIScriptViewMenu: UIScriptedMenu
 	void ~UIScriptViewMenu()
 	{	
 		//@ If the engine cleans up the menu somehow, we need to force delete the instance of the menu
-		delete m_ScriptViewMenu;
+		//delete m_ScriptViewMenu;
 	}
 	
 	//@ ScriptViewMenu handles control locking
