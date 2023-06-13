@@ -1,7 +1,7 @@
 class Encoding 
 {
 	static const ref TStringArray HEX_BYTES = {
-		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"
+		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"
 	};
 	
     static array<int> GetBytes(string str)
@@ -23,24 +23,34 @@ class Encoding
 	{
 		return Encoding.ToHex(ascii.Hash());
 	}*/
-	
-    static string ToHex(int ascii)
+
+	//! Converts integer to Hexadecimal string
+	// \param value: integer input
+	// \param fixed_length: fixed length to pad string to, -1 will do nothing
+    static string ToHex(int value, int fixed_length = -1)
     {
 		string result;
 		
 		// There might be some Math.Log2 optimization to make the code shorter
 		// but im almost certain that this is the fastest way to do this		
-		while (true) {
-			result = HEX_BYTES[ascii % 16] + result;
-			ascii >>= 4;
-			if (ascii <= 0) {
-				return result;
-			}
+		while (value) {
+			result = HEX_BYTES[value % 16] + result;
+			value >>= 4;
+		}
+		
+		// pad the final result
+		int pad_amount = fixed_length - result.Length();
+		if (fixed_length != -1) {
+			if (pad_amount >= 0) {
+				for (int i = 0; i < pad_amount; i++) result = "0" + result;
+			} else {
+				result = result.Substring(-pad_amount, fixed_length);
+			}			
 		}
 		
         return result;
     }
-	
+
 	static int FromHex(string hex)
 	{
 		int result;
