@@ -92,7 +92,7 @@ class ScriptView: ScriptedViewBase
 		}
 	}
 	
-	void Update(float dt)
+	protected void Update(float dt)
 	{
 	}
 
