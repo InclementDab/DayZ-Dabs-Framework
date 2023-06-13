@@ -91,9 +91,10 @@ class ScriptViewMenu: ScriptView
 		g_Game.GetUIManager().ShowScriptedMenu(m_ChildMenu, m_UIScriptViewMenu);
 	}
 	
+	//! Is mouse cursor shown on menu enter
 	bool UseMouse()
 	{
-		return false;
+		return true;
 	}
 	
 	//! see <exclude> in bin/specific.xml
