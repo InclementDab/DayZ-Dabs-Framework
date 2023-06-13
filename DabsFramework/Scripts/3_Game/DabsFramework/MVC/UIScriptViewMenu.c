@@ -39,14 +39,14 @@ class UIScriptViewMenu: UIScriptedMenu
 	override void OnShow()
 	{
 		if (m_ScriptViewMenu) {
-			m_ScriptViewMenu.OnMenuEnter();
+			m_ScriptViewMenu.OnMenuEnter(GetParentMenu());
 		}
 	}
 
 	override void OnHide()
 	{
 		if (m_ScriptViewMenu) {
-			m_ScriptViewMenu.OnMenuExit();
+			m_ScriptViewMenu.OnMenuExit(GetParentMenu());
 		}
 	}
 		

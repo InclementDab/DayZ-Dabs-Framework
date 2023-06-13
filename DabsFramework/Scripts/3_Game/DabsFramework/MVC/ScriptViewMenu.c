@@ -57,15 +57,22 @@ class ScriptViewMenu: ScriptView
 	//@ important functions called by the UI manager when entering and leaving child menus
 	//		as much as i want to put this in the constructor, you cant because menus can be hidden and shown as they juggle
 	//		back and fourth. and we dont want to delete a menu when showing a child menu
-	void OnMenuEnter()
+	void OnMenuEnter(UIMenuPanel parent_panel)
 	{
+		// Handles hiding / showing cursor
 		if (UseMouse()) {
 			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
 			g_Game.GetUIManager().ShowUICursor(true);
 		}
+		
+		// Handles re-showing parent menu since UIManager automatically hides it
+		UIScriptedMenu parent_menu = UIScriptedMenu.Cast(parent_panel);
+		if (!HidesParentMenu() && parent_menu && parent_menu.GetLayoutRoot()) {
+			parent_menu.GetLayoutRoot().Show(true);
+		}
 	}
 	
-	void OnMenuExit()
+	void OnMenuExit(UIMenuPanel parent_panel)
 	{		
 		// Mouse control
 		if (UseMouse()) {
@@ -107,6 +114,11 @@ class ScriptViewMenu: ScriptView
 	array<int> GetInputRestrictions()
 	{
 		return {};
+	}
+	
+	bool HidesParentMenu()
+	{
+		return true;
 	}
 	
 	void Close()
