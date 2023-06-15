@@ -51,6 +51,21 @@ class TimeSpan: int
 		return message;
 	}
 	
+	static TimeSpan FromMinutes(float minutes)
+	{
+		return minutes * (float)MINUTE;
+	}
+	
+	static TimeSpan FromHours(float hours)
+	{
+		return hours * (float)HOUR;
+	}
+	
+	static TimeSpan FromDays(float days)
+	{
+		return days * (float)DAY;
+	}
+	
 	private void TimeSpan();
 	private void ~TimeSpan();
 }
