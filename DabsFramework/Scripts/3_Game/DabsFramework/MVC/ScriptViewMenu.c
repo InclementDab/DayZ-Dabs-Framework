@@ -79,9 +79,7 @@ class ScriptViewMenu: ScriptView
 			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
 		}
 
-		if (parent_panel) {
-			g_Game.GetUIManager().ShowUICursor(parent_panel.UseMouse());
-		}
+		g_Game.GetUIManager().ShowUICursor(parent_panel && parent_panel.UseMouse());
 	}
 	
 	void EnterChildMenu(int id)
