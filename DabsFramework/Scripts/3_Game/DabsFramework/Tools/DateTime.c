@@ -3,6 +3,21 @@ class DateTime: int
 {		
 	static const DateTime EPOCH = 0;
 	
+	static const string ISO_FORMAT;
+	
+	private void DateTime();
+	private void ~DateTime();
+	
+	void GetDate(out int year, out int month, out int day, out int hour, out int minute, out int second)
+	{
+		
+	}
+	
+	string Format(string format)
+	{
+		
+	}
+	
 	static DateTime Now(bool utc = true)
 	{
 		int year, month, day, hour, minute, second;
@@ -95,7 +110,4 @@ class DateTime: int
 	{
 		return t1 - t2;
 	}
-	
-	private void DateTime();
-	private void ~DateTime();
 }
