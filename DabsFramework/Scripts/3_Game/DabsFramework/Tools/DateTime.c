@@ -3,17 +3,48 @@ class DateTime: int
 {		
 	static const DateTime EPOCH = 0;
 	
-	static const string ISO_FORMAT;
+	// https://en.wikipedia.org/wiki/ISO_8601
+	static const string FORMAT_ISO_DATE = "YYYY-MM-DD";
+	static const string FORMAT_ISO_TIME = "HH:MM:SS";
+	static const string FORMAT_ISO_DATETIME = "YYYY-MM-DDTHH:MM:SS";
 	
 	private void DateTime();
 	private void ~DateTime();
 	
 	void GetDate(out int year, out int month, out int day, out int hour, out int minute, out int second)
-	{
+	{		
+		const int MINUTES_PER_HOUR = 60;
+		const int HOURS_PER_DAY = 24;
 		
+		int total_minutes = value / TimeSpan.MINUTE;
+		second = value % TimeSpan.MINUTE;
+		
+		int total_hours = total_minutes / MINUTES_PER_HOUR;
+		minute = total_minutes % MINUTES_PER_HOUR;
+		
+		day = total_hours / HOURS_PER_DAY;
+		hour = total_hours % HOURS_PER_DAY;
+		
+		year = 1970;
+		month = 1;
+		
+		bool enfusion_needs_do_while = true;
+		while (enfusion_needs_do_while) {	
+			day -= DateTime.DaysInMonth(month, DateTime.IsLeapYear(year));
+			month++;
+			if (month > 12) {
+				month = 1;
+				year++;
+			}
+			
+			enfusion_needs_do_while = DateTime.DaysInMonth(month, DateTime.IsLeapYear(year)) <= day;
+		}
+		
+		// need to advance this by 1, since days start at 1 for whatever reason
+		day++;
 	}
 	
-	string Format(string format)
+	string ToString(string format)
 	{
 		
 	}
@@ -80,6 +111,7 @@ class DateTime: int
 				return Ternary<int>.If(leap_year, 29, 28);
 		}
 		
+		Error("Invalid Month " + month);
 		return 0;
 	}
 	
