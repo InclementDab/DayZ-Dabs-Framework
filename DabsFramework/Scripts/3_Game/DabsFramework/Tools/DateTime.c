@@ -8,6 +8,13 @@ class DateTime: int
 	static const string FORMAT_ISO_TIME = "HH:MM:SS";
 	static const string FORMAT_ISO_DATETIME = "YYYY-MM-DDTHH:MM:SS";
 	
+	static const string MONTH_NAME_LONG[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+	static const string MONTH_NAME_SHORT[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+	static const string DAY_NAME_LONG[7] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+	static const string DAY_NAME_SHORT[7] = { "Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun" };
+	static const string MERIDIEM_LONG[2] = { "AM", "PM" };
+	static const string MERIDIEM_SHORT[2] = { "A", "P" };
+	
 	private void DateTime();
 	private void ~DateTime();
 	
@@ -44,9 +51,69 @@ class DateTime: int
 		day++;
 	}
 	
+	/*
+		Supported formatting:
+			
+		d: Represents the day of the month as a number from 1 through 31.
+		dd: Represents the day of the month as a number from 01 through 31.
+		ddd: Represents the abbreviated name of the day (Mon, Tues, Wed, etc).
+		dddd: Represents the full name of the day (Monday, Tuesday, etc).
+		h: 12-hour clock hour (e.g. 4).
+		hh: 12-hour clock, with a leading 0 (e.g. 06)
+		H: 24-hour clock hour (e.g. 15)
+		HH: 24-hour clock hour, with a leading 0 (e.g. 22)
+		m: Minutes
+		mm: Minutes with a leading zero
+		M: Month number(eg.3)
+		MM: Month number with leading zero(eg.04)
+		MMM: Abbreviated Month Name (e.g. Dec)
+		MMMM: Full month name (e.g. December)
+		s: Seconds
+		ss: Seconds with leading zero
+		t: Abbreviated AM / PM (e.g. A or P)
+		tt: AM / PM (e.g. AM or PM
+		y: Year, no leading zero (e.g. 2015 would be 15)
+		yy: Year, leading zero (e.g. 2015 would be 015)
+		yyy: Year, (e.g. 2015)
+		yyyy: Year, (e.g. 2015)
+	*/
+
 	string ToString(string format)
 	{
+		int year, month, day, hour, minute, second;
+		GetDate(year, month, day, hour, minute, second);
 		
+		format.Replace("dddd", DAY_NAME_LONG[GetDayOfWeek(year, month, day) - 1]);
+		format.Replace("ddd", DAY_NAME_SHORT[GetDayOfWeek(year, month, day) - 1]);
+		format.Replace("dd", day.ToStringLen(2));
+		format.Replace("d", day.ToString());
+		
+		int twelve_hour_format = Ternary<int>.If(hour > 12, hour % 12, hour);
+		format.Replace("hh", twelve_hour_format.ToStringLen(2));
+		format.Replace("h", twelve_hour_format.ToString());
+		format.Replace("HH", hour.ToStringLen(2));
+		format.Replace("H", hour.ToString());
+		
+		format.Replace("mm", minute.ToStringLen(2));
+		format.Replace("m", minute.ToString());
+		
+		format.Replace("MMMM", MONTH_NAME_LONG[month - 1]);
+		format.Replace("MMM", MONTH_NAME_SHORT[month - 1]);
+		format.Replace("MM", month.ToStringLen(2));
+		format.Replace("M", month.ToString());
+		
+		format.Replace("ss", second.ToStringLen(2));
+		format.Replace("s", second.ToString());
+		
+		format.Replace("tt", MERIDIEM_LONG[hour / 12]);
+		format.Replace("t", MERIDIEM_SHORT[hour / 12]);
+		
+		format.Replace("yyyy", year.ToStringLen(4));
+		format.Replace("yyy", year.ToString());
+		format.Replace("yy", year.ToString().Substring(1, 3));
+		format.Replace("y", year.ToString().Substring(2, 2));
+		
+		return format;
 	}
 	
 	static DateTime Now(bool utc = true)
@@ -135,6 +202,17 @@ class DateTime: int
 		}
 
 		return false;
+	}
+	
+	// https://en.wikipedia.org/wiki/Zeller%27s_congruence
+	static int GetDayOfWeek(int year, int month, int day)
+	{
+		if (month < 3) {
+			month += 12;
+			year -= 1;
+		}
+		
+		return (day + 13 * (month + 1) / 5 + year + year / 4 - year / 100 + year / 400) % 7;
 	}
 	
 	//@ Just so you see how the system works
