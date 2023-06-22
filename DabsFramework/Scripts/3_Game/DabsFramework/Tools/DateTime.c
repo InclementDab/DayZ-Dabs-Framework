@@ -1,12 +1,15 @@
 typedef int DateTime;
 class DateTime: int
 {		
+	static const int MINUTES_PER_HOUR = 60;
+	static const int HOURS_PER_DAY = 24;
+	
 	static const DateTime EPOCH = 0;
 	
 	// https://en.wikipedia.org/wiki/ISO_8601
-	static const string FORMAT_ISO_DATE = "YYYY-MM-DD";
-	static const string FORMAT_ISO_TIME = "HH:MM:SS";
-	static const string FORMAT_ISO_DATETIME = "YYYY-MM-DDTHH:MM:SS";
+	static const string FORMAT_ISO_DATE = "yyyy-MM-dd";
+	static const string FORMAT_ISO_TIME = "HH:mm:ss";
+	static const string FORMAT_ISO_DATETIME = "yyyy-MM-ddTHH:mm:ss";
 	
 	static const string MONTH_NAME_LONG[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 	static const string MONTH_NAME_SHORT[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -17,40 +20,7 @@ class DateTime: int
 	
 	private void DateTime();
 	private void ~DateTime();
-	
-	void GetDate(out int year, out int month, out int day, out int hour, out int minute, out int second)
-	{		
-		const int MINUTES_PER_HOUR = 60;
-		const int HOURS_PER_DAY = 24;
 		
-		int total_minutes = value / TimeSpan.MINUTE;
-		second = value % TimeSpan.MINUTE;
-		
-		int total_hours = total_minutes / MINUTES_PER_HOUR;
-		minute = total_minutes % MINUTES_PER_HOUR;
-		
-		day = total_hours / HOURS_PER_DAY;
-		hour = total_hours % HOURS_PER_DAY;
-		
-		year = 1970;
-		month = 1;
-		
-		bool enfusion_needs_do_while = true;
-		while (enfusion_needs_do_while) {	
-			day -= DateTime.DaysInMonth(month, DateTime.IsLeapYear(year));
-			month++;
-			if (month > 12) {
-				month = 1;
-				year++;
-			}
-			
-			enfusion_needs_do_while = DateTime.DaysInMonth(month, DateTime.IsLeapYear(year)) <= day;
-		}
-		
-		// need to advance this by 1, since days start at 1 for whatever reason
-		day++;
-	}
-	
 	/*
 		Supported formatting:
 			
@@ -77,14 +47,15 @@ class DateTime: int
 		yyy: Year, (e.g. 2015)
 		yyyy: Year, (e.g. 2015)
 	*/
-
+	
 	string ToString(string format)
 	{
 		int year, month, day, hour, minute, second;
-		GetDate(year, month, day, hour, minute, second);
+		DateTime.ToDate(value, year, month, day, hour, minute, second);
 		
-		format.Replace("dddd", DAY_NAME_LONG[GetDayOfWeek(year, month, day) - 1]);
-		format.Replace("ddd", DAY_NAME_SHORT[GetDayOfWeek(year, month, day) - 1]);
+		int day_of_week = DateTime.GetDayOfWeek(year, month, day);
+		format.Replace("dddd", DAY_NAME_LONG[day_of_week]);
+		format.Replace("ddd", DAY_NAME_SHORT[day_of_week]);
 		format.Replace("dd", day.ToStringLen(2));
 		format.Replace("d", day.ToString());
 		
@@ -114,6 +85,11 @@ class DateTime: int
 		format.Replace("y", year.ToString().Substring(2, 2));
 		
 		return format;
+	}
+	
+	void GetDate(out int year, out int month, out int day, out int hour, out int minute, out int second)
+	{
+		DateTime.ToDate(value, year, month, day, hour, minute, second);
 	}
 	
 	static DateTime Now(bool utc = true)
@@ -213,6 +189,37 @@ class DateTime: int
 		}
 		
 		return (day + 13 * (month + 1) / 5 + year + year / 4 - year / 100 + year / 400) % 7;
+	}
+	
+	static void ToDate(DateTime date_time, out int year, out int month, out int day, out int hour, out int minute, out int second)
+	{		
+		int total_minutes = date_time / TimeSpan.MINUTE;
+		second = date_time % TimeSpan.MINUTE;
+		
+		int total_hours = total_minutes / MINUTES_PER_HOUR;
+		minute = total_minutes % MINUTES_PER_HOUR;
+		
+		day = total_hours / HOURS_PER_DAY;
+		hour = total_hours % HOURS_PER_DAY;
+		
+		year = 1970;
+		month = 1;
+		
+		// Checking ahead on the next month / year
+		int days_in_month = DateTime.DaysInMonth(month, DateTime.IsLeapYear(year));
+		while (day > days_in_month) {			
+			day -= days_in_month;
+			month++;
+			if (month > 12) {
+				month = 1;
+				year++;
+			}
+			
+			days_in_month = DateTime.DaysInMonth(month, DateTime.IsLeapYear(year));
+		}
+		
+		// need to advance this by 1, since days start at 1 for whatever reason
+		day++;
 	}
 	
 	//@ Just so you see how the system works
