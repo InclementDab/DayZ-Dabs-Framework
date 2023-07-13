@@ -18,7 +18,7 @@ class EntityNetLink: Managed
 	//@ Sets the value of the linked entity, allows for instances of items to be created and linked
 	void Set(notnull EntityAI value)
 	{
-		if (!GetGame().IsServer() || !m_Source) {
+		if (GetGame() && !GetGame().IsServer() || !m_Source) {
 			return;
 		}
 		

@@ -1,8 +1,8 @@
 name = "$STR_DF_NAME";
-picture = "DabsFramework/gui/images/dabs_framework_logo.edds";
-logo = "DabsFramework/gui/images/dabs_framework_logo.edds";
-logoSmall = "DabsFramework/gui/images/dabs_framework_logo.edds";
-logoOver = "DabsFramework/gui/images/dabs_framework_logo.edds";
+picture = "DabsFramework/gui/images/dabs_framework_logo.paa";
+logo = "DabsFramework/gui/images/dabs_framework_logo.paa";
+logoSmall = "DabsFramework/gui/images/dabs_framework_logo.paa";
+logoOver = "DabsFramework/gui/images/dabs_framework_logo.paa";
 tooltip = "$STR_DF_TOOLTIP";
 overview = "$STR_DF_DESCRIPTION";
 action = "https://dab.dev";

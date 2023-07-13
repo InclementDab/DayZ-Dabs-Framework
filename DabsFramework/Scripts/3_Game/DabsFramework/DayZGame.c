@@ -18,7 +18,7 @@ modded class DayZGame
 	}
 	
 	void ~DayZGame()
-	{
+	{		
 		delete s_MVC;
 		delete m_LoggerManager;
 		delete m_EventManager;

@@ -9,5 +9,8 @@ class RegisterAction
 		}
 		
 		RegisteredTypes.Insert(action_type);
+		
+		// Always sort, so load order between server & client makes no difference
+		Sort(RegisteredTypes, RegisteredTypes.Count());
 	}
 }
