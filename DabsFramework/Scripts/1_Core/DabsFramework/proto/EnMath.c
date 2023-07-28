@@ -45,4 +45,14 @@ modded class Math
 		
 		return value % max;
 	}
+	
+	static float Epsilon()
+	{
+		float epsilon = 1.0;
+		while ((1.0 + (epsilon / 2.0)) != 1.0) {
+			epsilon /= 2.0;
+		}
+		
+		return epsilon;
+	}
 }
