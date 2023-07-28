@@ -1,5 +1,10 @@
 class TextWidgetController : WidgetControllerTemplate<TextWidget>
 {
+	override bool CanTwoWayBind()
+	{
+		return true;
+	}
+
 	override void Set(TypeConverter type_converter)
 	{
 		if (!m_Widget) {
