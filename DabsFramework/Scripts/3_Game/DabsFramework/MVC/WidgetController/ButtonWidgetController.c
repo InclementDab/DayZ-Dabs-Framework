@@ -22,6 +22,8 @@ class ButtonWidgetController : WidgetControllerTemplate<ButtonWidget>
 
 	override void GetSelection(out TypeConverter type_converter)
 	{
-		// Since SetSelection is being used. This needs to override to avoid errors
+		string text;
+		m_Widget.GetText(text);
+		type_converter.SetString(text);
 	}
 }
