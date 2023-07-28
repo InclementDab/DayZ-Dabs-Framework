@@ -8,4 +8,11 @@ class TextWidgetController : WidgetControllerTemplate<TextWidget>
 		
 		m_Widget.SetText(type_converter.GetString());
 	}
+
+	override void Get(out TypeConverter type_converter)
+	{
+		string text;
+		m_Widget.GetText(text);
+		type_converter.SetString(text);
+	}
 }
