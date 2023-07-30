@@ -38,7 +38,7 @@ class TestController: ViewController
 
 class ObservableCollection<Class TValue> : Observable
 {
-	private	ref array<autoptr TValue> _data = {};
+	protected ref array<autoptr TValue> _data = {};
 
 	void ObservableCollection(ViewController controller)
 	{
@@ -53,8 +53,7 @@ class ObservableCollection<Class TValue> : Observable
 	int Insert(TValue value)
 	{
 		int index = _data.Insert(value);
-		if (index != -1)
-		{
+		if (index != -1) {
 			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Insert, index, new Param1<TValue>(value)));
 		}
 
@@ -67,7 +66,14 @@ class ObservableCollection<Class TValue> : Observable
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.InsertAt, index, new Param1<TValue>(value)));
 		return new_index;
 	}
-
+	
+	void InsertAll(notnull array<TValue> from)
+	{
+		for (int i = 0; i < from.Count(); i++) {
+			Insert(from[i]);
+		}
+	}
+	
 	// 0: TValue value
 	// 1: int index
 	/*int InsertAtEx(TypeConverter typeConverter, int index)

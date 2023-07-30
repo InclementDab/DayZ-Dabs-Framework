@@ -4,61 +4,59 @@ modded class DayZGame
 	protected ref LoggerManager m_LoggerManager;
 	protected ref EventManager m_EventManager;
 	
+	protected ref map<typename, ProfileSettings> m_ProfileSettings = new map<typename, ProfileSettings>();
+	
 	void DayZGame()
 	{		
 		s_MVC = new MVC();
 		m_LoggerManager = new LoggerManager(this);
 		
 		// dedi and offline
-		if (IsServer()) {
-			m_EventManager = new EventManager();
-		}
+#ifdef SERVER
+		m_EventManager = new EventManager();
+#endif
 	}
 	
 	void ~DayZGame()
 	{
 		delete s_MVC;
 		delete m_LoggerManager;
+		delete m_EventManager;
+		delete m_ProfileSettings;
 	}
-	
-	static MVC GetMVC()
-	{
-		if (!s_MVC) {
-			s_MVC = new MVC();
-		}
 		
-		return s_MVC;
-	}
-	
-	LoggerManager GetLoggerManager()
+	override void RegisterProfilesOptions()
 	{
-		return m_LoggerManager;
-	}
-	
-	EventManager GetEventManager()
-	{
-		return m_EventManager;
+		super.RegisterProfilesOptions();
+		
+		// Load all ProfileSettings classes
+		foreach (Param2<typename, string> profile_settings_type: RegisterProfileSetting.Instances) {
+			ProfileSettings profile_settings = ProfileSettings.Cast(profile_settings_type.param1.Spawn());
+			if (!profile_settings) {
+				continue;
+			}
+			
+			m_ProfileSettings[profile_settings_type.param1] = profile_settings;
+		}
 	}
 
+#ifdef DIAG_DEVELOEPR	
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{
 		super.OnRPC(sender, target, rpc_type, ctx);
 		
-#ifdef DIAG
 		switch (rpc_type) {
 			case Debug.RPC_UPDATE_DEBUG_SHAPE: {
 				Debug.OnDebugShapeRPC(ctx);		
 				break;
 			}
 		}
-#endif
 	}
+#endif
 	
 	// this is the init of event manager for clients
 	override void OnEvent(EventType eventTypeId, Param params)
 	{
-		super.OnEvent(eventTypeId, params);
-
 		switch (eventTypeId) {
 			case MPSessionStartEventTypeID: {
 				m_EventManager = new EventManager();
@@ -70,8 +68,19 @@ modded class DayZGame
 				break;
 			}
 		}
+		
+		super.OnEvent(eventTypeId, params);
 	}
 	
+	static MVC GetMVC()
+	{
+		if (!s_MVC) {
+			s_MVC = new MVC();
+		}
+		
+		return s_MVC;
+	}
+		
 	DayZPlayer GetPlayerByIdentity(PlayerIdentity identity)
 	{		
 		int high, low;
@@ -85,5 +94,31 @@ modded class DayZGame
 		
 		GetPlayerNetworkIDByIdentityID(identity.GetPlayerId(), low, high);
 		return DayZPlayer.Cast(GetObjectByNetworkId(low, high));
+	}
+	
+	string GetWorldNameEx(bool format = true)
+	{
+		string world_name;
+		GetGame().GetWorldName(world_name);
+		if (format) {
+			world_name.ToLower();
+		}
+		
+		return world_name;
+	}
+	
+	LoggerManager GetLoggerManager()
+	{
+		return m_LoggerManager;
+	}
+	
+	EventManager GetEventManager()
+	{
+		return m_EventManager;
+	}
+	
+	ProfileSettings GetProfileSetting(typename profile_settings_type)
+	{
+		return m_ProfileSettings[profile_settings_type];
 	}
 }

@@ -6,6 +6,8 @@ static int DeletedObjectId;
 	however we need to backport all old information and handle empty Types from the past
 */
 
+
+
 class EditorDeletedObjectData: SerializableBase
 {
 	[NonSerialized()]
@@ -71,6 +73,7 @@ class EditorDeletedObjectData: SerializableBase
 			}
 		}
 		
+		//Error(string.Format("[DF] Failed to find %1 in %2m of %3", Type, radius, Position)); 
 		return null;
 	}
 	

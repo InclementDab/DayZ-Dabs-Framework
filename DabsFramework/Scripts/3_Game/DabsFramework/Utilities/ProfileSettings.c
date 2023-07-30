@@ -1,118 +1,106 @@
-class ProfileSettings
-{		
-	bool Save()
+class ProfileSettings: Class
+{	
+	// Ctor immediately loads all settings
+	private void ProfileSettings()
 	{
-		if (!GetGame()) {
-			return false;
-		}
-		
-		for (int i = 0; i < Type().GetVariableCount(); i++) {
-			string variable_name = Type().GetVariableName(i);
-			typename variable_type = Type().GetVariableType(i);
-			
-			switch (variable_type) {				
+		g_Game.GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(Load);
+	}
+	
+	private void ~ProfileSettings()
+	{
+	}
+	
+	void Load()
+	{
+		PropertyTypeHashMap properties = new PropertyTypeHashMap(Type());
+		foreach (string variable_name, typename variable_type: properties) {
+			string variable_name_formatted = GetFormattedSaveName(variable_name);						
+			switch (variable_type) {
 				case bool: {
-					bool _bool;
-					EnScript.GetClassVar(this, variable_name, 0, _bool);
-					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_bool));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileBool(variable_name_formatted, EnScriptVar<bool>.Get(this, variable_name)));
 					break;
 				}
 				
 				case int: {
-					int _int;
-					EnScript.GetClassVar(this, variable_name, 0, _int);
-					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_int));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileInt(variable_name_formatted, EnScriptVar<int>.Get(this, variable_name)));
 					break;
 				}
 				
 				case float: {
-					float _float;
-					EnScript.GetClassVar(this, variable_name, 0, _float);
-					GetGame().SetProfileString(FormatSaveName(variable_name), string.ToString(_float));
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileFloat(variable_name_formatted, EnScriptVar<float>.Get(this, variable_name)));
 					break;
 				}
 				
 				case string: {
-					string _string;
-					EnScript.GetClassVar(this, variable_name, 0, _string);
-					GetGame().SetProfileString(FormatSaveName(variable_name), _string);
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(variable_name_formatted, EnScriptVar<string>.Get(this, variable_name)));
+					break;
+				}
+				
+				// known bug: you cant have default values for array types yet, since ctor order is whackadoodle
+				case String("array<string>").ToType(): {
+					EnScript.SetClassVar(this, variable_name, 0, g_Game.GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
+					break;
+				}
+				
+				default: {
+					Error(string.Format("ProfileSettings::Load Unsupported variable type=%1 name=%2", variable_type, variable_name));
 					break;
 				}
 			}
 		}
-		
-		GetGame().SaveProfile();
-		return true;
 	}
 	
-	bool Load()
+	void Save()
 	{
-		if (!GetGame()) {
-			return false;
+		if (!g_Game) {
+			return;
 		}
-		
-		for (int i = 0; i < Type().GetVariableCount(); i++) {
-			string variable_name = Type().GetVariableName(i);
-			typename variable_type = Type().GetVariableType(i);
-			
-			switch (variable_type) {				
+				
+		// iterate though all properties of the class
+		PropertyTypeHashMap properties = new PropertyTypeHashMap(Type());
+		foreach (string variable_name, typename variable_type: properties) {		
+			string variable_name_formatted = GetFormattedSaveName(variable_name);			
+				
+			switch (variable_type) {
 				case bool: {
-					bool _bool;
-					EnScript.GetClassVar(this, variable_name, 0, _bool);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileBool(FormatSaveName(variable_name), _bool));
+					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<bool>.Get(this, variable_name)));
 					break;
 				}
 				
-				case int: {					
-					int _int;
-					EnScript.GetClassVar(this, variable_name, 0, _int);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileInt(FormatSaveName(variable_name), _int));
+				case int: {
+					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<int>.Get(this, variable_name)));
 					break;
 				}
 				
 				case float: {
-					float _float;
-					EnScript.GetClassVar(this, variable_name, 0, _float);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileFloat(FormatSaveName(variable_name), _float));
+					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<float>.Get(this, variable_name)));
 					break;
 				}
 				
 				case string: {
-					string _string;
-					EnScript.GetClassVar(this, variable_name, 0, _string);
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(FormatSaveName(variable_name), _string));
+					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<string>.Get(this, variable_name)));
+					break;
+				}
+				
+				case String("array<string>").ToType(): {
+					g_Game.SetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name));
+					break;
+				}
+												
+				default: {
+					Error(string.Format("ProfileSettings::Save Unsupported variable type=%1 name=%2", variable_type, variable_name));					
 					break;
 				}
 			}
 		}
 		
-		return true;
+		g_Game.SaveProfile();
 	}
-	
-	static void SetProfileBool(string variable, bool value)
-	{
-		GetGame().SetProfileString(variable, value.ToString());	
-	}
-	
-	static void SetProfileInt(string variable, int value)
-	{
-		GetGame().SetProfileString(variable, value.ToString());
-	}
-	
-	static void SetProfileFloat(string variable, float value)
-	{
-		GetGame().SetProfileString(variable, value.ToString());
-	}
-	
-	static void SetProfileString(string variable, string value)
-	{
-		GetGame().SetProfileString(variable, value);
-	}
-	
+			
 	static bool GetProfileBool(string variable, bool default = false)
 	{
 		string value;
-		if (GetGame().GetProfileString(variable, value)) {
+		if (g_Game.GetProfileString(variable, value)) {
 			return (value == "true" || value == "1");
 		}
 		
@@ -122,7 +110,7 @@ class ProfileSettings
 	static float GetProfileFloat(string variable, float default = 0)
 	{
 		string value;
-		if (GetGame().GetProfileString(variable, value)) {
+		if (g_Game.GetProfileString(variable, value)) {
 			return value.ToFloat();
 		}
 		
@@ -132,7 +120,7 @@ class ProfileSettings
 	static int GetProfileInt(string variable, int default = 0)
 	{
 		string value;
-		if (GetGame().GetProfileString(variable, value)) {
+		if (g_Game.GetProfileString(variable, value)) {
 			return value.ToInt();
 		}
 		
@@ -142,14 +130,14 @@ class ProfileSettings
 	static string GetProfileString(string variable, string default = "")
 	{
 		string value;
-		if (GetGame().GetProfileString(variable, value)) {
+		if (g_Game.GetProfileString(variable, value)) {
 			return value;
 		}
 		
 		return default;
 	}
-	
-	string FormatSaveName(string variable_name)
+		
+	string GetFormattedSaveName(string variable_name)
 	{
 		return string.Format("%1.%2", Type(), variable_name);
 	}

@@ -1,8 +1,7 @@
-class LoggerBase
+class LoggerBase: Managed
 {
 	static const string BASE_DIRECTORY = "$profile:\\";
 	protected string m_FileName;
-	
 	
 	// called in ctor of DayZGame
 	void OnGameStart(notnull DayZGame game)
@@ -47,7 +46,7 @@ class LoggerBase
 	}
 			
 	static void DoLog(typename logger_type, string log)
-	{
+	{		
 		if (!g_Game) {
 			return;
 		}

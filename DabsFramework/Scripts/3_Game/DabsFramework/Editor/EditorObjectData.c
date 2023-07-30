@@ -6,6 +6,7 @@ class EditorObjectData: SerializableBase
 	int m_Id;
 	int GetID() { return m_Id; }
 	
+	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
 	string Type;
 	string DisplayName;
 	vector Position;
@@ -52,9 +53,6 @@ class EditorObjectData: SerializableBase
 	{
 		EditorObjectID++;
 		m_Id = EditorObjectID;
-		
-		//Mod = LoadModData(Type, Path); todo idk
-		//Icon = EditorPlaceableItem.GetIcon(Mod);
 	}
 	
 	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EditorObjectFlags.ALL)
