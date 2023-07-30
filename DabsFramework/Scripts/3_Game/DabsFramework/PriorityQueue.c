@@ -39,7 +39,8 @@ class PriorityQueue<Class TElement, Class TPriority>
 				m_Elements.Remove(index);
 
 				if (TemplateType<TElement>.GetType().IsInherited(Managed)) {
-					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(m_StrongRefElements.RemoveItem, lowestPriorityItem);
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(m_StrongRefElements.RemoveItem, lowestPriorityItem.param1);
+					Event_OnDequeue.Invoke(lowestPriorityItem.param1, lowestPriorityItem.param2);
 				}
 			}
 		}
@@ -61,7 +62,7 @@ class PriorityQueue<Class TElement, Class TPriority>
 		}
 	}
 
-	// removes and returns the minimal element from the queue; the element with the lowest priority value
+	// removes and returns the minimal element from the queue; the element with the highest priority
 	TElement Dequeue()
 	{
 		int index = GetHighestPriorityIndex();
@@ -69,16 +70,16 @@ class PriorityQueue<Class TElement, Class TPriority>
 			return ELEMENT_DEFAULT;
 		}
 
-		Param2<TElement, TPriority> item = m_Elements[index];
+		Param2<TElement, TPriority> highestPriorityItem = m_Elements[index];
 		m_Elements.Remove(index);
 
-		Event_OnDequeue.Invoke(item, priority);
-
 		if (TemplateType<TElement>.GetType().IsInherited(Managed)) {
-			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(m_StrongRefElements.RemoveItem, item);
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(m_StrongRefElements.RemoveItem, highestPriorityItem.param1);
 		}
 
-		return item.param1;
+		Event_OnDequeue.Invoke(highestPriorityItem.param1, highestPriorityItem.param2);
+
+		return highestPriorityItem.param1;
 	}
 
 	// adds the specified element with associated priority to the queue, and immediately removes the minimal element, returning the result
@@ -119,7 +120,7 @@ class PriorityQueue<Class TElement, Class TPriority>
 		m_Elements.Clear();
 	}
 
-	// highest is low values (1)
+	// highest priority is a low value (1)
 	protected int GetHighestPriorityIndex()
 	{
 		if (Count() == 0) {
@@ -136,7 +137,7 @@ class PriorityQueue<Class TElement, Class TPriority>
 		return highestIndex;
 	}
 
-	// lowest is high values (100)
+	// lowest priority is a high value (100)
 	protected int GetLowestPriorityIndex()
 	{
 		if (Count() == 0) {
