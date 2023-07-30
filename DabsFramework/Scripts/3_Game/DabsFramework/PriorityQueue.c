@@ -12,6 +12,12 @@ class PriorityQueue<Class TElement, Class TPriority>
 	void PriorityQueue(int capacity = 0)
 	{
 		m_Capacity = capacity;
+
+		if (capacity > 0) {
+			// resize the queue arrays internally, optimization
+			m_StrongRefElements.Reserve(capacity);
+			m_Elements.Reserve(capacity);
+		}
 	}
 
 	// adds the specified element with associated priority
