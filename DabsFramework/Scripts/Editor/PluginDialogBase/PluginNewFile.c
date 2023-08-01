@@ -1,8 +1,6 @@
 [WorkbenchPluginAttribute("New File", "Creates New File", "Ctrl+N", "", {"ScriptEditor"})]
 class PluginNewFile: PluginDialogBase
-{
-	static const string DEFAULT_EXTENSION = ".c";
-	
+{	
 	[Attribute("", "editbox", "Directory (folders will be created automatically)")]
 	string Directory;
 	

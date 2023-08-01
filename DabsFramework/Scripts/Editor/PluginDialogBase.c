@@ -4,6 +4,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const string DIALOG_TAB_SIZE = "\t\t\t\t\t\t\t\t\t";
 	static const string PATH_SEPERATOR = "/";
 	static const string PATH_SEPERATOR_ALT = "\\";
+	static const string DEFAULT_EXTENSION = ".c";
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
 	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceBrowser");
@@ -11,6 +12,28 @@ class PluginDialogBase: WorkbenchPlugin
 	void ErrorDialog(string error)
 	{
 		Workbench.Dialog(string.Format("Error: %1", Type()), error);
+	}
+	
+	static string GetPrefix()
+	{
+		// Dump the stack of this file, that way we can see exactly where we're being launched from
+		string stack;
+		DumpStackString(stack);
+		
+		array<string> stack_newline_split = {};
+		stack.Split("\n", stack_newline_split);
+		if (stack_newline_split.Count() == 0) {
+			return string.Empty;
+		}
+		
+		string tokens[32];
+		int count = stack_newline_split[stack_newline_split.Count() - 1].ParseString(tokens);
+		if (count < 4) {
+			return string.Empty;
+		}
+		
+		string prefix = tokens[3].Trim();
+		return prefix;
 	}
 	
 	static string GetRootDirectory()
@@ -57,6 +80,20 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		return directory;
+	}
+	
+	static string GetFile(string path)
+	{
+		path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		
+		array<string> path_split = {};
+		path.Split(PATH_SEPERATOR, path_split);
+		
+		if (path_split.Count() == 0) {
+			return string.Empty;
+		}
+		
+		return path_split[path_split.Count() - 1];
 	}
 	
 	static FileHandle CreateFile(string file)
