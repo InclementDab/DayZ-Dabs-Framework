@@ -3,8 +3,8 @@ class PluginKillGame: PluginDialogBase
 {
 	void PluginKillGame()
 	{
-		Workbench.RunCmd("taskkill /F /IM DayZ_x64.exe /T");
-		Workbench.RunCmd("taskkill /F /IM DayZServer_x64.exe /T");
-		Workbench.RunCmd("taskkill /F /IM DayZDiag_x64.exe /T");
+		KillTask("DayZ_x64.exe");
+		KillTask("DayZServer_x64.exe");
+		KillTask("DayZDiag_x64.exe");
 	}
 }

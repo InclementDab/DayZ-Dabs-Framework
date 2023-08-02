@@ -5,6 +5,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const string PATH_SEPERATOR = "/";
 	static const string PATH_SEPERATOR_ALT = "\\";
 	static const string DEFAULT_EXTENSION = ".c";
+	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
 	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceBrowser");
@@ -151,5 +152,17 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		return 0;
+	}
+	
+	static void KillTask(string task_name)
+	{
+		Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name));
+	}
+	
+	static void CleanLogFolder(string folder)
+	{
+		foreach (string file_type: LOG_FILE_TYPES) {
+			Workbench.RunCmd(string.Format("forfiles -p %2 /m *%1 /s /d -1 -c \"cmd /c del @path\"", file_type, folder));
+		}
 	}
 }
