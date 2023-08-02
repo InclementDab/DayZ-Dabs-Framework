@@ -55,30 +55,14 @@ class PluginNewFile: PluginDialogBase
 			File = file_split[0] + DEFAULT_EXTENSION;
 		}
 		
-		//Directory = GetAbsolutePath(Directory);
-		
-		if (FileExist(Directory + PATH_SEPERATOR + File)) {
+		string absolute_file = GetAbsolutePath(Directory) + PATH_SEPERATOR + File;
+		if (FileExist(absolute_file)) {
 			ErrorDialog(string.Format("File %1 already exists!", File));
 			return;
 		}
 		
-		// Creates needed directories
-		array<string> folder_split = {};
-		Directory.Split(PATH_SEPERATOR, folder_split);
-		string absolute_file;
-		foreach (string folder: folder_split) {
-			Print(folder);
-			absolute_file += folder;
-			Print(absolute_file);
-			Print(MakeDirectory(folder));
-			absolute_file += PATH_SEPERATOR;
-		}
-		
-		Print(Directory + PATH_SEPERATOR + File);
-		FileHandle file_handle = OpenFile(Directory + PATH_SEPERATOR + File, FileMode.APPEND);
-		Print(file_handle);
+		FileHandle file_handle = CreateFile(absolute_file);
 		if (!file_handle) {
-			Print("invalid file handle");
 			return;
 		}
 		
