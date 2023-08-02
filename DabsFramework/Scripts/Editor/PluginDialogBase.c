@@ -6,6 +6,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const string PATH_SEPERATOR_ALT = "\\";
 	static const string DEFAULT_EXTENSION = ".c";
 	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
+	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "dta", "platforms"};
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
 	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceBrowser");
@@ -49,6 +50,30 @@ class PluginDialogBase: WorkbenchPlugin
 		string workbench_dir;
 		Workbench.GetCwd(workbench_dir);
 		return workbench_dir;
+	}
+	
+	static string GetRelativePath(string root_path, string full_path)
+	{
+		root_path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		full_path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		
+		array<string> root_path_split = {};
+		array<string> full_path_split = {};
+		
+		root_path.Split(PATH_SEPERATOR, root_path_split);
+		full_path.Split(PATH_SEPERATOR, full_path_split);
+		
+		string result;
+		for (int i = 0; i < full_path_split.Count(); i++) {
+			if (i > root_path_split.Count() - 1 || full_path_split[i] != root_path_split[i]) {
+				result += full_path_split[i];
+				if (i != full_path_split.Count() - 1) {
+					result += PATH_SEPERATOR;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	static string GetRootDirectory()
@@ -156,7 +181,7 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void KillTask(string task_name)
 	{
-		Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name));
+		Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
 	}
 	
 	static void CleanLogFolder(string folder)
@@ -164,5 +189,29 @@ class PluginDialogBase: WorkbenchPlugin
 		foreach (string file_type: LOG_FILE_TYPES) {
 			Workbench.RunCmd(string.Format("forfiles -p %2 /m *%1 /s /d -1 -c \"cmd /c del @path\"", file_type, folder));
 		}
+	}
+	
+	static void CopyFiles(string source, string destination)
+	{	
+		string filename;
+		FileAttr fileattr;
+		FindFileHandle hdnl = FindFile(source + PATH_SEPERATOR + "*", filename, fileattr, FindFileFlags.ALL);
+		if (fileattr == FileAttr.DIRECTORY) {
+			MakeDirectory(destination + PATH_SEPERATOR + filename);
+			CopyFiles(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+		} else {
+			CopyFile(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+		}
+		
+		while (FindNextFile(hdnl, filename, fileattr)) {
+			if (fileattr == FileAttr.DIRECTORY) {
+				MakeDirectory(destination + PATH_SEPERATOR + filename);
+				CopyFiles(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+			} else {
+				CopyFile(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+			}
+		}
+		
+		CloseFindFile(hdnl);
 	}
 }
