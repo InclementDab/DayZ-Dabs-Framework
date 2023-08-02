@@ -18,30 +18,22 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetPrefix()
 	{
-		// Dump the stack of this file, that way we can see exactly where we're being launched from
-		string stack;
-		DumpStackString(stack);
-		
-		array<string> stack_newline_split = {};
-		stack.Split("\n", stack_newline_split);
-		if (stack_newline_split.Count() == 0) {
-			return string.Empty;
-		}
-		
-		string tokens[32];
-		int count = stack_newline_split[stack_newline_split.Count() - 1].ParseString(tokens);
-		if (count < 4) {
-			return string.Empty;
-		}
-		
-		string prefix = tokens[3].Trim();
-		return prefix;
+		array<string> current_dir_split = {};
+		GetCurrentDirectory().Split("/", current_dir_split);
+		return current_dir_split[current_dir_split.Count() - 1];
 	}
 	
 	static string GetSourceDataDirectory()
 	{
 		string abs;
 		Workbench.GetAbsolutePath("$SourceData:", abs);
+		return abs;
+	}
+	
+	static string GetCurrentDirectory()
+	{
+		string abs;
+		Workbench.GetAbsolutePath("$CurrentDir:", abs);
 		return abs;
 	}
 	
@@ -85,19 +77,9 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetAbsolutePath(string path)
 	{
-		path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		
-		string absolute_path = GetRootDirectory();
-		if (path.Length() == 0) {
-			return absolute_path;
-		}
-		
-		// Sanitize initial path. GetRootDirectory does 
-		if (absolute_path[0] == PATH_SEPERATOR) {
-			absolute_path[0] = string.Empty;
-		}
-		
-		return absolute_path + PATH_SEPERATOR + path;
+		string absolute_path;
+		Workbench.GetAbsolutePath(path, absolute_path);
+		return absolute_path;
 	}
 	
 	static string GetDirectory(string path)
@@ -186,10 +168,42 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void CleanLogFolder(string folder)
 	{
-		foreach (string file_type: LOG_FILE_TYPES) {
-			Workbench.RunCmd(string.Format("forfiles -p %2 /m *%1 /s /d -1 -c \"cmd /c del @path\"", file_type, folder));
+		string name;
+		FileAttr attribute;
+		array<string> files = {};
+
+		FindFileHandle handle = FindFile(folder + PATH_SEPERATOR + "*", name, attribute, 0);
+		if (handle) {
+			if (name.Length() > 0 && !(attribute & FileAttr.DIRECTORY)) {
+				files.Insert(name);
+			}
+
+			while (FindNextFile(handle, name, attribute)) {
+				if (name.Length() > 0 && !(attribute & FileAttr.DIRECTORY)) {
+					files.Insert(name);
+				}
+			}
+		}
+
+		CloseFindFile(handle);
+		
+		map<string, int> amount_found = new map<string, int>();
+		foreach (string file: files) {
+			array<string> file_split = {};
+			file.Split(".", file_split);
+			if (file_split.Count() < 2) {
+				continue;
+			}
+			
+			string extension = file_split[1];
+			amount_found[extension] = amount_found[extension] + 1;
+			if (amount_found[extension] > 5) {
+				DeleteFile(folder + PATH_SEPERATOR_ALT + file);
+			}
 		}
 	}
+	
+	
 	
 	static void CopyFiles(string source, string destination)
 	{	
