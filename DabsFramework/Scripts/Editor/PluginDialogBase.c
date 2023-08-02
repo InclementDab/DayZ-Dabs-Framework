@@ -36,11 +36,25 @@ class PluginDialogBase: WorkbenchPlugin
 		return prefix;
 	}
 	
+	static string GetSourceDataDirectory()
+	{
+		string abs;
+		Workbench.GetAbsolutePath("$SourceData:", abs);
+		return abs;
+	}
+	
+	static string GetWorkbenchDirectory()
+	{
+		string workbench_dir;
+		Workbench.GetCwd(workbench_dir);
+		return workbench_dir;
+	}
+	
 	static string GetRootDirectory()
 	{
 		string root_dir;
 		Workbench.GetAbsolutePath(string.Empty, root_dir);
-		return root_dir + PATH_SEPERATOR;
+		return root_dir;
 	}
 	
 	static string GetAbsolutePath(string path)
@@ -57,7 +71,7 @@ class PluginDialogBase: WorkbenchPlugin
 			absolute_path[0] = string.Empty;
 		}
 		
-		return absolute_path + path;
+		return absolute_path + PATH_SEPERATOR + path;
 	}
 	
 	static string GetDirectory(string path)
@@ -123,5 +137,19 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 				
 		return OpenFile(file, FileMode.WRITE);
+	}
+	
+	static int RunCommandPrompt(string cmd, bool wait = false)
+	{
+		return Workbench.RunCmd(string.Format("cmd /c %1", cmd), wait);
+	}
+	
+	static int MakeSymLink(string source, string target)
+	{
+		if (!FileExist(target)) {
+			return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source, target), true);
+		}
+		
+		return 0;
 	}
 }
