@@ -20,7 +20,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		array<string> current_dir_split = {};
 		GetCurrentDirectory().Split("/", current_dir_split);
-		return current_dir_split[current_dir_split.Count() - 1];
+		return current_dir_split[current_dir_split.Count() - 2];
 	}
 	
 	static string GetSourceDataDirectory()
@@ -42,6 +42,20 @@ class PluginDialogBase: WorkbenchPlugin
 		string workbench_dir;
 		Workbench.GetCwd(workbench_dir);
 		return workbench_dir;
+	}
+	
+	static string GetRootDirectory()
+	{
+		string root_dir;
+		Workbench.GetAbsolutePath(string.Empty, root_dir);
+		return root_dir;
+	}
+	
+	static string GetAbsolutePath(string path)
+	{
+		string absolute_path;
+		Workbench.GetAbsolutePath(path, absolute_path);
+		return absolute_path;
 	}
 	
 	static string GetRelativePath(string root_path, string full_path)
@@ -68,20 +82,6 @@ class PluginDialogBase: WorkbenchPlugin
 		return result;
 	}
 	
-	static string GetRootDirectory()
-	{
-		string root_dir;
-		Workbench.GetAbsolutePath(string.Empty, root_dir);
-		return root_dir;
-	}
-	
-	static string GetAbsolutePath(string path)
-	{
-		string absolute_path;
-		Workbench.GetAbsolutePath(path, absolute_path);
-		return absolute_path;
-	}
-	
 	static string GetDirectory(string path)
 	{
 		path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
@@ -89,7 +89,7 @@ class PluginDialogBase: WorkbenchPlugin
 		array<string> path_split = {};
 		path.Split(PATH_SEPERATOR, path_split);
 		string directory;
-		for (int i = 0; i < path_split.Count(); i++) {
+		for (int i = 0; i < path_split.Count() - 1; i++) {
 			if (path_split[i].Contains(".")) {
 				// pop upon finding file. Substring because we added a seperator to the end last loop
 				return directory;
@@ -116,6 +116,31 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		return path_split[path_split.Count() - 1];
+	}
+	
+	static array<string> EnumerateDirectories(string path)
+	{
+		string directory = GetDirectory(path);
+		array<string> child_directories = {};
+		string file_name;
+		FileAttr file_attributes;
+		FindFileHandle handle = FindFile(directory + PATH_SEPERATOR + "*", file_name, file_attributes, FindFileFlags.DIRECTORIES);
+		if (!handle) {
+			return child_directories;
+		}
+		
+		if (file_attributes == FileAttr.DIRECTORY) {
+			child_directories.Insert(file_name);
+		}
+		
+		while (FindNextFile(handle, file_name, file_attributes)) {
+			if (file_attributes == FileAttr.DIRECTORY) {
+				child_directories.Insert(file_name);
+			}
+		}
+		
+		CloseFindFile(handle);
+		return child_directories;
 	}
 	
 	static FileHandle CreateFile(string file)
@@ -152,7 +177,7 @@ class PluginDialogBase: WorkbenchPlugin
 		return Workbench.RunCmd(string.Format("cmd /c %1", cmd), wait);
 	}
 	
-	static int MakeSymLink(string source, string target)
+	static int PromiseSymLink(string source, string target)
 	{
 		if (!FileExist(target)) {
 			return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source, target), true);
