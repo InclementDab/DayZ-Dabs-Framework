@@ -19,11 +19,13 @@ class ButtonWidgetController : WidgetControllerTemplate<ButtonWidget>
 	{
 		m_Widget.SetText(type_converter.GetString());
 	}
-
+	
+#ifdef DAYZ_1_22
 	override void GetSelection(out TypeConverter type_converter)
 	{
 		string text;
 		m_Widget.GetText(text);
 		type_converter.SetString(text);
 	}
+#endif
 }
