@@ -69,6 +69,11 @@ class EventManager
 	
 	void OnUpdate(float dt)
 	{
+		// Not initialized, dont run
+		if (m_MaxEventCount == 0 || m_PossibleEventTypes.Count() == 0) {
+			return;
+		}
+		
 		foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
 			m_EventCooldowns[event_type] = m_EventCooldowns[event_type] - dt;
 			if (m_EventCooldowns[event_type] <= 0) {
