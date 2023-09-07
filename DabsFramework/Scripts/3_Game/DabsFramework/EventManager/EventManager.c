@@ -47,13 +47,6 @@ class EventManager
 		DayZGame.Event_OnRPC.Insert(OnRPC);
 	}
 	
-	void ~EventManager()
-	{
-		delete m_ActiveEvents;
-		delete m_PossibleEventTypes;
-		delete m_EventCooldowns;
-	}
-
 	/*
 		Run this in your init.c
 	
@@ -105,7 +98,8 @@ class EventManager
 	}
 	
 	void RegisterEvent(typename event_type, float frequency = 1.0)
-	{		
+	{
+		EventManagerLog.Debug(this, "RegisterEvent: %1, freq: %2", event_type.ToString(), frequency.ToString());
 		m_PossibleEventTypes[event_type] = frequency;
 	}
 	
