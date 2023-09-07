@@ -24,6 +24,17 @@ modded class DayZGame
 		delete m_EventManager;
 		delete m_ProfileSettings;
 	}
+	
+	override void OnUpdate(bool doSim, float timeslice)
+	{
+		super.OnUpdate(doSim, timeslice);
+		
+#ifdef SERVER
+		if (m_EventManager) {
+			m_EventManager.OnUpdate(timeslice);
+		}
+#endif
+	}
 		
 	override void RegisterProfilesOptions()
 	{
