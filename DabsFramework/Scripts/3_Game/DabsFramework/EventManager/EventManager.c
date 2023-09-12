@@ -65,6 +65,9 @@ class EventManager
 		m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
 		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
 		EventManagerLog.Info(this, "EventManager is now running");
+		
+		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(OnUpdate);
+		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(OnUpdate);
 	}
 	
 	void OnUpdate(float dt)
