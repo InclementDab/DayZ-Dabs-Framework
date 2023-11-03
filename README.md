@@ -8,23 +8,13 @@ Navigate to your project folder in any terminal of your choice, I use command pr
 
 ```
 # Clone the repository onto your PC
-git clone --depth 1 https://github.com/InclementDab/DayZ-Mod-Template.git DayZ-Mod-Name
+git clone https://github.com/InclementDab/DayZ-Dabs-Framework.git
 
 # Go to your newly cloned folder
-cd DayZ-Mod-Name
+cd DayZ-Dabs-Framework
 
-# Run installation script
-./Install.ps1
-
-# Remove old .git folder
-rm -rf .git
-
-# Initialize a new git repository
-git init
-
-# Add all new files and commit
-git add .
-git commit -m "Initial commit"
+# Run Make file
+MakeLink.bat
 ```
 
 Push to a new repository 
