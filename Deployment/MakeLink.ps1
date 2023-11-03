@@ -47,8 +47,6 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 
 $source = Join-Path -Path (Get-RepositoryRoot) -ChildPath (Get-ModPrefix)
 
-$prefix = Read-Host -Prompt 'Ur a retard'
-
 # Check if our source folder exists
 if (-Not (Test-Path -Path $source)) {
     Write-Error "The path '$source' does not exist"
