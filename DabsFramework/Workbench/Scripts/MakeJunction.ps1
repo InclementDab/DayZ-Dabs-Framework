@@ -1,4 +1,4 @@
-. ".\include.ps1"
+. ".\common.ps1"
 
 $source = Join-Path -Path (Get-RepositoryRoot) -ChildPath (Get-ModPrefix)
 

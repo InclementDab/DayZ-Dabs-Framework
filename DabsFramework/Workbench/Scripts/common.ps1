@@ -1,5 +1,5 @@
 function Get-ToolsVersion {
-    $version_file = Join-Path -Path "$PSScriptRoot\ToolAddons" -ChildPath "VERSION"
+    $version_file = Join-Path -Path "$PSScriptRoot\..\ToolAddons" -ChildPath "VERSION"
 
     if (-Not (Test-Path -Path $version_file)) {
         return "0.0.0"

@@ -1,4 +1,4 @@
-. ".\include.ps1"
+. ".\common.ps1"
 
 # Get current template version
 Write-Host "Fetching latest version of tools..."
