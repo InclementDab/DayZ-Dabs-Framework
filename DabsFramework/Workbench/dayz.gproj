@@ -1,6 +1,6 @@
 GameProjectClass {
-	ID "DayZ"
-	TITLE "DayZ"
+	ID "DabsFramework"
+	TITLE "DabsFramework"
 	Configurations {
 		GameProjectConfigClass PC {
 			platformHardware PC
@@ -11,7 +11,6 @@ GameProjectClass {
 					Directory "P:/"
 				} 
 			}
-			
 			imageSets {
 				"gui/imagesets/ccgui_enforce.imageset"
 				"gui/imagesets/rover_imageset.imageset"
@@ -27,8 +26,6 @@ GameProjectClass {
 				"gui/imagesets/playstation_buttons.imageset"
 				"gui/imagesets/selection.imageset"
 				"gui/imagesets/console_toolbar.imageset"
-				"DabsFramework/gui/imagesets/prefabs.imageset"
-				
 			}
 			widgetStyles {
 				"gui/looknfeel/dayzwidgets.styles" 
@@ -40,7 +37,7 @@ GameProjectClass {
 					Name "core"
 					Paths {
 						"scripts/1_Core"
-						"DabsFramework/scripts/1_Core"
+						"DabsFramework/Scripts/1_Core"
 					}
 					EntryPoint ""
 				}
@@ -63,7 +60,7 @@ GameProjectClass {
 					Name "world"
 					Paths {
 						"scripts/4_World"
-						"DabsFramework/scripts/4_World"
+						"DabsFramework/Scripts/4_World"
 					}
 					EntryPoint ""
 				}
@@ -71,19 +68,17 @@ GameProjectClass {
 					Name "mission"
 					Paths {
 						"scripts/5_Mission"
-						"DabsFramework/scripts/5_Mission"
+						"DabsFramework/Scripts/5_Mission"
 					}
 					EntryPoint "CreateMission"
 				}
 				
 				ScriptModulePathClass {
-				Name "workbench"
+					Name "workbench"
 					Paths {
-						"scripts/editor/Workbench"
-						"scripts/editor/plugins"
-						"DabsFramework/scripts/editor/plugins"
+						"DabsFramework/Workbench/Plugins"
 					} 
-					EntryPoint ""
+					EntryPoint "CreateWorkbench"
 				} 
 			}
 		}

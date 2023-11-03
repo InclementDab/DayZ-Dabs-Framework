@@ -18,8 +18,8 @@ class CfgMods
 		credits = "InclementDab";
 		author = "InclementDab";
 		overview = "DF is a Lightweight framework designed to provide modders with the tools required to create new tools and mods for the community. Created by InclementDab";
-		creditsJson = "DabsFramework/Scripts/Data/Credits.json";
-		versionPath = "DabsFramework/Scripts/Data/Version.hpp";
+		creditsJson = "DabsFramework/Scripts/Credits.json";
+		versionPath = "DabsFramework/Scripts/Version.hpp";
 		type = "mod";
 		dependencies[] =
 		{
