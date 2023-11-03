@@ -47,18 +47,6 @@ class EventManager
 		DayZGame.Event_OnRPC.Insert(OnRPC);
 	}
 	
-	void ~EventManager()
-	{
-		delete m_ActiveEvents;
-		delete m_PossibleEventTypes;
-		delete m_EventCooldowns;
-		
-		if (GetGame() && GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM)) {
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(ServerCooldownThread);
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(ServerEventThread);
-		}
-	}
-
 	/*
 		Run this in your init.c
 	
@@ -73,51 +61,53 @@ class EventManager
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
 				
-		m_NextEventIn = GetNextEventTime();
-		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());	
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ServerEventThread, m_NextEventIn * 1000);
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ServerCooldownThread, 1000);
-		
+		// Immediately set the value to avoid an event running before players join
+		m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
+		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
 		EventManagerLog.Info(this, "EventManager is now running");
+		
+		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(OnUpdate);
+		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(OnUpdate);
 	}
 	
-	protected void ServerCooldownThread()
+	void OnUpdate(float dt)
 	{
+		// Not initialized, dont run
+		if (m_MaxEventCount == 0 || m_PossibleEventTypes.Count() == 0) {
+			return;
+		}
+		
 		foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
-			m_EventCooldowns[event_type] = event_cooldown - 1.0;
-			if (event_cooldown <= 0) {
+			m_EventCooldowns[event_type] = m_EventCooldowns[event_type] - dt;
+			if (m_EventCooldowns[event_type] <= 0) {
 				m_EventCooldowns.Remove(event_type);
 			}
 		}
-	}
+		
+		m_NextEventIn -= dt;
+		if (m_NextEventIn <= 0) {
+			EventManagerLog.Info(this, "Trying to select a new event...");												
+			// Just a quick check to make sure we dont run the same event twice
+			typename current_type = GetRandomEvent();
+			while (current_type == m_LastEventType && m_PossibleEventTypes.Count() > 1) {
+				EventManagerLog.Debug(this, "Random event selected was the same as last %1", current_type.ToString());
+				current_type = GetRandomEvent();
+			}
 			
-	protected void ServerEventThread()
-	{	
-		EventManagerLog.Info(this, "Trying to select a new event...");												
-		// Just a quick check to make sure we dont run the same event twice
-		typename current_type = GetRandomEvent();
-		while (current_type == m_LastEventType && m_PossibleEventTypes.Count() > 1) {
-			EventManagerLog.Debug(this, "Random event selected was the same as last %1", current_type.ToString());
-			current_type = GetRandomEvent();
+			m_LastEventType = current_type;
+			
+			//! Start new event
+			StartEvent(current_type);
+			
+			//! Rounding next event time, shouldnt cause issues our numbers arent huge
+			m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
+			EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
 		}
-		
-		m_LastEventType = current_type;
-		
-		//! Start new event
-		StartEvent(current_type);
-		
-		m_NextEventIn = GetNextEventTime();
-		EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
-				
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(ServerEventThread, m_NextEventIn * 1000);
 	}
 	
 	void RegisterEvent(typename event_type, float frequency = 1.0)
 	{
-		if (frequency <= 0) {
-			return;
-		}
-		
+		EventManagerLog.Debug(this, "RegisterEvent: %1, freq: %2", event_type.ToString(), frequency.ToString());
 		m_PossibleEventTypes[event_type] = frequency;
 	}
 	
@@ -458,12 +448,7 @@ class EventManager
 				
 		return possible_types.GetRandomElement();
 	}
-	
-	float GetNextEventTime()
-	{
-		return Math.Clamp(Math.RandomInt(m_EventFreqMin, m_EventFreqMax), 10, int.MAX);
-	}
-	
+		
 	// again, you only need to worry about event_id if you allow parralel events
 	EventBase GetEvent(typename event_type, int event_id = 0)
 	{

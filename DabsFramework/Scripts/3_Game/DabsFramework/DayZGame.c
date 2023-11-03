@@ -40,7 +40,7 @@ modded class DayZGame
 		}
 	}
 
-#ifdef DIAG_DEVELOEPR	
+#ifdef DIAG_DEVELOPER
 	override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{
 		super.OnRPC(sender, target, rpc_type, ctx);

@@ -4,7 +4,7 @@ class EventManagerLog: LoggerBase
 	// inst is of type EventBase
 	static void Debug(Class inst, string msg, string param1 = "", string param2 = "", string param3 = "", string param4 = "", string param5 = "", string param6 = "", string param7 = "", string param8 = "", string param9 = "")
 	{
-#ifdef EVENT_MANAGER_DEBUG
+#ifdef DIAG_DEVELOPER
 		string inst_type;
 		if (inst) {
 			inst_type = "[" + inst.Type() + "]";
@@ -29,7 +29,7 @@ class EventManagerLog: LoggerBase
 		DoLog(EventManagerLog, log);
 	}
 	
-#ifdef EVENT_MANAGER_DEBUG
+#ifdef DIAG_DEVELOPER
 	override bool DuplicateToConsole()
 	{
 		return true;
