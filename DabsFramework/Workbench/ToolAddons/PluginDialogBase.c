@@ -9,7 +9,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "dta", "platforms"};
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
-	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceBrowser");
+	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceManager");
 	
 	void ErrorDialog(string error)
 	{

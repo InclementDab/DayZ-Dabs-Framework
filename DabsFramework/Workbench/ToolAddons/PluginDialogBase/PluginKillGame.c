@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Close Game", "Kills all running instances of DayZ", "F10", "", {"ScriptEditor", "ResourceBrowser"})]
+[WorkbenchPluginAttribute("Close Game", "Kills all running instances of DayZ", "F10", "", {"ScriptEditor", "ResourceManager"})]
 class PluginKillGame: PluginProject
 {
 	void PluginKillGame()

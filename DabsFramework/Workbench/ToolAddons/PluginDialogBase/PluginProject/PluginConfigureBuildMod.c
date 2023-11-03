@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Configure Build Game", "Configures the build tools", "Ctrl+F8", "", {"ScriptEditor", "ResourceBrowser"})]
+[WorkbenchPluginAttribute("Configure Build Game", "Configures the build tools", "Ctrl+F8", "", {"ScriptEditor", "ResourceManager"})]
 class PluginConfigureBuild: PluginProject
 {
 	override void Run()

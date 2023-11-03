@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Launch Game", "Lanches DayZ", "F6", "", {"ScriptEditor", "ResourceBrowser"})]
+[WorkbenchPluginAttribute("Launch Game", "Lanches DayZ", "F6", "", {"ScriptEditor", "ResourceManager"})]
 class PluginLaunchGame: PluginLaunchGameBase
 {
 	void PluginLaunchGame()

@@ -1,4 +1,4 @@
-/*[WorkbenchPluginAttribute("Mod File", "Mods current opened file", "Ctrl+M", "", {"ScriptEditor", "ResourceBrowser"})]
+/*[WorkbenchPluginAttribute("Mod File", "Mods current opened file", "Ctrl+M", "", {"ScriptEditor", "ResourceManager"})]
 class PluginModCurrentFile: PluginDialogBase
 {
 	[Attribute("", "editbox")]
