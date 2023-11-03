@@ -8,6 +8,7 @@ function Get-ToolsVersion {
     return Get-Content $version_file
 }
 
+# Downloads tools from website, returns where it downloaded to your PC
 function Download-Tools {
     param (
         [Version]$Version,
@@ -18,11 +19,12 @@ function Download-Tools {
     $destination = Join-Path -Path $DestinationFolder -ChildPath "ModTemplate-$Version.zip"
     if (Test-Path -Path $destination) {
         Write-Host "File $destination already exists, skipping..."
-        return
+        return $destination
     }
 
     Write-Host "Downloading file '$url'"
     Invoke-WebRequest -Uri $url -OutFile $destination
+    return $destination
 }
 
 # Get current template version
@@ -65,4 +67,10 @@ if (-Not (Test-Path $download_directory)) {
     New-Item -ItemType Directory -Path $download_directory
 }
 
-Download-Tools -Version $latest_version -Destination $download_directory
+$download_zip = Download-Tools -Version $latest_version -Destination $download_directory
+$download_extract = $download_zip -replace '\.zip', ''
+
+# Uncompress file
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::ExtractToDirectory($download_zip, $download_extract)
+
