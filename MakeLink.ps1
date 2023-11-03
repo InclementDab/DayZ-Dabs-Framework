@@ -19,6 +19,20 @@ function Get-ModPrefix {
     return Get-Content $prefix_file
 }
 
+function Get-Workdrive {
+    $workdrive = "P:\"
+
+    while (-Not (Test-Path -Path $workdrive)) {
+        # Get workdrive name
+        $workdrive = Read-Host -Prompt 'Destination Path (P:\)'
+        if ("" -eq $workdrive) {
+            $workdrive = "P:\"
+        }
+    }
+
+    return $workdrive
+}
+
 # Self elevating powershell script
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit }
 
@@ -30,19 +44,7 @@ if (-Not (Test-Path -Path $source)) {
     return
 }
 
-$workdrive = Read-Host -Prompt 'Destination Path (P:\)'
-if ("" -eq $workdrive) {
-    $workdrive = "P:\"
-}
-
-if (-Not (Test-Path -Path $workdrive)) {
-    Write-Host "Destination Path is not valid $($workdrive)" -ForegroundColor Red
-    Write-Host -NoNewLine 'Press any key to continue...'
-    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-    return
-}
-
-$destination = Join-Path -Path $workdrive -ChildPath (Get-ModPrefix)
+$destination = Join-Path -Path (Get-Workdrive) -ChildPath (Get-ModPrefix)
 if (Test-Path -Path $destination) {
     # File already exists
     return
