@@ -11,12 +11,11 @@ function Get-ToolsVersion {
 # Downloads tools from website, returns where it downloaded to your PC
 function Download-Tools {
     param (
-        [Version]$Version,
-        [string]$DestinationFolder
+        [Version]$Version
     )
 
     $url = "https://dab.dev/template/packages/ModTemplate-$Version.zip"
-    $destination = Join-Path -Path $DestinationFolder -ChildPath "ModTemplate-$Version.zip"
+    $destination = Join-Path -Path $env:TEMP -ChildPath "ModTemplate-$Version.zip"
     if (Test-Path -Path $destination) {
         Write-Host "File $destination already exists, skipping..."
         return $destination
@@ -61,16 +60,19 @@ if ($update_choice -eq 'n') {
 Write-Host "Updating to '$latest_version'"
 
 # Download the latest version
-$download_directory = Join-Path -Path $PSScriptRoot -ChildPath temp
+$download_archive = Download-Tools -Version $latest_version
+$download_folder = ($download_archive -replace '\.zip', '');
 
-if (-Not (Test-Path $download_directory)) {
-    New-Item -ItemType Directory -Path $download_directory
+if (Test-Path -Path $download_folder) {
+    Remove-Item $download_folder -Force -Recurse
 }
-
-$download_zip = Download-Tools -Version $latest_version -Destination $download_directory
-$download_extract = $download_zip -replace '\.zip', ''
 
 # Uncompress file
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::ExtractToDirectory($download_zip, $download_extract)
+[System.IO.Compression.ZipFile]::ExtractToDirectory($download_archive, $download_folder)
+
+# Delete zip file
+Remove-Item $download_archive -Force
+
+
 
