@@ -35,6 +35,13 @@ if ("" -eq $workdrive) {
     $workdrive = "P:\"
 }
 
+if (-Not (Test-Path -Path $workdrive)) {
+    Write-Host "Destination Path is not valid $($workdrive)" -ForegroundColor Red
+    Write-Host -NoNewLine 'Press any key to continue...'
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+    return
+}
+
 $destination = Join-Path -Path $workdrive -ChildPath (Get-ModPrefix)
 if (Test-Path -Path $destination) {
     # File already exists
