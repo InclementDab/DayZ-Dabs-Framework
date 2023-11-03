@@ -1,1 +1,1 @@
-powershell -file ./MakeLink.ps1
+powershell -file ./Deployment/MakeLink.ps1
