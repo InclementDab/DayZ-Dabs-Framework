@@ -1,1 +1,0 @@
-powershell -file ./Deployment/MakeLink.ps1

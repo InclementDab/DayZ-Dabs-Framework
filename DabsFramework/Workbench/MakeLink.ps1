@@ -1,6 +1,10 @@
-
+function Get-RepositoryRoot {
+    return (Get-Item $PSScriptRoot).parent.parent.FullName;
+}
 
 function Get-ModPrefix {
+    return (Get-Item $PSScriptRoot).parent.Name;
+
     # Define the path to the .prefix file in the current directory
     $prefix_file = Join-Path -Path (Get-RepositoryRoot) -ChildPath '.prefix'
 
@@ -36,10 +40,6 @@ function Get-Workdrive {
     }
 
     return $workdrive
-}
-
-function Get-RepositoryRoot {
-    return (Get-Item $PSScriptRoot).parent.FullName;
 }
 
 # Self elevating powershell script

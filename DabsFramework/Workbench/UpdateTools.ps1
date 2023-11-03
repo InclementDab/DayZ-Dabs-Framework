@@ -27,33 +27,12 @@ function Download-Tools {
 }
 
 function Get-RepositoryRoot {
-    return (Get-Item $PSScriptRoot).parent.FullName;
+    return (Get-Item $PSScriptRoot).parent.parent.FullName;
 }
 
 function Get-ModPrefix {
-    # Define the path to the .prefix file in the current directory
-    $prefix_file = Join-Path -Path (Get-RepositoryRoot) -ChildPath '.prefix'
-
-    # Check if the .prefix file exists
-    while (-Not (Test-Path $prefix_file)) {
-        $prefix = Read-Host -Prompt 'Enter your mod prefix'
-        if ("" -eq $prefix) {
-            Write-Error "Invalid prefix"
-            continue
-        }
-
-        $prefix_folder = Join-Path -Path (Get-RepositoryRoot) -ChildPath $prefix
-        if (-Not (Test-Path $prefix_folder)) {
-            Write-Error "The path specified is invalid ($prefix_folder)"
-        } else {
-            Set-Content -Path $prefix_file $prefix
-        }
-    }
-
-    # Return the contents of the .prefix file
-    return Get-Content $prefix_file
+    return (Get-Item $PSScriptRoot).parent.Name;
 }
-
 
 # Get current template version
 Write-Host "Fetching latest version of tools..."
@@ -107,12 +86,12 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 Remove-Item $download_archive -Force
 
 # Only update files in the ModTemplate that are .c and .cfg files (for now, todo?)
-$filtered_files = Get-ChildItem -Path "$download_folder\ModTemplate\Workbench" -Recurse -File -Include *.c
+$filtered_files = Get-ChildItem -Path "$download_folder\ModTemplate" -Recurse -File -Include *.c
 
 # Actually update the files
 foreach ($filtered_file in $filtered_files) {
     # Replace 'ModTemplate' with our prefix in the file's directory path
-    $relative_path = $filtered_file.FullName.Substring("$download_folder\ModTemplate\Workbench".Length)
+    $relative_path = $filtered_file.FullName.Substring("$download_folder\ModTemplate".Length)
 
     $new_file = Join-Path -Path $current_directory -ChildPath $relative_path
     $new_file_directory = Split-Path -Path $new_file
@@ -128,3 +107,4 @@ foreach ($filtered_file in $filtered_files) {
 
 
 # Finally update the version number
+Set-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath "VERSION") $latest_version
