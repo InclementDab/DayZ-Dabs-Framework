@@ -76,7 +76,7 @@ GameProjectClass {
 				ScriptModulePathClass {
 					Name "workbench"
 					Paths {
-						"DabsFramework/Workbench/Plugins"
+						"DabsFramework/Workbench/ToolAddons"
 					} 
 					EntryPoint "CreateWorkbench"
 				} 
