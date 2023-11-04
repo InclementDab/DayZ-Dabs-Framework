@@ -1,3 +1,16 @@
+
+# Magic C++ stuff
+Add-Type -TypeDefinition @"
+        using System;
+        using System.Runtime.InteropServices;
+        public class ForwardWindow {
+            [DllImport("user32.dll")]
+            public static extern bool SetForegroundWindow(IntPtr hWnd);
+            [DllImport("kernel32.dll")]
+            public static extern IntPtr GetConsoleWindow();
+        }
+"@ 
+
 function Get-ToolsVersion {
     $version_file = Join-Path -Path "$PSScriptRoot\..\ToolAddons" -ChildPath "VERSION"
 
@@ -35,13 +48,19 @@ function Get-ModPrefix {
 }
 
 function Get-Workdrive {
-    $workdrive = "P:\"
+    $workdrive = "X:\"
 
     while (-Not (Test-Path -Path $workdrive)) {
-        # Get workdrive name
-        $workdrive = Read-Host -Prompt 'Destination Path (P:\)'
-        if ("" -eq $workdrive) {
-            $workdrive = "P:\"
+        # Get workdrive
+        [void] [ForwardWindow]::SetForegroundWindow([ForwardWindow]::GetConsoleWindow())
+
+        Add-Type -AssemblyName System.Windows.Forms
+        $file_browser = New-Object System.Windows.Forms.FolderBrowserDialog
+        $file_browser.Description = "Select A Folder"
+        $file_browser.SelectedPath = $workdrive
+
+        if ($file_browser.ShowDialog() -eq "OK") {
+            Write-Host $file_browser.SelectedPath
         }
     }
 

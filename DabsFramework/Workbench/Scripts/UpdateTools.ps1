@@ -70,4 +70,4 @@ foreach ($filtered_file in $filtered_files) {
 
 
 # Finally update the version number
-Set-Content -Path (Join-Path -Path "$PSScriptRoot\ToolAddons" -ChildPath "VERSION") $latest_version
+Set-Content -Path (Join-Path -Path "$download_folder\Workbench\ToolAddons" -ChildPath "VERSION") $latest_version
