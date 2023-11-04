@@ -71,4 +71,4 @@ foreach ($folder in Get-ChildItem -Directory $target_directory -Recurse) {
     }
 }
 
-Write-Host "Project Successfully Created (v$latest_version)" -ForegroundColor Green
+Write-Host "Project $name Created (v$latest_version)" -ForegroundColor Green
