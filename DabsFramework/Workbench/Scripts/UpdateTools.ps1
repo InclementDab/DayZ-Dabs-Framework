@@ -48,9 +48,6 @@ if (Test-Path -Path $download_folder) {
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::ExtractToDirectory($download_archive, $download_folder)
 
-# Delete zip file
-Remove-Item $download_archive -Force
-
 # Only update files in the ModTemplate that are .c and .cfg files (for now, todo?)
 $filtered_files = Get-ChildItem -Path "$download_folder\ModTemplate" -Recurse -File -Include *.c
 
