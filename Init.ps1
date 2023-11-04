@@ -70,3 +70,5 @@ foreach ($folder in Get-ChildItem -Directory $target_directory -Recurse) {
         Rename-Item -Path $folder.FullName -NewName $new_name
     }
 }
+
+Write-Host "Project Successfully Created (v$latest_version)" -ForegroundColor Green

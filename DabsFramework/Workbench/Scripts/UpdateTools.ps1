@@ -72,4 +72,4 @@ foreach ($filtered_file in $filtered_files) {
 # Finally update the version number
 Set-Content -Path (Join-Path -Path "$PSScriptRoot\..\ToolAddons" -ChildPath "VERSION") $latest_version
 
-Write-Host "Tools updated successfuly ($latest_version)" -ForegroundColor Green
+Write-Host "Tools updated successfuly (v$latest_version)" -ForegroundColor Green
