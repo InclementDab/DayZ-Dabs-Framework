@@ -7,6 +7,9 @@
 # DayZ Binarize
 texHeaders.bin
 
+launch.bin
+build.bin
+
 # DayZ Obfuscation
 DayZExpansion/Scripts/thing.obf
 
