@@ -20,6 +20,11 @@ class Observable
 	{
 		return m_Type;
 	}
+	
+	ViewController GetController()
+	{
+		return m_Controller;
+	}
 
 	TypeConverter GetTypeConverter()
 	{
