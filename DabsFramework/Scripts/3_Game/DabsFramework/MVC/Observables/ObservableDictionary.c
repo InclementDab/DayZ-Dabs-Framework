@@ -1,7 +1,9 @@
-class ObservableDictionary<Class TKey, Class TValue> : Observable
+/*
+	Note: Many actions on this use array.Find, since the indexing of all widget collections requires an integer index
+*/
+class ObservableDictionary<Class TKey, Class TValue>: Observable
 {
-	private	ref map<TKey, ref TValue> _data = new map<TKey, ref TValue>();
-	private	ref array<TValue> _dataArray = {};
+	protected ref map<TKey, ref TValue> m_Data = new map<TKey, ref TValue>();
 
 	void ObservableDictionary(ViewController controller)
 	{
@@ -10,115 +12,81 @@ class ObservableDictionary<Class TKey, Class TValue> : Observable
 
 	void ~ObservableDictionary()
 	{
-		delete _data;
-		delete _dataArray;
+		delete m_Data;
 	}
 
-	int Insert(TKey key, TValue value)
-	{
-		if (_data.Insert(key, value)) {
-			int index = _dataArray.Insert(value);
-			if (index == -1) {
-				Error("Inserted into map but failed to insert into array so FML.");
-				return -1;
-			}
-			
-			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Insert, index, new Param1<TValue>(value)));
-			return index;
+	bool Insert(TKey key, TValue value)
+	{		
+		if (!m_Data.Insert(key, value)) {
+			return false;
 		}
-
-		return -1;
+		
+		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Insert, m_Data.GetValueArray().Find(value), new Param1<TValue>(value)));		
+		return true;
 	}
 
 	void Remove(TKey key)
 	{
-		if (_data.Contains(key)) {
-			TValue value = _data.Get(key);
-
-			int remove_index = _dataArray.Find(value);
-			if (remove_index >= 0) _dataArray.RemoveOrdered(remove_index);
-
-			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, remove_index, new Param1<TValue>(value)));
-			
-			_data.Remove(key);
+		if (m_Data.Contains(key)) {
+			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, m_Data.GetKeyArray().Find(key), new Param1<TValue>(m_Data[key])));
+			m_Data.Remove(key);
 		}
 	}
 
 	void Remove(int index)
 	{
-		TValue value = _dataArray.Get(index);
-		_dataArray.Remove(index);
-
-		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(value)));
-
-		_data.Remove(_data.GetKeyByValue(value));
+		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(m_Data.GetElement(index))));
+		m_Data.RemoveElement(index);
 	}
 
 	void RemoveRange(int start, int end)
 	{
 		for (int i = start; i < end; i++) {
-			int index = start;
-			
-			TValue value = _dataArray.Get(index);
-			_dataArray.Remove(index);
-
-			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(value)));
-
-			_data.Remove(_data.GetKeyByValue(value));
+			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, i, new Param1<TValue>(m_Data.GetElement(i))));
+			m_Data.RemoveElement(i);
 		}
 	}
 
 	void Clear()
 	{
-		_data.Clear();
+		m_Data.Clear();
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Clear, -1, null));
 	}
 
 	void Set(TKey key, TValue value)
 	{
-		int remove_index = -1;
-
-		if (_data.Contains(key)) {
-			remove_index = _dataArray.Find(_data.Get(key));
-			if (remove_index >= 0) _dataArray.Set(remove_index, value);
-		}
-
-		_data.Set(key, value);
-		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Replace, remove_index, new Param1<TValue>(value)));
-	}
-
-	int MoveIndex(int index, int moveIndex)
-	{
-		if (moveIndex == index) {
-			return index;
+		m_Data[key] = value;
+		
+		NotifyCollectionChangedAction action = NotifyCollectionChangedAction.Replace;
+		if (!m_Data.Contains(key)) {
+			action = NotifyCollectionChangedAction.InsertAt;
 		}
 		
-		TValue value = _dataArray.Get(index);
-		int new_index = _dataArray.MoveIndex(index, moveIndex);
-		if (new_index != index) {
-			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Move, new_index, new Param1<TValue>(value)));
-		}
-		
-		return new_index;
+		CollectionChanged(new CollectionChangedEventArgs(this, action, m_Data.GetValueArray().Find(value), new Param1<TValue>(value)));
 	}
 
 	TValue Get(TKey key)
 	{
-		return _data.Get(key);
+		return m_Data.Get(key);
 	}
 
 	TKey GetKey(int index)
 	{
-		return _data.GetKey(index);
+		return m_Data.GetKey(index);
+	}
+	
+	TValue GetElement(int index)
+	{
+		return m_Data.GetElement(index);
 	}
 
 	bool Contains(TKey key)
 	{
-		return _data.Contains(key);
+		return m_Data.Contains(key);
 	}
 
 	override int Count()
 	{
-		return _data.Count();
+		return m_Data.Count();
 	}
 }
