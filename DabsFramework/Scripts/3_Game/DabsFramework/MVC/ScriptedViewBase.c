@@ -1,3 +1,5 @@
+#define DABSFRAMEWORK_1_51
+
 // Base type for all primary view Types (ScriptView, Controller, ViewBinding)
 class ScriptedViewBase: Managed
 {
@@ -43,6 +45,18 @@ class ScriptedViewBase: Managed
 		}
 	}
 	
+	void Show(bool show)
+	{
+		if (m_LayoutRoot) {
+			m_LayoutRoot.Show(show);
+		}
+	}
+	
+	bool IsVisible()
+	{
+		return m_LayoutRoot && m_LayoutRoot.IsVisible();
+	}
+	
 	void SetParent(ScriptedViewBase parent)
 	{
 		m_ParentScriptedViewBase = parent;
@@ -55,6 +69,7 @@ class ScriptedViewBase: Managed
 	{
 		Trace("OnWidgetScriptInit %1", w.ToString());
 		m_LayoutRoot = w;
+		
 		m_WidgetController = MVC.GetWidgetController(m_LayoutRoot);
 		
 		if (!m_WidgetController) {
