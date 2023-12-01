@@ -25,9 +25,8 @@ class PluginDeleteFile: PluginDialogBase
 	[ButtonAttribute("OK", true)]
 	void Ok()
 	{
-		// cmd /c del requires back slashes for whatever reason
 		string current_file = m_CurrentFile;
-		current_file.Replace("/", "\\");		
+		current_file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		Workbench.RunCmd(string.Format("cmd /c del %1", current_file));
 	}
 	

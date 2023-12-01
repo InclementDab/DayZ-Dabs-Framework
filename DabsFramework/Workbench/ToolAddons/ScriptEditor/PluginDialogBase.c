@@ -15,11 +15,27 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		Workbench.Dialog(string.Format("Error: %1", Type()), error);
 	}
+
+#ifdef WORKBENCH_PLUS_DEBUG
+	
+	override void Run()
+	{
+		PrintFormat("Run: %1", Type());
+	}
+	
+	override void RunCommandline()
+	{
+		PrintFormat("RunCommandLine: %1", Type());
+	}
+	
+#endif
 	
 	static string GetPrefix()
 	{
 		array<string> current_dir_split = {};
-		GetCurrentDirectory().Split("/", current_dir_split);
+		string current_directory = GetCurrentDirectory();
+		current_directory.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		current_directory.Split(PATH_SEPERATOR, current_dir_split);
 		return current_dir_split[current_dir_split.Count() - 2];
 	}
 	
@@ -27,6 +43,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string abs;
 		Workbench.GetAbsolutePath("$SourceData:", abs);
+		abs.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		return abs;
 	}
 	
@@ -34,6 +51,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string abs;
 		Workbench.GetAbsolutePath("$CurrentDir:", abs);
+		abs.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		return abs;
 	}
 	
@@ -228,8 +246,6 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 	}
 	
-	
-	
 	static void CopyFiles(string source, string destination)
 	{	
 		string filename;
@@ -252,5 +268,85 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		CloseFindFile(hdnl);
+	}
+	
+	static int GetScriptModuleFromFile(string file)
+	{
+		const array<string> MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission"};
+		
+		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);	
+		file.ToLower();
+		
+		array<string> tokens = {};
+		file.Split(PATH_SEPERATOR, tokens);
+		foreach (string token: tokens) {
+			int search_result = MODULES.Find(token);
+			if (search_result != -1) {
+				return search_result;	
+			}
+		}
+		
+		return -1;
+	}
+	
+ 	static bool GetClassFromFileAndCursorPosition(string current_file, int current_line, out string class_name, out bool is_modded)
+	{
+		FileHandle current_file_handle = OpenFile(current_file, FileMode.READ);
+		if (!current_file_handle) {
+			return false;
+		}
+		
+		array<string> file_contents = {};
+		string data, buffer;
+	    while (ReadFile(current_file_handle, buffer, 256) != 0) {
+	        data += buffer;
+		}
+	
+	    data.Split("\n", file_contents);
+	    CloseFile(current_file_handle);
+		
+		// Bounding check
+		current_line = Math.Min(current_line, file_contents.Count() - 1);
+		string token, line;
+		
+		// First, search UP /\
+		for (int i = current_line; i >= 0; i--) {			
+			line = file_contents[i];
+			if (!line.ParseStringEx(token)) {
+				continue;
+			}
+			
+			if (token == "modded") {
+				line.ParseStringEx(token);
+				is_modded = true;
+			}
+			
+			if (token == "class" && line.ParseStringEx(class_name)) {
+				return true;
+			}
+			
+			is_modded = false;
+		}
+		
+		// Second, search DOWN \/
+		for (int j = current_line; j < file_contents.Count(); j++) {
+			line = file_contents[j];
+			if (!line.ParseStringEx(token)) {
+				continue;
+			}
+			
+			if (token == "modded") {
+				line.ParseStringEx(token);
+				is_modded = true;
+			}
+			
+			if (token == "class" && line.ParseStringEx(class_name)) {
+				return true;
+			}
+			
+			is_modded = false;
+		}
+		
+		return false;
 	}
 }

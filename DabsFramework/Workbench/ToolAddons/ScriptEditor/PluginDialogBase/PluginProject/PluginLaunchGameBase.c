@@ -5,7 +5,7 @@ class PluginLaunchGameBase: PluginProject
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
-						
+								
 		//! Game launch script
 		// append prefix of current mod
 		m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
@@ -37,12 +37,7 @@ class PluginLaunchGameBase: PluginProject
 			ErrorDialog("You need to set the Mods setting in Plugins -> Configure -> Configure Project");
 			return;
 		}		
-		
-		if (launch_settings.ServerConfig == string.Empty) {
-			ErrorDialog("You need to set the ServerConfig setting in Plugins -> Configure -> Configure Project");
-			return;
-		}
-		
+				
 		if (launch_settings.AutoClose) {
 			KillTask(EXECUTABLE);
 		}
@@ -50,11 +45,7 @@ class PluginLaunchGameBase: PluginProject
 		// Set up symlinks so game can launch with our cwd
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
-		
-		if (!FileExist(launch_settings.ServerConfig)) {
-			CopyFile(launch_settings.Repository + "\\ServerDZ.cfg", launch_settings.ServerConfig);
-		}
-		
+
 		// Set up filepatching, needs to either create or delete all links depending on the setting
 		if (launch_settings.FilePatching) {
 			foreach (string prefix: m_Prefixes) {
@@ -133,9 +124,9 @@ class PluginLaunchGameBase: PluginProject
 		CopyFiles(string.Format("%1\\Missions\\Dev", launch_settings.Repository), server_mission);
 		
 		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
-		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", formatted_mod_list, server_profile_directory, formatted_server_mod_list, launch_settings.ServerConfig, server_mission);
+		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission);
 		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, server_mission);
-		
+
 		string ip, password;
 		int port;
 		if (GetConnectionArguments(ip, port, password)) {

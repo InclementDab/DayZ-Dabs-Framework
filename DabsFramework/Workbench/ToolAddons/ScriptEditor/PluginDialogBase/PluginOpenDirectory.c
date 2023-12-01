@@ -5,10 +5,12 @@ class PluginOpenDirectory: PluginDialogBase
 	{
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
-		string absolute_directory = GetDirectory(GetAbsolutePath(current_file));		
-		absolute_directory.Replace(PATH_SEPERATOR, PATH_SEPERATOR_ALT);
+		string absolute_directory = GetDirectory(GetAbsolutePath(current_file));
 		
-		// rip unix bozos
+#ifdef PLATFORM_WINDOWS
 		Workbench.RunCmd(string.Format("explorer %1", absolute_directory));
+#else 
+		Workbench.RunCmd(string.Format("xdg-open %1", absolute_directory));
+#endif		
 	}
 }

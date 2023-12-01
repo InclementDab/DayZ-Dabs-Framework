@@ -2,6 +2,7 @@ class PluginProject: PluginDialogBase
 {
 	static const string PROJECT_CFG = "project.cfg";
 	static const string PREFIX_CFG = "prefixes.cfg";
+	static const string SERVER_CFG = "server.cfg";
 	static const string LAUNCH_BIN = "launch.bin";
 	static const string BUILD_BIN = "build.bin";
 
@@ -13,6 +14,7 @@ class PluginProject: PluginDialogBase
 	
 	protected ref map<string, string> m_ProjectSettings = new map<string, string>();
 	protected ref array<string> m_Prefixes = {};
+	protected string m_ServerConfig;
 	
 	protected ref LaunchSettings m_LaunchSettings;
 	protected ref BuildSettings m_BuildSettings;
@@ -39,9 +41,19 @@ class PluginProject: PluginDialogBase
 			return;
 		}
 		
-		LoadPrefixes(current_dir + PREFIX_CFG, m_Prefixes);
+		// Load server config
+		m_ServerConfig = current_dir + SERVER_CFG;
+		if (!FileExist(m_ServerConfig)) {
+			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, current_dir));
+			return;
+		}
+		
+		if (!LoadPrefixes(current_dir + PREFIX_CFG, m_Prefixes)) {
+			ErrorDialog(string.Format("Failed to load %1 in %2", PREFIX_CFG, current_dir));
+			return;
+		}
 	}
-			
+				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
 	{
 		if (!FileExist(file)) {
