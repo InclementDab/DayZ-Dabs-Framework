@@ -38,7 +38,7 @@ class TestController: ViewController
 
 class ObservableCollection<Class TValue> : Observable
 {
-	protected ref array<autoptr TValue> _data = {};
+	protected ref array<autoptr TValue> m_Data = {};
 
 	void ObservableCollection(ViewController controller)
 	{
@@ -47,12 +47,12 @@ class ObservableCollection<Class TValue> : Observable
 
 	void ~ObservableCollection()
 	{
-		delete _data;
+		delete m_Data;
 	}
 
 	int Insert(TValue value)
 	{
-		int index = _data.Insert(value);
+		int index = m_Data.Insert(value);
 		if (index != -1) {
 			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Insert, index, new Param1<TValue>(value)));
 		}
@@ -62,7 +62,7 @@ class ObservableCollection<Class TValue> : Observable
 
 	int InsertAt(TValue value, int index)
 	{
-		int new_index = _data.InsertAt(value, index);
+		int new_index = m_Data.InsertAt(value, index);
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.InsertAt, index, new Param1<TValue>(value)));
 		return new_index;
 	}
@@ -81,35 +81,35 @@ class ObservableCollection<Class TValue> : Observable
 		TValue value; // scoofed
 		g_Script.CallFunction(typeConverter, "GetData", value, null);
 		Print(value);
-		int new_index = _data.InsertAt(value, index);
+		int new_index = m_Data.InsertAt(value, index);
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.InsertAt, index, new Param1<TValue>(value)));
 		return new_index;
 	}*/
 
 	void Remove(int index)
 	{
-		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(_data.Get(index))));
-		_data.Remove(index);
+		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(m_Data.Get(index))));
+		m_Data.Remove(index);
 	}
 	
 	void RemoveOrdered(int index)
 	{	// not sure if anything other than the Editor Log Entries removal needs this. but it works
-		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(_data.Get(index))));
-		_data.RemoveOrdered(index);
+		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, index, new Param1<TValue>(m_Data.Get(index))));
+		m_Data.RemoveOrdered(index);
 	}
 
 	void RemoveRange(int start, int end)
 	{
 		for (int i = start; i < end; i++)
 		{
-			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, start, new Param1<TValue>(_data.Get(start))));
-			_data.RemoveOrdered(start);
+			CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Remove, start, new Param1<TValue>(m_Data.Get(start))));
+			m_Data.RemoveOrdered(start);
 		}
 	}
 
 	void Remove(TValue value)
 	{
-		int index = _data.Find(value);
+		int index = m_Data.Find(value);
 		if (index != -1) {
 			Remove(index);
 		}
@@ -118,46 +118,46 @@ class ObservableCollection<Class TValue> : Observable
 	void Set(int index, TValue value)
 	{
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Replace, index, new Param1<TValue>(value)));
-		_data.Set(index, value);
+		m_Data.Set(index, value);
 	}
 
 	int MoveIndex(int index, int moveIndex)
 	{
-		TValue value = _data.Get(index);
-		int new_index = _data.MoveIndex(index, moveIndex);
+		TValue value = m_Data.Get(index);
+		int new_index = m_Data.MoveIndex(index, moveIndex);
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Move, new_index, new Param1<TValue>(value)));
 		return new_index;
 	}
 
 	void SwapItems(int itemA, int itemB)
 	{
-		_data.SwapItems(itemA, itemB);
+		m_Data.SwapItems(itemA, itemB);
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Swap, -1, new CollectionSwapArgs(itemA, itemB)));
 	}
 
 	void Clear()
 	{
-		_data.Clear();
+		m_Data.Clear();
 		CollectionChanged(new CollectionChangedEventArgs(this, NotifyCollectionChangedAction.Clear, -1, null));
 	}
 
 	TValue Get(int index)
 	{
-		return _data.Get(index);
+		return m_Data.Get(index);
 	}
 
 	override int Count()
 	{
-		return _data.Count();
+		return m_Data.Count();
 	}
 	
 	array<ref TValue> GetArray()
 	{
-		return _data;
+		return m_Data;
 	}
 
 	int Find(TValue value)
 	{
-		return _data.Find(value);
+		return m_Data.Find(value);
 	}
 }
