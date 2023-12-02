@@ -7,6 +7,9 @@ class BuildSettings: SerializableBase
 	//[Attribute("", "flags", "Choose which folders to build", "", EnumerateBuildableFolders())]
 	int BuildFolders;
 	
+	[Attribute("", "editbox", "Build Command")]
+	string Command;
+	
 	void Save(string file)
 	{
 		FileSerializer serializer = new FileSerializer();
@@ -40,6 +43,7 @@ class BuildSettings: SerializableBase
 		settings.m_CurrentFileLocation = file;
 		if (!FileExist(file)) {
 			//settings.BuildFolders; // default all masked
+			settings.Command = "pboProject";
 			settings.Save(file);
 			return settings;
 		}
@@ -62,6 +66,7 @@ class BuildSettings: SerializableBase
 	{
 		serializer.Write(VERSION);
 		serializer.Write(BuildFolders);
+		serializer.Write(Command);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -71,6 +76,10 @@ class BuildSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(BuildFolders)) {
+			return false;
+		}		
+		
+		if (!serializer.Read(Command)) {
 			return false;
 		}
 		

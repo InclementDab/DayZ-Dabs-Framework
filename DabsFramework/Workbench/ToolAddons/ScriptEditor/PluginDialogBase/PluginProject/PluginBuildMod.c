@@ -45,6 +45,6 @@ class PluginBuildMod: PluginProject
 		
 		//CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
 		
-		Workbench.RunCmd(string.Format("pboProject -Mod=%1 P:\\%2", mod_output, mod_prefix));
+		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2", mod_output, mod_prefix, m_BuildSettings.Command));
 	}
 }
