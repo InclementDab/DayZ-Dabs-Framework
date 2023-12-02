@@ -1,6 +1,7 @@
 class PriorityQueue<Class TElement, Class TPriority>
 {
 	static const TElement ELEMENT_DEFAULT;
+	static const TPriority PRIORITY_DEFAULT;
 
 	protected int m_Capacity;
 	protected ref array<ref Managed> m_StrongRefElements = {};
@@ -99,6 +100,18 @@ class PriorityQueue<Class TElement, Class TPriority>
 
 		Param2<TElement, TPriority> item = m_Elements[index];
 		return item.param1;
+	}
+	
+	// returns priority of current element, slow
+	TPriority GetPriority(TElement item)
+	{
+		for (int i = 0; i < m_Elements.Count(); i++) {
+			if (m_Elements[i].param1 == item) {
+				return m_Elements[i].param2;
+			}
+		}
+		
+		return PRIORITY_DEFAULT;
 	}
 
 	// returns max capacity of the queue
