@@ -1,9 +1,9 @@
-//[WorkbenchPluginAttribute("Find Unmodded File", "Searches for the unmodded version of your class", "Ctrl+B", "", {"ScriptEditor"})]
+[WorkbenchPluginAttribute("Find Unmodded File", "Searches for the unmodded version of your class", "Ctrl+B", "", {"ScriptEditor"})]
 class PluginNavigateToUnmoddedFile: PluginDialogBase
 {
 	protected string m_CurrentFile, m_ClassName, m_FinalFileName;
 	protected bool m_IsModded;
-	protected int m_ScriptModule;
+	protected int m_ScriptModule = -1;
 	
 	void PluginNavigateToUnmoddedFile()
 	{
@@ -14,26 +14,56 @@ class PluginNavigateToUnmoddedFile: PluginDialogBase
 		if (!GetClassFromFileAndCursorPosition(m_CurrentFile, m_ScriptEditor.GetCurrentLine(), m_ClassName, m_IsModded)) {			
 			return; // Couldnt find a class to mod
 		}
-		
-		if (!m_IsModded) {
-			PrintFormat("Class %1 isn't modded", m_ClassName);
-			return;
-		}
-		
+				
 		m_ScriptModule = GetScriptModuleFromFile(m_CurrentFile);
 	}
 	
 	void ~PluginNavigateToUnmoddedFile()
 	{
+		if (m_ClassName == string.Empty) {
+			Print("Couldnt find classname in current file");
+			return;
+		}
+		
+		if (!m_IsModded) {
+			Print("No modded classname found in current file");
+			return;
+		}
+				
 		if (m_FinalFileName != string.Empty) {
 			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
+		} else {
+			Error(string.Format("Could not find file with non-modded class %1, is the file name the same as your class?", m_ClassName));
 		}
 	}
 	
 	override void Run()
 	{
-		if (m_ScriptModule != -1) {
-			
+		if (m_ScriptModule == -1 || !m_IsModded) {			
+			return;
 		}
+		
+		Workbench.SearchResources(m_ClassName, OnResourceFound);
+	}
+	
+	protected void OnResourceFound(string resource)
+	{
+		if (m_FinalFileName != string.Empty) {
+			return;
+		}
+		
+		string class_name;
+		bool is_modded;
+		if (!GetClassFromFileAndCursorPosition(resource, 0, class_name, is_modded)) {			
+			return;
+		}
+		
+		if (is_modded) {
+			return;
+		}
+		
+		array<string> split = {};
+		resource.Split(":", split);
+		m_FinalFileName = split[1];
 	}
 }
