@@ -1,72 +1,76 @@
 # DayZ-Dabs-Framework
 
-## Introduction
+Dabs Framework is a complete, open-source modding framework for DayZ Standalone. Created lovingly by [InclementDab](https://twitter.com/InclementDab)
 
-Dabs Framework is a complete, open-source modding framework for DayZ Standalone. For documentation please view the [wiki](https://github.com/InclementDab/DayZ-Dabs-Framework/wiki)
+## Documentation
 
-## Installation
+Todo... <3
 
-Navigate to your project folder in any terminal of your choice, I use command prompt. 
+## Using the Workbench Plugins
 
-**Important:** Do not clone this repository into your your Workdrive. This is a built clone for all source files, your workdrive will be handled below
+1. **Add ToolAddons to your project**
+    - [DayZ-Mod-Template](https://github.com/InclementDab/DayZ-Mod-Template) users can skip this step
+    - In your `dayz.gproj`, add the line `"DabsFramework/Workbench/ToolAddons"` to the Workbench script module
+    ![Alt text](Source/gproj.png)
 
-### Setting up Workdrive
+2. **Configure Project**
+    - Set `Repository` setting in `(Plugins -> Configure Project)` (Example: `C:/Dev/proj/DayZ-Dabs-Framework`)
 
-```
-# Clone the repository onto your PC
-git clone https://github.com/InclementDab/DayZ-Dabs-Framework.git
+3. **Build Project**
+    - Build the mod by navigating to `(Plugins -> Build Project)`
 
-# Go to your newly cloned folder
-cd DayZ-Dabs-Framework
+4. **Launch Project**
+   - Launch the mod by navigating to `(Plugins -> Launch Game)`
 
-# Run Make file
-MakeLink.bat
-```
+<details>
+    <Summary>Project Settings</summary>
 
-### Launching Workbench
+- `Repository` The file path to your project's repository, containing your primary prefix folder. (Example: `C:/Dev/proj/DayZ-Dabs-Framework`)
+- `Profiles` Path to directory where profiles will be generated
+- `Missions` Path to directory where missions will be generated
+- `Mods` Path to directroy where mods will be symlinked
+- `LaunchType` Type of server launch mode
+  - `CLIENT`: Only the client will launch
+  - `SERVER`: Only the server will launch
+  - `BOTH`: Both server and client will launch and connection
+  - `OFFLINE`: Only the client will launch with a mission file
 
-```
-# Navigate to the project folder
-../DabsFramework/Workbench
+- `ServerPassword` Server password for auto-join
+- `Map` Map to load (`ChernarusPlus`)
+- `FilePatching` Create file patching sym-links from `prefixes.cfg` on game launch
+- `Deloginator` Automatically delete logs when there are more than 5 in profiles
+- `AutoClose` Automatically close game when re-launching
 
-# Open the project
-Double click 'dayz.gproj'. If prompted, open with Workbench (located in 'steamapps/common/DayZ Tools/Bin/Workbench')
+</details>
 
-# Set Source Data Directory (Workbench -> Options)
-Set "Source Data Directory" to DayZ install path (e.g., C:/.../DayZ Exp) 
-Restart Workbench by reopening dayz.gproj
+<details>
+    <Summary>Build Settings</summary>    
 
-# Configure Project (Plugins -> Settings -> Configure Project)
-Set Repository path to mod location (e.g., C:/Dev/proj/DayZ-Dabs-Framework)
-```
+- `Command` Launch command to for project build. Command prompt syntax is %Command% -Mod=@OutputFolder InputFolder
+</details>
 
-## Workbench Shortcuts
-
-All plugin shortcuts are listed below
+<details>
+    <Summary>Shortcuts</summary>
 
 | Key          | Command                     |
 |--------------|-----------------------------|
 | <kbd>F6</kbd> | Launch Game |
+| <kbd>F8</kbd> | Build Mod |
 | <kbd>Ctrl</kbd> + <kbd>F6</kbd> | Configure Project |
+| <kbd>Ctrl</kbd> + <kbd>F8</kbd> | Configure Build |
+| <kbd>F5</kbd> | Join Remote Game |
 | <kbd>F10</kbd> | Close Game |
 | <kbd>Ctrl</kbd> + <kbd>N</kbd> | Create New File |
 | <kbd>Ctrl</kbd> + <kbd>-</kbd> | Open Current Directory |
 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F2</kbd> | Rename Current File |
 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Delete</kbd> | Delete Current File |
 
-You can find more information on the [DayZ Workbench Wiki](https://community.bistudio.com/wiki/DayZ:Workbench_Script_Debugging)
+</details>
 
-
-# Mod Template
-
-## Creating a New Mod
-```
-# Launch Script
-Run script ./CreateMod.ps1
-```
+You can find additional information on the [DayZ Workbench Wiki](https://community.bistudio.com/wiki/DayZ:Workbench_Script_Debugging)
 
 ## License
 
-This mod is licensed under [CC Attribution NonCommercial NoDerivatives 4.0](LICENSE.md)
+Your tool is licensed under [MIT License](LICENSE.md).
 
-For any additional questions or feedback, please raise an issue in this repository or contact [Tyler Paul](mailto:tylerpaul2329@gmail.com).
+For any additional questions or feedback, please raise an issue in this repository or contact [Dab](mailto:inclementdab@gmail.com).
