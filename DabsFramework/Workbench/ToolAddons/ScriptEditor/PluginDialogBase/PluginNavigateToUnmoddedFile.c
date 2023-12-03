@@ -11,7 +11,8 @@ class PluginNavigateToUnmoddedFile: PluginDialogBase
 			return; // Doesnt need an error, really
 		}
 
-		if (!GetClassFromFileAndCursorPosition(m_CurrentFile, m_ScriptEditor.GetCurrentLine(), m_ClassName, m_IsModded)) {			
+		if (!GetClassFromFileAndCursorPosition(m_CurrentFile, m_ScriptEditor.GetCurrentLine(), m_ClassName, m_IsModded)) {		
+			PrintFormat("Couldnt find classname in file %1", m_CurrentFile);	
 			return; // Couldnt find a class to mod
 		}
 				
@@ -20,20 +21,13 @@ class PluginNavigateToUnmoddedFile: PluginDialogBase
 	
 	void ~PluginNavigateToUnmoddedFile()
 	{
-		if (m_ClassName == string.Empty) {
-			Print("Couldnt find classname in current file");
+		if (m_FinalFileName != string.Empty) {
+			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
 			return;
 		}
 		
-		if (!m_IsModded) {
-			Print("No modded classname found in current file");
-			return;
-		}
-				
-		if (m_FinalFileName != string.Empty) {
-			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
-		} else {
-			Error(string.Format("Could not find file with non-modded class %1, is the file name the same as your class?", m_ClassName));
+		if (m_ClassName != string.Empty && m_IsModded) {
+			Print(string.Format("Could not find file with non-modded class %1, is the file name the same as your class?", m_ClassName));
 		}
 	}
 	
