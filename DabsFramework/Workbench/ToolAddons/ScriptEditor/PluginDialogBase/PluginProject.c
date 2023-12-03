@@ -1,10 +1,10 @@
 class PluginProject: PluginDialogBase
 {
 	static const string PROJECT_CFG = "project.cfg";
-	static const string PREFIX_CFG = "prefixes.cfg";
 	static const string SERVER_CFG = "server.cfg";
 	static const string LAUNCH_BIN = "launch.bin";
 	static const string BUILD_BIN = "build.bin";
+	static const string GPROJ = "dayz.gproj";
 
 //#ifdef DIAG_DEVELOPER
 	static const string EXECUTABLE = "DayZDiag_x64.exe";
@@ -13,11 +13,12 @@ class PluginProject: PluginDialogBase
 //#endif
 	
 	protected ref map<string, string> m_ProjectSettings = new map<string, string>();
-	protected ref array<string> m_Prefixes = {};
+	protected ref set<string> m_Prefixes = new set<string>();
 	protected string m_ServerConfig;
 	
 	protected ref LaunchSettings m_LaunchSettings;
 	protected ref BuildSettings m_BuildSettings;
+	protected ref ProjectSettings m_GprojSettings;
 	
 	void PluginProject()
 	{
@@ -48,9 +49,11 @@ class PluginProject: PluginDialogBase
 			return;
 		}
 		
-		if (!LoadPrefixes(current_dir + PREFIX_CFG, m_Prefixes)) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", PREFIX_CFG, current_dir));
-			return;
+		m_GprojSettings = ProjectSettings.Load(current_dir + GPROJ);
+		foreach (ProjectSettings settings: m_GprojSettings.Classes["GameProjectClass"].Classes["Configurations"].Classes["PC"].Classes["ScriptModules"].Classes) {
+			foreach (string path: settings.Classes["Paths"].Data) {
+				m_Prefixes.Insert(path);
+			}
 		}
 	}
 				

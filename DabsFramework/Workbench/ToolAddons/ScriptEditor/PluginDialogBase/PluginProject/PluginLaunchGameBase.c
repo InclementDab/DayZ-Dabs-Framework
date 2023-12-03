@@ -53,7 +53,16 @@ class PluginLaunchGameBase: PluginProject
 				prefix.Replace("\t", "");
 				prefix.Replace("\n", "");
 				prefix.Replace("\r", "");
-				MakeDirectory(workbench_directory + PATH_SEPERATOR_ALT + prefix + "\\..\\");
+				
+				array<string> prefix_split = {};
+				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
+				
+				string built_path = workbench_directory + PATH_SEPERATOR_ALT;
+				for (int k = 0; k < prefix_split.Count() - 1; k++) {
+					built_path += prefix_split[k] + PATH_SEPERATOR_ALT;
+					MakeDirectory(built_path);
+				}
+				
 				PromiseSymLink(root + PATH_SEPERATOR_ALT + prefix, workbench_directory + PATH_SEPERATOR + prefix);
 			}
 		} else {
