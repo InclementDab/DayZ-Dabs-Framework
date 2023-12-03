@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Mod File", "Mods current opened file", "Ctrl+M", "", {"ScriptEditor"})]
+//[WorkbenchPluginAttribute("Mod File", "Mods current opened file", "Ctrl+M", "", {"ScriptEditor"})]
 class PluginModCurrentFile: PluginDialogBase
 {	
 	protected string m_CurrentFile, m_ClassName, m_FinalFileName;
