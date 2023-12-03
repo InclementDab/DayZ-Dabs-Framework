@@ -13,11 +13,11 @@ class ScriptedViewBase: Managed
 
 	// Source Widget Controller
 	[NonSerialized()]
-	protected autoptr WidgetController m_WidgetController;
+	protected ref WidgetController m_WidgetController;
 
 	// ScriptedViewBase Type Converter
 	[NonSerialized()]
-	protected autoptr TypeConverter m_TypeConverter;
+	protected ref TypeConverter m_TypeConverter;
 
 	// ScriptedViewBase parent
 	[NonSerialized()]

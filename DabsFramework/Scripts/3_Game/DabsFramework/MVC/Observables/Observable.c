@@ -1,8 +1,8 @@
 // Base class for all Observable Types (ObservableCollection, ObservableSet, ObservableDictionary)
-class Observable
+class Observable: Managed
 {
 	// Assigned on Constructor of super
-	private	typename m_Type;
+	protected typename m_Type;
 
 	protected ViewController m_Controller;
 

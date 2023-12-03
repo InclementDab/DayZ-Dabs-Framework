@@ -1,3 +1,13 @@
+[Testing()]
+class Testing
+{
+	void Testing()
+	{
+		Print("HELLLOO");
+	}
+}
+
+
 class ViewBinding : ScriptedViewBase
 {
 	// Name of Variable to bind to
@@ -13,7 +23,7 @@ class ViewBinding : ScriptedViewBase
 	reference string Relay_Command;
 
 	// Strong reference to Relay Command
-	protected autoptr RelayCommand m_RelayCommand;
+	protected ref RelayCommand m_RelayCommand;
 	void SetRelayCommand(RelayCommand relay_command)
 	{
 		m_RelayCommand = relay_command;
@@ -25,13 +35,13 @@ class ViewBinding : ScriptedViewBase
 		return m_RelayCommand;
 	}
 
-	protected autoptr TypeConverter m_PropertyConverter;
+	protected ref TypeConverter m_PropertyConverter;
 	TypeConverter GetPropertyConverter()
 	{
 		return m_PropertyConverter;
 	}
 
-	protected autoptr TypeConverter m_SelectedConverter;
+	protected ref TypeConverter m_SelectedConverter;
 	TypeConverter GetSelectedConverter()
 	{
 		return m_SelectedConverter;
