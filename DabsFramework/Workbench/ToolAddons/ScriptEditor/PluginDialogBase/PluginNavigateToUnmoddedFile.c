@@ -15,7 +15,7 @@ class PluginNavigateToUnmoddedFile: PluginDialogBase
 			PrintFormat("Couldnt find classname in file %1", m_CurrentFile);	
 			return; // Couldnt find a class to mod
 		}
-				
+		
 		m_ScriptModule = GetScriptModuleFromFile(m_CurrentFile);
 	}
 	

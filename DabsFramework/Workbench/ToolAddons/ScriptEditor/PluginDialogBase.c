@@ -7,6 +7,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const string DEFAULT_EXTENSION = ".c";
 	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "dta", "platforms"};
+	static const ref array<string> SCRIPT_MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission", "workbench"};
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
 	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceManager");
@@ -166,6 +167,7 @@ class PluginDialogBase: WorkbenchPlugin
 		// Creates needed directories
 		string absolute_file_rebuild;
 		array<string> absolute_file_split = {};
+		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		file.Split(PATH_SEPERATOR, absolute_file_split);
 		for (int i = 0; i < absolute_file_split.Count(); i++) {
 			if (absolute_file_split[i].Contains(".")) {
@@ -272,21 +274,53 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int GetScriptModuleFromFile(string file)
 	{
-		const array<string> MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission"};
-		
 		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);	
 		file.ToLower();
 		
 		array<string> tokens = {};
 		file.Split(PATH_SEPERATOR, tokens);
 		foreach (string token: tokens) {
-			int search_result = MODULES.Find(token);
+			int search_result = SCRIPT_MODULES.Find(token);
 			if (search_result != -1) {
 				return search_result;	
 			}
 		}
 		
 		return -1;
+	}
+	
+	// 0 is 1_Core, 5 is workbench
+	static string GetCurrentScriptModulePath(int module)
+	{
+		switch (module) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4: return GetDirectory(GetCurrentDirectory()) + "Scripts" + PATH_SEPERATOR + SCRIPT_MODULES[module];
+			case 5: return GetCurrentDirectory();
+		}
+		
+		return string.Empty;
+	}
+	
+	static string StripScriptModuleFromPath(string file)
+	{				
+		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);	
+		file.ToLower();
+		
+		string result;
+		array<string> tokens = {};
+		file.Split(PATH_SEPERATOR, tokens);
+		for (int i = tokens.Count() - 1; i >= 0; i--) {
+			if (SCRIPT_MODULES.Find(tokens[i]) != -1) {
+				return result;
+			}
+			
+			result = PATH_SEPERATOR + tokens[i] + result;
+		}
+		
+		return result;
 	}
 	
  	static bool GetClassFromFileAndCursorPosition(string current_file, int current_line, out string class_name, out bool is_modded)
