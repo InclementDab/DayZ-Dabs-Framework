@@ -47,17 +47,27 @@ class PluginLaunchGameBase: PluginProject
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
 
 		// Set up filepatching, needs to either create or delete all links depending on the setting
+		
+		// Delete all extra folders in wb directory
+		array<string> folders_to_save = {};
+		
+		// always save these
+		folders_to_save.Copy(WB_DIR_DEFAULTS);
+		
+		// First we will create all filepatching prefixess
 		if (launch_settings.FilePatching) {
-			foreach (string prefix: m_Prefixes) {
-				prefix.TrimInPlace();
-				prefix.Replace("\t", "");
-				prefix.Replace("\n", "");
-				prefix.Replace("\r", "");
-				
+			foreach (string prefix: m_Prefixes) {				
 				array<string> prefix_split = {};
 				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
 				
 				string built_path = workbench_directory + PATH_SEPERATOR_ALT;
+				if (prefix_split.Count() < 1) {
+					continue;
+				}
+				
+				// Add each root dir to exclude
+				folders_to_save.Insert(prefix_split[0]);
+				
 				for (int k = 0; k < prefix_split.Count() - 1; k++) {
 					built_path += prefix_split[k] + PATH_SEPERATOR_ALT;
 					MakeDirectory(built_path);
@@ -65,23 +75,26 @@ class PluginLaunchGameBase: PluginProject
 				
 				PromiseSymLink(root + PATH_SEPERATOR_ALT + prefix, workbench_directory + PATH_SEPERATOR + prefix);
 			}
-		} else {
-			// Delete all extra folders in wb directory			
-			string wb_dir_filename;
-			FileAttr wb_dir_fileattr;
-			FindFileHandle hdnl = FindFile(workbench_directory + PATH_SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
-			
-			if (WB_DIR_DEFAULTS.Find(wb_dir_filename) == -1) {
-				DeleteFile(wb_dir_filename);
+		}
+		
+		string wb_dir_filename;
+		FileAttr wb_dir_fileattr;
+		FindFileHandle hdnl = FindFile(workbench_directory + PATH_SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
+		
+		if (folders_to_save.Find(wb_dir_filename) == -1) {
+			DeleteFile(wb_dir_filename);
+		}
+		
+		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
+			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
 			}
-			
-			while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
-				if (WB_DIR_DEFAULTS.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-					Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
-				}
-			}
-			
-			CloseFindFile(hdnl);
+		}
+		
+		CloseFindFile(hdnl);
+		
+		if (launch_settings.FilePatching) {
+
 		}
 		
 		// Reformats mod list

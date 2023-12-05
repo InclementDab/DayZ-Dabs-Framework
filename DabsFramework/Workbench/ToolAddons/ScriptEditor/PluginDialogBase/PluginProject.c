@@ -52,6 +52,10 @@ class PluginProject: PluginDialogBase
 		m_GprojSettings = ProjectSettings.Load(current_dir + GPROJ);
 		foreach (ProjectSettings settings: m_GprojSettings.Classes["GameProjectClass"].Classes["Configurations"].Classes["PC"].Classes["ScriptModules"].Classes) {
 			foreach (string path: settings.Classes["Paths"].Data) {
+				path.TrimInPlace();
+				path.Replace("\t", "");
+				path.Replace("\n", "");
+				path.Replace("\r", "");
 				m_Prefixes.Insert(path);
 			}
 		}
