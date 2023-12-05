@@ -77,6 +77,7 @@ class PluginLaunchGameBase: PluginProject
 			}
 		}
 		
+		// Now FindFile each 
 		string wb_dir_filename;
 		FileAttr wb_dir_fileattr;
 		FindFileHandle hdnl = FindFile(workbench_directory + PATH_SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
@@ -92,11 +93,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		CloseFindFile(hdnl);
-		
-		if (launch_settings.FilePatching) {
 
-		}
-		
 		// Reformats mod list
 		string formatted_mod_list;
 		array<string> mod_list = {};
