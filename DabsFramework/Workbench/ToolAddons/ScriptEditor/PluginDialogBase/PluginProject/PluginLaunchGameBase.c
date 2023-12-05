@@ -46,15 +46,14 @@ class PluginLaunchGameBase: PluginProject
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
 
-		// Set up filepatching, needs to either create or delete all links depending on the setting
-		
+
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};
 		
 		// always save these
 		folders_to_save.Copy(WB_DIR_DEFAULTS);
 		
-		// First we will create all filepatching prefixess
+		// Set up filepatching, needs to either create or delete all links depending on the setting
 		if (launch_settings.FilePatching) {
 			foreach (string prefix: m_Prefixes) {				
 				array<string> prefix_split = {};
