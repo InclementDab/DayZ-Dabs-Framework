@@ -46,7 +46,6 @@ class PluginLaunchGameBase: PluginProject
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
 		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
 
-
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};
 		
@@ -87,7 +86,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
 			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
+				//Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
 			}
 		}
 		
