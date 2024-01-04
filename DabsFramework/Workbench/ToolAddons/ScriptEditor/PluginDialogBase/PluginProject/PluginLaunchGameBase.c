@@ -133,8 +133,11 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Copy maps and mission info
-		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
+		if (m_ProjectSettings["Profile"] != string.Empty) {
+			CopyFiles(string.Format("%1\\Profiles\\%2", launch_settings.Repository, m_ProjectSettings["Profile"]), server_profile_directory);
+		}
 		
 		CopyFiles(string.Format("%1\\Missions\\%3.%2", launch_settings.Repository, launch_settings.Map, mod_prefix), server_mission);
 		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
@@ -150,7 +153,7 @@ class PluginLaunchGameBase: PluginProject
 			client_launch_params += string.Format(" -connect=%1 -port=%2 -password=%3", ip, port, password);
 			server_launch_params += string.Format(" -port=%1", port);
 		}
-		
+		 
 		if (launch_settings.FilePatching) {
 			client_launch_params += " -filePatching";
 			server_launch_params += " -filePatching";
