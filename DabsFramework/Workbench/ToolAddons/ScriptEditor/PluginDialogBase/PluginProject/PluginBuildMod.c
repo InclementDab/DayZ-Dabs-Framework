@@ -44,7 +44,9 @@ class PluginBuildMod: PluginProject
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
 		
 		// Move contents of Addons folder
-		CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+		if (m_BuildSettings.CopyAddons) {
+			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+		}
 		
 		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2", mod_output, mod_prefix, m_BuildSettings.Command));
 	}
