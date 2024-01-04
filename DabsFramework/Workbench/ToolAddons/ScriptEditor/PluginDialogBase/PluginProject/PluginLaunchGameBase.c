@@ -117,8 +117,8 @@ class PluginLaunchGameBase: PluginProject
 		MakeDirectory(launch_settings.Profiles);
 		MakeDirectory(launch_settings.Missions);
 		
-		string client_profile_directory = string.Format("%1\\%2", launch_settings.Profiles, LaunchSettings.CLIENT_PROFILE_NAME);
-		string server_profile_directory = string.Format("%1\\%2", launch_settings.Profiles, LaunchSettings.SERVER_PROFILE_NAME);		
+		string client_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT_PROFILE_NAME);
+		string server_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.SERVER_PROFILE_NAME);		
 		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mod_prefix, launch_settings.Map);
 		
 		// Make the folders if they dont exist yet
