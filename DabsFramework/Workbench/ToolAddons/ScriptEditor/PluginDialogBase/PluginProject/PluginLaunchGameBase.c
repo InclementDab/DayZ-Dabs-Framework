@@ -5,6 +5,11 @@ class PluginLaunchGameBase: PluginProject
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
+		
+		if (workbench_directory == string.Empty) {
+			Error("CWD is not workbench, you must launch via gproj");
+			return;
+		}
 								
 		//! Game launch script
 		// append prefix of current mod
@@ -86,7 +91,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
 			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-				//Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
 			}
 		}
 		

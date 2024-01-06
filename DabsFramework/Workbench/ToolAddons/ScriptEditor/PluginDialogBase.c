@@ -60,6 +60,11 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string workbench_dir;
 		Workbench.GetCwd(workbench_dir);
+		
+		if (!FileExist(string.Format("%1\\%2", workbench_dir, "workbenchApp.exe"))) {
+			return string.Empty;
+		}
+		
 		return workbench_dir;
 	}
 	
