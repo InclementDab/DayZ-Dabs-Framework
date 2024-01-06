@@ -164,17 +164,17 @@ class PluginLaunchGameBase: PluginProject
 			server_launch_params += " -filePatching";
 			offline_launch_params += " -filePatching";
 		}
-				
+						
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
-			Workbench.RunCmd(string.Format("%1 %2", game_exe, client_launch_params));
+			Workbench.RunCmd(game_exe + " " + client_launch_params);
 		}	
 		
 		if ((launch_settings.LaunchType & GameLaunchType.SERVER) == GameLaunchType.SERVER) {
-			Workbench.RunCmd(string.Format("%1 %2", game_exe, server_launch_params));
+			Workbench.RunCmd(game_exe + " " + server_launch_params);
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
-			Workbench.RunCmd(string.Format("%1 %2", game_exe, offline_launch_params));
+			Workbench.RunCmd(game_exe + " " + offline_launch_params);
 		}
 	}
 	
