@@ -48,6 +48,8 @@ class ProfileSettings: Class
 				}
 			}
 		}
+		
+		ApplyOptions();
 	}
 	
 	void Save()
@@ -95,6 +97,7 @@ class ProfileSettings: Class
 		}
 		
 		g_Game.SaveProfile();
+		ApplyOptions();
 	}
 			
 	static bool GetProfileBool(string variable, bool default = false)
@@ -136,7 +139,15 @@ class ProfileSettings: Class
 		
 		return default;
 	}
-		
+	
+		array<ref ProfileSettingsCategory> GetCategories()
+	{
+		return RegisterProfileSettingBase.Instances[Type()];
+	}
+	
+	//@ Virtual function to apply all options to the game
+	void ApplyOptions();
+			
 	string GetFormattedSaveName(string variable_name)
 	{
 		return string.Format("%1.%2", Type(), variable_name);
