@@ -1,0 +1,56 @@
+GridSpacerWidgetClass Root {
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 1 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ "no focus" 1
+ Padding 0
+ Margin 0
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Rows 1
+ {
+  PanelWidgetClass Panel {
+   ignorepointer 1
+   color 1 1 1 0.549
+   position 0 0
+   size 0.95 20
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style Outline_2px
+   {
+    EditBoxWidgetClass Text {
+     clipchildren 0
+     ignorepointer 0
+     position 5 0
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scriptclass "ViewBinding"
+     style ServerBrowser
+     "no focus" 0
+     "exact text" 1
+     font "gui/fonts/MetronBook16"
+     {
+      ScriptParamsClass {
+       Binding_Name "Value"
+       Two_Way_Binding 1
+      }
+     }
+    }
+   }
+  }
+ }
+}
