@@ -3,6 +3,7 @@ class OptionSelectorColorViewController: ViewController
 	int Value;
 	
 	int Alpha, Red, Green, Blue;
+	string AlphaUserInput, RedUserInput, GreenUserInput, BlueUserInput;
 	float Hue, Saturation, Var;
 	
 	ScriptCaller OnValueChanged;
@@ -48,6 +49,22 @@ class OptionSelectorColorViewController: ViewController
 				
 				break;
 			}
+			
+			// Force user input to be alpha numeric
+			case "AlphaUserInput": 
+			case "RedUserInput":
+			case "GreenUserInput":
+			case "BlueUserInput": {
+				string user_input = EnScriptVar<string>.Get(this, property_name);
+				for (int i = 0; i < user_input.Length(); i++) {
+					if (!StringEvaluaterEvaluater.IsNumeric(user_input[i])) {
+						EnScript.SetClassVar(this, property_name, i, string.Empty);
+						NotifyPropertyChanged(user_input, false);
+					}
+				}
+				
+				break;
+			}
 		
 		}
 		// Order matters here
@@ -62,6 +79,10 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	CanvasWidget ColorPicker, ColorGradient, ColorLightness;
 		
 	Widget ColorLightnessPicker, ColorGradientPicker, ColorPickerSelector;	
+	
+	SliderWidget RedSlider, GreenSlider, BlueSlider, AlphaSlider;
+	EditBoxWidget RedEditBox, GreenEditBox, BlueEditBox, AlphaEditBox;
+	TextWidget RedLabel, GreenLabel, BlueLabel, AlphaLabel;
 	
 	protected OptionSelectorColorViewController m_OptionSelectorColorViewController;
 	protected ProfileSettingColor m_ProfileSettingsColor;
@@ -125,6 +146,73 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		SetWidgetPosRelativeToParent(ColorPickerSelector, m_OptionSelectorColorViewController.Saturation / 100, Math.Lerp(1, 0, m_OptionSelectorColorViewController.Var / 100));
 		SetWidgetPosRelativeToParent(ColorGradientPicker, 0.5, Math.InverseLerp(0, 360, m_OptionSelectorColorViewController.Hue));
 		SetWidgetPosRelativeToParent(ColorLightnessPicker, 0.5, Math.InverseLerp(0, 100, m_OptionSelectorColorViewController.Saturation));
+	}
+	
+	override bool OnDoubleClick(Widget w, int x, int y, int button)
+	{
+		switch (w) {
+			case RedSlider: {
+				RedEditBox.Show(true);
+				RedLabel.Show(false);
+				break;
+			}			
+			
+			case GreenSlider: {
+				GreenEditBox.Show(true);
+				GreenLabel.Show(false);
+				break;
+			}			
+			
+			case BlueSlider: {
+				BlueEditBox.Show(true);
+				BlueLabel.Show(false);
+				break;
+			}			
+			
+			case AlphaSlider: {
+				AlphaEditBox.Show(true);
+				AlphaEditBox.Show(false);
+				break;
+			}
+		}
+		
+		return super.OnDoubleClick(w, x, y, button);
+	}
+	
+	override bool OnChange(Widget w, int x, int y, bool finished)
+	{
+		if (finished) {
+			m_OptionSelectorColorViewController.Value = ARGB(m_OptionSelectorColorViewController.AlphaUserInput.ToInt(), m_OptionSelectorColorViewController.RedUserInput.ToInt(), m_OptionSelectorColorViewController.GreenUserInput.ToInt(), m_OptionSelectorColorViewController.BlueUserInput.ToInt());
+			m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
+			
+			switch (w) {
+				case RedSlider: {
+					RedEditBox.Show(false);
+					RedLabel.Show(true);
+					return true;
+				}			
+				
+				case GreenSlider: {
+					GreenEditBox.Show(false);
+					GreenLabel.Show(true);
+					return true;
+				}			
+				
+				case BlueSlider: {
+					BlueEditBox.Show(false);
+					BlueLabel.Show(true);
+					return true;
+				}			
+				
+				case AlphaSlider: {
+					AlphaEditBox.Show(false);
+					AlphaEditBox.Show(true);
+					return true;
+				}
+			}
+		}
+		
+		return super.OnChange(w, x, y, finished);
 	}
 	
 	override void Apply()

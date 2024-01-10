@@ -134,6 +134,7 @@ GridSpacerWidgetClass Root {
      {
       CanvasWidgetClass ColorLightness {
        ignorepointer 0
+       color 1 1 1 0.549
        position 0 0
        size 20 1
        halign center_ref
@@ -161,6 +162,7 @@ GridSpacerWidgetClass Root {
       }
       CanvasWidgetClass ColorGradient {
        ignorepointer 0
+       color 1 1 1 0.549
        position 0 0
        size 20 120
        halign center_ref
@@ -202,24 +204,387 @@ GridSpacerWidgetClass Root {
      Columns 1
      Rows 4
      {
-      SliderWidgetClass RedSlider {
-       color 1 0 0 1
-       size 0.75 16
+      FrameWidgetClass RedSliderRoot {
+       visible 1
+       ignorepointer 1
+       color 0 0 0 0
+       size 0.95 30
        halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       scriptclass "ViewBinding"
-       style Slider_1px_alpha_50
-       maximum 255
-       "fill in" 1
-       "listen to input" 1
        {
-        ScriptParamsClass {
-         Binding_Name "Red"
-         Two_Way_Binding 1
+        SliderWidgetClass RedSlider {
+         visible 1
+         disabled 0
+         clipchildren 0
+         ignorepointer 0
+         color 1 0 0 0.4706
+         position 0 0
+         size 1 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Default
+         "no focus" 1
+         maximum 255
+         current 100
+         flipped 0
+         "fill in" 1
+         "draw marker" 0
+         "listen to input" 1
+         {
+          ScriptParamsClass {
+           Binding_Name "Red"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        EditBoxWidgetClass RedEditBox {
+         visible 0
+         clipchildren 0
+         ignorepointer 0
+         position 15 0
+         size 50 20
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style ServerBrowser
+         text "100"
+         "exact text" 1
+         font "gui/fonts/Metron16"
+         {
+          ScriptParamsClass {
+           Binding_Name "RedUserInput"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        TextWidgetClass RedLabel {
+         visible 1
+         clipchildren 1
+         ignorepointer 1
+         ignoregloballv 0
+         position 0 0
+         size 0 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Normal
+         text "100"
+         font "gui/fonts/Metron16"
+         "exact text" 1
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+         {
+          ScriptParamsClass {
+           Binding_Name "RedUserInput"
+           Two_Way_Binding 0
+          }
+         }
+        }
+       }
+      }
+      FrameWidgetClass GreenSliderRoot {
+       visible 1
+       ignorepointer 1
+       color 0 0 0 0
+       size 0.95 30
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        SliderWidgetClass GreenSlider {
+         visible 1
+         disabled 0
+         clipchildren 0
+         ignorepointer 0
+         color 0 1 0 0.4706
+         position 0 0
+         size 1 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Default
+         "no focus" 1
+         maximum 255
+         current 100
+         flipped 0
+         "fill in" 1
+         "draw marker" 0
+         "listen to input" 1
+         {
+          ScriptParamsClass {
+           Binding_Name "Green"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        EditBoxWidgetClass GreenEditBox {
+         visible 0
+         clipchildren 0
+         ignorepointer 0
+         position 15 0
+         size 50 20
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style ServerBrowser
+         text "100"
+         "exact text" 1
+         font "gui/fonts/Metron16"
+         {
+          ScriptParamsClass {
+           Binding_Name "GreenUserInput"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        TextWidgetClass GreenLabel {
+         visible 1
+         clipchildren 1
+         ignorepointer 1
+         ignoregloballv 0
+         position 0 0
+         size 0 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Normal
+         text "100"
+         font "gui/fonts/Metron16"
+         "exact text" 1
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+         {
+          ScriptParamsClass {
+           Binding_Name "GreenUserInput"
+           Two_Way_Binding 0
+          }
+         }
+        }
+       }
+      }
+      FrameWidgetClass BlueSliderRoot {
+       visible 1
+       ignorepointer 1
+       color 0 0 0 0
+       size 0.95 30
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        SliderWidgetClass BlueSlider {
+         visible 1
+         disabled 0
+         clipchildren 0
+         ignorepointer 0
+         color 0 0 1 0.4706
+         position 0 0
+         size 1 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Default
+         "no focus" 1
+         maximum 255
+         current 100
+         flipped 0
+         "fill in" 1
+         "draw marker" 0
+         "listen to input" 1
+         {
+          ScriptParamsClass {
+           Binding_Name "Blue"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        EditBoxWidgetClass BlueEditBox {
+         visible 0
+         clipchildren 0
+         ignorepointer 0
+         position 15 0
+         size 50 20
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style ServerBrowser
+         text "100"
+         "exact text" 1
+         font "gui/fonts/Metron16"
+         {
+          ScriptParamsClass {
+           Binding_Name "BlueUserInput"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        TextWidgetClass BlueLabel {
+         visible 1
+         clipchildren 1
+         ignorepointer 1
+         ignoregloballv 0
+         position 0 0
+         size 0 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Normal
+         text "100"
+         font "gui/fonts/Metron16"
+         "exact text" 1
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+         {
+          ScriptParamsClass {
+           Binding_Name "BlueUserInput"
+           Two_Way_Binding 0
+          }
+         }
+        }
+       }
+      }
+      FrameWidgetClass AlphaSliderRoot {
+       visible 1
+       ignorepointer 1
+       color 0 0 0 0
+       size 0.95 30
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        SliderWidgetClass AlphaSlider {
+         visible 1
+         disabled 0
+         clipchildren 0
+         ignorepointer 0
+         color 1 1 1 0.4706
+         position 0 0
+         size 1 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Default
+         "no focus" 1
+         maximum 255
+         current 100
+         flipped 0
+         "fill in" 1
+         "draw marker" 0
+         "listen to input" 1
+         {
+          ScriptParamsClass {
+           Binding_Name "Alpha"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        EditBoxWidgetClass AlphaEditBox {
+         visible 0
+         clipchildren 0
+         ignorepointer 0
+         position 15 0
+         size 50 20
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style ServerBrowser
+         text "100"
+         "exact text" 1
+         font "gui/fonts/Metron16"
+         {
+          ScriptParamsClass {
+           Binding_Name "AlphaUserInput"
+           Two_Way_Binding 1
+          }
+         }
+        }
+        TextWidgetClass AlphaLabel {
+         visible 1
+         clipchildren 1
+         ignorepointer 1
+         ignoregloballv 0
+         position 0 0
+         size 0 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         scriptclass "ViewBinding"
+         style Normal
+         text "100"
+         font "gui/fonts/Metron16"
+         "exact text" 1
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+         {
+          ScriptParamsClass {
+           Binding_Name "AlphaUserInput"
+           Two_Way_Binding 0
+          }
+         }
         }
        }
       }
