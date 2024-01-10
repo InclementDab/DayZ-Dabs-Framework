@@ -1,81 +1,6 @@
-class OptionSelectorColorViewController: ViewController
-{	
-	int Value;
-	
-	int Alpha, Red, Green, Blue;
-	string AlphaUserInput, RedUserInput, GreenUserInput, BlueUserInput;
-	float Hue, Saturation, Var;
-	
-	ScriptCaller OnValueChanged;
-	
-	override void PropertyChanged(string property_name)
-	{
-		Alpha 	= Math.Clamp(Alpha, 0, 255);
-		Red 	= Math.Clamp(Red, 0, 255);
-		Green 	= Math.Clamp(Green, 0, 255);
-		Blue 	= Math.Clamp(Blue, 0, 255);
-		
-		Hue 	= Math.Clamp(Hue, 0, 360);
-		Saturation = Math.Clamp(Saturation, 0, 100);
-		Var 	= Math.Clamp(Var, 0, 100);
-		
-		switch (property_name) {
-			
-			case "Alpha":		
-			case "Red":
-			case "Green":
-			case "Blue": {
-				Value = ARGB(Alpha, Red, Green, Blue);
-				
-				AlphaUserInput = Alpha.ToString();
-				RedUserInput = Red.ToString();
-				GreenUserInput = Green.ToString();
-				BlueUserInput = Blue.ToString();
-				
-				NotifyPropertiesChanged({"Value", "AlphaUserInput", "RedUserInput", "GreenUserInput", "BlueUserInput"});
-				
-				break;
-			}
-			
-			case "Hue": 
-			case "Saturation": 
-			case "Var": {
-				Value = HSVtoARGB(Hue, Saturation, Var, Alpha);				
-				NotifyPropertyChanged("Value");
-				break;
-			}
-			
-			case "Value": {
-				InverseARGB(Value, Alpha, Red, Green, Blue);
-				RGBtoHSV(Red, Green, Blue, Hue, Saturation, Var);
-				NotifyPropertiesChanged({"Alpha", "Red", "Green", "Blue", "Hue", "Saturation", "Var"}, false);
-				
-				if (OnValueChanged) {
-					OnValueChanged.Invoke();
-				}
-				
-				break;
-			}
-			
-			// Force user input to be alpha numeric
-			case "AlphaUserInput": 
-			case "RedUserInput":
-			case "GreenUserInput":
-			case "BlueUserInput": {
-				EnScript.SetClassVar(this, property_name, 0, Math.Clamp(EnScriptVar<string>.Get(this, property_name).ToInt(), 0, 255).ToString());
-				NotifyPropertyChanged(property_name, false);
-				break;
-			}
-		
-		}
-		// Order matters here
-		super.PropertyChanged(property_name);
-	}
-}
-
 class OptionSelectorColorView: OptionSelectorViewBase
 {
-	static const int COLOR_GRADIENT_ACCURACY = 3;
+	static const int COLOR_GRADIENT_ACCURACY = 2;
 	
 	CanvasWidget ColorPicker, ColorGradient, ColorLightness;
 		
@@ -143,6 +68,35 @@ class OptionSelectorColorView: OptionSelectorViewBase
 			i += COLOR_GRADIENT_ACCURACY;
 		}
 		
+		if ((GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK) && GetGame().GetInput().HasGameFocus()) {
+			int x, y;
+			GetMousePos(x, y);
+			float x_p = x;
+			float y_p = y;
+			Widget widget_under_cursor = GetWidgetUnderCursor();
+			GetWidgetLocalPositionNormalized(widget_under_cursor, x_p, y_p);
+
+			switch (widget_under_cursor) {
+				case ColorPicker: {
+					m_OptionSelectorColorViewController.Value = HSVtoARGB(m_OptionSelectorColorViewController.Hue, Math.Lerp(0, 100, x_p), Math.Lerp(100, 0, y_p), m_OptionSelectorColorViewController.Alpha);
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
+					break;
+				}
+				
+				case ColorGradient: {
+					m_OptionSelectorColorViewController.Hue = Math.Lerp(0, 360, y_p);
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Hue");
+					break;
+				}
+				
+				case ColorLightness: {
+					m_OptionSelectorColorViewController.Saturation = Math.Lerp(0, 100, y_p);
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Saturation");
+					break;
+				}
+			}
+		}
+		
 		// Update relevant widgets to the position they are set to
 		SetWidgetPosRelativeToParent(ColorPickerSelector, m_OptionSelectorColorViewController.Saturation / 100, Math.Lerp(1, 0, m_OptionSelectorColorViewController.Var / 100));
 		SetWidgetPosRelativeToParent(ColorGradientPicker, 0.5, Math.InverseLerp(0, 360, m_OptionSelectorColorViewController.Hue));
@@ -184,35 +138,37 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	{
 		if (finished) {
 			int determined_value = ARGB(m_OptionSelectorColorViewController.AlphaUserInput.ToInt(), m_OptionSelectorColorViewController.RedUserInput.ToInt(), m_OptionSelectorColorViewController.GreenUserInput.ToInt(), m_OptionSelectorColorViewController.BlueUserInput.ToInt());
+			switch (w) {
+				case RedEditBox:
+				case GreenEditBox:
+				case BlueEditBox:
+				case AlphaEditBox: {
+					m_OptionSelectorColorViewController.Value = determined_value;
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");					
+					break;
+				}
+			}
 			
 			switch (w) {
 				case RedEditBox: {
-					m_OptionSelectorColorViewController.Value = determined_value;
-					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					RedEditBox.Show(false);
 					RedLabel.Show(true);
 					return true;
 				}			
 				
 				case GreenEditBox: {
-					m_OptionSelectorColorViewController.Value = determined_value;
-					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					GreenEditBox.Show(false);
 					GreenLabel.Show(true);
 					return true;
 				}			
 				
 				case BlueEditBox: {
-					m_OptionSelectorColorViewController.Value = determined_value;
-					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					BlueEditBox.Show(false);
 					BlueLabel.Show(true);
 					return true;
 				}			
 				
 				case AlphaEditBox: {
-					m_OptionSelectorColorViewController.Value = determined_value;
-					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					AlphaEditBox.Show(false);
 					AlphaEditBox.Show(true);
 					return true;
