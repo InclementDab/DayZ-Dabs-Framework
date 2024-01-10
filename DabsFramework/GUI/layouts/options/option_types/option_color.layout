@@ -30,6 +30,8 @@ GridSpacerWidgetClass Root {
    content_valign center
    {
     CanvasWidgetClass ColorPicker {
+     visible 1
+     clipchildren 1
      ignorepointer 0
      position 0 0
      size 240 240
@@ -90,7 +92,7 @@ GridSpacerWidgetClass Root {
       }
      }
     }
-    CanvasWidgetClass ColorGradent {
+    CanvasWidgetClass ColorGradient {
      ignorepointer 0
      position 0 0
      size 20 240

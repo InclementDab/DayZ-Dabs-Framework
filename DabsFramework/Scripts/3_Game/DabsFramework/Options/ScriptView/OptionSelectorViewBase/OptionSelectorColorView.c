@@ -1,58 +1,68 @@
 class OptionSelectorColorViewController: ViewController
-{
-	static const int COLOR_GRADIENT_ACCURACY = 3;
-	
+{	
 	int Value;
 	
-	int Alpha = 255, Red, Green, Blue;
+	int Alpha, Red, Green, Blue;
 	float Hue, Saturation, Var;
 	
 	ScriptCaller OnValueChanged;
 	
-	CanvasWidget ColorPicker;
-	CanvasWidget ColorGradient;
-	CanvasWidget ColorLightnesss;
-	
-	void OptionSelectorColorViewController()
+	override void PropertyChanged(string property_name)
 	{
-
-	}
-	
-	override void OnWidgetScriptInit(Widget w)
-	{
-		super.OnWidgetScriptInit(w);
+		Alpha 	= Math.Clamp(Alpha, 0, 255);
+		Red 	= Math.Clamp(Red, 0, 255);
+		Green 	= Math.Clamp(Green, 0, 255);
+		Blue 	= Math.Clamp(Blue, 0, 255);
 		
-		float size_x, size_y;
-		ColorPicker.GetScreenSize(size_x, size_y);
-				
-		float hsv_size_x, hsv_size_y;
-		ColorGradient.GetScreenSize(hsv_size_x, hsv_size_y);
+		Hue 	= Math.Clamp(Hue, 0, 360);
+		Saturation = Math.Clamp(Saturation, 0, 100);
+		Var 	= Math.Clamp(Var, 0, 100);
 		
-		float hsl_size_x, hsl_size_y;
-		ColorLightnesss.GetScreenSize(hsl_size_x, hsl_size_y);
-		
-		ColorPicker.Clear();
-		ColorGradient.Clear();
-		ColorLightnesss.Clear();
-		
-		for (int i = 0; i <= size_y; ) {
-			float y_value = i / size_y;
+		switch (property_name) {
 			
-			for (int j = 0; j <= size_x; ) {
-				float x_value = j / size_x;	
-				ColorPicker.DrawLine(i, j, i + COLOR_GRADIENT_ACCURACY, j + COLOR_GRADIENT_ACCURACY, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), Alpha));
-				j += COLOR_GRADIENT_ACCURACY;
+			case "Alpha":		
+			case "Red":
+			case "Green":
+			case "Blue": {
+				Value = ARGB(Alpha, Red, Green, Blue);
+				NotifyPropertyChanged("Value");
+				break;
 			}
 			
-			ColorGradient.DrawLine(0, i, hsv_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, 255));
-			ColorLightnesss.DrawLine(0, i, hsl_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Hue, Math.Lerp(0, 100, y_value), 100, 255));
-			i += COLOR_GRADIENT_ACCURACY;
+			case "Hue": 
+			case "Saturation": 
+			case "Var": {
+				Value = HSVtoARGB(Hue, Saturation, Var, Alpha);				
+				NotifyPropertyChanged("Value");
+				break;
+			}
+			
+			case "Value": {
+				InverseARGB(Value, Alpha, Red, Green, Blue);
+				RGBtoHSV(Red, Green, Blue, Hue, Saturation, Var);
+				NotifyPropertiesChanged({"Alpha", "Red", "Green", "Blue", "Hue", "Saturation", "Var"}, false);
+				
+				if (OnValueChanged) {
+					OnValueChanged.Invoke();
+				}
+				
+				break;
+			}
+		
 		}
+		// Order matters here
+		super.PropertyChanged(property_name);
 	}
 }
 
 class OptionSelectorColorView: OptionSelectorViewBase
 {
+	static const int COLOR_GRADIENT_ACCURACY = 3;
+	
+	CanvasWidget ColorPicker;
+	CanvasWidget ColorGradient;
+	CanvasWidget ColorLightness;
+	
 	protected OptionSelectorColorViewController m_OptionSelectorColorViewController;
 	protected ProfileSettingColor m_ProfileSettingsColor;
 	
@@ -74,10 +84,42 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		
 		type_converter.GetFromController(m_ProfileSettings, m_ProfileSettingsColor.GetVariableName(), 0);
 		
-		m_OptionSelectorColorViewController.Value = type_converter.GetInt();
-		m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
-		
+		m_OptionSelectorColorViewController.Value = type_converter.GetInt();			
+		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
+
 		m_StartValue = m_OptionSelectorColorViewController.Value;
+	}
+	
+	override void Update(float dt)
+	{
+		super.Update(dt);
+				
+		float size_x, size_y;
+		ColorPicker.GetScreenSize(size_x, size_y);
+				
+		float hsv_size_x, hsv_size_y;
+		ColorGradient.GetScreenSize(hsv_size_x, hsv_size_y);
+		
+		float hsl_size_x, hsl_size_y;
+		ColorLightness.GetScreenSize(hsl_size_x, hsl_size_y);
+		
+		ColorPicker.Clear();
+		ColorGradient.Clear();
+		ColorLightness.Clear();
+		
+		for (int i = 0; i <= size_y; ) {
+			float y_value = i / size_y;
+			
+			for (int j = 0; j <= size_x; ) {
+				float x_value = j / size_x;	
+				ColorPicker.DrawLine(i, j, i + COLOR_GRADIENT_ACCURACY, j + COLOR_GRADIENT_ACCURACY, COLOR_GRADIENT_ACCURACY, HSVtoARGB(m_OptionSelectorColorViewController.Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), m_OptionSelectorColorViewController.Alpha));
+				j += COLOR_GRADIENT_ACCURACY;
+			}
+			
+			ColorGradient.DrawLine(0, i, hsv_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, 255));
+			ColorLightness.DrawLine(0, i, hsl_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(m_OptionSelectorColorViewController.Hue, Math.Lerp(0, 100, y_value), 100, 255));
+			i += COLOR_GRADIENT_ACCURACY;
+		}
 	}
 	
 	override void Apply()
@@ -103,6 +145,52 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	override bool NeedsRestart()
 	{
 		return (IsChanged() && m_ProfileSettingsColor.GetRequiresRestart());
+	}
+	
+	static void GetWidgetLocalPositionNormalized(notnull Widget w, inout float x, inout float y)
+	{		
+		float x_pos, y_pos;
+		w.GetScreenPos(x_pos, y_pos);
+		x -= x_pos; y -= y_pos;
+		
+		float x_size, y_size;
+		w.GetScreenSize(x_size, y_size);
+		x /= x_size; y /= y_size;
+	}
+	
+	static void SetWidgetPosRelativeToParent(notnull Widget w, float x, float y)
+	{		
+		x = Math.Clamp(x, 0, 1);
+		y = Math.Clamp(y, 0, 1);
+		
+		Widget parent = w.GetParent();
+		
+		float p_x_size, p_y_size;
+		parent.GetScreenSize(p_x_size, p_y_size);
+		
+		float x_size, y_size;
+		w.GetScreenSize(x_size, y_size);
+		w.SetPos((p_x_size * x) - (x_size / 2), (p_y_size * y) - (y_size / 2));
+	}
+	
+	static void GetWidgetPosRelativeToParent(notnull Widget w, out float x, out float y)
+	{		
+		Widget parent = w.GetParent();
+		
+		float p_x_size, p_y_size;
+		parent.GetScreenSize(p_x_size, p_y_size);
+		if (p_x_size == 0 || p_y_size == 0) {
+			return;
+		}
+		
+		float x_pos, y_pos;
+		w.GetPos(x_pos, y_pos);
+		
+		float x_size, y_size;
+		w.GetScreenSize(x_size, y_size);
+		
+		x = (x_pos / p_x_size) + ((x_size / 2) / p_x_size);
+		y = (y_pos / p_y_size) + ((y_size / 2) / p_y_size);
 	}
 	
 	override string GetLayoutFile()
