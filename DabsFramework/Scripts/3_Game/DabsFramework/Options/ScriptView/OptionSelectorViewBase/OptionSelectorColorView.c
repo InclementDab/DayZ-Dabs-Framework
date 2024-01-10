@@ -26,7 +26,14 @@ class OptionSelectorColorViewController: ViewController
 			case "Green":
 			case "Blue": {
 				Value = ARGB(Alpha, Red, Green, Blue);
-				NotifyPropertyChanged("Value");
+				
+				AlphaUserInput = Alpha.ToString();
+				RedUserInput = Red.ToString();
+				GreenUserInput = Green.ToString();
+				BlueUserInput = Blue.ToString();
+				
+				NotifyPropertiesChanged({"Value", "AlphaUserInput", "RedUserInput", "GreenUserInput", "BlueUserInput"});
+				
 				break;
 			}
 			
@@ -55,14 +62,8 @@ class OptionSelectorColorViewController: ViewController
 			case "RedUserInput":
 			case "GreenUserInput":
 			case "BlueUserInput": {
-				string user_input = EnScriptVar<string>.Get(this, property_name);
-				for (int i = 0; i < user_input.Length(); i++) {
-					if (!StringEvaluaterEvaluater.IsNumeric(user_input[i])) {
-						EnScript.SetClassVar(this, property_name, i, string.Empty);
-						NotifyPropertyChanged(user_input, false);
-					}
-				}
-				
+				EnScript.SetClassVar(this, property_name, 0, Math.Clamp(EnScriptVar<string>.Get(this, property_name).ToInt(), 0, 255).ToString());
+				NotifyPropertyChanged(property_name, false);
 				break;
 			}
 		
@@ -182,29 +183,36 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	override bool OnChange(Widget w, int x, int y, bool finished)
 	{
 		if (finished) {
-			m_OptionSelectorColorViewController.Value = ARGB(m_OptionSelectorColorViewController.AlphaUserInput.ToInt(), m_OptionSelectorColorViewController.RedUserInput.ToInt(), m_OptionSelectorColorViewController.GreenUserInput.ToInt(), m_OptionSelectorColorViewController.BlueUserInput.ToInt());
-			m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
+			int determined_value = ARGB(m_OptionSelectorColorViewController.AlphaUserInput.ToInt(), m_OptionSelectorColorViewController.RedUserInput.ToInt(), m_OptionSelectorColorViewController.GreenUserInput.ToInt(), m_OptionSelectorColorViewController.BlueUserInput.ToInt());
 			
 			switch (w) {
-				case RedSlider: {
+				case RedEditBox: {
+					m_OptionSelectorColorViewController.Value = determined_value;
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					RedEditBox.Show(false);
 					RedLabel.Show(true);
 					return true;
 				}			
 				
-				case GreenSlider: {
+				case GreenEditBox: {
+					m_OptionSelectorColorViewController.Value = determined_value;
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					GreenEditBox.Show(false);
 					GreenLabel.Show(true);
 					return true;
 				}			
 				
-				case BlueSlider: {
+				case BlueEditBox: {
+					m_OptionSelectorColorViewController.Value = determined_value;
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					BlueEditBox.Show(false);
 					BlueLabel.Show(true);
 					return true;
 				}			
 				
-				case AlphaSlider: {
+				case AlphaEditBox: {
+					m_OptionSelectorColorViewController.Value = determined_value;
+					m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 					AlphaEditBox.Show(false);
 					AlphaEditBox.Show(true);
 					return true;
