@@ -1,8 +1,54 @@
 class OptionSelectorColorViewController: ViewController
 {
+	static const int COLOR_GRADIENT_ACCURACY = 3;
+	
 	int Value;
 	
+	int Alpha = 255, Red, Green, Blue;
+	float Hue, Saturation, Var;
+	
 	ScriptCaller OnValueChanged;
+	
+	CanvasWidget ColorPicker;
+	CanvasWidget ColorGradient;
+	CanvasWidget ColorLightnesss;
+	
+	void OptionSelectorColorViewController()
+	{
+
+	}
+	
+	override void OnWidgetScriptInit(Widget w)
+	{
+		super.OnWidgetScriptInit(w);
+		
+		float size_x, size_y;
+		ColorPicker.GetScreenSize(size_x, size_y);
+				
+		float hsv_size_x, hsv_size_y;
+		ColorGradient.GetScreenSize(hsv_size_x, hsv_size_y);
+		
+		float hsl_size_x, hsl_size_y;
+		ColorLightnesss.GetScreenSize(hsl_size_x, hsl_size_y);
+		
+		ColorPicker.Clear();
+		ColorGradient.Clear();
+		ColorLightnesss.Clear();
+		
+		for (int i = 0; i <= size_y; ) {
+			float y_value = i / size_y;
+			
+			for (int j = 0; j <= size_x; ) {
+				float x_value = j / size_x;	
+				ColorPicker.DrawLine(i, j, i + COLOR_GRADIENT_ACCURACY, j + COLOR_GRADIENT_ACCURACY, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Hue, Math.Lerp(0, 100, y_value), Math.Lerp(100, 0, x_value), Alpha));
+				j += COLOR_GRADIENT_ACCURACY;
+			}
+			
+			ColorGradient.DrawLine(0, i, hsv_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Math.Lerp(0, 360, y_value), 100, 100, 255));
+			ColorLightnesss.DrawLine(0, i, hsl_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Hue, Math.Lerp(0, 100, y_value), 100, 255));
+			i += COLOR_GRADIENT_ACCURACY;
+		}
+	}
 }
 
 class OptionSelectorColorView: OptionSelectorViewBase

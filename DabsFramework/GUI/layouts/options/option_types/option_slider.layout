@@ -2,7 +2,7 @@ FrameWidgetClass Root {
  visible 1
  ignorepointer 1
  color 0 0 0 0
- size 0.95 20
+ size 0.95 30
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -17,13 +17,13 @@ FrameWidgetClass Root {
    ignorepointer 0
    color 1 1 1 0.4706
    position 0 0
-   size 1 1
+   size 1 20
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
-   vexactsize 0
+   vexactsize 1
    scriptclass "ViewBinding"
    style Default
    "no focus" 1
