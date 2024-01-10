@@ -2,7 +2,7 @@ class DiscordWebhook: WebApiBase
 {		
 	protected string m_WebhookId, m_WebhookToken;
 	
-	void DiscordWebhook(RearmedWebhookId webhook_id, string webhook_token)
+	void DiscordWebhook(string webhook_id, string webhook_token)
 	{
 		m_WebhookId = webhook_id;
 		m_WebhookToken = webhook_token;
@@ -23,10 +23,10 @@ class DiscordWebhook: WebApiBase
 			new HttpArgument("thread_id", thread_id)
 		};
 		
-		m_RestContext.POST(new RearmedRestCallback(null), arguments.ToQuery(string.Format("/%1/%2", m_WebhookId, m_WebhookToken)), string_data);
+		m_RestContext.POST(new RestCallbackBase(), arguments.ToQuery(string.Format("/%1/%2", m_WebhookId, m_WebhookToken)), string_data);
 	}
 	
-	RearmedWebhookId GetId()
+	string GetId()
 	{
 		return m_WebhookId;
 	}
