@@ -47,7 +47,6 @@ class BuildSettings: SerializableBase
 		if (!FileExist(file)) {
 			//settings.BuildFolders; // default all masked
 			settings.Command = "pboProject";
-			settings.CopyAddons = true;
 			settings.Save(file);
 			return settings;
 		}
