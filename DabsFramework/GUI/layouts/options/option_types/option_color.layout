@@ -1,0 +1,64 @@
+GridSpacerWidgetClass Root {
+ ignorepointer 1
+ color 0 0 0 0
+ position 0 0
+ size 1 240
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ "no focus" 1
+ Padding 0
+ Margin 0
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Rows 1
+ {
+  TextWidgetClass Text {
+   clipchildren 0
+   ignorepointer 1
+   size 1 1
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   scriptclass ""
+   text "Label"
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+   "exact text size" 18
+   "size to text h" 1
+   "size to text v" 0
+   "text halign" center
+  }
+  CanvasWidgetClass ColorGradient {
+   ignorepointer 0
+   position 0 0
+   size 138 140
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   {
+    ImageWidgetClass ColorGradientCursor {
+     ignorepointer 1
+     position 0 0
+     size 16 16
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     image0 "set:dayz_gui image:icon_circle"
+     mode blend
+     "src alpha" 1
+     filter 0
+     pivot 0 0
+    }
+   }
+  }
+ }
+}
