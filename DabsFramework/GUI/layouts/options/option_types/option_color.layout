@@ -12,19 +12,19 @@ GridSpacerWidgetClass Root {
  Margin 0
  "Size To Content H" 1
  "Size To Content V" 1
+ Columns 2
  Rows 1
  {
   WrapSpacerWidgetClass ColorGradientWrapper {
    ignorepointer 1
-   size 1 1
+   size 0.5 1
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 0
-   Padding 0
-   Margin 0
+   Margin 5
    "Size To Content H" 1
    "Size To Content V" 1
    content_valign center
@@ -34,15 +34,16 @@ GridSpacerWidgetClass Root {
      clipchildren 1
      ignorepointer 0
      position 0 0
-     size 240 240
+     size 1 1
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
+     fixaspect fixwidth
      {
-      ButtonWidgetClass ColorPickerSelector {
+      PanelWidgetClass ColorPickerSelector {
        visible 1
        ignorepointer 0
        color 1 0.098 0.098 1
@@ -52,7 +53,7 @@ GridSpacerWidgetClass Root {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       style EmptyHighlight
+       style blank
        {
         ImageWidgetClass SelectorImage {
          visible 1
@@ -90,57 +91,137 @@ GridSpacerWidgetClass Root {
         }
        }
       }
-     }
-    }
-    CanvasWidgetClass ColorGradient {
-     ignorepointer 0
-     position 0 0
-     size 20 240
-     halign center_ref
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     {
-      PanelWidgetClass ColorGradientPicker {
-       visible 1
-       clipchildren 0
+      PanelWidgetClass ColorPickerPanel {
        ignorepointer 1
-       color 1 1 1 0.9961
+       color 1 1 1 0.549
        position 0 0
-       size 1 6
+       size 1 1
        halign center_ref
+       valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 1
+       vexactsize 0
+       style Outline_2px
       }
      }
     }
-    CanvasWidgetClass ColorLightness {
-     ignorepointer 0
-     position 0 0
-     size 20 240
+   }
+  }
+  GridSpacerWidgetClass ColorArgbWrapper {
+   ignorepointer 1
+   size 0.5 1
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   Margin 5
+   Columns 2
+   Rows 1
+   {
+    GridSpacerWidgetClass ColorGradientSliderWrapper {
+     ignorepointer 1
+     position 10 10
+     size 48 1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 0
+     Columns 2
+     Rows 1
+     {
+      CanvasWidgetClass ColorLightness {
+       ignorepointer 0
+       position 0 0
+       size 20 1
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 0
+       {
+        PanelWidgetClass ColorLightnessPicker {
+         visible 1
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 0.549
+         position 0 0
+         size 1 6
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style Outline_2px
+        }
+       }
+      }
+      CanvasWidgetClass ColorGradient {
+       ignorepointer 0
+       position 0 0
+       size 20 120
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        PanelWidgetClass ColorGradientPicker {
+         visible 1
+         clipchildren 0
+         ignorepointer 1
+         color 1 1 1 0.549
+         position 0 0
+         size 1 6
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         style Outline_2px
+        }
+       }
+      }
+     }
+    }
+    GridSpacerWidgetClass ColorArgbSliderWrapper {
+     ignorepointer 1
+     size 0.065 0.427
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
+     hexactsize 0
+     vexactsize 0
+     Padding 0
+     Margin 0
+     Columns 1
+     Rows 4
      {
-      PanelWidgetClass ColorLightnessPicker {
-       visible 1
-       clipchildren 0
-       ignorepointer 1
-       color 1 1 1 0.9961
-       position 0 0
-       size 1 6
+      SliderWidgetClass RedSlider {
+       color 1 0 0 1
+       size 0.75 16
        halign center_ref
+       valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
+       scriptclass "ViewBinding"
+       style Slider_1px_alpha_50
+       maximum 255
+       "fill in" 1
+       "listen to input" 1
+       {
+        ScriptParamsClass {
+         Binding_Name "Red"
+         Two_Way_Binding 1
+        }
+       }
       }
      }
     }

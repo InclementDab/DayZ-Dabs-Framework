@@ -59,9 +59,9 @@ class OptionSelectorColorView: OptionSelectorViewBase
 {
 	static const int COLOR_GRADIENT_ACCURACY = 3;
 	
-	CanvasWidget ColorPicker;
-	CanvasWidget ColorGradient;
-	CanvasWidget ColorLightness;
+	CanvasWidget ColorPicker, ColorGradient, ColorLightness;
+		
+	Widget ColorLightnessPicker, ColorGradientPicker, ColorPickerSelector;	
 	
 	protected OptionSelectorColorViewController m_OptionSelectorColorViewController;
 	protected ProfileSettingColor m_ProfileSettingsColor;
@@ -120,6 +120,11 @@ class OptionSelectorColorView: OptionSelectorViewBase
 			ColorLightness.DrawLine(0, i, hsl_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(m_OptionSelectorColorViewController.Hue, Math.Lerp(0, 100, y_value), 100, 255));
 			i += COLOR_GRADIENT_ACCURACY;
 		}
+		
+		// Update relevant widgets to the position they are set to
+		SetWidgetPosRelativeToParent(ColorPickerSelector, m_OptionSelectorColorViewController.Saturation / 100, Math.Lerp(1, 0, m_OptionSelectorColorViewController.Var / 100));
+		SetWidgetPosRelativeToParent(ColorGradientPicker, 0.5, Math.InverseLerp(0, 360, m_OptionSelectorColorViewController.Hue));
+		SetWidgetPosRelativeToParent(ColorLightnessPicker, 0.5, Math.InverseLerp(0, 100, m_OptionSelectorColorViewController.Saturation));
 	}
 	
 	override void Apply()
