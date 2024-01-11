@@ -230,26 +230,6 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		w.SetPos((p_x_size * x) - (x_size / 2), (p_y_size * y) - (y_size / 2));
 	}
 	
-	static void GetWidgetPosRelativeToParent(notnull Widget w, out float x, out float y)
-	{		
-		Widget parent = w.GetParent();
-		
-		float p_x_size, p_y_size;
-		parent.GetScreenSize(p_x_size, p_y_size);
-		if (p_x_size == 0 || p_y_size == 0) {
-			return;
-		}
-		
-		float x_pos, y_pos;
-		w.GetPos(x_pos, y_pos);
-		
-		float x_size, y_size;
-		w.GetScreenSize(x_size, y_size);
-		
-		x = (x_pos / p_x_size) + ((x_size / 2) / p_x_size);
-		y = (y_pos / p_y_size) + ((y_size / 2) / p_y_size);
-	}
-	
 	override string GetLayoutFile()
 	{
 		return "DabsFramework\\GUI\\layouts\\options\\option_types\\option_color.layout";

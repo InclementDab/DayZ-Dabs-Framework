@@ -24,10 +24,8 @@ class OptionSelectorColorViewController: ViewController
 			case "Red":
 			case "Green":
 			case "Blue": {
-				Value = ARGB(Alpha, Red, Green, Blue);
-								
+				Value = ARGB(Alpha, Red, Green, Blue);		
 				NotifyPropertyChanged("Value");
-				
 				break;
 			}
 			
@@ -67,8 +65,6 @@ class OptionSelectorColorViewController: ViewController
 				break;
 			}
 		
-		}
-		// Order matters here
-		super.PropertyChanged(property_name);
+		}		
 	}
 }
