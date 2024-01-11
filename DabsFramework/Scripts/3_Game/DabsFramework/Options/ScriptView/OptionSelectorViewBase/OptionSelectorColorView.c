@@ -4,6 +4,8 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	EditBoxWidget RedEditBox, GreenEditBox, BlueEditBox, AlphaEditBox;
 	TextWidget RedLabel, GreenLabel, BlueLabel, AlphaLabel;
 	
+	Widget AlphaSliderRoot;
+	
 	protected OptionSelectorColorViewController m_OptionSelectorColorViewController;
 	protected ProfileSettingColor m_ProfileSettingsColor;
 	
@@ -31,9 +33,7 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_StartValue = m_OptionSelectorColorViewController.Value;
 		
 		if (!profile_setting_color.GetAllowAlpha()) {
-			AlphaSlider.Show(false);
-			AlphaEditBox.Show(false);
-			AlphaLabel.Show(false);
+			AlphaSliderRoot.Show(false);
 		}
 	}
 		
