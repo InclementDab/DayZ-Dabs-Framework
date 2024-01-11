@@ -29,15 +29,14 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
 
 		m_StartValue = m_OptionSelectorColorViewController.Value;
-	}
-	
-	override void Update(float dt)
-	{
-		super.Update(dt);
 		
-
+		if (!profile_setting_color.GetAllowAlpha()) {
+			AlphaSlider.Show(false);
+			AlphaEditBox.Show(false);
+			AlphaLabel.Show(false);
+		}
 	}
-	
+		
 	override bool OnDoubleClick(Widget w, int x, int y, int button)
 	{
 		switch (w) {

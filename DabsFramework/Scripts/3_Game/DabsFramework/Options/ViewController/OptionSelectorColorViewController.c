@@ -56,7 +56,6 @@ class OptionSelectorColorViewController: ViewController
 		}
 		
 		Widget widget_under_cursor = GetWidgetUnderCursor();
-		Print(widget_under_cursor);
 		if (widget_under_cursor != drag_target) {
 			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(DoCursorDrag);
 			return;
