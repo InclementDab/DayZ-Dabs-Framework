@@ -35,6 +35,11 @@ class PluginBuildMod: PluginProject
 			}
 		}
 		
+		array<string> dependencies = EnumerateDirectories(string.Format("%1\\Dependencies", m_LaunchSettings.Repository));
+		foreach (string dependency: dependencies) {
+			PromiseSymLink(string.Format("%1\\Dependencies\\%2", m_LaunchSettings.Repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
+		}
+		
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);				
 		// Set up our mod output correctly if not done so already
 		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);
