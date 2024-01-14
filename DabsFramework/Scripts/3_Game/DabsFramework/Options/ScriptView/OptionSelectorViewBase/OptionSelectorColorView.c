@@ -4,10 +4,14 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	EditBoxWidget RedEditBox, GreenEditBox, BlueEditBox, AlphaEditBox;
 	TextWidget RedLabel, GreenLabel, BlueLabel, AlphaLabel;
 	
+	Widget ColorPickerWrapper;
 	Widget AlphaSliderRoot;
 	
 	protected OptionSelectorColorViewController m_OptionSelectorColorViewController;
 	protected ProfileSettingColor m_ProfileSettingsColor;
+	
+	ButtonWidget ToggleSwitch;
+	ImageWidget Chevron;
 	
 	protected int m_StartValue;
 	
@@ -35,6 +39,12 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		if (!profile_setting_color.GetAllowAlpha()) {
 			AlphaSliderRoot.Show(false);
 		}
+	}
+		
+	void OnToggleSwitchExecute(ButtonCommandArgs args)
+	{	
+		ColorPickerWrapper.Show(!args.GetButtonState());
+		Chevron.SetRotation(0, 0, 180 * args.GetButtonState());
 	}
 		
 	override bool OnDoubleClick(Widget w, int x, int y, int button)
