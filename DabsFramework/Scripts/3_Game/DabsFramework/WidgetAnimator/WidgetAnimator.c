@@ -116,6 +116,25 @@ class WidgetAnimator: Managed
 {
 	protected static ref array<ref WidgetAnimationTimer> m_RunningTimers = {};
 	
+	static void Animate(Widget source, WidgetAnimatorProperty property, float end_value, int time)
+	{
+		if (!source) {
+			return;
+		}
+		
+		if (!m_RunningTimers) {
+			m_RunningTimers = {};
+		}
+		
+		if (HasAnimation(source, property)) {
+			CancelAnimate(source, property);
+		}
+		
+		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
+		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, false);
+		m_RunningTimers.Insert(animation_timer);
+	}
+	
 	static void Animate(Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time)
 	{
 		if (!source) {
@@ -135,7 +154,7 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
-	static void Animate(Widget source, WidgetAnimatorProperty property, float end_value, int time)
+	static void AnimateLoop(Widget source, WidgetAnimatorProperty property, float end_value, int time)
 	{
 		if (!source) {
 			return;
@@ -150,7 +169,7 @@ class WidgetAnimator: Managed
 		}
 		
 		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, false);
+		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, true);
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
@@ -173,7 +192,7 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
-	static void AnimateLoop(Widget source, WidgetAnimatorProperty property, float end_value, int time)
+	static void AnimateColor(Widget source, int end_color, int time, bool loop = false)
 	{
 		if (!source) {
 			return;
@@ -183,13 +202,24 @@ class WidgetAnimator: Managed
 			m_RunningTimers = {};
 		}
 		
-		if (HasAnimation(source, property)) {
-			CancelAnimate(source, property);
+		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_B;
+		for (int i = 0; i < 4; i++) {
+			if (HasAnimation(source, property)) {
+				CancelAnimate(source, property);
+			}
+			
+			int start_value = WidgetAnimationTimer.GetProperty(source, property) * 255;
+			int end_value = ((end_color >> (i * 8)) & 255);
+			
+			if (start_value != end_value) {
+				WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
+				animation_timer.Run(source, property, (float)start_value / 255.0, (float)end_value / 255.0, time, loop);
+				m_RunningTimers.Insert(animation_timer);
+			}
+			
+			// they are bitwise flags so halving the value will return us 
+			property /= 2;
 		}
-		
-		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, true);
-		m_RunningTimers.Insert(animation_timer);
 	}
 	
 	static void AnimateColor(Widget source, int start_color, int end_color, int time, bool loop = false)
@@ -221,36 +251,6 @@ class WidgetAnimator: Managed
 			property /= 2;
 		}
 	}	
-	
-	static void AnimateColor(Widget source, int end_color, int time, bool loop = false)
-	{
-		if (!source) {
-			return;
-		}
-		
-		if (!m_RunningTimers) {
-			m_RunningTimers = {};
-		}
-		
-		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_B;
-		for (int i = 0; i < 4; i++) {
-			if (HasAnimation(source, property)) {
-				CancelAnimate(source, property);
-			}
-			
-			int start_value = WidgetAnimationTimer.GetProperty(source, property) * 255;
-			int end_value = ((end_color >> (i * 8)) & 255);
-			
-			if (start_value != end_value) {
-				WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-				animation_timer.Run(source, property, (float)start_value / 255.0, (float)end_value / 255.0, time, loop);
-				m_RunningTimers.Insert(animation_timer);
-			}
-			
-			// they are bitwise flags so halving the value will return us 
-			property /= 2;
-		}
-	}
 	
 	static void AnimateColorHSV(Widget source, vector start_color, vector end_color, int time, bool loop = false)
 	{
