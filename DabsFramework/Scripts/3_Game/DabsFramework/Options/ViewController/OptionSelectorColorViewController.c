@@ -2,19 +2,24 @@ class OptionSelectorColorViewController: ViewController
 {	
 	static const int COLOR_GRADIENT_ACCURACY = 3;
 	
-	int Value;
+	int Value, StartValue;
 	
 	int Alpha, Red, Green, Blue;
 	string AlphaUserInput, RedUserInput, GreenUserInput, BlueUserInput;
 	float Hue, Saturation, Var;
 	
 	ScriptCaller OnValueChanged;
+	ButtonWidget SelectButton, CancelButton;
 	
 	CanvasWidget ColorPicker, ColorGradient, ColorLightness, ColorPickerPanel;
-	Widget ColorLightnessPicker, ColorGradientPicker, ColorPickerSelector;	
+	Widget ColorLightnessPicker, ColorGradientPicker, ColorPickerSelector, ColorPickerWrapper;	
 	
 	protected void UpdateVisuals()
 	{
+		if (!ColorPickerWrapper.IsVisible()) {
+			return;
+		}
+		
 		float size_x, size_y;
 		ColorPicker.GetScreenSize(size_x, size_y);
 				
@@ -27,6 +32,8 @@ class OptionSelectorColorViewController: ViewController
 		ColorPicker.Clear();
 		ColorGradient.Clear();
 		ColorLightness.Clear();
+		SelectButton.SetColor(Value);
+		CancelButton.SetColor(StartValue);
 		
 		WidgetAnimator.AnimateColor(ColorPickerPanel, Value, 10);
 		
@@ -43,13 +50,14 @@ class OptionSelectorColorViewController: ViewController
 			ColorLightness.DrawLine(0, i, hsl_size_x, i, COLOR_GRADIENT_ACCURACY, HSVtoARGB(Hue, Math.Lerp(0, 100, y_value), 100, 255));
 			i += COLOR_GRADIENT_ACCURACY;
 		}
+	
 		
 		// Update relevant widgets to the position they are set to
 		SetWidgetPosRelativeToParent(ColorPickerSelector, Saturation / 100, Math.Lerp(1, 0, Var / 100));
 		SetWidgetPosRelativeToParent(ColorGradientPicker, 0.5, Math.InverseLerp(0, 360, Hue));
 		SetWidgetPosRelativeToParent(ColorLightnessPicker, 0.5, Math.InverseLerp(0, 100, Saturation));
 	}
-	
+		
 	protected void DoCursorDrag(Widget drag_target)
 	{
 		if (!(GetMouseState(MouseState.LEFT) & MB_PRESSED_MASK) || !GetGame().GetInput().HasGameFocus()) {

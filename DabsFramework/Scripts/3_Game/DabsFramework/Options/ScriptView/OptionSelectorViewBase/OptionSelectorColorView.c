@@ -10,9 +10,6 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	protected OptionSelectorColorViewController m_OptionSelectorColorViewController;
 	protected ProfileSettingColor m_ProfileSettingsColor;
 	
-	ButtonWidget ToggleSwitch;
-	ImageWidget Chevron;
-	
 	protected int m_StartValue;
 	
 	void OptionSelectorColorView(notnull ProfileSettings profile_settings, notnull ScriptCaller on_changed, notnull ProfileSettingColor profile_setting_color)
@@ -34,17 +31,28 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_OptionSelectorColorViewController.Value = type_converter.GetInt();			
 		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
 
-		m_StartValue = m_OptionSelectorColorViewController.Value;
+		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
 		
 		if (!profile_setting_color.GetAllowAlpha()) {
 			AlphaSliderRoot.Show(false);
 		}
 	}
 		
-	void OnToggleSwitchExecute(ButtonCommandArgs args)
+	void OnToggleExecute(ButtonCommandArgs args)
 	{	
-		ColorPickerWrapper.Show(!args.GetButtonState());
-		Chevron.SetRotation(0, 0, 180 * args.GetButtonState());
+		ColorPickerWrapper.Show(!ColorPickerWrapper.IsVisible());
+		
+	}
+	
+	void OnSelectExecute(ButtonCommandArgs args)
+	{
+		
+	}
+	
+	void OnCancelExecute(ButtonCommandArgs args)
+	{
+		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
+		m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 	}
 		
 	override bool OnDoubleClick(Widget w, int x, int y, int button)
@@ -122,7 +130,7 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		
 		return super.OnChange(w, x, y, finished);
 	}
-	
+		
 	override void Apply()
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
@@ -134,13 +142,13 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	
 	override void Revert()
 	{
-		m_OptionSelectorColorViewController.Value = m_StartValue;
+		m_OptionSelectorColorViewController.Value = m_OptionSelectorColorViewController.StartValue;
 		m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
 	}
 	
 	override bool IsChanged()
 	{
-		return (m_OptionSelectorColorViewController.Value != m_StartValue);
+		return (m_OptionSelectorColorViewController.Value != m_OptionSelectorColorViewController.StartValue);
 	}
 	
 	override bool NeedsRestart()
