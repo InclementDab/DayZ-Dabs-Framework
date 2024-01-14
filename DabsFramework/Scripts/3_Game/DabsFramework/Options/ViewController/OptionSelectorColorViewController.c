@@ -10,7 +10,7 @@ class OptionSelectorColorViewController: ViewController
 	
 	ScriptCaller OnValueChanged;
 	
-	CanvasWidget ColorPicker, ColorGradient, ColorLightness;
+	CanvasWidget ColorPicker, ColorGradient, ColorLightness, ColorPickerPanel;
 	Widget ColorLightnessPicker, ColorGradientPicker, ColorPickerSelector;	
 	
 	protected void UpdateVisuals()
@@ -27,6 +27,8 @@ class OptionSelectorColorViewController: ViewController
 		ColorPicker.Clear();
 		ColorGradient.Clear();
 		ColorLightness.Clear();
+		
+		WidgetAnimator.AnimateColor(ColorPickerPanel, Value, 10);
 		
 		for (int i = 0; i <= size_y; ) {
 			float y_value = i / size_y;
