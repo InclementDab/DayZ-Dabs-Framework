@@ -1,15 +1,16 @@
 GridSpacerWidgetClass Root {
  ignorepointer 1
  color 0 0 0 0
- position 0.66527 0
- size 0.5 242
+ position 0 0
+ size 0.48 250
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 1
+ scaled 1
  "no focus" 1
  Padding 0
- Margin 0
+ Margin 20
  "Size To Content H" 1
  "Size To Content V" 1
  Columns 1
@@ -20,7 +21,7 @@ GridSpacerWidgetClass Root {
    ignorepointer 1
    color 0.1529 0.1529 0.1529 0.8235
    position 0 0
-   size 0.5 34
+   size 0.5 24
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -30,7 +31,7 @@ GridSpacerWidgetClass Root {
    {
     TextWidgetClass PickColor {
      ignorepointer 1
-     position 6.92999 0
+     position 15 0
      size 48 48
      valign center_ref
      hexactpos 1
@@ -43,63 +44,111 @@ GridSpacerWidgetClass Root {
      "size to text h" 1
      "size to text v" 1
     }
-    ImageWidgetClass PreviousColor {
+    GridSpacerWidgetClass RightIcons {
      ignorepointer 1
-     position 440.60699 -0.07485
-     size 16 16
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     image0 "set:dayz_gui image:circle"
-     mode blend
-     "src alpha" 1
-     "clamp mode" wrap
-     "stretch mode" stretch_w_h
-    }
-    ImageWidgetClass CurrentColor {
-     ignorepointer 1
-     position 420.409 -0.1497
-     size 16 16
-     valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     image0 "set:dayz_gui image:circle"
-     mode blend
-     "src alpha" 1
-     "clamp mode" wrap
-     "stretch mode" stretch_w_h
-    }
-    ButtonWidgetClass ToggleSwitch {
-     position 10 0
-     size 24 24
+     position 7 0
+     size 0 0
      halign right_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     style Empty
-     "no focus" 1
+     Padding 8
+     Margin 0
+     "Size To Content H" 1
+     "Size To Content V" 1
+     content_halign center
+     content_valign center
      {
-      ImageWidgetClass Chevron {
+      GridSpacerWidgetClass History {
+       clipchildren 0
        ignorepointer 1
+       position 0 0
+       size 0 0
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       Padding 8
+       Margin 0
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign right
+       content_valign center
+       {
+        ImageWidgetClass PreviousColor {
+         clipchildren 0
+         ignorepointer 1
+         position 0 0
+         size 16 16
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:circle"
+         mode blend
+         "src alpha" 1
+         "clamp mode" wrap
+         "stretch mode" stretch_w_h
+        }
+        ImageWidgetClass CurrentColor {
+         clipchildren 0
+         ignorepointer 1
+         position 0 0
+         size 16 16
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:circle"
+         mode blend
+         "src alpha" 1
+         "clamp mode" wrap
+         "stretch mode" stretch_w_h
+        }
+       }
+      }
+      ButtonWidgetClass ToggleSwitch {
+       position 0 0
        size 24 24
-       halign center_ref
+       halign right_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
        vexactsize 1
        scriptclass "ViewBinding"
-       image0 "set:dayz_gui image:icon_close"
-       mode blend
-       "src alpha" 1
-       "clamp mode" wrap
-       "stretch mode" stretch_w_h
+       style Empty
+       "no focus" 1
+       {
+        ImageWidgetClass Chevron {
+         ignorepointer 1
+         position 0 0
+         size 24 24
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass "ViewBinding"
+         image0 "set:dayz_gui image:icon_close"
+         mode blend
+         "src alpha" 1
+         "clamp mode" wrap
+         "stretch mode" stretch_w_h
+         {
+          ScriptParamsClass {
+           Relay_Command "OnToggleSwitchExecute"
+          }
+         }
+        }
+       }
        {
         ScriptParamsClass {
          Relay_Command "OnToggleSwitchExecute"
@@ -113,14 +162,14 @@ GridSpacerWidgetClass Root {
   GridSpacerWidgetClass ColorPickerWrapper {
    visible 1
    ignorepointer 1
-   position 10 11
+   position 0 0
    size 0.5 250
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 1
-   Padding 10
-   Margin 10
+   Padding 5
+   Margin 15
    "Size To Content H" 1
    "Size To Content V" 1
    Columns 1
@@ -133,7 +182,7 @@ GridSpacerWidgetClass Root {
      vexactpos 1
      hexactsize 0
      vexactsize 1
-     Padding 0
+     Padding 10
      Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
@@ -205,7 +254,7 @@ GridSpacerWidgetClass Root {
         PanelWidgetClass ColorPickerPanel {
          ignorepointer 1
          color 1 1 1 0.549
-         position 0 -1
+         position 0 0
          size 1 1
          halign center_ref
          valign center_ref
@@ -225,7 +274,7 @@ GridSpacerWidgetClass Root {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       Padding 4
+       Padding 5
        Margin 0
        Columns 2
        Rows 1
@@ -299,7 +348,7 @@ GridSpacerWidgetClass Root {
      vexactpos 1
      hexactsize 0
      vexactsize 0
-     Padding 5
+     Padding 10
      Margin 0
      "Size To Content V" 1
      Columns 4
@@ -324,7 +373,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 1 0 0 0.4706
          position 0 0
-         size 1 32
+         size 1 28
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -420,7 +469,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 0 1 0 0.4706
          position 0 0
-         size 1 32
+         size 1 28
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -516,7 +565,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 0 0 1 0.4706
          position 0 0
-         size 1 32
+         size 1 28
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -612,7 +661,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 1 1 1 0.4706
          position 0 0
-         size 1 32
+         size 1 28
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -693,7 +742,7 @@ GridSpacerWidgetClass Root {
     }
     GridSpacerWidgetClass GridSpacerWidget0 {
      ignorepointer 1
-     size 0.5 48
+     size 0.5 64
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -709,7 +758,7 @@ GridSpacerWidgetClass Root {
      Rows 1
      {
       ButtonWidgetClass ButtonWidget0 {
-       color 0.3843 0.3843 0.3843 1
+       color 0.1569 0.2745 0.6235 1
        size 0.5 1
        halign center_ref
        valign center_ref
@@ -717,7 +766,8 @@ GridSpacerWidgetClass Root {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       style DayZDefaultButtonAll
+       fixaspect inside
+       style MenuDefault
        "no focus" 1
        text "Select"
       }
