@@ -2,7 +2,7 @@ GridSpacerWidgetClass Root {
  ignorepointer 1
  color 0 0 0 0
  position 0 0
- size 0.48 250
+ size 1 250
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -10,7 +10,7 @@ GridSpacerWidgetClass Root {
  scaled 1
  "no focus" 1
  Padding 0
- Margin 20
+ Margin 0
  "Size To Content H" 1
  "Size To Content V" 1
  Columns 1
@@ -21,7 +21,7 @@ GridSpacerWidgetClass Root {
    ignorepointer 0
    color 0.1529 0.1529 0.1529 0.8235
    position 0 0
-   size 0.5 24
+   size 0.5 32
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -32,7 +32,7 @@ GridSpacerWidgetClass Root {
    {
     TextWidgetClass PickColor {
      ignorepointer 1
-     position 15 0
+     position 20 0
      size 48 48
      valign center_ref
      hexactpos 1
@@ -48,9 +48,10 @@ GridSpacerWidgetClass Root {
     ImageWidgetClass History {
      clipchildren 0
      ignorepointer 1
-     position 15 0
+     position 20 0
      size 24 24
      halign right_ref
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -76,8 +77,8 @@ GridSpacerWidgetClass Root {
    vexactpos 1
    hexactsize 0
    vexactsize 1
-   Padding 5
-   Margin 15
+   Padding 0
+   Margin 0
    "Size To Content H" 1
    "Size To Content V" 1
    Columns 1
@@ -91,9 +92,11 @@ GridSpacerWidgetClass Root {
      hexactsize 0
      vexactsize 1
      Padding 10
-     Margin 0
+     Margin 10
      "Size To Content H" 1
      "Size To Content V" 1
+     content_halign center
+     content_valign center
      Columns 2
      Rows 1
      {
@@ -249,15 +252,15 @@ GridSpacerWidgetClass Root {
     }
     GridSpacerWidgetClass ColorArgbSliderWrapper {
      ignorepointer 1
-     size 0.5 0.6
+     size 0 0
      halign center_ref
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 0
-     Padding 10
-     Margin 0
+     Padding 8
+     Margin 8
      "Size To Content V" 1
      Columns 4
      Rows 1
@@ -648,9 +651,9 @@ GridSpacerWidgetClass Root {
       }
      }
     }
-    GridSpacerWidgetClass GridSpacerWidget0 {
+    GridSpacerWidgetClass ActionItems {
      ignorepointer 1
-     size 0.5 42
+     size 0.5 75
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -658,7 +661,7 @@ GridSpacerWidgetClass Root {
      hexactsize 0
      vexactsize 1
      Padding 8
-     Margin 0
+     Margin 10
      "Size To Content V" 1
      content_halign center
      content_valign center
@@ -679,6 +682,7 @@ GridSpacerWidgetClass Root {
        style Colorable
        "no focus" 1
        text "Select"
+       text_proportion 0.55
        font "gui/fonts/MetronBook"
        {
         ScriptParamsClass {
@@ -700,6 +704,7 @@ GridSpacerWidgetClass Root {
        style Colorable
        "no focus" 1
        text "Cancel"
+       text_proportion 0.55
        font "gui/fonts/MetronBook"
        {
         ScriptParamsClass {
