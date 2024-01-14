@@ -1,7 +1,7 @@
 GridSpacerWidgetClass Root {
  ignorepointer 1
  color 0 0 0 0
- position 0 0
+ position 0.66527 0
  size 0.5 242
  hexactpos 1
  vexactpos 1
@@ -13,7 +13,7 @@ GridSpacerWidgetClass Root {
  "Size To Content H" 1
  "Size To Content V" 1
  Columns 1
- Rows 1
+ Rows 4
  {
   ButtonWidgetClass Accordion {
    visible 1
@@ -73,16 +73,7 @@ GridSpacerWidgetClass Root {
      "clamp mode" wrap
      "stretch mode" stretch_w_h
     }
-    FrameWidgetClass History {
-     ignorepointer 1
-     position 10 10
-     size 48 48
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-    }
-    ButtonWidgetClass toggleSwitch {
+    ButtonWidgetClass ToggleSwitch {
      position 10 0
      size 24 24
      halign right_ref
@@ -94,7 +85,7 @@ GridSpacerWidgetClass Root {
      style Empty
      "no focus" 1
      {
-      ImageWidgetClass chevron {
+      ImageWidgetClass Chevron {
        ignorepointer 1
        size 24 24
        halign center_ref
@@ -103,11 +94,17 @@ GridSpacerWidgetClass Root {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       image0 "set:dayz_gui image:icon_open"
+       scriptclass "ViewBinding"
+       image0 "set:dayz_gui image:icon_close"
        mode blend
        "src alpha" 1
        "clamp mode" wrap
        "stretch mode" stretch_w_h
+       {
+        ScriptParamsClass {
+         Relay_Command "OnToggleSwitchExecute"
+        }
+       }
       }
      }
     }
@@ -126,75 +123,28 @@ GridSpacerWidgetClass Root {
    Margin 10
    "Size To Content H" 1
    "Size To Content V" 1
-   Columns 2
-   Rows 1
+   Columns 1
    {
-    CanvasWidgetClass ColorPicker {
-     visible 1
-     clipchildren 1
-     ignorepointer 0
-     position 0 0
-     size 1 1
-     halign center_ref
-     valign center_ref
+    GridSpacerWidgetClass ColorPickerGroup {
+     ignorepointer 1
+     position 10 10
+     size 1 250
      hexactpos 1
      vexactpos 1
      hexactsize 0
-     vexactsize 0
-     fixaspect fixwidth
+     vexactsize 1
+     Padding 0
+     Margin 0
+     "Size To Content H" 1
+     "Size To Content V" 1
+     Columns 2
+     Rows 1
      {
-      PanelWidgetClass ColorPickerSelector {
+      CanvasWidgetClass ColorPicker {
        visible 1
-       ignorepointer 1
-       color 1 0.098 0.098 1
-       position -8 -8
-       size 16 16
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
-       vexactsize 1
-       style blank
-       {
-        ImageWidgetClass SelectorImage {
-         visible 1
-         ignorepointer 1
-         size 1 1
-         halign center_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:scope"
-         mode blend
-         "src alpha" 1
-         "clamp mode" clamp
-         "stretch mode" stretch_w_h
-         filter 1
-        }
-        ImageWidgetClass SelectorOutline {
-         ignorepointer 1
-         color 0.0588 0.0588 0.0588 1
-         size 1 1
-         halign center_ref
-         valign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 0
-         vexactsize 0
-         image0 "set:dayz_gui image:icon_circle"
-         mode blend
-         "src alpha" 1
-         "clamp mode" invalid
-         "stretch mode" invalid
-         filter 1
-        }
-       }
-      }
-      PanelWidgetClass ColorPickerPanel {
-       ignorepointer 1
-       color 1 1 1 0.549
-       position 0 -1
+       clipchildren 1
+       ignorepointer 0
+       position 0 0
        size 1 1
        halign center_ref
        valign center_ref
@@ -202,76 +152,139 @@ GridSpacerWidgetClass Root {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       style Outline_2px
-      }
-     }
-    }
-    GridSpacerWidgetClass ColorGradientSliderWrapper {
-     ignorepointer 1
-     position 10 10
-     size 0.5 1
-     hexactpos 1
-     vexactpos 1
-     hexactsize 0
-     vexactsize 0
-     Padding 4
-     Margin 0
-     Columns 2
-     Rows 1
-     {
-      CanvasWidgetClass ColorLightness {
-       ignorepointer 0
-       color 1 1 1 0.549
-       position 0 0
-       size 20 1
-       halign center_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
-       vexactsize 0
+       fixaspect fixwidth
        {
-        PanelWidgetClass ColorLightnessPicker {
+        PanelWidgetClass ColorPickerSelector {
          visible 1
-         clipchildren 0
+         ignorepointer 1
+         color 1 0.098 0.098 1
+         position -8 -8
+         size 16 16
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         style blank
+         {
+          ImageWidgetClass SelectorImage {
+           visible 1
+           ignorepointer 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           image0 "set:dayz_gui image:scope"
+           mode blend
+           "src alpha" 1
+           "clamp mode" clamp
+           "stretch mode" stretch_w_h
+           filter 1
+          }
+          ImageWidgetClass SelectorOutline {
+           ignorepointer 1
+           color 0.0588 0.0588 0.0588 1
+           size 1 1
+           halign center_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           image0 "set:dayz_gui image:icon_circle"
+           mode blend
+           "src alpha" 1
+           "clamp mode" invalid
+           "stretch mode" invalid
+           filter 1
+          }
+         }
+        }
+        PanelWidgetClass ColorPickerPanel {
          ignorepointer 1
          color 1 1 1 0.549
-         position 0 0
-         size 1 6
+         position 0 -1
+         size 1 1
          halign center_ref
+         valign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 0
-         vexactsize 1
+         vexactsize 0
          style Outline_2px
         }
        }
       }
-      CanvasWidgetClass ColorGradient {
-       ignorepointer 0
-       color 1 1 1 0.549
-       position 0 0
-       size 20 120
-       halign center_ref
-       valign center_ref
+      GridSpacerWidgetClass ColorGradientSliderWrapper {
+       ignorepointer 1
+       position 10 10
+       size 0.5 1
        hexactpos 1
        vexactpos 1
-       hexactsize 1
-       vexactsize 1
+       hexactsize 0
+       vexactsize 0
+       Padding 4
+       Margin 0
+       Columns 2
+       Rows 1
        {
-        PanelWidgetClass ColorGradientPicker {
-         visible 1
-         clipchildren 0
-         ignorepointer 1
+        CanvasWidgetClass ColorLightness {
+         ignorepointer 0
          color 1 1 1 0.549
          position 0 0
-         size 1 6
+         size 20 1
          halign center_ref
+         valign center_ref
          hexactpos 1
          vexactpos 1
-         hexactsize 0
+         hexactsize 1
+         vexactsize 0
+         {
+          PanelWidgetClass ColorLightnessPicker {
+           visible 1
+           clipchildren 0
+           ignorepointer 1
+           color 1 1 1 0.549
+           position 0 0
+           size 1 6
+           halign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+           style Outline_2px
+          }
+         }
+        }
+        CanvasWidgetClass ColorGradient {
+         ignorepointer 0
+         color 1 1 1 0.549
+         position 0 0
+         size 20 120
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
          vexactsize 1
-         style Outline_2px
+         {
+          PanelWidgetClass ColorGradientPicker {
+           visible 1
+           clipchildren 0
+           ignorepointer 1
+           color 1 1 1 0.549
+           position 0 0
+           size 1 6
+           halign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+           style Outline_2px
+          }
+         }
         }
        }
       }
@@ -279,7 +292,7 @@ GridSpacerWidgetClass Root {
     }
     GridSpacerWidgetClass ColorArgbSliderWrapper {
      ignorepointer 1
-     size 0.5 0.5
+     size 0.5 0.6
      halign center_ref
      valign center_ref
      hexactpos 1
@@ -288,6 +301,7 @@ GridSpacerWidgetClass Root {
      vexactsize 0
      Padding 5
      Margin 0
+     "Size To Content V" 1
      Columns 4
      Rows 1
      {
@@ -310,7 +324,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 1 0 0 0.4706
          position 0 0
-         size 1 20
+         size 1 32
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -406,7 +420,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 0 1 0 0.4706
          position 0 0
-         size 1 20
+         size 1 32
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -502,7 +516,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 0 0 1 0.4706
          position 0 0
-         size 1 20
+         size 1 32
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -598,7 +612,7 @@ GridSpacerWidgetClass Root {
          ignorepointer 0
          color 1 1 1 0.4706
          position 0 0
-         size 1 20
+         size 1 32
          halign center_ref
          valign center_ref
          hexactpos 1
@@ -677,14 +691,37 @@ GridSpacerWidgetClass Root {
       }
      }
     }
-    ButtonWidgetClass ButtonWidget0 {
-     position 882.96802 817.09601
-     size 0.5 0.5
+    GridSpacerWidgetClass GridSpacerWidget0 {
+     ignorepointer 1
+     size 0.5 48
+     halign center_ref
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
-     vexactsize 0
-     text "Select"
+     vexactsize 1
+     Padding 0
+     Margin 0
+     "Size To Content V" 1
+     content_halign center
+     content_valign center
+     Columns 1
+     Rows 1
+     {
+      ButtonWidgetClass ButtonWidget0 {
+       color 0.3843 0.3843 0.3843 1
+       size 0.5 1
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style DayZDefaultButtonAll
+       "no focus" 1
+       text "Select"
+      }
+     }
     }
    }
   }
