@@ -55,6 +55,18 @@ class EditorObjectData: SerializableBase
 		m_Id = EditorObjectID;
 	}
 	
+	Object CreateObject()
+	{
+		if (Type.Contains("\\") || Type.Contains("/")) {
+			return GetGame().CreateStaticObjectUsingP3D(Type, Position, Orientation, Scale);
+		}
+		
+		Object object = GetGame().CreateObjectEx(Type, Position, ECE_SETUP | ECE_UPDATEPATHGRAPH | ECE_CREATEPHYSICS | ECE_NOLIFETIME | ECE_DYNAMIC_PERSISTENCY);
+		object.SetOrientation(Orientation);
+		object.SetScale(Scale);
+		return object;
+	}
+	
 	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EditorObjectFlags.ALL)
 	{	
 		return Create(type, transform[3], Math3D.MatrixToAngles(transform), 1, flags);
