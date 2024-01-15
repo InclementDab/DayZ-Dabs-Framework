@@ -1,6 +1,7 @@
 class EditorObjectData: SerializableBase
 {	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
+	UUID Uuid;
 	string Type;
 	string DisplayName;
 	vector Position;
@@ -43,13 +44,13 @@ class EditorObjectData: SerializableBase
 	[NonSerialized()]
 	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
 		
-	Object CreateObject()
+	Object CreateObject(int flags = ECE_SETUP | ECE_UPDATEPATHGRAPH | ECE_CREATEPHYSICS | ECE_NOLIFETIME | ECE_DYNAMIC_PERSISTENCY)
 	{
 		if (Type.Contains("\\") || Type.Contains("/")) {
 			return GetGame().CreateStaticObjectUsingP3D(Type, Position, Orientation, Scale);
 		}
 		
-		Object object = GetGame().CreateObjectEx(Type, Position, ECE_SETUP | ECE_UPDATEPATHGRAPH | ECE_CREATEPHYSICS | ECE_NOLIFETIME | ECE_DYNAMIC_PERSISTENCY);
+		Object object = GetGame().CreateObjectEx(Type, Position, flags);
 		object.SetOrientation(Orientation);
 		object.SetScale(Scale);
 		return object;
