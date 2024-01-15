@@ -56,6 +56,13 @@ class EditorObjectData: SerializableBase
 		return object;
 	}
 	
+	static EditorObjectData Create(Serializer serializer)
+	{
+		EditorObjectData data = new EditorObjectData();
+		data.Read(serializer, 0);
+		return data;
+	}
+	
 	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EFE_DEFAULT)
 	{	
 		return Create(type, transform[3], Math3D.MatrixToAngles(transform), 1, flags);
