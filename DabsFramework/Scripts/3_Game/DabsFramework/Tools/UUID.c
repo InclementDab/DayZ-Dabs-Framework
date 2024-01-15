@@ -1,4 +1,3 @@
-#ifdef DAYZ_1_22
 typedef string UUID;
 class UUID: string
 {
@@ -10,4 +9,3 @@ class UUID: string
 		return UUIDApi.FormatString(uid);
 	}
 }
-#endif

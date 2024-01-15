@@ -49,6 +49,11 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
 		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		if (!type_converter) {
+			Error("Failed to find type conversion for type " + m_ProfileSettingMultistate.GetVariableName());
+			return;
+		}
+		
 		type_converter.SetInt(m_ProfileSettingMultistate.GetPossibleStates().Find(m_CurrentOption));
 		type_converter.SetToController(m_ProfileSettings, m_ProfileSettingMultistate.GetVariableName(), 0);
 		m_ProfileSettings.Save();
@@ -58,6 +63,11 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
 		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		if (!type_converter) {
+			Error("Failed to find type conversion for type " + m_ProfileSettingMultistate.GetVariableName());
+			return;
+		}
+		
 		type_converter.GetFromController(m_ProfileSettings, m_ProfileSettingMultistate.GetVariableName(), 0);
 		array<string> options_list = m_ProfileSettingMultistate.GetPossibleStates();
 		m_CurrentOption = options_list[type_converter.GetInt()];
@@ -65,9 +75,14 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 	}
 	
 	override bool IsChanged()
-	{
+	{		
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
 		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		if (!type_converter) {
+			Error("Failed to find type conversion for type " + m_ProfileSettingMultistate.GetVariableName());
+			return false;
+		}
+		
 		type_converter.GetFromController(m_ProfileSettings, m_ProfileSettingMultistate.GetVariableName(), 0);
 		
 		array<string> options_list = m_ProfileSettingMultistate.GetPossibleStates();

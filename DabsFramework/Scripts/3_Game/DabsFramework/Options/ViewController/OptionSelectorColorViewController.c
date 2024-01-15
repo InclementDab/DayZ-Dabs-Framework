@@ -14,7 +14,7 @@ class OptionSelectorColorViewController: ViewController
 	CanvasWidget ColorPicker, ColorGradient, ColorLightness, ColorPickerPanel;
 	Widget ColorLightnessPicker, ColorGradientPicker, ColorPickerSelector, ColorPickerWrapper;	
 	
-	protected void UpdateVisuals()
+	void UpdateVisuals()
 	{
 		if (!ColorPickerWrapper.IsVisible()) {
 			return;

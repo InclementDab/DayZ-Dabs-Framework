@@ -32,6 +32,7 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
 
 		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
+		m_OptionSelectorColorViewController.NotifyPropertyChanged("StartValue");
 		
 		if (!profile_setting_color.GetAllowAlpha()) {
 			AlphaSliderRoot.Show(false);
@@ -41,18 +42,20 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	void OnToggleExecute(ButtonCommandArgs args)
 	{	
 		ColorPickerWrapper.Show(!ColorPickerWrapper.IsVisible());
-		
 	}
 	
 	void OnSelectExecute(ButtonCommandArgs args)
 	{
-		
+		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
+		m_OptionSelectorColorViewController.NotifyPropertyChanged("StartValue");
+		m_OptionSelectorColorViewController.UpdateVisuals();
 	}
 	
 	void OnCancelExecute(ButtonCommandArgs args)
 	{
-		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
+		m_OptionSelectorColorViewController.Value = m_OptionSelectorColorViewController.StartValue;
 		m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
+		m_OptionSelectorColorViewController.UpdateVisuals();
 	}
 		
 	override bool OnDoubleClick(Widget w, int x, int y, int button)

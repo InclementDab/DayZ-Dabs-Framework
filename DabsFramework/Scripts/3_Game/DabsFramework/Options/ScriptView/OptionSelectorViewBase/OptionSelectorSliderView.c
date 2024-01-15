@@ -97,6 +97,11 @@ class OptionSelectorSliderView: OptionSelectorViewBase
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
 		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingSlider.GetVariableName()]);
+		if (!type_converter) {
+			Error("Failed to find type conversion for type " + m_ProfileSettingSlider.GetVariableName());
+			return;
+		}
+		
 		type_converter.SetFloat(m_OptionSelectorSliderViewController.ValueActual);
 		type_converter.SetToController(m_ProfileSettings, m_ProfileSettingSlider.GetVariableName(), 0);
 		m_ProfileSettings.Save();
