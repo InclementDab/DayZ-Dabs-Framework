@@ -1,18 +1,11 @@
-static int DeletedObjectId;
-
 /* 
 	For future reference, it is possible now with GetDebugName() to obtain the id and p3d of an object safely
 	this would not be a terrible way to ensure deleted objects without a Type dont get improperly removed
 	however we need to backport all old information and handle empty Types from the past
 */
 
-
-
-class EditorDeletedObjectData: SerializableBase
-{
-	[NonSerialized()]
-	int ID;
-	
+class EditorHiddenObjectData: SerializableBase
+{	
 	string Type;
 	vector Position;
 	int Flags;
@@ -22,21 +15,10 @@ class EditorDeletedObjectData: SerializableBase
 	
 	[NonSerialized()]
 	Object WorldObject;
-	
-	void EditorDeletedObjectData()
-	{
-		DeletedObjectId++;
-		ID = DeletedObjectId;
-	}
-	
-	int GetID()
-	{
-		return ID;
-	}
-	
-	static EditorDeletedObjectData Create(string type, vector position, vector orientation = vector.Zero)
+			
+	static EditorHiddenObjectData Create(string type, vector position, vector orientation = vector.Zero)
 	{		
-		EditorDeletedObjectData data = new EditorDeletedObjectData();
+		EditorHiddenObjectData data = new EditorHiddenObjectData();
 		data.Type = type;
 		data.Position = position;
 		data.Orientation = orientation;
@@ -46,13 +28,13 @@ class EditorDeletedObjectData: SerializableBase
 		return data;
 	}
 	
-	static EditorDeletedObjectData Create(Object object)
+	static EditorHiddenObjectData Create(Object object)
 	{
 		if (!object) {
 			return null;
 		}
 		
-		EditorDeletedObjectData data = new EditorDeletedObjectData();
+		EditorHiddenObjectData data = new EditorHiddenObjectData();
 		data.Type = object.GetType();
 		data.Position = object.GetWorldPosition();
 		data.WorldObject = object;
