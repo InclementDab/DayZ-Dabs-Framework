@@ -140,9 +140,13 @@ class ProfileSettings: Class
 		return default;
 	}
 	
-		array<ref ProfileSettingsCategory> GetCategories()
+	array<ref ProfileSettingsCategory> GetCategories()
 	{
-		return RegisterProfileSettingBase.Instances[Type()];
+		if (RegisterProfileSettingBase.Instances[Type()]) {
+			return RegisterProfileSettingBase.Instances[Type()];
+		}
+		
+		return {};
 	}
 	
 	//@ Virtual function to apply all options to the game

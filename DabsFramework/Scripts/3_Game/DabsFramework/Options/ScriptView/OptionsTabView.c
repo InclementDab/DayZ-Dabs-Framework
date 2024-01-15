@@ -13,7 +13,7 @@ class OptionsTabView: ScriptView
 		m_TemplateController = OptionsTabViewController.Cast(m_Controller);
 		m_ProfileSettings = settings;
 		
-		array<ref ProfileSettingsCategory> categories = m_ProfileSettings.GetCategories();
+		array<ref ProfileSettingsCategory> categories = m_ProfileSettings.GetCategories();		
 		foreach (ProfileSettingsCategory category: categories) {
 			m_TemplateController.OptionCategories.Insert(new OptionsCategoryView(m_ProfileSettings, category, on_changed));
 		}

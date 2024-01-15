@@ -19,14 +19,20 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_OptionSelectorColorViewController = OptionSelectorColorViewController.Cast(m_Controller);
 		m_OptionSelectorColorViewController.OnValueChanged = on_changed;
 		
-		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
+		
+		Print(m_ProfileSettingsColor);
+		Print(m_ProfileSettingsColor.Type());
+		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettingsColor.Type());
+		Print(properties.Count());
+		Print(properties.GetKey(0));
+		
 		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingsColor.GetVariableName()]);
 		if (!type_converter) {
-			Error(string.Format("Invalid variable type on registry type=%1", properties[m_ProfileSettingsColor.GetVariableName()]));
+			//Error(string.Format("Invalid variable type on registry type=%1", m_ProfileSettingsColor.GetVariableName()));
 			return;
 		}
 		
-		type_converter.GetFromController(m_ProfileSettings, m_ProfileSettingsColor.GetVariableName(), 0);
+		type_converter.GetFromController(m_ProfileSettingsColor, m_ProfileSettingsColor.GetVariableName(), 0);
 		
 		m_OptionSelectorColorViewController.Value = type_converter.GetInt();			
 		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
