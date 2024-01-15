@@ -1,22 +1,19 @@
-class EditorSaveData
+class EditorSaveData: SerializableBase
 {
 	[NonSerialized()]
 	static const string BIN_CHECK = "EditorBinned";
 	
-	static const int Version = 3;
+	static const int Version = 4;
 	string MapName;
 	vector CameraPosition;
+	
+	int Year, Month, Day, Hour, Minute, Second;
+	float Overcast0, Fog0, Rain0;
 	
 	ref array<ref EditorObjectData> EditorObjects = {};
 	ref array<ref EditorHiddenObjectData> EditorHiddenObjects = {};	
 		
-	void ~EditorSaveData()
-	{
-		delete EditorObjects;
-		delete EditorHiddenObjects;
-	}
-		
-	void Write(Serializer serializer)
+	override void Write(Serializer serializer, int version)
 	{
 		serializer.Write(BIN_CHECK);
 		serializer.Write(Version);
@@ -32,9 +29,19 @@ class EditorSaveData
 		foreach (EditorHiddenObjectData deleted_data: EditorHiddenObjects) {
 			deleted_data.Write(serializer, Version);
 		}
+		
+		serializer.Write(Year);
+		serializer.Write(Month);
+		serializer.Write(Day);
+		serializer.Write(Hour);
+		serializer.Write(Minute);
+		serializer.Write(Second);
+		serializer.Write(Overcast0);
+		serializer.Write(Fog0);
+		serializer.Write(Rain0);
 	}
 	
-	bool Read(Serializer serializer)
+	override bool Read(Serializer serializer, int version)
 	{
 		string bincheck;
 		serializer.Read(bincheck);
@@ -42,8 +49,7 @@ class EditorSaveData
 			return false;
 		}
 		
-		int read_version;
-		serializer.Read(read_version);
+		serializer.Read(version);
 		serializer.Read(MapName);
 		serializer.Read(CameraPosition);
 		
@@ -51,7 +57,7 @@ class EditorSaveData
 		serializer.Read(editor_object_count);
 		for (int i = 0; i < editor_object_count; i++) {
 			EditorObjectData data();
-			data.Read(serializer, read_version);
+			data.Read(serializer, version);
 			EditorObjects.Insert(data);
 		}
 		
@@ -59,10 +65,23 @@ class EditorSaveData
 		serializer.Read(editor_deleted_object_count);
 		for (int j = 0; j < editor_deleted_object_count; j++) {
 			EditorHiddenObjectData deleted_data();
-			deleted_data.Read(serializer, read_version);
+			deleted_data.Read(serializer, version);
 			EditorHiddenObjects.Insert(deleted_data);
 		}
 		
+		if (version < 4) {
+			return true;
+		}
+		
+		serializer.Read(Year);
+		serializer.Read(Month);
+		serializer.Read(Day);
+		serializer.Read(Hour);
+		serializer.Read(Minute);
+		serializer.Read(Second);
+		serializer.Read(Overcast0);
+		serializer.Read(Fog0);
+		serializer.Read(Rain0);
 		return true;
 	}
 	
