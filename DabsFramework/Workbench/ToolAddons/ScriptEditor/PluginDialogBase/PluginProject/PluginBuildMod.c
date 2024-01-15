@@ -35,6 +35,11 @@ class PluginBuildMod: PluginProject
 			}
 		}
 		
+		array<string> dependencies = EnumerateDirectories(string.Format("%1\\Dependencies", m_LaunchSettings.Repository));
+		foreach (string dependency: dependencies) {
+			PromiseSymLink(string.Format("%1\\Dependencies\\%2", m_LaunchSettings.Repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
+		}
+		
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);				
 		// Set up our mod output correctly if not done so already
 		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);
@@ -44,8 +49,10 @@ class PluginBuildMod: PluginProject
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
 		
 		// Move contents of Addons folder
-		CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+		if (m_BuildSettings.CopyAddons) {
+			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+		}
 		
-		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2", mod_output, mod_prefix, m_BuildSettings.Command));
+		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2 +H", mod_output, mod_prefix, m_BuildSettings.Command));
 	}
 }

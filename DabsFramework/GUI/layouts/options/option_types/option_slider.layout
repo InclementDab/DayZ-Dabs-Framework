@@ -1,0 +1,98 @@
+FrameWidgetClass Root {
+ visible 1
+ ignorepointer 1
+ color 0 0 0 0
+ size 0.95 30
+ halign center_ref
+ valign center_ref
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ {
+  SliderWidgetClass Slider {
+   visible 1
+   disabled 0
+   clipchildren 0
+   ignorepointer 0
+   color 1 1 1 0.4706
+   position 0 0
+   size 1 20
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   scriptclass "ViewBinding"
+   style Default
+   "no focus" 1
+   maximum 1
+   step 0.001
+   current 0.5
+   "marker thickness" 0.1
+   flipped 0
+   "fill in" 1
+   "draw marker" 0
+   "listen to input" 1
+   {
+    ScriptParamsClass {
+     Binding_Name "Value"
+     Two_Way_Binding 1
+    }
+   }
+  }
+  EditBoxWidgetClass EditBox {
+   visible 0
+   clipchildren 0
+   ignorepointer 0
+   position 15 0
+   size 50 20
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   scriptclass "ViewBinding"
+   style ServerBrowser
+   text "100"
+   "exact text" 1
+   font "gui/fonts/Metron16"
+   {
+    ScriptParamsClass {
+     Binding_Name "ValueUserInput"
+     Two_Way_Binding 1
+    }
+   }
+  }
+  TextWidgetClass Label {
+   visible 1
+   clipchildren 1
+   ignorepointer 1
+   ignoregloballv 0
+   position 0 0
+   size 0 20
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   scriptclass "ViewBinding"
+   style Normal
+   text "100"
+   font "gui/fonts/Metron16"
+   "exact text" 1
+   "size to text h" 1
+   "size to text v" 0
+   "text halign" center
+   "text valign" center
+   {
+    ScriptParamsClass {
+     Binding_Name "ValueUserInput"
+     Two_Way_Binding 0
+    }
+   }
+  }
+ }
+}

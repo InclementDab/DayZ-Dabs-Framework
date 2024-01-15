@@ -5,6 +5,11 @@ class PluginLaunchGameBase: PluginProject
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
+		
+		if (workbench_directory == string.Empty) {
+			Error("CWD is not workbench, you must launch via gproj");
+			return;
+		}
 								
 		//! Game launch script
 		// append prefix of current mod
@@ -86,7 +91,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
 			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-				//Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
 			}
 		}
 		
@@ -117,8 +122,8 @@ class PluginLaunchGameBase: PluginProject
 		MakeDirectory(launch_settings.Profiles);
 		MakeDirectory(launch_settings.Missions);
 		
-		string client_profile_directory = string.Format("%1\\%2", launch_settings.Profiles, LaunchSettings.CLIENT_PROFILE_NAME);
-		string server_profile_directory = string.Format("%1\\%2", launch_settings.Profiles, LaunchSettings.SERVER_PROFILE_NAME);		
+		string client_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT_PROFILE_NAME);
+		string server_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.SERVER_PROFILE_NAME);		
 		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mod_prefix, launch_settings.Map);
 		
 		// Make the folders if they dont exist yet
@@ -133,8 +138,11 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Copy maps and mission info
-		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
+		if (m_ProjectSettings["Profile"] != string.Empty) {
+			CopyFiles(string.Format("%1\\Profiles\\%2", launch_settings.Repository, m_ProjectSettings["Profile"]), server_profile_directory);
+		}
 		
 		CopyFiles(string.Format("%1\\Missions\\%3.%2", launch_settings.Repository, launch_settings.Map, mod_prefix), server_mission);
 		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
@@ -142,7 +150,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
 		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission);
-		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, server_mission);
+		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=@DayZ-Editor;%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, server_mission);
 
 		string ip, password;
 		int port;
@@ -150,23 +158,23 @@ class PluginLaunchGameBase: PluginProject
 			client_launch_params += string.Format(" -connect=%1 -port=%2 -password=%3", ip, port, password);
 			server_launch_params += string.Format(" -port=%1", port);
 		}
-		
+		 
 		if (launch_settings.FilePatching) {
 			client_launch_params += " -filePatching";
 			server_launch_params += " -filePatching";
 			offline_launch_params += " -filePatching";
 		}
-				
+						
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
-			Workbench.RunCmd(string.Format("%1 %2", game_exe, client_launch_params));
+			Workbench.RunCmd(game_exe + " " + client_launch_params);
 		}	
 		
 		if ((launch_settings.LaunchType & GameLaunchType.SERVER) == GameLaunchType.SERVER) {
-			Workbench.RunCmd(string.Format("%1 %2", game_exe, server_launch_params));
+			Workbench.RunCmd(game_exe + " " + server_launch_params);
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
-			Workbench.RunCmd(string.Format("%1 %2", game_exe, offline_launch_params));
+			Workbench.RunCmd(game_exe + " " + offline_launch_params);
 		}
 	}
 	

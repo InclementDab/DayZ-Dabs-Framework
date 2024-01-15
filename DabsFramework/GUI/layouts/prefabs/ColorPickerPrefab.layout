@@ -1,4 +1,4 @@
-WrapSpacerWidgetClass rootFrame {
+WrapSpacerWidgetClass Root {
  color 0.7059 0.7059 0.7059 0.9412
  size 0.25 167
  halign center_ref
@@ -7,7 +7,6 @@ WrapSpacerWidgetClass rootFrame {
  vexactpos 1
  hexactsize 0
  vexactsize 1
- style Outline_1px
  {
   TextWidgetClass ColorPickerCaption {
    ignorepointer 1
@@ -48,7 +47,6 @@ WrapSpacerWidgetClass rootFrame {
    hexactsize 1
    vexactsize 1
    scriptclass ""
-   style Outline_1px
    {
     CanvasWidgetClass HSVColorGradient {
      ignorepointer 0
@@ -116,7 +114,6 @@ WrapSpacerWidgetClass rootFrame {
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Outline_1px
    {
     CanvasWidgetClass ColorSpectrumGradient {
      ignorepointer 0
@@ -141,7 +138,6 @@ WrapSpacerWidgetClass rootFrame {
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       style Outline_1px
        {
         PanelWidgetClass ColorSpectrumPickerPanelBlackOutline {
          clipchildren 0
@@ -154,7 +150,6 @@ WrapSpacerWidgetClass rootFrame {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style Outline_1px
         }
        }
       }
@@ -181,7 +176,6 @@ WrapSpacerWidgetClass rootFrame {
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   style Outline_1px
    {
     CanvasWidgetClass ColorLightnessGradient {
      ignorepointer 0
@@ -206,7 +200,6 @@ WrapSpacerWidgetClass rootFrame {
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       style Outline_1px
        {
         PanelWidgetClass ColorLightnessPickerPanelBlackOutline {
          clipchildren 0
@@ -219,7 +212,68 @@ WrapSpacerWidgetClass rootFrame {
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style Outline_1px
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass ColorRedGradientSpacer {
+   ignorepointer 0
+   size 20 0.85
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 0
+  }
+  PanelWidgetClass ColorRedGradientPanel {
+   ignorepointer 1
+   color 0.7059 0.7059 0.7059 1
+   size 22 142
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   {
+    CanvasWidgetClass ColorRedGradient {
+     ignorepointer 0
+     position 0 0
+     size 20 140
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      PanelWidgetClass ColorRedPickerPanel {
+       visible 1
+       clipchildren 0
+       ignorepointer 1
+       color 1 1 1 0.9961
+       position 0 0
+       size 1 6
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        PanelWidgetClass ColorRedPickerPanelBlackOutline {
+         clipchildren 0
+         ignorepointer 1
+         color 0 0 0 1
+         size 1 8
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
         }
        }
       }
@@ -319,7 +373,6 @@ WrapSpacerWidgetClass rootFrame {
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           style Outline_1px
           }
          }
         }
@@ -396,7 +449,6 @@ WrapSpacerWidgetClass rootFrame {
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           style Outline_1px
           }
          }
         }
@@ -474,7 +526,6 @@ WrapSpacerWidgetClass rootFrame {
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           style Outline_1px
           }
          }
         }
@@ -551,7 +602,6 @@ WrapSpacerWidgetClass rootFrame {
            vexactpos 1
            hexactsize 1
            vexactsize 1
-           style Outline_1px
           }
          }
         }

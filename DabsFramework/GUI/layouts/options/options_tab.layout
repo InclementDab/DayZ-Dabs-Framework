@@ -1,0 +1,45 @@
+FrameWidgetClass TabRoot {
+ ignorepointer 1
+ position 0 0
+ size 1 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 0
+ {
+  ScrollWidgetClass SettingsScroll {
+   ignorepointer 1
+   position 0 0
+   size 650 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 0
+   scriptclass ""
+   "Scrollbar V" 1
+   {
+    WrapSpacerWidgetClass SettingsRoot {
+     visible 1
+     ignorepointer 1
+     position 0 0
+     size 1 0
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     scriptclass "ViewBinding"
+     "no focus" 1
+     Padding 0
+     Margin 0
+     "Size To Content H" 1
+     "Size To Content V" 1
+     {
+      ScriptParamsClass {
+       Binding_Name "OptionCategories"
+      }
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,6 +1,6 @@
 class BuildSettings: SerializableBase
 {
-	static const int VERSION = 1;
+	static const int VERSION = 2;
 		
 	protected string m_CurrentFileLocation;
 	
@@ -9,6 +9,9 @@ class BuildSettings: SerializableBase
 	
 	[Attribute("", "editbox", "Build Command")]
 	string Command;
+	
+	[Attribute("", "combobox", "Copy Addons", "", ParamEnumArray.FromEnum(YesNo) )]
+	bool CopyAddons;
 	
 	void Save(string file)
 	{
@@ -67,6 +70,7 @@ class BuildSettings: SerializableBase
 		serializer.Write(VERSION);
 		serializer.Write(BuildFolders);
 		serializer.Write(Command);
+		serializer.Write(CopyAddons);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -80,6 +84,14 @@ class BuildSettings: SerializableBase
 		}		
 		
 		if (!serializer.Read(Command)) {
+			return false;
+		}
+		
+		if (version <= 1) {
+			return true;
+		}
+		
+		if (!serializer.Read(CopyAddons)) {
 			return false;
 		}
 		

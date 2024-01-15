@@ -1,3 +1,10 @@
+[RegisterProfileSetting(TestSettings, "BRAIN GAY")]
+class TestSettings: ProfileSettings
+{
+    [RegisterProfileSettingColor("COLOR", "ColorTesting", "Color Testing")]
+    int ColorTesting = ARGB(255, 125, 125, 30);
+}
+
 modded class DayZGame
 {	
 	protected static ref MVC s_MVC;

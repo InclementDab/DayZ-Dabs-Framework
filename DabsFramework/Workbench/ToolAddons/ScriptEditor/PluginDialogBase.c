@@ -60,6 +60,11 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string workbench_dir;
 		Workbench.GetCwd(workbench_dir);
+		
+		if (!FileExist(string.Format("%1\\%2", workbench_dir, "workbenchApp.exe"))) {
+			return string.Empty;
+		}
+		
 		return workbench_dir;
 	}
 	
@@ -102,7 +107,7 @@ class PluginDialogBase: WorkbenchPlugin
 	}
 	
 	static string GetDirectory(string path)
-	{
+	{		
 		path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		
 		array<string> path_split = {};
@@ -139,11 +144,10 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static array<string> EnumerateDirectories(string path)
 	{
-		string directory = GetDirectory(path);
 		array<string> child_directories = {};
 		string file_name;
 		FileAttr file_attributes;
-		FindFileHandle handle = FindFile(directory + PATH_SEPERATOR + "*", file_name, file_attributes, FindFileFlags.DIRECTORIES);
+		FindFileHandle handle = FindFile(path + PATH_SEPERATOR + "*", file_name, file_attributes, FindFileFlags.DIRECTORIES);
 		if (!handle) {
 			return child_directories;
 		}
