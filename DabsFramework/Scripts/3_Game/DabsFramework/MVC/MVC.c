@@ -71,6 +71,7 @@ class MVC
 		widget_controllers.Insert(ButtonWidget, ButtonWidgetController);
 		widget_controllers.Insert(CheckBoxWidget, CheckBoxWidgetController);
 		widget_controllers.Insert(EditBoxWidget, EditBoxWidgetController);
+		widget_controllers.Insert(PasswordEditBoxWidget, EditBoxWidgetController);
 		widget_controllers.Insert(SliderWidget, SliderWidgetController);
 		widget_controllers.Insert(ProgressBarWidget, ProgressBarController);
 		widget_controllers.Insert(TextWidget, TextWidgetController);
