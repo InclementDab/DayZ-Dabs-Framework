@@ -20,7 +20,7 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_OptionSelectorColorViewController.OnValueChanged = on_changed;
 		
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettingsColor.Type());		
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingsColor.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingsColor.GetVariableName()]);
 		if (!type_converter) {
 			//Error(string.Format("Invalid variable type on registry type=%1", m_ProfileSettingsColor.GetVariableName()));
 			return;
@@ -137,7 +137,7 @@ class OptionSelectorColorView: OptionSelectorViewBase
 	override void Apply()
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingsColor.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingsColor.GetVariableName()]);
 		type_converter.SetInt(m_OptionSelectorColorViewController.Value);
 		type_converter.SetToController(m_ProfileSettings, m_ProfileSettingsColor.GetVariableName(), 0);
 		m_ProfileSettings.Save();

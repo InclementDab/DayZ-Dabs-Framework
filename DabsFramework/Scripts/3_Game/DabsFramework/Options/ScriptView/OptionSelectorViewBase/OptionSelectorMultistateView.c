@@ -8,7 +8,7 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 		m_ProfileSettingMultistate = profile_setting_multistate;
 		
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
 		if (!type_converter) {
 			Error(string.Format("Invalid variable type on registry type=%1", properties[m_ProfileSettingMultistate.GetVariableName()]));
 			return;
@@ -48,7 +48,7 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 	override void Apply()
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
 		if (!type_converter) {
 			Error("Failed to find type conversion for type " + m_ProfileSettingMultistate.GetVariableName());
 			return;
@@ -62,7 +62,7 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 	override void Revert()
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
 		if (!type_converter) {
 			Error("Failed to find type conversion for type " + m_ProfileSettingMultistate.GetVariableName());
 			return;
@@ -77,7 +77,7 @@ class OptionSelectorMultistateView: OptionSelectorViewBase
 	override bool IsChanged()
 	{		
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingMultistate.GetVariableName()]);
 		if (!type_converter) {
 			Error("Failed to find type conversion for type " + m_ProfileSettingMultistate.GetVariableName());
 			return false;

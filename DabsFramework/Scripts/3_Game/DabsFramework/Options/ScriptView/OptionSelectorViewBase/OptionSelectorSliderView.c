@@ -17,7 +17,7 @@ class OptionSelectorSliderView: OptionSelectorViewBase
 		m_OptionSelectorSliderViewController.OnValueChanged = on_changed;
 		
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingSlider.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingSlider.GetVariableName()]);
 		if (!type_converter) {
 			Error(string.Format("Invalid variable type on registry type=%1", properties[m_ProfileSettingSlider.GetVariableName()]));
 			return;
@@ -96,7 +96,7 @@ class OptionSelectorSliderView: OptionSelectorViewBase
 	override void Apply()
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingSlider.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingSlider.GetVariableName()]);
 		if (!type_converter) {
 			Error("Failed to find type conversion for type " + m_ProfileSettingSlider.GetVariableName());
 			return;

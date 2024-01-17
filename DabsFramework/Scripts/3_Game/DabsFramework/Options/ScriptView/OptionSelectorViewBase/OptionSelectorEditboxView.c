@@ -12,7 +12,7 @@ class OptionSelectorEditboxView: OptionSelectorViewBase
 		m_OptionSelectorEditboxViewController.OnValueChanged = on_changed;
 		
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingText.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingText.GetVariableName()]);
 		if (!type_converter) {
 			Error(string.Format("Invalid variable type on registry type=%1", properties[m_ProfileSettingText.GetVariableName()]));
 			return;
@@ -29,7 +29,7 @@ class OptionSelectorEditboxView: OptionSelectorViewBase
 	override void Apply()
 	{
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
-		TypeConverter type_converter = MVC.GetTypeConversion(properties[m_ProfileSettingText.GetVariableName()]);
+		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingText.GetVariableName()]);
 		type_converter.SetString(m_OptionSelectorEditboxViewController.Value);
 		type_converter.SetToController(m_ProfileSettings, m_ProfileSettingText.GetVariableName(), 0);
 		m_ProfileSettings.Save();

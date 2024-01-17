@@ -29,17 +29,7 @@ typedef set<ViewBinding> ViewBindingSet;
 // 0: Property Name
 // 1: View Binding Set
 class DataBindingHashMap: map<string, autoptr ViewBindingSet>
-{
-	void DebugPrint()
-	{
-		foreach (string name, ViewBindingSet view_set: this) {
-			MVC.Log("[%1]:", name);
-			foreach (ViewBinding view: view_set) {
-				MVC.Log("    %1", view.GetLayoutRoot().GetName());
-			}
-		}
-	}
-	
+{	
 	void InsertView(ViewBinding view)
 	{
 		TStringArray names = {view.Binding_Name, view.Selected_Item};
@@ -95,13 +85,13 @@ class TypeConversionHashMap
 	void Set(typename conversion_type, typename conversion_class) 
 	{
 		if (!conversion_class.IsInherited(TypeConversionTemplate)) {
-			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
+			Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
 			return;
 		}
 		
 		TypeConverter converter = TypeConverter.Cast(conversion_class.Spawn());
 		if (!converter) {
-			MVC.Error(string.Format("TypeConverterHashMap: Failed to create TypeConverter %1", conversion_class));
+			Error(string.Format("TypeConverterHashMap: Failed to create TypeConverter %1", conversion_class));
 			return;
 		}
 		
@@ -111,13 +101,13 @@ class TypeConversionHashMap
 	bool Insert(typename conversion_type, typename conversion_class)
 	{
 		if (!conversion_class.IsInherited(TypeConversionTemplate)) {
-			MVC.Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
+			Error(string.Format("TypeConverterHashMap: %1 must inherit from type TypeConversionTemplate", conversion_class.ToString()));
 			return false;
 		}
 		
 		TypeConverter converter = TypeConverter.Cast(conversion_class.Spawn());
 		if (!converter) {
-			MVC.Error(string.Format("TypeConverterHashMap: Failed to create TypeConverter %1", conversion_class));
+			Error(string.Format("TypeConverterHashMap: Failed to create TypeConverter %1", conversion_class));
 			return false;
 		}
 		

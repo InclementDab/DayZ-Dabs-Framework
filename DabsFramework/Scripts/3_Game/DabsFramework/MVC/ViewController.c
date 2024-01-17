@@ -383,13 +383,7 @@ class ViewController: ScriptedViewBase
 		
 		return super.OnDropReceived(w, x, y, reciever);
 	}
-	*/
-
-	void DebugPrint()
-	{
-		m_DataBindingHashMap.DebugPrint();
-	}
-	
+	*/	
 	DataBindingHashMap GetDataBindings()
 	{
 		return m_DataBindingHashMap;
