@@ -330,12 +330,7 @@ class EventBase: Managed
 		
 		// handle data
 		SerializableParam data = GetClientSyncData(GetCurrentPhase());
-		if (data) {
-			rpc.Write(data.GetSerializeableType());
-			data.Write(rpc);
-		} else {
-			rpc.Write("null");
-		}
+		data.Serialize(rpc);
 	
 		rpc.Send(null, ERPCsDabsFramework.EVENT_UPDATE, true, identity);		 
 	}

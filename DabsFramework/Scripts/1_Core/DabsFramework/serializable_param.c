@@ -1,16 +1,48 @@
 class SerializableParam: Managed
 {
-	string GetSerializeableType()
+	bool Serialize(Serializer ctx)
 	{
-		return Type().ToString();
+		if (!ctx.Write(Type().ToString())) {
+			Error("Failed to serialize");
+			return false;
+		}
+		
+		if (!Write(ctx)) {
+			Error("Failed to serialize");
+			return false;
+		}
+		
+		return true;
 	}
 	
-	bool Write(Serializer ctx)
+	static SerializableParam CreateFromSerializer(Serializer ctx)
+	{
+		string type;
+		if (!ctx.Read(type)) {
+			Error("Invalid type"); 
+			return null;
+		}
+		
+		SerializableParam serializable_param = SerializableParam.Cast(type.ToType().Spawn());
+		if (!serializable_param) {
+			Error("Invalid type");
+			return null;
+		}
+		
+		if (serializable_param.Read(ctx)) {
+			Error("Failed to deserailize");
+			return;
+		}
+		
+		return serializable_param;
+	}
+			
+	protected bool Write(Serializer ctx)
 	{
 		return false;
 	}
 		
-	bool Read(Serializer ctx)
+	protected bool Read(Serializer ctx)
 	{
 		return false;
 	}
@@ -33,12 +65,12 @@ class SerializableParam1<Class T1>: SerializableParam
 		return param;
 	}
 		
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1);
 	}
@@ -62,12 +94,12 @@ class SerializableParam2<Class T1, Class T2>: SerializableParam
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2);
 	}
@@ -93,12 +125,12 @@ class SerializableParam3<Class T1, Class T2, Class T3>: SerializableParam
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2) && ctx.Write(param3);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3);
 	}
@@ -126,12 +158,12 @@ class SerializableParam4<Class T1, Class T2, Class T3, Class T4>: SerializablePa
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2) && ctx.Write(param3) && ctx.Write(param4);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4);
 	}
@@ -161,12 +193,12 @@ class SerializableParam5<Class T1, Class T2, Class T3, Class T4, Class T5>: Seri
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2) && ctx.Write(param3) && ctx.Write(param4) && ctx.Write(param5);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5);
 	}
@@ -198,12 +230,12 @@ class SerializableParam6<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2) && ctx.Write(param3) && ctx.Write(param4) && ctx.Write(param5) && ctx.Write(param6);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5) && ctx.Read(param6);
 	}
@@ -237,12 +269,12 @@ class SerializableParam7<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2) && ctx.Write(param3) && ctx.Write(param4) && ctx.Write(param5) && ctx.Write(param6) && ctx.Write(param7);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5) && ctx.Read(param6) && ctx.Read(param7);
 	}
@@ -278,12 +310,12 @@ class SerializableParam8<Class T1, Class T2, Class T3, Class T4, Class T5, Class
 		return param;
 	}
 	
-	override bool Write(Serializer ctx)
+	override protected bool Write(Serializer ctx)
 	{
 		return ctx.Write(param1) && ctx.Write(param2) && ctx.Write(param3) && ctx.Write(param4) && ctx.Write(param5) && ctx.Write(param6) && ctx.Write(param7) && ctx.Write(param8);
 	}
 		
-	override bool Read(Serializer ctx)
+	override protected bool Read(Serializer ctx)
 	{
 		return ctx.Read(param1) && ctx.Read(param2) && ctx.Read(param3) && ctx.Read(param4) && ctx.Read(param5) && ctx.Read(param6) && ctx.Read(param7) && ctx.Read(param8);
 	}

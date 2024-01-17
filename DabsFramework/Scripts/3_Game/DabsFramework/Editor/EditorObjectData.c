@@ -136,11 +136,7 @@ class EditorObjectData: SerializableBase
 		for (int j = 0; j < Parameters.Count(); j++) {
 			string key_at_index = Parameters.GetKey(j);
 			serializer.Write(key_at_index);
-			// write the type of the object that will need to be created
-			serializer.Write(Parameters[key_at_index].GetSerializeableType());
-			
-			// write the data of the object
-			Parameters[key_at_index].Write(serializer);
+			Parameters[key_at_index].Serialize(serializer);
 		}
 		
 		if (version < 3) {
@@ -186,14 +182,7 @@ class EditorObjectData: SerializableBase
 				return false;
 			}
 			
-			SerializableParam param_value = SerializableParam.Cast(param_type.ToType().Spawn());
-			if (!param_value) {
-				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
-				return false;
-			}
-			
-			param_value.Read(serializer);
-			Parameters[param_key] = param_value;
+			Parameters[param_key] = SerializableParam.CreateFromSerializer(serializer);
 		}
 		
 		if (version < 3) {
