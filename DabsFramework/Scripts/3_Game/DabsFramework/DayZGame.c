@@ -12,7 +12,6 @@ modded class DayZGame
 	
 	protected ref map<typename, ProfileSettings> m_ProfileSettings = new map<typename, ProfileSettings>();
 	
-	
 	protected ref TTypeNameTypenameMap m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 	protected ref TypeConversionHashMap m_TypeConverterHashMap = new TypeConversionHashMap();
 				
