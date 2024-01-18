@@ -189,4 +189,24 @@ class ScriptView: ScriptedViewBase
 			}
 		}
 	}
+	
+	// Working on my own standard here
+	
+	// 	Button
+	//		Button.Icon
+	//			Button.Text
+	
+	// calling FindWidetClass(Button.Icon, "Text") returns Button.Text
+	
+	static Widget FindWidgetClass(notnull Widget parent, string classname)
+	{
+		string name = parent.GetName();
+		array<string> name_split = {};
+		name.Split(".", name_split);
+		if (name_split.Count() > 1) {
+			name = name_split[0];
+		}
+		
+		return parent.FindAnyWidget(string.Format("%1.%2", name, classname));	
+	}
 }
