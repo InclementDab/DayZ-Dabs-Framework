@@ -1,4 +1,4 @@
-class ProfileSettings: Managed
+class ProfileSettings: Class
 {	
 	// Ctor immediately loads all settings
 	private void ProfileSettings()

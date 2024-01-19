@@ -1,7 +1,7 @@
 MetaFileClass {
  Name "{119555391B4E84DB}DabsFramework/GUI/icons/thin.edds"
  Author "desktop-ucqosjo"
- ChangeDate -893112269
+ ChangeDate -960204749
  Configurations {
   DDSResourceClass PC {
    SourceFile "thin.dds"

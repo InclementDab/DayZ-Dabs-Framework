@@ -1,7 +1,7 @@
 MetaFileClass {
  Name "{917D37EA70E05044}DabsFramework/GUI/icons/solid.edds"
  Author "desktop-ucqosjo"
- ChangeDate -1094438861
+ ChangeDate -1161531341
  Configurations {
   DDSResourceClass PC {
    SourceFile "solid.dds"
