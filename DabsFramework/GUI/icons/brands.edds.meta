@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{716E4E66754C9BB4}Editor/GUI/icons/brands.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -453251021
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "brands.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

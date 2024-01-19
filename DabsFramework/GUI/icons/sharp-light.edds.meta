@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{FBEEED24F201C7B0}Editor/GUI/icons/sharp-light.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -1492914125
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "sharp-light.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{933B018CC89289F8}Editor/GUI/icons/regular.dds"
+ Author "desktop-ucqosjo"
+ ChangeDate 1022095411
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "regular.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

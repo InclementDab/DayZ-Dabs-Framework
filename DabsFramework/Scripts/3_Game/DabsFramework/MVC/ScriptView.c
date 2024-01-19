@@ -174,17 +174,19 @@ class ScriptView: ScriptedViewBase
 				continue;
 			}
 	
-			Widget target = root_widget.FindAnyWidget(property_name);
+			string property_name_formatted = property_name;
+			property_name_formatted.Replace(".", "");	
+			Widget target = root_widget.FindAnyWidget(property_name_formatted);
 	
 			// fixes bug that breaks everything
-			if (target && root_widget.GetName() != property_name) {
-				EnScript.SetClassVar(context, property_name, 0, target);
+			if (target && root_widget.GetName() != property_name_formatted) {
+				EnScript.SetClassVar(context, property_name_formatted, 0, target);
 				continue;
 			}
 	
 			// Allows you to define the layout root aswell within it
-			if (!target && root_widget.GetName() == property_name) {
-				EnScript.SetClassVar(context, property_name, 0, root_widget);
+			if (!target && root_widget.GetName() == property_name_formatted) {
+				EnScript.SetClassVar(context, property_name_formatted, 0, root_widget);
 				continue;
 			}
 		}

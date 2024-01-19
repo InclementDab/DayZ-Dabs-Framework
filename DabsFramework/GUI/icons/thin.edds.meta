@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{8C35E58EC60C03FE}Editor/GUI/icons/thin.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -486281165
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "thin.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

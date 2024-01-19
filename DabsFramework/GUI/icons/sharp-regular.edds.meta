@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{F5CF50E35DC3A359}Editor/GUI/icons/sharp-regular.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -1291587533
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "sharp-regular.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}
