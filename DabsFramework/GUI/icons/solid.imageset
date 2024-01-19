@@ -4,7 +4,7 @@ ImageSetClass  {
 	Textures {
 		ImageSetTextureClass  {
 			mpix 1
-			path "Editor\GUI\icons\solid.edds"
+			path "DabsFramework\GUI\icons\solid.edds"
 		}
 	}
 	Images {

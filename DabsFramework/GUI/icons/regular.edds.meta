@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{933B018CC89289F8}Editor/GUI/icons/regular.dds"
+ Name "{DCE50E962C75E077}DabsFramework/GUI/icons/regular.edds"
  Author "desktop-ucqosjo"
- ChangeDate 1022095411
+ ChangeDate -2101071821
  Configurations {
   DDSResourceClass PC {
    SourceFile "regular.dds"

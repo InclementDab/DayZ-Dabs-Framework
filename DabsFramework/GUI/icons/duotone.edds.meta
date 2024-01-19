@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{51C494347213ED09}Editor/GUI/icons/duotone.edds"
+ Name "{1E1A9B2E96F48486}DabsFramework/GUI/icons/duotone.edds"
  Author "desktop-ucqosjo"
- ChangeDate -1895567309
+ ChangeDate -490983373
  Configurations {
   DDSResourceClass PC {
    SourceFile "duotone.dds"

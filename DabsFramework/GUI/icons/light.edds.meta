@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{45B0E5B8ABC63909}Editor/GUI/icons/light.edds"
+ Name "{EC62847EBFBFEED9}DabsFramework/GUI/icons/light.edds"
  Author "desktop-ucqosjo"
- ChangeDate -1694240717
+ ChangeDate -289656781
  Configurations {
   DDSResourceClass PC {
    SourceFile "light.dds"
