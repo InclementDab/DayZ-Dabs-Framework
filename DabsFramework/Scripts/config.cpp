@@ -33,15 +33,10 @@ class CfgMods
 				{
 					"DabsFramework/gui/imagesets/prefabs.imageset",
 					"DabsFramework/gui/icons/brands.imageset",
-					"DabsFramework/gui/icons/duotone.imageset",
 					"DabsFramework/gui/icons/light.imageset",
 					"DabsFramework/gui/icons/regular.imageset",
-					"DabsFramework/gui/icons/sharp_light.imageset",
-					"DabsFramework/gui/icons/sharp_regular.imageset",
-					"DabsFramework/gui/icons/sharp_solid.imageset",
-					"DabsFramework/gui/icons/sharp_thin.imageset",
-					"DabsFramework/gui/icons/sharp_solid.imageset",
-					"DabsFramework/gui/icons/sharp_thin.imageset"
+					"DabsFramework/gui/icons/solid.imageset",
+					"DabsFramework/gui/icons/thin.imageset"
 				};
 			};
 
