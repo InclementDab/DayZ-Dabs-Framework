@@ -20,22 +20,29 @@ class CustomDialogWindow: ScriptView
 
 class ScriptView: ScriptedViewBase
 {
+#ifdef WORKBENCH	
+	override void OnWidgetScriptInit(Widget w)
+	{
+		m_LayoutRoot = w;
+		m_LayoutRoot.Show(false);
+	}
+#endif
+	
 	static ref array<ScriptView> All = {};
 		
 	protected ref ViewController m_Controller;
 	
 	void ScriptView()
-	{
-		if (!All) {
-			All = {};
-		}
-				
+	{				
 		All.Insert(this);
-		
-		m_LayoutRoot = CreateWidget(null);
 
+#ifndef WORKBENCH
+		m_LayoutRoot = CreateWidget(null);
+#endif
+		
 		LoadWidgetsAsVariables(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
 
+#ifndef WORKBENCH
 		m_LayoutRoot.GetScript(m_Controller);
 
 		// If no Controller is specified in the WB Root
@@ -63,6 +70,7 @@ class ScriptView: ScriptedViewBase
 		m_LayoutRoot.SetUserData(this);	
 		
 		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
+#endif
 	}
 
 	void ~ScriptView()
@@ -208,7 +216,7 @@ class ScriptView: ScriptedViewBase
 		if (name_split.Count() > 1) {
 			name = name_split[0];
 		}
-		
+				
 		return parent.FindAnyWidget(string.Format("%1.%2", name, classname));	
 	}
 }
