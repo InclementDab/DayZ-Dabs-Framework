@@ -31,7 +31,12 @@ class CfgMods
 			{
 				files[]=
 				{
-					"DabsFramework/gui/imagesets/prefabs.imageset"
+					"DabsFramework/gui/imagesets/prefabs.imageset",
+					"DabsFramework/gui/icons/brands.imageset",
+					"DabsFramework/gui/icons/light.imageset",
+					"DabsFramework/gui/icons/regular.imageset",
+					"DabsFramework/gui/icons/solid.imageset",
+					"DabsFramework/gui/icons/thin.imageset"
 				};
 			};
 
@@ -48,7 +53,6 @@ class CfgMods
 				value = "";
 				files[] =
 				{
-					"DabsFramework/scripts/common",
 					"DabsFramework/scripts/1_core"
 				};
 			};
@@ -58,7 +62,6 @@ class CfgMods
 				value="";
 				files[] = 
 				{
-					"DabsFramework/scripts/common",
 					"DabsFramework/scripts/3_Game"
 				};
 			};
@@ -67,7 +70,6 @@ class CfgMods
 				value="";
 				files[] = 
 				{
-					"DabsFramework/scripts/common",
 					"DabsFramework/scripts/4_World"
 				};
 			};
@@ -77,7 +79,6 @@ class CfgMods
 				value="";
 				files[] = 
 				{
-					"DabsFramework/scripts/common",
 					"DabsFramework/scripts/5_Mission"
 				};
 			};

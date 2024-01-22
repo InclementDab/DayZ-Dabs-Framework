@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{119555391B4E84DB}DabsFramework/GUI/icons/thin.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -960204749
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "thin.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

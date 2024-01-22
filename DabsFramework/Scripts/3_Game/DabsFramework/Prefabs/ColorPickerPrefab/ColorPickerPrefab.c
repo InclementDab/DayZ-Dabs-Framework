@@ -176,7 +176,7 @@ class ColorPickerPrefab: PrefabBase<int>
 		}
 	}
 		
-	void GetWidgetLocalPositionNormalized(Widget w, inout float x, inout float y)
+	static void GetWidgetLocalPositionNormalized(Widget w, inout float x, inout float y)
 	{
 		if (!w) {
 			return;
@@ -191,7 +191,7 @@ class ColorPickerPrefab: PrefabBase<int>
 		x /= x_size; y /= y_size;
 	}
 	
-	void SetWidgetPosRelativeToParent(Widget w, float x, float y)
+	static void SetWidgetPosRelativeToParent(Widget w, float x, float y)
 	{
 		if (!w) {
 			return;
@@ -210,7 +210,7 @@ class ColorPickerPrefab: PrefabBase<int>
 		w.SetPos((p_x_size * x) - (x_size / 2), (p_y_size * y) - (y_size / 2));
 	}
 	
-	void GetWidgetPosRelativeToParent(Widget w, out float x, out float y)
+	static void GetWidgetPosRelativeToParent(Widget w, out float x, out float y)
 	{
 		if (!w) {
 			return;

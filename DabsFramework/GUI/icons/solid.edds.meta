@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{917D37EA70E05044}DabsFramework/GUI/icons/solid.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -1161531341
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "solid.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

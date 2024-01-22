@@ -13,7 +13,12 @@ class PluginLaunchGameBase: PluginProject
 								
 		//! Game launch script
 		// append prefix of current mod
-		m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
+		if (!m_ProjectSettings["ServerMod"].ToInt()) {
+			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
+		} else {
+			m_ProjectSettings["ServerMod"] = m_ProjectSettings["ServerMod"] + ";@" + mod_prefix;
+		}
+		
 		
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetSourceDataDirectory();		

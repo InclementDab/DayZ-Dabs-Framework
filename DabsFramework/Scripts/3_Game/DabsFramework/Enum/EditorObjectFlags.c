@@ -1,4 +1,6 @@
-enum EditorObjectFlags 
+const int EFE_DEFAULT = EditorObjectFlags.BBOX | EditorObjectFlags.MAPMARKER | EditorObjectFlags.OBJECTMARKER | EditorObjectFlags.LISTITEM;
+
+enum EditorObjectFlags
 {
 	NONE = 0,
 	BBOX = 2,
@@ -6,5 +8,10 @@ enum EditorObjectFlags
 	OBJECTMARKER = 8,
 	LISTITEM = 16,
 	PERSISTENCE = 32,
-	ALL = 2147483647 // Expandable 32 times!
+	LOCKED = 64, 
+	EDITOR_ONLY = 128, 
+	SIMULATE = 256, 
+	ALLOW_DAMAGE = 512,
+	HIDDEN = 1024,
+	ALL = 2147483647
 };

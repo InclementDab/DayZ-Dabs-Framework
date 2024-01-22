@@ -29,7 +29,7 @@ class ScriptedViewBase: Managed
 			PrintFormat("[Log] %1", this);
 		}
 
-		m_TypeConverter = MVC.GetTypeConversion(Type());
+		m_TypeConverter = GetDayZGame().GetTypeConversion(Type());
 		if (!m_TypeConverter) {
 			Error("Could not generate TypeConverter on %1", Type().ToString());
 			return;
@@ -70,10 +70,10 @@ class ScriptedViewBase: Managed
 		Trace("OnWidgetScriptInit %1", w.ToString());
 		m_LayoutRoot = w;
 		
-		m_WidgetController = MVC.GetWidgetController(m_LayoutRoot);
+		m_WidgetController = GetDayZGame().GetWidgetController(m_LayoutRoot);
 		
 		if (!m_WidgetController) {
-			Error("Could not find WidgetController for type %1\n\nOverride MVC.RegisterWidgetControllers to register custom WidgetControllers", m_LayoutRoot.GetTypeName());
+			Error("Could not find WidgetController for type %1\n\nOverride GetDayZGame().RegisterWidgetControllers to register custom WidgetControllers", m_LayoutRoot.GetTypeName());
 			return;
 		}
 	}

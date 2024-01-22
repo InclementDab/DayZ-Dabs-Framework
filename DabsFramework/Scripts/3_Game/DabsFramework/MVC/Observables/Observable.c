@@ -28,7 +28,7 @@ class Observable: Managed
 
 	TypeConverter GetTypeConverter()
 	{
-		return MVC.GetTypeConversion(m_Type);
+		return GetDayZGame().GetTypeConversion(m_Type);
 	}
 
 	// Abstract

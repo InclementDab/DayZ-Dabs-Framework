@@ -5,14 +5,15 @@ GridSpacerWidgetClass Setting {
  vexactpos 1
  hexactsize 0
  vexactsize 1
- Padding 0
- Margin 0
+ Padding 10
+ Margin 10
+ "Size To Content V" 1
  Columns 2
  Rows 1
  {
   TextWidgetClass Text {
    ignorepointer 1
-   size 1 16
+   size 1 30
    halign center_ref
    valign center_ref
    hexactpos 1
@@ -45,6 +46,7 @@ GridSpacerWidgetClass Setting {
    scriptclass "ViewBinding"
    Padding 0
    Margin 0
+   "Size To Content V" 1
    content_halign center
    content_valign center
    {

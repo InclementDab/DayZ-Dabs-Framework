@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{DCE50E962C75E077}DabsFramework/GUI/icons/regular.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -1362857933
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "regular.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}

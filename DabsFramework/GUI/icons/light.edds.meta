@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{EC62847EBFBFEED9}DabsFramework/GUI/icons/light.edds"
+ Author "desktop-ucqosjo"
+ ChangeDate -1564184525
+ Configurations {
+  DDSResourceClass PC {
+   SourceFile "light.dds"
+  }
+  DDSResourceClass XBOX_ONE : PC {
+  }
+  DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
+  }
+ }
+}
