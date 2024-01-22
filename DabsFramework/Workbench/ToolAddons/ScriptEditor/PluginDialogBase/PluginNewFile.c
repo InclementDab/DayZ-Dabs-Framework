@@ -31,6 +31,12 @@ class PluginNewFile: PluginDialogBase
 			}
 		}
 		
+		string parent_folder = current_file_path[current_file_path.Count() - 2];
+		
+		if (parent_folder.ToType()) {
+			Parent = parent_folder;
+		}
+		
 		Workbench.ScriptDialog("New File", DIALOG_TAB_SIZE, this);
 	}
 	
