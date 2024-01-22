@@ -37,12 +37,15 @@ class ScriptView: ScriptedViewBase
 		All.Insert(this);
 
 #ifndef WORKBENCH
+#ifndef NO_GUI
 		m_LayoutRoot = CreateWidget(null);
+#endif
 #endif
 		
 		LoadWidgetsAsVariables(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
 
 #ifndef WORKBENCH
+#ifndef NO_GUI
 		m_LayoutRoot.GetScript(m_Controller);
 
 		// If no Controller is specified in the WB Root
@@ -70,6 +73,7 @@ class ScriptView: ScriptedViewBase
 		m_LayoutRoot.SetUserData(this);	
 		
 		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
+#endif
 #endif
 	}
 
