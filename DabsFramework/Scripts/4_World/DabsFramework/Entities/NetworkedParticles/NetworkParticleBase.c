@@ -1,4 +1,4 @@
-[RegisterEditorObject(NetworkParticleBase, "Particle", IconRegular.SPARKLES)]
+[RegisterEditorObject(NetworkParticleBase, "Particle", Symbols.SPARKLES.Regular())]
 class NetworkParticleBase: SerializedBuilding
 {
 	protected Particle m_Particle;

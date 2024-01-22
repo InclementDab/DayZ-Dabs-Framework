@@ -28,7 +28,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 	}
 	
 	override bool GetConnectionArguments(out string ip, out int port, out string password)
-	{		
+	{
 		ip = Address;
 		port = Port;
 		password = Password;
