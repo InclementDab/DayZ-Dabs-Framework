@@ -2,26 +2,30 @@ class Symbols: string
 {	
 	Symbol Light()
 	{
-		return string.Format("set:light image:%1", value);
+		return string.Format("set:light %1", value);
 	}
 		
 	Symbol Thin()
 	{
-		return string.Format("set:thin image:%1", value);
+		return string.Format("set:thin %1", value);
 	}
 	
 	Symbol Regular()
 	{
-		return string.Format("set:regular image:%1", value);
+		return string.Format("set:regular %1", value);
 	}
 	
 	Symbol Solid()
 	{
-		return string.Format("set:solid image:%1", value);
+		return string.Format("set:solid %1", value);
 	}
 	
 	Symbol WithSize(SymbolSize size)
 	{
+		if (!value.Contains("image")) {
+			value = "image:" + value;
+		}
+		
 		return string.Format("%1 %2", size, value);
 	}
 	
