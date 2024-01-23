@@ -1,4 +1,3 @@
-typedef string Symbols;
 class Symbols: string
 {	
 	Symbol Light()
@@ -19,6 +18,11 @@ class Symbols: string
 	Symbol Solid()
 	{
 		return string.Format("set:solid image:%1", value);
+	}
+	
+	Symbol WithSize(SymbolSize size)
+	{
+		return string.Format("%1 %2", size, value);
 	}
 	
 	static const Symbols A = "image:a";
@@ -3695,3 +3699,4 @@ class Symbols: string
 	static const Symbols YOUTUBE = "image:youtube";
 	static const Symbols ZHIHU = "image:zhihu";
 }
+typedef string Symbols;

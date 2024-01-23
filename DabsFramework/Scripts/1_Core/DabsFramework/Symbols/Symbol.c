@@ -1,4 +1,3 @@
-typedef string Symbol;
 class Symbol: string
 {
 	SymbolSize GetSize()
@@ -10,7 +9,19 @@ class Symbol: string
 			return SymbolSize.REGULAR;
 		}
 		
-		return image_split[1];
+		return "set:" + image_split[1];
+	}
+	
+	Symbol Resize(SymbolSize size)
+	{
+		array<string> image_split = {};
+		value.Split(":", image_split);
+		if (image_split.Count() < 2) {
+			Error("Invalid formatting");
+			return value;
+		}
+
+		return string.Format("%1 image:%2", size, image_split[2]);
 	}
 	
 	static Symbol Format(SymbolSize size, Symbols image)
@@ -18,3 +29,4 @@ class Symbol: string
 		return string.Format("%1 %2", size, image);
 	}
 }
+typedef string Symbol;
