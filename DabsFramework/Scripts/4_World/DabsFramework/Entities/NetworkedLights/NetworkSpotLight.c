@@ -1,5 +1,5 @@
-[RegisterEditorObject(NetworkSpotLight, "Spot Light", IconRegular.FLASHLIGHT)]
-class NetworkSpotLight: NetworkLightBase
+[RegisterEditorObject(NetworkSpotLight, "Spot Light", Symbols.FLASHLIGHT.Regular())]
+class NetworkSpotLight: NetworkLight
 {
 	override ScriptedLightBase CreateLight(vector global_pos = "0 0 0", float fade_in_time_in_s = 0)
 	{

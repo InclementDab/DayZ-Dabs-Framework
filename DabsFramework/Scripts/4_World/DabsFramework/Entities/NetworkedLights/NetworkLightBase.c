@@ -1,4 +1,15 @@
-class NetworkLightBase: SerializedBuilding
+//// Changing the name on purpose because im completely changing serialization
+// TODO: needs to be rewritten when you have magical reading and writing :)
+
+
+
+
+
+
+
+
+
+class NetworkLight: ScriptedEntity
 {
 	protected ScriptedLightBase m_Light;
 	
@@ -27,7 +38,7 @@ class NetworkLightBase: SerializedBuilding
 	// Spotlight
 	float SpotLightAngle = 90;
 	
-	void NetworkLightBase()
+	void NetworkLight()
 	{
 		if (GetGame().IsMultiplayer()) {
 			// Booleans
@@ -62,11 +73,18 @@ class NetworkLightBase: SerializedBuilding
 		}
 	}
 	
-	void ~NetworkLightBase()
+	void ~NetworkLight()
 	{
 		if (m_Light) {
 			m_Light.Destroy();
 		}
+	}
+	
+	override void OnStoreSave(ParamsWriteContext ctx)
+	{
+		super.OnStoreSave(ctx);
+		
+		
 	}
 	
 	ScriptedLightBase CreateLight(vector global_pos = "0 0 0", float fade_in_time_in_s = 0)
@@ -111,6 +129,7 @@ class NetworkLightBase: SerializedBuilding
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 	
+	/*
 	override void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
 		serializable_data["CastShadow"] = SerializableParam1<bool>.Create(CastShadow);
@@ -217,7 +236,7 @@ class NetworkLightBase: SerializedBuilding
 		m_Light.SetFlareVisible(FlareVisible);
 		//m_Light.SetFlareRelPosition(FlareRelativePosition);
 		m_Light.SetSpotLightAngle(SpotLightAngle);
-	}
+	}*/
 		
 	void PropertyChanged(Class source, string property_name)
 	{
