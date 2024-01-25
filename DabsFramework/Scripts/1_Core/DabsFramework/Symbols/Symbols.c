@@ -19,21 +19,7 @@ class Symbols: string
 	{
 		return string.Format("set:solid %1", value);
 	}
-	
-	Symbol WithSize(SymbolSize size)
-	{
-		if (!value.Contains("image")) {
-			value = "image:" + value;
-		}
 		
-		return string.Format("%1 %2", size, value);
-	}
-	
-	void ResizeTo(SymbolSize size)
-	{
-		value = value.WithSize(size);
-	}
-	
 	static const Symbols A = "image:a";
 	static const Symbols ABACUS = "image:abacus";
 	static const Symbols ACCENT_GRAVE = "image:accent_grave";
