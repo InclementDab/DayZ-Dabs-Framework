@@ -1,4 +1,3 @@
-typedef int TimeSpan;
 class TimeSpan: int
 {
 	static const TimeSpan DAY = 86400;
@@ -69,3 +68,4 @@ class TimeSpan: int
 	private void TimeSpan();
 	private void ~TimeSpan();
 }
+typedef int TimeSpan;

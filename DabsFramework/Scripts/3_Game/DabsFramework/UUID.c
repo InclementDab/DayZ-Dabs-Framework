@@ -1,4 +1,3 @@
-typedef string UUID;
 class UUID: string
 {
 	static const UUID EMPTY = "00000000-0000-0000-0000-00000000";	
@@ -9,3 +8,5 @@ class UUID: string
 		return UUIDApi.FormatString(uid);
 	}
 }
+
+typedef string UUID;
