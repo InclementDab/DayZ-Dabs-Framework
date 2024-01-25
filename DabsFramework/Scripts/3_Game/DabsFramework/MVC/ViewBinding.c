@@ -1,13 +1,3 @@
-[Testing()]
-class Testing
-{
-	void Testing()
-	{
-		Print("HELLLOO");
-	}
-}
-
-
 class ViewBinding : ScriptedViewBase
 {
 	// Name of Variable to bind to
