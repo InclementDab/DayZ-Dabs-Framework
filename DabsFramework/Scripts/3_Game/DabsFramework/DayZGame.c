@@ -169,3 +169,16 @@ modded class DayZGame
 		return m_ProfileSettings[profile_settings_type];
 	}
 }
+
+const EventType ReloadShadersEventTypeID;
+const EventType LoadWorldProgressEventTypeID;
+const EventType SignStatusEventTypeID;
+const EventType SetPausedEventTypeID;
+const EventType TerminationEventTypeID;
+const EventType UserSettingsChangedEventTypeID;
+const EventType StorageChangedEventTypeID;
+const EventType BeforeResetEventTypeID;
+const EventType AfterRenderEventTypeID;
+const EventType AfterResetEventTypeID;
+const EventType CrashLogEventTypeID;
+const EventType ConsoleEventTypeID;
