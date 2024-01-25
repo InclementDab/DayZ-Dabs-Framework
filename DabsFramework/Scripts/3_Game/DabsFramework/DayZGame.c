@@ -101,6 +101,15 @@ modded class DayZGame
 	// this is the init of event manager for clients
 	override void OnEvent(EventType eventTypeId, Param params)
 	{
+#ifdef DIAG_DEVELOPER
+		if (m_EventLogging) {		
+			string event_type = DebugEventTypeId(eventTypeId);
+			if (event_type != string.Empty) {
+				Print(string.Format("[%1]: %2", event_type, params));
+			}
+		}
+#endif
+
 		switch (eventTypeId) {
 			case MPSessionStartEventTypeID: {
 				m_EventManager = new EventManager();
@@ -168,6 +177,81 @@ modded class DayZGame
 	{
 		return m_ProfileSettings[profile_settings_type];
 	}
+
+#ifdef DIAG_DEVELOPER
+	protected bool m_EventLogging;
+	void ToggleEventLogging(bool enabled)
+	{
+		m_EventLogging = enabled;
+	}
+			
+	// GetGame().RespawnPlayer() - ClientRespawnEventTypeID, then ClientPrepareEventTypeID
+	// after the server processes the respawn, takes a few seconds
+	// ClientNewEventTypeID, then ClientNewReadyEventTypeID
+	static string DebugEventTypeId(EventType event_type)
+	{
+		switch (event_type) {
+			case StartupEventTypeID: return "StartupEventTypeID";
+			case WorldCleaupEventTypeID: return "WorldCleaupEventTypeID";
+			case MPSessionStartEventTypeID: return "MPSessionStartEventTypeID";
+			case MPSessionEndEventTypeID: return "MPSessionEndEventTypeID";
+			case MPSessionFailEventTypeID: return "MPSessionFailEventTypeID";
+			case MPSessionPlayerReadyEventTypeID: return "MPSessionPlayerReadyEventTypeID";
+			//case MPConnectionLostEventTypeID: return "MPConnectionLostEventTypeID";
+			case MPConnectionCloseEventTypeID: return "MPConnectionCloseEventTypeID";
+			case ProgressEventTypeID: return "ProgressEventTypeID";
+			case NetworkManagerClientEventTypeID: return "NetworkManagerClientEventTypeID";
+			case NetworkManagerServerEventTypeID: return "NetworkManagerServerEventTypeID";
+			case DialogQueuedEventTypeID: return "DialogQueuedEventTypeID";
+			case ChatMessageEventTypeID: return "ChatMessageEventTypeID";
+			case ChatChannelEventTypeID: return "ChatChannelEventTypeID";
+			case ClientConnectedEventTypeID: return "ClientConnectedEventTypeID";
+			case ClientPrepareEventTypeID: return "ClientPrepareEventTypeID";
+			case ClientNewEventTypeID: return "ClientNewEventTypeID";
+			case ClientNewReadyEventTypeID: return "ClientNewReadyEventTypeID";
+			case ClientRespawnEventTypeID: return "ClientRespawnEventTypeID";
+			case ClientReconnectEventTypeID: return "ClientReconnectEventTypeID";
+			case ClientReadyEventTypeID: return "ClientReadyEventTypeID";
+			case ClientDisconnectedEventTypeID: return "ClientDisconnectedEventTypeID";
+			case ClientRemovedEventTypeID: return "ClientRemovedEventTypeID";
+			case ConnectivityStatsUpdatedEventTypeID: return "ConnectivityStatsUpdatedEventTypeID";
+			case ServerFpsStatsUpdatedEventTypeID: return "ServerFpsStatsUpdatedEventTypeID";
+			case LogoutCancelEventTypeID: return "LogoutCancelEventTypeID";
+			case LoginTimeEventTypeID: return "LoginTimeEventTypeID";
+			case RespawnEventTypeID: return "RespawnEventTypeID";
+			case PreloadEventTypeID: return "PreloadEventTypeID";
+			case LogoutEventTypeID: return "LogoutEventTypeID";
+			case LoginStatusEventTypeID: return "LoginStatusEventTypeID";
+			case SelectedUserChangedEventTypeID: return "SelectedUserChangedEventTypeID";
+			//case ScriptLogEventTypeID: return "ScriptLogEventTypeID";
+			case VONStateEventTypeID: return "VONStateEventTypeID";
+			case VONStartSpeakingEventTypeID: return "VONStartSpeakingEventTypeID";
+			case VONStopSpeakingEventTypeID: return "VONStopSpeakingEventTypeID";
+			case VONUserStartedTransmittingAudioEventTypeID: return "VONUserStartedTransmittingAudioEventTypeID";
+			case VONUserStoppedTransmittingAudioEventTypeID: return "VONUserStoppedTransmittingAudioEventTypeID";
+			case PartyChatStatusChangedEventTypeID: return "PartyChatStatusChangedEventTypeID";
+			case DLCOwnerShipFailedEventTypeID: return "DLCOwnerShipFailedEventTypeID";
+			case SetFreeCameraEventTypeID: return "SetFreeCameraEventTypeID";
+			case ConnectingStartEventTypeID: return "ConnectingStartEventTypeID";
+			case ConnectingAbortEventTypeID: return "ConnectingAbortEventTypeID";
+			case PlayerDeathEventTypeID: return "PlayerDeathEventTypeID";
+			case ReloadShadersEventTypeID: return "ReloadShadersEventTypeID";
+			case LoadWorldProgressEventTypeID: return "LoadWorldProgressEventTypeID";
+			case SignStatusEventTypeID: return "SignStatusEventTypeID";
+			case SetPausedEventTypeID: return "SetPausedEventTypeID";
+			case TerminationEventTypeID: return "TerminationEventTypeID";
+			case UserSettingsChangedEventTypeID: return "UserSettingsChangedEventTypeID";
+			case StorageChangedEventTypeID: return "StorageChangedEventTypeID";
+			case BeforeResetEventTypeID: return "BeforeResetEventTypeID";
+			//case AfterRenderEventTypeID: return "AfterRenderEventTypeID";
+			case AfterResetEventTypeID: return "AfterResetEventTypeID";
+			case CrashLogEventTypeID: return "CrashLogEventTypeID";
+			case ConsoleEventTypeID: return "ConsoleEventTypeID";
+		}
+	
+		return string.Empty;
+	}
+#endif
 }
 
 const EventType ReloadShadersEventTypeID;
