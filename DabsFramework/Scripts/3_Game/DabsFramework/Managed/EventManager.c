@@ -276,13 +276,6 @@ class EventManager
 						break;
 					}
 					
-					// Set up serialized data
-					// this parameter can be null so we check if the ctx reads it successfully
-					string event_param_type;
-					if (!ctx.Read(event_param_type)) {
-						break;
-					}
-					
 					SerializableParam client_param_serialized = SerializableParam.CreateFromSerializer(ctx);
 					if (!client_param_serialized) {
 						break;

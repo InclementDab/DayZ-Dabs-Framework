@@ -143,7 +143,9 @@ class ViewController: ScriptedViewBase
 		
 		if (m_DataBindingHashMap[collection_name]) {
 			foreach (ViewBinding view: m_DataBindingHashMap[collection_name]) {
-				view.UpdateViewFromCollection(args);
+				if (view) {
+					view.UpdateViewFromCollection(args);
+				}
 			}
 		}
 
