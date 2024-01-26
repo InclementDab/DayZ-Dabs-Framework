@@ -172,6 +172,7 @@ class PluginLaunchGameBase: PluginProject
 						
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
 			Workbench.RunCmd(game_exe + " " + client_launch_params);
+			//Workbench.RunCmd(game_exe + " -client2 " + client_launch_params);
 		}	
 		
 		if ((launch_settings.LaunchType & GameLaunchType.SERVER) == GameLaunchType.SERVER) {
