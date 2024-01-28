@@ -40,6 +40,11 @@ class EditorSaveData: SerializableBase
 		serializer.Write(Fog0);
 		serializer.Write(Rain0);
 	}
+
+	bool Read(Serializer serializer)
+	{
+		return Read(serializer, 0);
+	}
 	
 	override bool Read(Serializer serializer, int version)
 	{

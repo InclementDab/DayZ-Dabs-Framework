@@ -29,6 +29,12 @@ class ScriptedViewBase: Managed
 			PrintFormat("[Log] %1", this);
 		}
 
+#ifdef WORKBENCH
+		if (!GetDayZGame()) {
+			return;
+		}
+#endif
+		
 		m_TypeConverter = GetDayZGame().GetTypeConversion(Type());
 		if (!m_TypeConverter) {
 			Error("Could not generate TypeConverter on %1", Type().ToString());
@@ -69,6 +75,12 @@ class ScriptedViewBase: Managed
 	{
 		Trace("OnWidgetScriptInit %1", w.ToString());
 		m_LayoutRoot = w;
+		
+#ifdef WORKBENCH
+		if (!GetDayZGame()) {
+			return;
+		}
+#endif
 		
 		m_WidgetController = GetDayZGame().GetWidgetController(m_LayoutRoot);
 		

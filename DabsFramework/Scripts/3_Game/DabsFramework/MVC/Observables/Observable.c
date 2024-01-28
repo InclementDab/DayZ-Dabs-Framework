@@ -13,7 +13,9 @@ class Observable: Managed
 
 	protected void CollectionChanged(CollectionChangedEventArgs args)
 	{
-		m_Controller.NotifyCollectionChanged(args);
+		if (m_Controller) {
+			m_Controller.NotifyCollectionChanged(args);
+		}
 	}
 
 	typename GetType()

@@ -24,7 +24,7 @@ class ScriptView: ScriptedViewBase
 	override void OnWidgetScriptInit(Widget w)
 	{
 		m_LayoutRoot = w;
-		m_LayoutRoot.Show(false);
+		
 	}
 #endif
 	

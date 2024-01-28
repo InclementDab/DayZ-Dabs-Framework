@@ -148,6 +148,11 @@ class EditorObjectData: SerializableBase
 		serializer.Write(AllowDamage);
 		serializer.Write(Simulate);
 	}
+
+	bool Read(Serializer serializer)
+	{
+		return Read(serializer, 0);
+	}
 	
 	override bool Read(Serializer serializer, int version)
 	{

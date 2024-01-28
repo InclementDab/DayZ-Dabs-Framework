@@ -53,6 +53,14 @@ class PluginBuildMod: PluginProject
 			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
 		}
 		
+		array<string> mod_splits = {};
+		m_ProjectSettings["Mods"].Split(";", mod_splits);
+		foreach (string mod_split: mod_splits) {
+			string mod_split_edit = mod_split;
+			mod_split_edit.Replace("@", "");
+			
+		}
+		
 		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2 +H", mod_output, mod_prefix, m_BuildSettings.Command));
 	}
 }

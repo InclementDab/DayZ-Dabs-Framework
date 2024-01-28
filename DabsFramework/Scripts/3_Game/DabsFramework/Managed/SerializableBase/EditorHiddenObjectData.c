@@ -65,6 +65,11 @@ class EditorHiddenObjectData: SerializableBase
 		serializer.Write(Position);
 		serializer.Write(Flags);
 	}
+
+	bool Read(Serializer serializer)
+	{
+		return Read(serializer, 0);
+	}
 	
 	override bool Read(Serializer serializer, int version)
 	{

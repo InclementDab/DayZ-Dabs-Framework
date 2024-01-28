@@ -1,4 +1,3 @@
-typedef int DateTime;
 class DateTime: int
 {		
 	static const int MINUTES_PER_HOUR = 60;
@@ -228,3 +227,5 @@ class DateTime: int
 		return t1 - t2;
 	}
 }
+
+typedef int DateTime;
