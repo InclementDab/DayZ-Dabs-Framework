@@ -151,7 +151,7 @@ class EditorObjectData: SerializableBase
 
 	bool Read(Serializer serializer)
 	{
-		return Read(serializer, 0);
+		return Read(serializer, 3);
 	}
 	
 	override bool Read(Serializer serializer, int version)
