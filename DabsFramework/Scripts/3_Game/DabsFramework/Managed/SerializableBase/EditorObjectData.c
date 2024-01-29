@@ -151,7 +151,7 @@ class ObjectNodeData: SerializableBase
 
 	bool Read(Serializer serializer)
 	{
-		return Read(serializer, 3);
+		return Read(serializer, 0);
 	}
 	
 	override bool Read(Serializer serializer, int version)
