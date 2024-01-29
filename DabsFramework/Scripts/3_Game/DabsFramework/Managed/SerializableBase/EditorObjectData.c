@@ -1,4 +1,4 @@
-class EditorObjectData: SerializableBase
+class ObjectNodeData: SerializableBase
 {	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
 	string Uuid;
@@ -30,7 +30,7 @@ class EditorObjectData: SerializableBase
 	[NonSerialized()]
 	vector BottomCenter;
 
-	EditorObjectFlags Flags;
+	ObjectNodeFlags Flags;
 	
 	[NonSerialized()]
 	ModStructure Mod;
@@ -56,26 +56,26 @@ class EditorObjectData: SerializableBase
 		return object;
 	}
 	
-	static EditorObjectData Create(Serializer serializer)
+	static ObjectNodeData Create(Serializer serializer)
 	{
-		EditorObjectData data = new EditorObjectData();
+		ObjectNodeData data = new ObjectNodeData();
 		data.Read(serializer, 0);
 		return data;
 	}
 	
-	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EFE_DEFAULT)
+	static ObjectNodeData Create(string type, vector transform[4], ObjectNodeFlags flags = EFE_DEFAULT)
 	{	
 		return Create(type, transform[3], Math3D.MatrixToAngles(transform), 1, flags);
 	}
 	
-	static EditorObjectData Create(string type, vector position, vector orientation, float scale, EditorObjectFlags flags)
+	static ObjectNodeData Create(string type, vector position, vector orientation, float scale, ObjectNodeFlags flags)
 	{				
 		//if (GetGame().GetModelName(type) == "UNKNOWN_P3D_FILE") {
-			//EditorLog.Warning(string.Format("EditorObjectData::Create %1 is not a valid Object Type!", type));
+			//EditorLog.Warning(string.Format("ObjectNodeData::Create %1 is not a valid Object Type!", type));
 			//return null;
 		//}
 		
-		EditorObjectData data = new EditorObjectData();
+		ObjectNodeData data = new ObjectNodeData();
 		data.Type = type; 
 		data.Model = GetModelName(data.Type);
 		data.Position = position; 
@@ -85,12 +85,12 @@ class EditorObjectData: SerializableBase
 		data.DisplayName = data.Type;
 		//data.Mod = GetModFromObject(data.Type); todo refactor.
 
-		//EditorLog.Debug(string.Format("EditorObjectData::Create ID: %1", data.m_Id));
+		//EditorLog.Debug(string.Format("ObjectNodeData::Create ID: %1", data.m_Id));
 				
 		return data;
 	}
 	
-	static EditorObjectData Create(notnull Object target, EditorObjectFlags flags = EFE_DEFAULT)
+	static ObjectNodeData Create(notnull Object target, ObjectNodeFlags flags = EFE_DEFAULT)
 	{
 		// We do this because all 'baked' objects are ID'd to 3. cant store a bunch of 3's can we?
 		// todo... actually we might be able to :)
@@ -98,7 +98,7 @@ class EditorObjectData: SerializableBase
 			return null;
 		}
 		
-		EditorObjectData data = new EditorObjectData();
+		ObjectNodeData data = new ObjectNodeData();
 		data.Type = target.GetType();
 		data.Model = GetModelName(data.Type);
 		data.WorldObject = target;
@@ -108,7 +108,7 @@ class EditorObjectData: SerializableBase
 		data.Flags = flags;
 		data.DisplayName = data.Type;
 		
-		//EditorLog.Debug(string.Format("EditorObjectData::Create ID: %1", data.m_Id));
+		//EditorLog.Debug(string.Format("ObjectNodeData::Create ID: %1", data.m_Id));
 		
 		return data;
 	}
