@@ -4,7 +4,7 @@
 	however we need to backport all old information and handle empty Types from the past
 */
 
-class EditorHiddenObjectData: SerializableBase
+class EditorDeletedObjectData: SerializableBase
 {	
 	string Type;
 	vector Position;
@@ -16,9 +16,9 @@ class EditorHiddenObjectData: SerializableBase
 	[NonSerialized()]
 	Object WorldObject;
 			
-	static EditorHiddenObjectData Create(string type, vector position, vector orientation = vector.Zero)
+	static EditorDeletedObjectData Create(string type, vector position, vector orientation = vector.Zero)
 	{		
-		EditorHiddenObjectData data = new EditorHiddenObjectData();
+		EditorDeletedObjectData data = new EditorDeletedObjectData();
 		data.Type = type;
 		data.Position = position;
 		data.Orientation = orientation;
@@ -28,13 +28,13 @@ class EditorHiddenObjectData: SerializableBase
 		return data;
 	}
 	
-	static EditorHiddenObjectData Create(Object object)
+	static EditorDeletedObjectData Create(Object object)
 	{
 		if (!object) {
 			return null;
 		}
 		
-		EditorHiddenObjectData data = new EditorHiddenObjectData();
+		EditorDeletedObjectData data = new EditorDeletedObjectData();
 		data.Type = object.GetType();
 		data.Position = object.GetWorldPosition();
 		data.WorldObject = object;

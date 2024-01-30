@@ -11,7 +11,7 @@ class EditorSaveData: SerializableBase
 	float Overcast0, Fog0, Rain0;
 	
 	ref array<ref EditorObjectData> EditorObjects = {};
-	ref array<ref EditorHiddenObjectData> EditorHiddenObjects = {};	
+	ref array<ref EditorDeletedObjectData> EditorHiddenObjects = {};	
 		
 	override void Write(Serializer serializer, int version)
 	{
@@ -26,7 +26,7 @@ class EditorSaveData: SerializableBase
 		}
 		
 		serializer.Write(EditorHiddenObjects.Count());
-		foreach (EditorHiddenObjectData deleted_data: EditorHiddenObjects) {
+		foreach (EditorDeletedObjectData deleted_data: EditorHiddenObjects) {
 			deleted_data.Write(serializer, Version);
 		}
 		
@@ -69,7 +69,7 @@ class EditorSaveData: SerializableBase
 		int editor_deleted_object_count;
 		serializer.Read(editor_deleted_object_count);
 		for (int j = 0; j < editor_deleted_object_count; j++) {
-			EditorHiddenObjectData deleted_data();
+			EditorDeletedObjectData deleted_data();
 			deleted_data.Read(serializer, version);
 			EditorHiddenObjects.Insert(deleted_data);
 		}
