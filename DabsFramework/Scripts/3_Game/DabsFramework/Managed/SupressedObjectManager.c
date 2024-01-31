@@ -16,7 +16,6 @@ class SuppressedObjectManager: Managed
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(m_Objects.Count());
 		foreach (SuppressedObject object: m_Objects) {
-			Print(object.GetObject());
 			rpc.Write(object.GetObject());
 		}
 		
@@ -47,7 +46,6 @@ class SuppressedObjectManager: Managed
 		rpc.Write(suppressible_objects.Count());
 		for (int i = 0; i < suppressible_objects.Count(); i++) {
 			Object suppress = suppressible_objects[i];
-			Print(suppress);
 			rpc.Write(suppress);
 			
 			m_Objects.Insert(new SuppressedObject(suppressible_objects[i]));
@@ -134,9 +132,7 @@ class SuppressedObjectManager: Managed
 					if (!ctx.Read(suppress)) {
 						continue;
 					}
-					
-					Print(suppress);
-					
+
 					m_Objects.Insert(new SuppressedObject(suppress));
 				}								
 				
