@@ -19,7 +19,7 @@ class SuppressedObjectManager: Managed
 			rpc.Write(object.GetObject());
 		}
 		
-		rpc.Send(null, RPC_SUPPRESS, true);
+		rpc.Send(null, RPC_SUPPRESS, true, identity);
 #endif
 	}
 		
@@ -45,7 +45,8 @@ class SuppressedObjectManager: Managed
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(suppressible_objects.Count());
 		for (int i = 0; i < suppressible_objects.Count(); i++) {
-			rpc.Write(suppressible_objects[i]);
+			Object suppress = suppressible_objects[i];
+			rpc.Write(suppress);
 			
 			m_Objects.Insert(new SuppressedObject(suppressible_objects[i]));
 		}
@@ -63,7 +64,7 @@ class SuppressedObjectManager: Managed
 	
 	void UnsupressMany(notnull array<Object> objects)
 	{
-#ifdef SERVER		
+#ifdef SERVER
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(objects.Count());
 		foreach (Object object: objects) {
@@ -79,6 +80,19 @@ class SuppressedObjectManager: Managed
 		
 		rpc.Send(null, RPC_UNSUPPRESS, true);
 #endif
+	}
+	
+	void UnsuppressAll()
+	{
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(m_Objects.Count());
+		foreach (auto suppressed_object: m_Objects) {
+			rpc.Write(suppressed_object.GetObject());
+		}
+		
+		rpc.Send(null, RPC_UNSUPPRESS, true);
+#endif		
 	}
 	
 	bool IsSuppressed(notnull Object object)
@@ -118,7 +132,7 @@ class SuppressedObjectManager: Managed
 					if (!ctx.Read(suppress)) {
 						continue;
 					}
-					
+
 					m_Objects.Insert(new SuppressedObject(suppress));
 				}								
 				
@@ -148,38 +162,3 @@ class SuppressedObjectManager: Managed
 #endif
 	}
 }
-
-/*	
-	void RestoreMapObject(notnull ObjectRemoverLink object_link)
-	{
-		Object object = m_HiddenObjects.GetKeyByValue(object_link);
-		if (!object) {
-			return;
-		}
-		
-		RestoreMapObject(object);
-	}
-	
-	void RestoreMapObject(notnull Object object)
-	{
-		ObjectRemoverLink object_link = m_HiddenObjects[object];
-		if (!object_link) {
-			return;
-		}
-		
-		object.SetFlags(object_link.Flags, true);
-		object.SetEventMask(object_link.Events);
-		Print(object_link.Transform);
-		object.SetTransform(object_link.Transform);
-		object.Update();
-		delete m_HiddenObjects[object];
-		
-		if (GetGame().IsDedicatedServer()) {
-			GetGame().UpdatePathgraphRegionByObject(object);
-		}
-	}
-	
-	bool IsHiddenObject(notnull Object object)
-	{
-		return m_HiddenObjects[object] != null;
-	}*/

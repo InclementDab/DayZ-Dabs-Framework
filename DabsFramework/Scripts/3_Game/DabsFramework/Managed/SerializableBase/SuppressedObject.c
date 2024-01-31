@@ -1,30 +1,17 @@
 class SuppressedObject: SerializableBase
-{	
-#ifdef SERVER
-	protected Object m_Object;
-#else
+{
 	protected ref OLinkT m_Object;
-#endif
-	
 	protected int m_Flags, m_Events;
 	protected vector m_Transform[4];
 	
 	Object GetObject()
 	{
-#ifdef SERVER
-		return m_Object;
-#else
 		return m_Object.Ptr();
-#endif
 	}
 		
 	void SuppressedObject(notnull Object object)
 	{
-#ifdef SERVER
-		m_Object = object;
-#else
 		m_Object = new OLinkT(object);
-#endif	
 		
 		m_Flags = object.GetFlags();
 		m_Events = object.GetEventMask();
