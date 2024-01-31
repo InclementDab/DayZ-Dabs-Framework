@@ -29,7 +29,7 @@ class SuppressedObjectManager: Managed
 		SuppressMany({ object });
 #endif
 	}
-	
+		
 	void SuppressMany(notnull array<Object> objects)
 	{
 #ifdef SERVER
@@ -53,19 +53,31 @@ class SuppressedObjectManager: Managed
 		rpc.Send(null, RPC_SUPPRESS, true);
 #endif
 	}
-	
+		
 	void Unsupress(notnull Object object)
 	{
 #ifdef SERVER		
+		UnsupressMany({ object });
+#endif
+	}
+	
+	void UnsupressMany(notnull array<Object> objects)
+	{
+#ifdef SERVER		
 		ScriptRPC rpc = new ScriptRPC();
-		rpc.Write(object);
-		rpc.Send(null, RPC_UNSUPPRESS, true);
-		
-		foreach (auto suppressed_object: m_Objects) {
-			if (suppressed_object.GetObject() == object) {
-				m_Objects.RemoveItem(suppressed_object);
+		rpc.Write(objects.Count());
+		foreach (Object object: objects) {
+			rpc.Write(object);
+			
+			// Remove from m_Objects
+			foreach (auto suppressed_object: m_Objects) {
+				if (suppressed_object.GetObject() == object) {
+					m_Objects.RemoveItem(suppressed_object);
+				}
 			}
 		}
+		
+		rpc.Send(null, RPC_UNSUPPRESS, true);
 #endif
 	}
 	
@@ -97,30 +109,39 @@ class SuppressedObjectManager: Managed
 	{	
 #ifndef SERVER
 		switch (rpc_type) {
-			case RPC_SUPPRESS: {				
-				Object suppress;
-				if (!ctx.Read(suppress)) {
-					Error("Invalid object found to suppress");
-					break;
-				}
-											
-				m_Objects.Insert(new SuppressedObject(suppress));
+			case RPC_SUPPRESS: {
+				int suppress_count;
+				ctx.Read(suppress_count);
+				
+				for (int i = 0; i < suppress_count; i++) {
+					Object suppress;
+					if (!ctx.Read(suppress)) {
+						continue;
+					}
+					
+					m_Objects.Insert(new SuppressedObject(suppress));
+				}								
+				
 				break;
 			}
 			
 			case RPC_UNSUPPRESS: {
-				Object unsuppress;
-				if (!ctx.Read(unsuppress)) {
-					Error("Invalid object found to unsuppress");
-					break;
-				}
+				int unsuppress_count;
+				ctx.Read(unsuppress_count);
 				
-				foreach (auto suppressed_object: m_Objects) {
-					if (suppressed_object.GetObject() == unsuppress) {
-						m_Objects.RemoveItem(suppressed_object);
+				for (int j = 0; j < unsuppress_count; j++) {
+					Object unsuppress;
+					if (!ctx.Read(unsuppress)) {
+						continue;
 					}
-				}
-				
+					
+					foreach (auto suppressed_object: m_Objects) {
+						if (suppressed_object.GetObject() == unsuppress) {
+							m_Objects.RemoveItem(suppressed_object);
+						}
+					}
+				}		
+								
 				break;
 			}
 		}
