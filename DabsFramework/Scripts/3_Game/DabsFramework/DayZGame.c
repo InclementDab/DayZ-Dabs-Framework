@@ -2,6 +2,7 @@ modded class DayZGame
 {	
 	protected ref LoggerManager m_LoggerManager;
 	protected ref EventManager m_EventManager;
+	protected ref SuppressedObjectManager m_SuppressedObjectManager;
 	
 	protected ref map<typename, ProfileSettings> m_ProfileSettings = new map<typename, ProfileSettings>();
 	
@@ -18,6 +19,7 @@ modded class DayZGame
 		// dedi and offline
 #ifdef SERVER
 		m_EventManager = new EventManager();
+		m_SuppressedObjectManager = new SuppressedObjectManager();
 #endif
 	}
 			
@@ -113,11 +115,13 @@ modded class DayZGame
 		switch (eventTypeId) {
 			case MPSessionStartEventTypeID: {
 				m_EventManager = new EventManager();
+				m_SuppressedObjectManager = new SuppressedObjectManager();
 				break;
 			}
 			
 			case MPSessionEndEventTypeID: {
 				delete m_EventManager;
+				delete m_SuppressedObjectManager;
 				break;
 			}
 		}
@@ -171,6 +175,11 @@ modded class DayZGame
 	EventManager GetEventManager()
 	{
 		return m_EventManager;
+	}
+	
+	SuppressedObjectManager GetSuppressedObjectManager()
+	{
+		return m_SuppressedObjectManager;
 	}
 	
 	ProfileSettings GetProfileSetting(typename profile_settings_type)

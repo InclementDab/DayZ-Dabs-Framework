@@ -16,6 +16,11 @@ modded class MissionServer
 		if (m_EventManager) {
 			m_EventManager.DispatchEventInfo(player);
 		}
+		
+		SuppressedObjectManager supressed_object_manager = GetDayZGame().GetSuppressedObjectManager();
+		if (supressed_object_manager) {
+			supressed_object_manager.DispatchInfo(identity);
+		}
 	}
 	
 	override void OnClientDisconnectedEvent(PlayerIdentity identity, PlayerBase player, int logoutTime, bool authFailed)
