@@ -6,11 +6,11 @@ modded class MissionServer
 	{
 		super.OnMissionStart();
 		
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(OnMissionLoaded);
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(OnMissionLoad);
 	}
 	
 	// Called immediately after main() is done, CLE is initialized by this point
-	void OnMissionLoaded()
+	void OnMissionLoad()
 	{
 	}
 	
