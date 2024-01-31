@@ -11,7 +11,7 @@ class EditorSaveData: SerializableBase
 	float Overcast0, Fog0, Rain0;
 	
 	ref array<ref ObjectNodeData> ObjectNodes = {};
-	ref array<ref EditorHiddenObjectData> EditorHiddenObjects = {};	
+	ref array<ref EditorDeletedObjectData> EditorHiddenObjects = {};	
 		
 	override void Write(Serializer serializer, int version)
 	{
