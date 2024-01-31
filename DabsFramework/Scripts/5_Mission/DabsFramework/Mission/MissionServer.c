@@ -2,6 +2,18 @@ modded class MissionServer
 {
 	protected ref array<string> m_JoinedPlayers = {};
 	
+	override void OnMissionStart()
+	{
+		super.OnMissionStart();
+		
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(OnMissionLoaded);
+	}
+	
+	// Called immediately after main() is done, CLE is initialized by this point
+	void OnMissionLoaded()
+	{
+	}
+	
 	// load client info first hand
 	override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
 	{
