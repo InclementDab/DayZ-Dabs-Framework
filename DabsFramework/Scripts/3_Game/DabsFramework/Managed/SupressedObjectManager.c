@@ -16,10 +16,11 @@ class SuppressedObjectManager: Managed
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(m_Objects.Count());
 		foreach (SuppressedObject object: m_Objects) {
+			Print(object.GetObject());
 			rpc.Write(object.GetObject());
 		}
 		
-		rpc.Send(null, RPC_SUPPRESS, true);
+		rpc.Send(null, RPC_SUPPRESS, true, identity);
 #endif
 	}
 		
@@ -45,7 +46,9 @@ class SuppressedObjectManager: Managed
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(suppressible_objects.Count());
 		for (int i = 0; i < suppressible_objects.Count(); i++) {
-			rpc.Write(suppressible_objects[i]);
+			Object suppress = suppressible_objects[i];
+			Print(suppress);
+			rpc.Write(suppress);
 			
 			m_Objects.Insert(new SuppressedObject(suppressible_objects[i]));
 		}
@@ -63,7 +66,7 @@ class SuppressedObjectManager: Managed
 	
 	void UnsupressMany(notnull array<Object> objects)
 	{
-#ifdef SERVER		
+#ifdef SERVER
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(objects.Count());
 		foreach (Object object: objects) {
@@ -79,6 +82,19 @@ class SuppressedObjectManager: Managed
 		
 		rpc.Send(null, RPC_UNSUPPRESS, true);
 #endif
+	}
+	
+	void UnsuppressAll()
+	{
+#ifdef SERVER
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(m_Objects.Count());
+		foreach (auto suppressed_object: m_Objects) {
+			rpc.Write(suppressed_object.GetObject());
+		}
+		
+		rpc.Send(null, RPC_UNSUPPRESS, true);
+#endif		
 	}
 	
 	bool IsSuppressed(notnull Object object)
@@ -118,6 +134,8 @@ class SuppressedObjectManager: Managed
 					if (!ctx.Read(suppress)) {
 						continue;
 					}
+					
+					Print(suppress);
 					
 					m_Objects.Insert(new SuppressedObject(suppress));
 				}								
