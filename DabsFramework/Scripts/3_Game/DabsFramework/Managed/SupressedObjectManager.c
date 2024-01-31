@@ -148,38 +148,3 @@ class SuppressedObjectManager: Managed
 #endif
 	}
 }
-
-/*	
-	void RestoreMapObject(notnull ObjectRemoverLink object_link)
-	{
-		Object object = m_HiddenObjects.GetKeyByValue(object_link);
-		if (!object) {
-			return;
-		}
-		
-		RestoreMapObject(object);
-	}
-	
-	void RestoreMapObject(notnull Object object)
-	{
-		ObjectRemoverLink object_link = m_HiddenObjects[object];
-		if (!object_link) {
-			return;
-		}
-		
-		object.SetFlags(object_link.Flags, true);
-		object.SetEventMask(object_link.Events);
-		Print(object_link.Transform);
-		object.SetTransform(object_link.Transform);
-		object.Update();
-		delete m_HiddenObjects[object];
-		
-		if (GetGame().IsDedicatedServer()) {
-			GetGame().UpdatePathgraphRegionByObject(object);
-		}
-	}
-	
-	bool IsHiddenObject(notnull Object object)
-	{
-		return m_HiddenObjects[object] != null;
-	}*/
