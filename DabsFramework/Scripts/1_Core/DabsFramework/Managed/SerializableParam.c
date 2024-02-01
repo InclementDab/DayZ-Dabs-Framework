@@ -39,12 +39,12 @@ class SerializableParam: Managed
 			
 	protected bool Write(Serializer ctx)
 	{
-		return false;
+		return true;
 	}
 		
 	protected bool Read(Serializer ctx)
 	{
-		return false;
+		return true;
 	}
 	
 	Param ToParam()

@@ -1,7 +1,10 @@
 class ObjectNodeData: SerializableBase
 {	
+	[NonSerialized()]
+	int m_Id;
+	int GetID() { return m_Id; }
+	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
-	string Uuid;
 	string Type;
 	string DisplayName;
 	vector Position;
@@ -42,18 +45,12 @@ class ObjectNodeData: SerializableBase
 	Object WorldObject;
 	
 	[NonSerialized()]
-	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
-		
-	Object CreateObject(int flags = ECE_SETUP | ECE_UPDATEPATHGRAPH | ECE_CREATEPHYSICS | ECE_NOLIFETIME | ECE_DYNAMIC_PERSISTENCY)
+	ref array<ref SerializableParam> Parameters = {};
+	
+	void EditorObjectData() 
 	{
-		if (Type.Contains("\\") || Type.Contains("/")) {
-			return GetGame().CreateStaticObjectUsingP3D(Type, Position, Orientation, Scale);
-		}
-		
-		Object object = GetGame().CreateObjectEx(Type, Position, flags);
-		object.SetOrientation(Orientation);
-		object.SetScale(Scale);
-		return object;
+		EditorObjectID++;
+		m_Id = EditorObjectID;
 	}
 	
 	static ObjectNodeData Create(Serializer serializer)
@@ -133,10 +130,11 @@ class ObjectNodeData: SerializableBase
 		
 		// Serialize parameters
 		serializer.Write(Parameters.Count());
-		for (int j = 0; j < Parameters.Count(); j++) {
-			string key_at_index = Parameters.GetKey(j);
-			serializer.Write(key_at_index);
-			Parameters[key_at_index].Serialize(serializer);
+		foreach (SerializableParam serializable_param: Parameters) {
+			if (!serializable_param.Serialize(serializer)) {
+				Error("Error serializing param");
+				return;
+			}
 		}
 		
 		if (version < 3) {
@@ -147,11 +145,6 @@ class ObjectNodeData: SerializableBase
 		serializer.Write(Locked);
 		serializer.Write(AllowDamage);
 		serializer.Write(Simulate);
-	}
-
-	bool Read(Serializer serializer)
-	{
-		return Read(serializer, 3);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -178,16 +171,7 @@ class ObjectNodeData: SerializableBase
 		int params_count;
 		serializer.Read(params_count);
 		for (int j = 0; j < params_count; j++) {
-			string param_key;
-			string param_type;
-			serializer.Read(param_key);
-			serializer.Read(param_type);
-			if (!param_type.ToType()) {
-				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
-				return false;
-			}
-			
-			Parameters[param_key] = SerializableParam.CreateFromSerializer(serializer);
+			Parameters.Insert(SerializableParam.CreateFromSerializer(serializer));
 		}
 		
 		if (version < 3) {
