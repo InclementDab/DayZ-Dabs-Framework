@@ -1,9 +1,9 @@
 // Struct that just contains information of a Property
 class PropertyInfo
-{
+{	
 	string Name;
 	typename Type;
-	
+		
 	void PropertyInfo(string name, typename type)
 	{
 		Name = name;
