@@ -16,7 +16,7 @@ class AttributeBase: Class
 		array<string> stack_split = {};
 		stack.Split(":", stack_split);
 		m_LineNumber = stack_split[stack_split.Count() - 1].Trim().ToInt();
-		m_FieldLineNumber = m_LineNumber;
+		m_FieldLineNumber = m_LineNumber + 1;
 		
 		array<string> stack_split_further = {};
 		stack_split[stack_split.Count() - 2].Split(")", stack_split_further);
@@ -33,10 +33,13 @@ class AttributeBase: Class
 		ParseHandle parse_handle = BeginParse(m_File);
 		
 		string tokens[256];
-		int parse_count = ParseLine(parse_handle, m_FieldLineNumber++, tokens);
+		int parse_count = ParseLine(parse_handle, m_FieldLineNumber, tokens);
+		Print(parse_count);
+		Print(tokens);
 		// This cannot end well
 		while (!parse_count) {
-			parse_count = ParseLine(parse_handle, m_FieldLineNumber++, tokens);
+			m_FieldLineNumber++;
+			parse_count = ParseLine(parse_handle, m_FieldLineNumber, tokens);
 		}
 		
 		Field = ParseField(tokens, parse_count);
