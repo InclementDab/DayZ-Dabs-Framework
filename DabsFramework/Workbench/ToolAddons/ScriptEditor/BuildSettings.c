@@ -19,6 +19,9 @@ class BuildSettings: SerializableBase
 	[Attribute("", "editbox", "Extra Launch Arguments")]
 	string Args;
 	
+	[Attribute("", "combobox", "Build Dependencies", "", ParamEnumArray.FromEnum(YesNo) )]
+	bool Dependencies;
+	
 	void Save(string file)
 	{
 		FileSerializer serializer = new FileSerializer();
@@ -54,6 +57,7 @@ class BuildSettings: SerializableBase
 			//settings.BuildFolders; // default all masked
 			settings.Command = "pboProject";
 			settings.Args = "+H";
+			settings.Dependencies = true;
 			settings.Save(file);
 			return settings;
 		}
@@ -80,6 +84,7 @@ class BuildSettings: SerializableBase
 		serializer.Write(CopyAddons);
 		serializer.Write(Key);
 		serializer.Write(Args);
+		serializer.Write(Dependencies);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -106,6 +111,7 @@ class BuildSettings: SerializableBase
 		
 		if (version <= 2) {
 			Args = "+H";
+			Dependencies = true;
 			return true;
 		}
 		
@@ -114,6 +120,10 @@ class BuildSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(Args)) {
+			return false;
+		}		
+		
+		if (!serializer.Read(Dependencies)) {
 			return false;
 		}
 		
