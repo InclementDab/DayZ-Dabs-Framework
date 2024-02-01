@@ -47,7 +47,7 @@ class EditorObjectData: SerializableBase
 	Object WorldObject;
 	
 	[NonSerialized()]
-	ref array<ref SerializableParam> Parameters = {};
+	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
 	
 	void EditorObjectData() 
 	{
@@ -125,11 +125,14 @@ class EditorObjectData: SerializableBase
 		
 		// Serialize parameters
 		serializer.Write(Parameters.Count());
-		foreach (SerializableParam serializable_param: Parameters) {
-			if (!serializable_param.Serialize(serializer)) {
-				Error("Error serializing param");
-				return;
-			}
+		for (int j = 0; j < Parameters.Count(); j++) {
+			string key_at_index = Parameters.GetKey(j);
+			serializer.Write(key_at_index);
+			// write the type of the object that will need to be created
+			serializer.Write(Parameters[key_at_index].GetSerializeableType());
+			
+			// write the data of the object
+			Parameters[key_at_index].Write(serializer);
 		}
 		
 		if (version < 3) {
@@ -166,7 +169,23 @@ class EditorObjectData: SerializableBase
 		int params_count;
 		serializer.Read(params_count);
 		for (int j = 0; j < params_count; j++) {
-			Parameters.Insert(SerializableParam.CreateFromSerializer(serializer));
+			string param_key;
+			string param_type;
+			serializer.Read(param_key);
+			serializer.Read(param_type);
+			if (!param_type.ToType()) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			SerializableParam param_value = SerializableParam.Cast(param_type.ToType().Spawn());
+			if (!param_value) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			param_value.Read(serializer);
+			Parameters[param_key] = param_value;
 		}
 		
 		if (version < 3) {
