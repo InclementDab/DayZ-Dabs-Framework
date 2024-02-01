@@ -1,9 +1,5 @@
 class ObjectNodeData: SerializableBase
-{	
-	[NonSerialized()]
-	int m_Id;
-	int GetID() { return m_Id; }
-	
+{		
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
 	string Type;
 	string DisplayName;
@@ -46,13 +42,7 @@ class ObjectNodeData: SerializableBase
 	
 	[NonSerialized()]
 	ref array<ref SerializableParam> Parameters = {};
-	
-	void EditorObjectData() 
-	{
-		EditorObjectID++;
-		m_Id = EditorObjectID;
-	}
-	
+		
 	static ObjectNodeData Create(Serializer serializer)
 	{
 		ObjectNodeData data = new ObjectNodeData();
