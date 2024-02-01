@@ -1,5 +1,10 @@
 class SerializableParam: Managed
 {
+	string GetSerializeableType()
+	{
+		return Type().ToString();
+	}
+	
 	bool Serialize(Serializer ctx)
 	{
 		if (!ctx.Write(Type().ToString())) {
@@ -37,12 +42,12 @@ class SerializableParam: Managed
 		return serializable_param;
 	}
 			
-	protected bool Write(Serializer ctx)
+	bool Write(Serializer ctx)
 	{
 		return true;
 	}
 		
-	protected bool Read(Serializer ctx)
+	bool Read(Serializer ctx)
 	{
 		return true;
 	}
