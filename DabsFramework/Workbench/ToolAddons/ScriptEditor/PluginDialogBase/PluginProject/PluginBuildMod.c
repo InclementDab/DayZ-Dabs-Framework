@@ -40,32 +40,44 @@ class PluginBuildMod: PluginProject
 			PromiseSymLink(string.Format("%1\\Dependencies\\%2", m_LaunchSettings.Repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
 		}
 		
-		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);				
-		// Set up our mod output correctly if not done so already
-		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);
-		
-		MakeDirectory(mod_output);
-		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
-		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		
-		// Move contents of Addons folder
-		if (m_BuildSettings.CopyAddons) {
-			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
-		}
-		
-		array<string> mod_splits = {};
-		m_ProjectSettings["Mods"].Split(";", mod_splits);
-		foreach (string mod_split: mod_splits) {
-			string mod_split_edit = mod_split;
-			mod_split_edit.Replace("@", "");
-			
-		}
+		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
 		
 		string args = m_BuildSettings.Args;
 		if (m_BuildSettings.Key != string.Empty) {
 			args += string.Format(" +K=%1",  m_BuildSettings.Key);
 		}
 		
-		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2 %3", mod_output, mod_prefix, m_BuildSettings.Command));
+		if (m_BuildSettings.Dependencies) {
+			array<string> mod_splits = {};
+			m_ProjectSettings["Mods"].Split(";", mod_splits);
+			foreach (string mod_split: mod_splits) {
+				string mod_split_edit = mod_split;
+				mod_split_edit.Replace("@", "");
+				
+				string mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_split_edit));
+				if (FileExist(mod_folder)) {
+					BuildFolder(mod_folder, string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_split_edit), args);
+				}
+			}
+		}
+		
+		// Set up our mod output correctly if not done so already
+		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);		
+		string main_mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_prefix));
+		BuildFolder(main_mod_folder, mod_output, args);
+		
+		// Move contents of Addons folder
+		if (m_BuildSettings.CopyAddons) {
+			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+		}
+	}
+	
+	void BuildFolder(string mod_input, string mod_output, string args)
+	{
+		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
+		MakeDirectory(mod_output);
+		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
+		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
+		Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", m_BuildSettings.Command, mod_output, mod_input, args));
 	}
 }
