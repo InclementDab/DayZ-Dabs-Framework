@@ -6,7 +6,6 @@ class AttributeBase: Class
 	// Line number of attribute
 	protected int m_LineNumber;
 	
-	protected int m_FieldLineNumber;
 	ref FieldInfo Field;
 	
 	void AttributeBase()
@@ -16,42 +15,38 @@ class AttributeBase: Class
 		array<string> stack_split = {};
 		stack.Split(":", stack_split);
 		m_LineNumber = stack_split[stack_split.Count() - 1].Trim().ToInt();
-		m_FieldLineNumber = m_LineNumber + 1;
 		
 		array<string> stack_split_further = {};
 		stack_split[stack_split.Count() - 2].Split(")", stack_split_further);
 		m_File = stack_split_further[1].Trim();
-		
-		Print(m_LineNumber);
-		Print(m_File);
-		
+				
 		if (!File.Exists(m_File)) {
 			Error("Couldnt find file " + m_File);
 			return;
 		}
 		
-		ParseHandle parse_handle = BeginParse(m_File);
+		FileHandle handle = OpenFile(m_File, FileMode.READ);
+		string line_content;
 		
-		string tokens[256];
-		int parse_count = ParseLine(parse_handle, m_FieldLineNumber, tokens);
-		Print(parse_count);
-		Print(tokens);
-		// This cannot end well
-		while (!parse_count) {
-			m_FieldLineNumber++;
-			parse_count = ParseLine(parse_handle, m_FieldLineNumber, tokens);
+		for (int i = m_LineNumber + 1; i > 0; i--) {
+			FGets(handle, line_content);
 		}
 		
-		Field = ParseField(tokens, parse_count);
+		Field = FParseLine(line_content);
 		
-		EndParse(parse_handle);
+		CloseFile(handle);
 	}
 	
-	static FieldInfo ParseField(string tokens[], int count)
+	static FieldInfo FParseLine(string line)
 	{
+		
+		string tokens[256];
+		int count = line.ParseString(tokens);
 		FieldInfo field_info = new FieldInfo();
 		
 		for (int i = 0; i < count; i++) {
+			
+			// Reparse
 			string token_parse;
 			int token_type = tokens[i].ParseStringEx(token_parse);
 			switch (token_type) {
