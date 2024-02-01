@@ -38,16 +38,15 @@ class AttributeBase: Class
 	
 	static FieldInfo FParseLine(string line)
 	{
-		
 		string tokens[256];
 		int count = line.ParseString(tokens);
 		FieldInfo field_info = new FieldInfo();
-		
 		for (int i = 0; i < count; i++) {
 			
 			// Reparse
 			string token_parse;
 			int token_type = tokens[i].ParseStringEx(token_parse);
+			
 			switch (token_type) {
 				case 1: {
 					switch (token_parse) {
@@ -71,11 +70,39 @@ class AttributeBase: Class
 							
 							break;
 						}
+						
+						case "static":
+						case "const": {
+							field_info.Const = true;
+							break;
+						}
+						
+						case ";": {
+							return field_info;
+						}
+						
+						default: {
+							
+							Print(token_parse);
+						}
 					}
 					break;
 				}
 				case 3: {
-					Print(token_parse);
+					switch (token_parse) {
+						default: {
+							if (!field_info.DeclaringType) {
+								field_info.DeclaringType = token_parse.ToType();
+							}
+							
+							if (field_info.Name == string.Empty) {
+								field_info.Name = token_parse;
+							}
+							
+							break;
+						}
+					}
+					
 					break;
 				}
 				
