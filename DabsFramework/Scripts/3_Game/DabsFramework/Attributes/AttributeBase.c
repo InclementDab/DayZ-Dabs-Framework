@@ -33,7 +33,6 @@ class AttributeBase: Class
 		}
 		
 		Field = FParseLine(line_content);
-		
 		CloseFile(handle);
 	}
 	
