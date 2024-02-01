@@ -1,7 +1,12 @@
+// temp until i can find a better way to find "First" in a map that doesnt blow the software up
+static int EditorObjectID;
 class EditorObjectData: SerializableBase
 {	
+	[NonSerialized()]
+	int m_Id;
+	int GetID() { return m_Id; }
+	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
-	string Uuid;
 	string Type;
 	string DisplayName;
 	vector Position;
@@ -30,7 +35,7 @@ class EditorObjectData: SerializableBase
 	[NonSerialized()]
 	vector BottomCenter;
 
-	EditorObjectFlags Flags;
+	int Flags;
 	
 	[NonSerialized()]
 	ModStructure Mod;
@@ -43,27 +48,14 @@ class EditorObjectData: SerializableBase
 	
 	[NonSerialized()]
 	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
-		
-	Object CreateObject(int flags = ECE_SETUP | ECE_UPDATEPATHGRAPH | ECE_CREATEPHYSICS | ECE_NOLIFETIME | ECE_DYNAMIC_PERSISTENCY)
+	
+	void EditorObjectData() 
 	{
-		if (Type.Contains("\\") || Type.Contains("/")) {
-			return GetGame().CreateStaticObjectUsingP3D(Type, Position, Orientation, Scale);
-		}
-		
-		Object object = GetGame().CreateObjectEx(Type, Position, flags);
-		object.SetOrientation(Orientation);
-		object.SetScale(Scale);
-		return object;
+		EditorObjectID++;
+		m_Id = EditorObjectID;
 	}
 	
-	static EditorObjectData Create(Serializer serializer)
-	{
-		EditorObjectData data = new EditorObjectData();
-		data.Read(serializer, 0);
-		return data;
-	}
-	
-	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EFE_DEFAULT)
+	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EditorObjectFlags.ALL)
 	{	
 		return Create(type, transform[3], Math3D.MatrixToAngles(transform), 1, flags);
 	}
@@ -90,7 +82,7 @@ class EditorObjectData: SerializableBase
 		return data;
 	}
 	
-	static EditorObjectData Create(notnull Object target, EditorObjectFlags flags = EFE_DEFAULT)
+	static EditorObjectData Create(notnull Object target, EditorObjectFlags flags = EditorObjectFlags.ALL)
 	{
 		// We do this because all 'baked' objects are ID'd to 3. cant store a bunch of 3's can we?
 		// todo... actually we might be able to :)
@@ -136,7 +128,11 @@ class EditorObjectData: SerializableBase
 		for (int j = 0; j < Parameters.Count(); j++) {
 			string key_at_index = Parameters.GetKey(j);
 			serializer.Write(key_at_index);
-			Parameters[key_at_index].Serialize(serializer);
+			// write the type of the object that will need to be created
+			serializer.Write(Parameters[key_at_index].GetSerializeableType());
+			
+			// write the data of the object
+			Parameters[key_at_index].Write(serializer);
 		}
 		
 		if (version < 3) {
@@ -147,11 +143,6 @@ class EditorObjectData: SerializableBase
 		serializer.Write(Locked);
 		serializer.Write(AllowDamage);
 		serializer.Write(Simulate);
-	}
-
-	bool Read(Serializer serializer)
-	{
-		return Read(serializer, 3);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -187,7 +178,14 @@ class EditorObjectData: SerializableBase
 				return false;
 			}
 			
-			Parameters[param_key] = SerializableParam.CreateFromSerializer(serializer);
+			SerializableParam param_value = SerializableParam.Cast(param_type.ToType().Spawn());
+			if (!param_value) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			param_value.Read(serializer);
+			Parameters[param_key] = param_value;
 		}
 		
 		if (version < 3) {
