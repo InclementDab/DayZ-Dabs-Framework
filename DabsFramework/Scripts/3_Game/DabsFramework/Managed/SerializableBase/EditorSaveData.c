@@ -10,7 +10,7 @@ class EditorSaveData: SerializableBase
 	int Year, Month, Day, Hour, Minute, Second;
 	float Overcast0, Fog0, Rain0;
 	
-	ref array<ref ObjectNodeData> ObjectNodes = {};
+	ref array<ref EditorObjectData> EditorObjects = {};
 	ref array<ref EditorDeletedObjectData> EditorHiddenObjects = {};	
 		
 	override void Write(Serializer serializer, int version)
@@ -20,8 +20,8 @@ class EditorSaveData: SerializableBase
 		serializer.Write(MapName);
 		serializer.Write(CameraPosition);
 		
-		serializer.Write(ObjectNodes.Count());
-		foreach (ObjectNodeData data: ObjectNodes) {
+		serializer.Write(EditorObjects.Count());
+		foreach (EditorObjectData data: EditorObjects) {
 			data.Write(serializer, Version);
 		}
 		
@@ -61,9 +61,9 @@ class EditorSaveData: SerializableBase
 		int editor_object_count;
 		serializer.Read(editor_object_count);
 		for (int i = 0; i < editor_object_count; i++) {
-			ObjectNodeData data();
+			EditorObjectData data();
 			data.Read(serializer, version);
-			ObjectNodes.Insert(data);
+			EditorObjects.Insert(data);
 		}
 		
 		int editor_deleted_object_count;
