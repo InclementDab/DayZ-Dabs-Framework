@@ -1,39 +1,3 @@
-class ObjectRemoverLink: OLinkT
-{
-	int Flags;
-	int Events;
-	vector Transform[4];
-	
-	void ObjectRemoverLink(Object init)
-	{		
-		Flags = init.GetFlags();
-		Events = init.GetEventMask();
-		
-		vector transform[4];
-		init.GetTransform(transform);
-		copyarray(Transform, transform);
-	}
-}
-
-/*
-	static bool IsMapObject(Object obj)
-	{
-		if (!obj) {
-			return false;
-		}
-
-		// Added via p3d in TB with no config.
-		bool isStatic = (obj.GetType() == string.Empty) && (obj.Type() == Object);
-		// Inherits from House in Cfg class.
-		// Building, House, Wreck, Well, Tree, Bush, etc.
-		bool isHouse = obj.IsKindOf("House");
-		bool isVegetation = obj.IsTree() || obj.IsBush();
-        bool isRock = obj.IsRock();
-
-		return (isStatic || isHouse || isVegetation || isRock);
-	}
-*/
-
 modded class DayZGame
 {	
 	protected ref LoggerManager m_LoggerManager;
@@ -44,8 +8,6 @@ modded class DayZGame
 	
 	protected ref TTypeNameTypenameMap m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 	protected ref TypeConversionHashMap m_TypeConverterHashMap = new TypeConversionHashMap();
-				
-	protected ref map<Object, ref ObjectRemoverLink> m_HiddenObjects = new map<Object, ref ObjectRemoverLink>;
 	
 	void DayZGame()
 	{		
@@ -59,60 +21,6 @@ modded class DayZGame
 		m_EventManager = new EventManager();
 		m_SuppressedObjectManager = new SuppressedObjectManager();
 #endif
-	}
-	
-	void HideMapObject(notnull Object object)
-	{
-		EntityFlags flags = object.GetFlags();
-		EntityEvent events = object.GetEventMask();
-		object.ClearFlags(flags, true);
-		object.ClearEventMask(events);
-		object.SetEventMask(EntityEvent.NOTVISIBLE);
-		vector transform[4] = { vector.Zero, vector.Zero, vector.Zero, vector.Zero };
-		object.SetTransform(transform);
-		//dBodyDestroy(object); //! Needed for disabling some extra collisions.
-		
-		object.Update();
-		
-		if (GetGame().IsDedicatedServer()) {
-			GetGame().UpdatePathgraphRegionByObject(object);
-		}
-		
-		m_HiddenObjects[object] = new ObjectRemoverLink(object);
-	}
-	
-	void RestoreMapObject(notnull ObjectRemoverLink object_link)
-	{
-		Object object = m_HiddenObjects.GetKeyByValue(object_link);
-		if (!object) {
-			return;
-		}
-		
-		RestoreMapObject(object);
-	}
-	
-	void RestoreMapObject(notnull Object object)
-	{
-		ObjectRemoverLink object_link = m_HiddenObjects[object];
-		if (!object_link) {
-			return;
-		}
-		
-		object.SetFlags(object_link.Flags, true);
-		object.SetEventMask(object_link.Events);
-		Print(object_link.Transform);
-		object.SetTransform(object_link.Transform);
-		object.Update();
-		delete m_HiddenObjects[object];
-		
-		if (GetGame().IsDedicatedServer()) {
-			GetGame().UpdatePathgraphRegionByObject(object);
-		}
-	}
-	
-	bool IsHiddenObject(notnull Object object)
-	{
-		return m_HiddenObjects[object] != null;
 	}
 			
 	// Override THIS to add your own Custom Conversion Templates
@@ -277,6 +185,19 @@ modded class DayZGame
 	ProfileSettings GetProfileSetting(typename profile_settings_type)
 	{
 		return m_ProfileSettings[profile_settings_type];
+	}
+	
+	Object GetTerrainObject()
+	{
+		Object terrain_object;
+		vector position, normal;
+		float fraction;
+		if (!DayZPhysics.RayCastBullet(vector.Zero, vector.Up * -1000.0, PhxInteractionLayers.TERRAIN, null, terrain_object, position, normal, fraction)) {
+			Error("Couldnt find terrain with raycast");
+			return null;
+		}
+		
+		return terrain_object;
 	}
 
 #ifdef DIAG_DEVELOPER
