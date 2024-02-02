@@ -342,12 +342,7 @@ class EventManager
 				if (!ctx.Read(event_fnc_name)) {
 					break;
 				}
-				
-				string event_param_type_fnc;
-				if (!ctx.Read(event_param_type_fnc)) {
-					break;
-				}
-				
+								
 				SerializableParam client_fnc_param = SerializableParam.CreateFromSerializer(ctx);
 				if (!client_fnc_param) {
 					break;
