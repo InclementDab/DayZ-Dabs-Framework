@@ -1,51 +1,13 @@
-
-/*
-
- Base class for Observable Types
- The design behind them is you wont need to use NotifyPropertyChanged() upon setting a variable
- They are current used to support Collections (array, set, map)
-
-Example: 
-
-
-class TestController: ViewController
+class ObservableCollectionNonRef<Class TValue> : Observable
 {
-	// "LeftList" goes into Binding_Name
-	ref ObservableCollection<string> LeftList; 	
-	
-	// "LeftListSelection" goes into Selected_Item
-	string LeftListSelection; 		
-	
-	void TestController()
-	{
-		LeftList = new ObservableCollection<string>(this);
-		LeftList.Insert("Line1");
-	}
+	protected ref array<TValue> m_Data = {};
 
-	override void CollectionChanged(string property_name, CollectionChangedEventArgs args)
-	{
-		switch (property_name)
-		{
-			case "LeftListSelection": {
-				Print("LeftList selection changed: " + LeftListSelection);
-				break;
-			}
-		}
-	}
-}
-
-*/
-
-class ObservableCollection<Class TValue> : Observable
-{
-	protected ref array<ref TValue> m_Data = {};
-
-	void ObservableCollection(ViewController controller)
+	void ObservableCollectionNonRef(ViewController controller)
 	{
 		m_Type = TemplateType<TValue>.GetType();
 	}
 
-	void ~ObservableCollection()
+	void ~ObservableCollectionNonRef()
 	{
 		delete m_Data;
 	}
@@ -151,7 +113,7 @@ class ObservableCollection<Class TValue> : Observable
 		return m_Data.Count();
 	}
 	
-	array<ref TValue> GetArray()
+	array<TValue> GetArray()
 	{
 		return m_Data;
 	}

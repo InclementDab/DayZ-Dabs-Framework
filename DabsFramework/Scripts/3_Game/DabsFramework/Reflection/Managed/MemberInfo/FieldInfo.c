@@ -8,6 +8,7 @@ enum FieldVisibility
 class FieldInfo: MemberInfo
 {
 	bool Reference;
+	bool Const;
 	typename DeclaringType;
 	
 	FieldVisibility Visiblity;
