@@ -1,52 +1,40 @@
-class EditorSaveData: SerializableBase
+class EditorSaveData
 {
 	[NonSerialized()]
 	static const string BIN_CHECK = "EditorBinned";
 	
-	static const int Version = 4;
+	static const int Version = 3;
 	string MapName;
 	vector CameraPosition;
 	
-	int Year, Month, Day, Hour, Minute, Second;
-	float Overcast0, Fog0, Rain0;
-	
-	ref array<ref ObjectNodeData> ObjectNodes = {};
-	ref array<ref EditorDeletedObjectData> EditorHiddenObjects = {};	
+	ref array<ref EditorObjectData> EditorObjects = {};
+	ref array<ref EditorDeletedObjectData> EditorDeletedObjects = {};	
 		
-	override void Write(Serializer serializer, int version)
+	void ~EditorSaveData()
+	{
+		delete EditorObjects;
+		delete EditorDeletedObjects;
+	}
+		
+	void Write(Serializer serializer)
 	{
 		serializer.Write(BIN_CHECK);
 		serializer.Write(Version);
 		serializer.Write(MapName);
 		serializer.Write(CameraPosition);
 		
-		serializer.Write(ObjectNodes.Count());
-		foreach (ObjectNodeData data: ObjectNodes) {
+		serializer.Write(EditorObjects.Count());
+		foreach (EditorObjectData data: EditorObjects) {
 			data.Write(serializer, Version);
 		}
 		
-		serializer.Write(EditorHiddenObjects.Count());
-		foreach (EditorDeletedObjectData deleted_data: EditorHiddenObjects) {
+		serializer.Write(EditorDeletedObjects.Count());
+		foreach (EditorDeletedObjectData deleted_data: EditorDeletedObjects) {
 			deleted_data.Write(serializer, Version);
 		}
-		
-		serializer.Write(Year);
-		serializer.Write(Month);
-		serializer.Write(Day);
-		serializer.Write(Hour);
-		serializer.Write(Minute);
-		serializer.Write(Second);
-		serializer.Write(Overcast0);
-		serializer.Write(Fog0);
-		serializer.Write(Rain0);
-	}
-
-	bool Read(Serializer serializer)
-	{
-		return Read(serializer, 0);
 	}
 	
-	override bool Read(Serializer serializer, int version)
+	bool Read(Serializer serializer)
 	{
 		string bincheck;
 		serializer.Read(bincheck);
@@ -54,39 +42,27 @@ class EditorSaveData: SerializableBase
 			return false;
 		}
 		
-		serializer.Read(version);
+		int read_version;
+		serializer.Read(read_version);
 		serializer.Read(MapName);
 		serializer.Read(CameraPosition);
 		
 		int editor_object_count;
 		serializer.Read(editor_object_count);
 		for (int i = 0; i < editor_object_count; i++) {
-			ObjectNodeData data();
-			data.Read(serializer, version);
-			ObjectNodes.Insert(data);
+			EditorObjectData data();
+			data.Read(serializer, read_version);
+			EditorObjects.Insert(data);
 		}
 		
 		int editor_deleted_object_count;
 		serializer.Read(editor_deleted_object_count);
 		for (int j = 0; j < editor_deleted_object_count; j++) {
 			EditorDeletedObjectData deleted_data();
-			deleted_data.Read(serializer, version);
-			EditorHiddenObjects.Insert(deleted_data);
+			deleted_data.Read(serializer, read_version);
+			EditorDeletedObjects.Insert(deleted_data);
 		}
 		
-		if (version < 4) {
-			return true;
-		}
-		
-		serializer.Read(Year);
-		serializer.Read(Month);
-		serializer.Read(Day);
-		serializer.Read(Hour);
-		serializer.Read(Minute);
-		serializer.Read(Second);
-		serializer.Read(Overcast0);
-		serializer.Read(Fog0);
-		serializer.Read(Rain0);
 		return true;
 	}
 	

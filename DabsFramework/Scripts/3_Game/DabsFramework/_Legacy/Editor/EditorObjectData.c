@@ -1,5 +1,11 @@
-class ObjectNodeData: SerializableBase
-{		
+// temp until i can find a better way to find "First" in a map that doesnt blow the software up
+static int EditorObjectID;
+class EditorObjectData: SerializableBase
+{	
+	[NonSerialized()]
+	int m_Id;
+	int GetID() { return m_Id; }
+	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
 	string Type;
 	string DisplayName;
@@ -29,7 +35,7 @@ class ObjectNodeData: SerializableBase
 	[NonSerialized()]
 	vector BottomCenter;
 
-	ObjectNodeFlags Flags;
+	int Flags;
 	
 	[NonSerialized()]
 	ModStructure Mod;
@@ -41,28 +47,27 @@ class ObjectNodeData: SerializableBase
 	Object WorldObject;
 	
 	[NonSerialized()]
-	ref array<ref SerializableParam> Parameters = {};
-		
-	static ObjectNodeData Create(Serializer serializer)
+	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
+	
+	void EditorObjectData() 
 	{
-		ObjectNodeData data = new ObjectNodeData();
-		data.Read(serializer, 0);
-		return data;
+		EditorObjectID++;
+		m_Id = EditorObjectID;
 	}
 	
-	static ObjectNodeData Create(string type, vector transform[4], ObjectNodeFlags flags = EFE_DEFAULT)
+	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EditorObjectFlags.ALL)
 	{	
 		return Create(type, transform[3], Math3D.MatrixToAngles(transform), 1, flags);
 	}
 	
-	static ObjectNodeData Create(string type, vector position, vector orientation, float scale, ObjectNodeFlags flags)
+	static EditorObjectData Create(string type, vector position, vector orientation, float scale, EditorObjectFlags flags)
 	{				
 		//if (GetGame().GetModelName(type) == "UNKNOWN_P3D_FILE") {
-			//EditorLog.Warning(string.Format("ObjectNodeData::Create %1 is not a valid Object Type!", type));
+			//EditorLog.Warning(string.Format("EditorObjectData::Create %1 is not a valid Object Type!", type));
 			//return null;
 		//}
 		
-		ObjectNodeData data = new ObjectNodeData();
+		EditorObjectData data = new EditorObjectData();
 		data.Type = type; 
 		data.Model = GetModelName(data.Type);
 		data.Position = position; 
@@ -72,12 +77,12 @@ class ObjectNodeData: SerializableBase
 		data.DisplayName = data.Type;
 		//data.Mod = GetModFromObject(data.Type); todo refactor.
 
-		//EditorLog.Debug(string.Format("ObjectNodeData::Create ID: %1", data.m_Id));
+		//EditorLog.Debug(string.Format("EditorObjectData::Create ID: %1", data.m_Id));
 				
 		return data;
 	}
 	
-	static ObjectNodeData Create(notnull Object target, ObjectNodeFlags flags = EFE_DEFAULT)
+	static EditorObjectData Create(notnull Object target, EditorObjectFlags flags = EditorObjectFlags.ALL)
 	{
 		// We do this because all 'baked' objects are ID'd to 3. cant store a bunch of 3's can we?
 		// todo... actually we might be able to :)
@@ -85,7 +90,7 @@ class ObjectNodeData: SerializableBase
 			return null;
 		}
 		
-		ObjectNodeData data = new ObjectNodeData();
+		EditorObjectData data = new EditorObjectData();
 		data.Type = target.GetType();
 		data.Model = GetModelName(data.Type);
 		data.WorldObject = target;
@@ -95,7 +100,7 @@ class ObjectNodeData: SerializableBase
 		data.Flags = flags;
 		data.DisplayName = data.Type;
 		
-		//EditorLog.Debug(string.Format("ObjectNodeData::Create ID: %1", data.m_Id));
+		//EditorLog.Debug(string.Format("EditorObjectData::Create ID: %1", data.m_Id));
 		
 		return data;
 	}
@@ -120,11 +125,14 @@ class ObjectNodeData: SerializableBase
 		
 		// Serialize parameters
 		serializer.Write(Parameters.Count());
-		foreach (SerializableParam serializable_param: Parameters) {
-			if (!serializable_param.Serialize(serializer)) {
-				Error("Error serializing param");
-				return;
-			}
+		for (int j = 0; j < Parameters.Count(); j++) {
+			string key_at_index = Parameters.GetKey(j);
+			serializer.Write(key_at_index);
+			// write the type of the object that will need to be created
+			serializer.Write(Parameters[key_at_index].GetSerializeableType());
+			
+			// write the data of the object
+			Parameters[key_at_index].Write(serializer);
 		}
 		
 		if (version < 3) {
@@ -161,7 +169,23 @@ class ObjectNodeData: SerializableBase
 		int params_count;
 		serializer.Read(params_count);
 		for (int j = 0; j < params_count; j++) {
-			Parameters.Insert(SerializableParam.CreateFromSerializer(serializer));
+			string param_key;
+			string param_type;
+			serializer.Read(param_key);
+			serializer.Read(param_type);
+			if (!param_type.ToType()) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			SerializableParam param_value = SerializableParam.Cast(param_type.ToType().Spawn());
+			if (!param_value) {
+				Error("Invalid Param Type in deserialization, this is corrupt data and will likely cause a crash");
+				return false;
+			}
+			
+			param_value.Read(serializer);
+			Parameters[param_key] = param_value;
 		}
 		
 		if (version < 3) {
