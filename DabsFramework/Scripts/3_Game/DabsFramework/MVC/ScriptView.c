@@ -34,6 +34,10 @@ class ScriptView: ScriptedViewBase
 	
 	void ScriptView()
 	{				
+		if (!All) {
+			All = {};
+		}
+		
 		All.Insert(this);
 
 #ifndef WORKBENCH

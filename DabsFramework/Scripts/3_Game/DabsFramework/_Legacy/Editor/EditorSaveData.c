@@ -84,4 +84,51 @@ class EditorSaveData
 		
 		return (bincheck == BIN_CHECK);
 	}
+	
+	static EditorSaveData LoadFromFile(string file)
+	{
+		bool binned = IsBinnedFile(file);
+		
+		FileSerializer serializer = new FileSerializer();
+		EditorSaveData save_data = new EditorSaveData();		
+					
+		if (binned) {	
+			if (!serializer.Open(file, FileMode.READ)) {
+				Error("Failed to open file " + file);
+				return null;
+			}
+			
+			if (!save_data.Read(serializer)) {
+				Error("Failed to read file " + file);
+				serializer.Close();
+				return null;
+			}
+			
+		} else {
+			FileHandle fh = OpenFile(file, FileMode.READ);
+			string jsonData;
+			string error;
+	
+			if (!fh) {
+				Error("Could not open file " + file);
+				return null;
+			}
+		
+			string line;
+			while (FGets(fh, line) > 0) {
+				jsonData = jsonData + "\n" + line;
+			}
+			
+			CloseFile(fh);
+	
+			bool success = JsonSerializer().ReadFromString(save_data, jsonData, error);
+			if (error != string.Empty || !success) {
+				Error(error);
+				return null;
+			}
+		}
+		
+		serializer.Close();		
+		return save_data;
+	}
 }
