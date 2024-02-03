@@ -40,6 +40,7 @@ class Town: Managed
 		return town_positions;
 	}
 	
+	
 	static string GetTownTypeString(TownFlags flag)
 	{
 		switch (flag) {

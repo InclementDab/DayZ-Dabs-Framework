@@ -56,7 +56,9 @@ class PluginBuildMod: PluginProject
 				
 				string mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_split_edit));
 				if (FileExist(mod_folder)) {
-					BuildFolder(mod_folder, string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_split_edit), args);
+					if (BuildFolder(mod_folder, string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_split_edit), args)) {
+						Error(string.Format("Build failed: %1", mod_split));
+					}
 				}
 			}
 		}
@@ -64,7 +66,9 @@ class PluginBuildMod: PluginProject
 		// Set up our mod output correctly if not done so already
 		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);		
 		string main_mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_prefix));
-		BuildFolder(main_mod_folder, mod_output, args);
+		if (BuildFolder(main_mod_folder, mod_output, args)) {
+			Error(string.Format("Build failed: %1", main_mod_folder));
+		}
 		
 		// Move contents of Addons folder
 		if (m_BuildSettings.CopyAddons) {
@@ -72,12 +76,12 @@ class PluginBuildMod: PluginProject
 		}
 	}
 	
-	void BuildFolder(string mod_input, string mod_output, string args)
+	int BuildFolder(string mod_input, string mod_output, string args)
 	{
 		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", m_BuildSettings.Command, mod_output, mod_input, args));
+		return Workbench.RunCmd(string.Format("%1 -Mod=%2 +P %3 %4", m_BuildSettings.Command, mod_output, mod_input, args));
 	}
 }
