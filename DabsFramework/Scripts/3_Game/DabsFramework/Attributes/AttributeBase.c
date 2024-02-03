@@ -46,7 +46,7 @@ class AttributeBase: Class
 			// Reparse
 			string token_parse;
 			int token_type = tokens[i].ParseStringEx(token_parse);
-			
+			//PrintFormat("FParseLine: type=%1 value=%2", token_type, token_parse);
 			switch (token_type) {
 				case 1: {
 					switch (token_parse) {
@@ -81,24 +81,38 @@ class AttributeBase: Class
 							return field_info;
 						}
 						
+						case "=": {
+							field_info.Default = true;
+							break;
+						}
+						
 						default: {
-							
-							Print(token_parse);
+							PrintFormat("Unhandled token type=%1 value=%2", token_type, token_parse);
 						}
 					}
 					break;
 				}
+				
+				// '='
+				case 2: {
+					field_info.DefaultValue = token_parse;
+					break;
+				}
+				
 				case 3: {
 					switch (token_parse) {
 						default: {
 							if (!field_info.DeclaringType) {
 								field_info.DeclaringType = token_parse.ToType();
+								break;
 							}
 							
-							if (field_info.Name == string.Empty) {
+							if (!field_info.Name) {
 								field_info.Name = token_parse;
+								break;
 							}
 							
+							PrintFormat("Unhandled token type=%1 value=%2", token_type, token_parse);
 							break;
 						}
 					}
@@ -106,7 +120,7 @@ class AttributeBase: Class
 					break;
 				}
 				
-				default: PrintFormat("Unhandled token type [%1] val=%2", token_type, token_parse); 
+				default: PrintFormat("Unhandled token type=%1", token_type); 
 			}
 		}
 		
