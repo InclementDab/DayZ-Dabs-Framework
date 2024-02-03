@@ -98,7 +98,7 @@ class WidgetAnimator: Managed
 {
 	protected static ref array<ref WidgetAnimationTimer> m_RunningTimers = {};
 	
-	static void Animate(Widget source, WidgetAnimatorProperty property, float end_value, int time)
+	static void Animate(Widget source, WidgetAnimatorProperty property, float end_value, TimeSpan time)
 	{
 		if (!source) {
 			return;
@@ -173,13 +173,8 @@ class WidgetAnimator: Managed
 		animation_timer.Run(source, property, start_value, end_value, time, true);
 		m_RunningTimers.Insert(animation_timer);
 	}
-	
-	static void AnimateColor(Widget source, Color color, int time, bool loop = false)
-	{
-		AnimateColor(source, color, time, loop);
-	}
-	
-	static void AnimateColor(Widget source, int end_color, int time, bool loop = false)
+		
+	static void AnimateColor(Widget source, Color end_color, TimeSpan time, bool loop = false)
 	{
 		if (!source) {
 			return;
@@ -209,7 +204,7 @@ class WidgetAnimator: Managed
 		}
 	}
 	
-	static void AnimateColor(Widget source, int start_color, int end_color, int time, bool loop = false)
+	static void AnimateColor(Widget source, Color start_color, Color end_color, TimeSpan time, bool loop = false)
 	{
 		if (!source) {
 			return;
@@ -239,7 +234,7 @@ class WidgetAnimator: Managed
 		}
 	}	
 	
-	static void AnimateColorHSV(Widget source, vector start_color, vector end_color, int time, bool loop = false)
+	static void AnimateColorHSV(Widget source, vector start_color, vector end_color, TimeSpan time, bool loop = false)
 	{
 		if (!source) {
 			return;
