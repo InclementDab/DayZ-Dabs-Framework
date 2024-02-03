@@ -19,6 +19,11 @@ class Symbols: string
 	{
 		return string.Format("set:solid %1", value);
 	}
+	
+	Symbol Brand()
+	{
+		return string.Format("set:brand %1", value);
+	}
 			
 	static const Symbols A = "image:a";
 	static const Symbols ABACUS = "image:abacus";

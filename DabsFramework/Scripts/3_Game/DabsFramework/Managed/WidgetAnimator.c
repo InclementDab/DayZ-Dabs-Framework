@@ -8,25 +8,7 @@ class Color: int
 	private void Color();
 	private void ~Color();
 	
-	void SetAlpha(int alpha)
-	{
-		value = (alpha << 24) ^ value;
-	}
-	
-	void SetRed(int red)
-	{
-		value = (red << 16) ^ value;	
-	}	
-	
-	void SetGreen(int green)
-	{
-		value = (green << 8) ^ value;	
-	}	
-	
-	void SetBlue(int green)
-	{
-		value = (green << 0) ^ value;
-	}
+
 	
 	static Color FromHSV(float hue, float saturation, float value, int alpha = 255)
 	{
@@ -190,6 +172,11 @@ class WidgetAnimator: Managed
 		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
 		animation_timer.Run(source, property, start_value, end_value, time, true);
 		m_RunningTimers.Insert(animation_timer);
+	}
+	
+	static void AnimateColor(Widget source, Color color, int time, bool loop = false)
+	{
+		AnimateColor(source, color, time, loop);
 	}
 	
 	static void AnimateColor(Widget source, int end_color, int time, bool loop = false)
