@@ -1,100 +1,37 @@
-class Directory: Managed
-{
-	static const string PATH_SEPERATOR = "\\";
-	static const string PATH_SEPERATOR_ALT = "/";
-	
-	static const string PROFILES = "$profiles:";
-	
-	static array<string> EnumerateFiles(string directory, string filter = "*")
-	{
-		array<string> enumerated_files = {};
-		string file_name;
-		FileAttr file_attributes;
-		FindFileHandle handle = FindFile(directory + PATH_SEPERATOR + "*", file_name, file_attributes, FindFileFlags.ALL);
-		if (!handle) {
-			return enumerated_files;
-		}
-		
-		if (File.WildcardMatch(file_name, filter)) {
-			enumerated_files.Insert(directory + PATH_SEPERATOR + file_name);
-		}
-		
-		while (FindNextFile(handle, file_name, file_attributes)) {
-			if (File.WildcardMatch(file_name, filter)) {
-				enumerated_files.Insert(directory + PATH_SEPERATOR + file_name);
-			}
-		}
-		
-		CloseFindFile(handle);
-		return enumerated_files;
-	}
-}
-
-class FileStream: Managed
-{
-	
-}
-
-typedef string File;
-class File: string
-{
-	static string GetExtension(string file)
-	{
-		array<string> file_split = {};
-		file.Split(".", file_split);
-		if (file_split.Count() == 1) {
-			return string.Empty;
-		}
-		
-		return file_split[file_split.Count() - 1];
-	}
-	
+class File: FileSystem
+{	
     static bool WildcardMatch(string input, string pattern)
     {
-        int inputIndex = 0;
-        int patternIndex = 0;
-        int inputStarIndex = -1;
-        int patternStarIndex = -1;
+        int input_index, pattern_index;
+        int input_wild_index = -1, pattern_wild_index = -1;
 
-        while (inputIndex < input.Length()) {
-            if (patternIndex < pattern.Length() && (pattern[patternIndex] == input[inputIndex] || pattern[patternIndex] == "*")) {
-                if (pattern[patternIndex] == "*") {
-                    inputStarIndex = inputIndex;
-                    patternStarIndex = patternIndex;
-                    patternIndex++;
+        while (input_index < input.Length()) {
+            if (pattern_index < pattern.Length() && (pattern[pattern_index] == input[input_index] || pattern[pattern_index] == FileSystem.WILDCARD)) {
+                if (pattern[pattern_index] == FileSystem.WILDCARD) {
+                    input_wild_index = input_index;
+                    pattern_wild_index = pattern_index;
+                    pattern_index++;
                 } else {
-                    inputIndex++;
-                    patternIndex++;
+                    input_index++;
+                    pattern_index++;
                 }
-            } else if (inputStarIndex != -1) {
-                patternIndex = patternStarIndex + 1;
-                inputIndex = inputStarIndex + 1;
-                inputStarIndex++;
-            } else {
-                return false;
-            }
+            } else if (input_wild_index != -1) {
+                pattern_index = pattern_wild_index + 1;
+                input_index = input_wild_index + 1;
+                input_wild_index++;
+            } else return false;
         }
 
-        while (patternIndex < pattern.Length() && pattern[patternIndex] == "*") {
-            patternIndex++;
+        while (pattern_index < pattern.Length() && pattern[pattern_index] == FileSystem.WILDCARD) {
+            pattern_index++;
         }
 
-        return patternIndex == pattern.Length();
+        return pattern_index == pattern.Length();
     }
 	
 	FileHandle CreateHandle(FileMode mode)
 	{
 		return OpenFile(value, mode);
-	}
-	
-	static FileStream Open()
-	{
-		
-	}
-	
-	static bool Exists(File file)
-	{
-		return FileExist(file);
 	}
 	
 	static File Create(string file)
@@ -107,3 +44,5 @@ class File: string
 		return file;
 	}
 }
+
+typedef string File;

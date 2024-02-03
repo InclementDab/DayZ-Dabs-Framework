@@ -1,7 +1,7 @@
 class AttributeBase: Class
 {
 	// File name attribute resides in 
-	protected string m_File;
+	protected File m_File;
 	
 	// Line number of attribute
 	protected int m_LineNumber;
@@ -20,8 +20,8 @@ class AttributeBase: Class
 		stack_split[stack_split.Count() - 2].Split(")", stack_split_further);
 		m_File = stack_split_further[1].Trim();
 				
-		if (!File.Exists(m_File)) {
-			Error("Couldnt find file " + m_File);
+		if (!m_File.Exists()) {
+			Error(string.Format("Couldnt find file %1", m_File));
 			return;
 		}
 		
