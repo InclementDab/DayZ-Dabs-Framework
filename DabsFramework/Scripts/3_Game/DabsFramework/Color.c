@@ -147,6 +147,11 @@ class Color: int
 	static const Color YELLOW = 0xFFFFFF00;
 	static const Color YELLOW_GREEN = 0xFF9ACD32;
 	
+	static const Color DISCORD = Color.Create(88, 101, 242);
+	static const Color TWITTER = Color.Create(29, 161, 242);
+	static const Color YOUTUBE = Color.Create(255, 0, 0);
+	static const Color REDDIT = Color.Create(255, 69, 0);
+	
 	static Color Create(int r, int g, int b)
 	{
 		return 255 << 24 | r << 16 | g << 8 | b;
@@ -189,3 +194,86 @@ class Color: int
 }
 
 typedef int Color;
+
+/*
+typedef int Color;
+
+//@ Storage format of color is ARGB
+class Color: int
+{	
+	private void Color();
+	private void ~Color();
+	
+
+	
+	static Color FromHSV(float hue, float saturation, float value, int alpha = 255)
+	{
+		int hexasphere = Math.FMod(hue, 360.0) / 60;
+		int trientsphere = Math.FMod(hue, 360.0) / 120;
+		int hemisphere = Math.FMod(hue, 360.0) / 180;
+		Print(hexasphere);
+		Print(trientsphere);
+		Print(hemisphere);
+		
+		hue 		= Math.FMod(hue, 60.0);		
+		saturation 	= Math.FMod(saturation, 100.0) / 100.0;
+		value 		= Math.FMod(value, 100.0) / 100.0;
+		
+	    float c = saturation * value;
+	    float x = c * (1.0 - Math.AbsFloat(Math.FMod(hue / 60.0, 2.0) - 1.0));
+	    float m = value - c;
+		
+		int argb;
+		//argb = (x << (trientsphere * 8 + 
+		
+		
+		int r, g, b;
+		// trientsphere 0
+		// hemisphere 0
+	    if (hue >= 0 && hue < 60) {
+	       	r = c + m;  
+			g = x + m;  
+			b = 0 + m; 
+	    }
+		
+		// trientsphere 0
+		// hemisphere 0
+		if (hue >= 180 && hue < 240) {
+	        r = 0 + m; 
+			g = x + m;   
+			b = c + m; 
+	    }
+		
+		// trientsphere 1
+		// hemisphere
+		if (hue >= 60 && hue < 120) {
+			r = x + m; 
+			g = c + m; 
+			b = 0 + m; 
+	    }
+		
+		// trientsphere 1
+		if (hue >= 240 && hue < 300) {
+			r = x + m;  
+			g = 0 + m;  
+			b = c + m; 
+	    }
+		
+		// trientsphere 2
+		if (hue >= 120 && hue < 180) {
+			r = 0 + m; 
+			g = c + m; 
+			b = x + m; 
+	    }
+	    
+		// trientsphere 2
+		if (hue >= 300 && hue < 360) {
+			r = c + m; 
+			g = 0 + m; 
+			b = x + m;
+		}
+		
+		return ARGB(alpha, r, g, b);
+	}
+}
+*/
