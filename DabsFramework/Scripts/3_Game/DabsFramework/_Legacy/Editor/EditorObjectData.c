@@ -2,6 +2,7 @@
 static int EditorObjectID;
 class EditorObjectData: SerializableBase
 {	
+#ifdef Editor
 	ObjectNode CovertToNode()
 	{
 		vector matrix[4];
@@ -16,6 +17,7 @@ class EditorObjectData: SerializableBase
 		object.SetScale(Scale);
 		return new ObjectNode(UUID.Generate(), DisplayName, Symbols.QUESTION, object);
 	}
+#endif
 	
 	[NonSerialized()]
 	int m_Id;

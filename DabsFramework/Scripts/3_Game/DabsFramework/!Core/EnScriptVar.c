@@ -1,8 +1,5 @@
 class EnScriptVar<Class T>
-{
-	private void EnScriptVar();
-	private void ~EnScriptVar();
-	
+{	
 	static T Get(Class instance, string variable_name, int index = 0)
 	{
 		T value;
@@ -14,4 +11,7 @@ class EnScriptVar<Class T>
 	{
 		EnScript.SetClassVar(instance, variable_name, index, value);
 	}
+	
+	private void EnScriptVar();
+	private void ~EnScriptVar();
 }
