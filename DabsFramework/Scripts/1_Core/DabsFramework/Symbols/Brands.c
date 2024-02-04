@@ -495,4 +495,4 @@ class Brands: Symbols
 	static const Brands ZHIHU = "image:zhihu";
 }
 
-typedef string Brands;
+typedef Symbols Brands;
