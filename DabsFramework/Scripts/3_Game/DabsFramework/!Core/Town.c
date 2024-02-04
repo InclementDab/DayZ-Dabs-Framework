@@ -23,7 +23,7 @@ class Town: ConfigObject
 	[ConfigEntryAttribute("position", vector, ScriptCaller.Create(OnPositionUpdate))]
 	vector Position;
 	
-	[ConfigEntryAttribute("type")]
+	[ConfigEntryAttribute("type", string)]
 	TownType Type;
 	
 	static void OnPositionUpdate(notnull Town instance)
