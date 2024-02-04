@@ -6,6 +6,8 @@ class AttributeBase: Class
 	// Line number of attribute
 	protected int m_LineNumber;
 	
+	protected typename m_ParentType;
+	
 	ref FieldInfo Field;
 	
 	void AttributeBase()
@@ -28,10 +30,19 @@ class AttributeBase: Class
 		FileHandle handle = OpenFile(m_File, FileMode.READ);
 		string line_content;
 		
-		for (int i = m_LineNumber + 1; i > 0; i--) {
+		for (int i = m_LineNumber + 1; i > 0; i--) {			
 			FGets(handle, line_content);
+			
+			string tokens[256];
+			if (line_content.ParseString(tokens) == 4) {
+				if (tokens[0] == "modded") {
+					m_ParentType = tokens[2].ToType();
+				} else {
+					m_ParentType = tokens[1].ToType();
+				}
+			}
 		}
-		
+				
 		Field = FParseLine(line_content);
 		CloseFile(handle);
 	}
