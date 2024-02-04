@@ -1,5 +1,7 @@
 class AttributeBase: Class
 {
+	protected static ref map<typename, ref array<AttributeBase>> m_AttributeBank = new map<typename, ref array<AttributeBase>>();
+	
 	// File name attribute resides in 
 	protected File m_File;
 	
@@ -45,6 +47,29 @@ class AttributeBase: Class
 				
 		Field = FParseLine(line_content);
 		CloseFile(handle);
+		
+		if (!m_ParentType) {
+			Error("Attribute registered without parent class");
+			return;
+		}
+		
+		if (!m_AttributeBank[m_ParentType]) {
+			m_AttributeBank[m_ParentType] = {};
+		}
+		
+		m_AttributeBank[m_ParentType].Insert(this);
+	}
+	
+	void ~AttributeBase()
+	{
+		if (m_AttributeBank[m_ParentType]) {
+			m_AttributeBank[m_ParentType].RemoveItem(this);
+		}
+	}
+	
+	static array<AttributeBase> GetCustomAttributes(typename type)
+	{
+		return m_AttributeBank[type];
 	}
 	
 	static FieldInfo FParseLine(string line)
