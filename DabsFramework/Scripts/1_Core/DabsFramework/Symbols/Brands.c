@@ -1,5 +1,25 @@
 class Brands: Symbols
 {
+	override Symbol Light()
+	{
+		return string.Format("set:brand %1", value);
+	}
+	
+	override Symbol Thin()
+	{		
+		return string.Format("set:brand %1", value);
+	}
+	
+	override Symbol Regular()
+	{
+		return string.Format("set:brand %1", value);
+	}
+	
+	override Symbol Solid()
+	{
+		return string.Format("set:brand %1", value);
+	}
+	
 	static const Brands ACCESSIBLE_ICON = "image:accessible_icon";
 	static const Brands ACCUSOFT = "image:accusoft";
 	static const Brands ADN = "image:adn";
