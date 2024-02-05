@@ -1,24 +1,7 @@
 // temp until i can find a better way to find "First" in a map that doesnt blow the software up
 static int EditorObjectID;
 class EditorObjectData: SerializableBase
-{	
-#ifdef Editor
-	ObjectNode CovertToNode()
-	{
-		vector matrix[4];
-		Math3D.MatrixOrthogonalize4(matrix);
-		Object object = EditorNode.CreateObject(Type, matrix);
-		if (!object) {
-			return null;
-		}
-		
-		object.SetPosition(Position);
-		object.SetOrientation(Orientation);
-		object.SetScale(Scale);
-		return new ObjectNode(UUID.Generate(), DisplayName, Symbols.QUESTION, object);
-	}
-#endif
-	
+{		
 	[NonSerialized()]
 	int m_Id;
 	int GetID() { return m_Id; }
