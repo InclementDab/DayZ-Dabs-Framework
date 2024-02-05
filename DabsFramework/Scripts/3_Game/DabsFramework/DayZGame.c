@@ -1,3 +1,11 @@
+modded class EffectSound
+{
+	AbstractWave GetWaveObject()
+	{
+		return m_SoundWaveObject;
+	}
+}
+
 modded class DayZGame
 {	
 	protected ref LoggerManager m_LoggerManager;
