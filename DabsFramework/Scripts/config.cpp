@@ -21,6 +21,7 @@ class CfgMods
 		creditsJson = "DabsFramework/Scripts/Credits.json";
 		versionPath = "DabsFramework/Scripts/Version.hpp";
 		type = "mod";
+		defines[] = {"DF_VERSION_1_8_0"};
 		dependencies[] =
 		{
 			"Game", "World", "Mission"

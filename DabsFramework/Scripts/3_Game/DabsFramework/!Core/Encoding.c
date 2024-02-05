@@ -16,7 +16,7 @@ class Encoding
 	
     static int GetByte(string character)
     {
-        return UInt8.Convert(character[0].Hash());
+        return uint8.Convert(character[0].Hash());
     }
 	
 	/*static string ToHex(string ascii)

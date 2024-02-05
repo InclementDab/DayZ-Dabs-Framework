@@ -1,7 +1,37 @@
+// https://en.wikipedia.org/wiki/Blend_modes
+enum BlendMode
+{
+	// f(a, b) = b
+	NORMAL, 
+	
+	// f(a, b) = ab;
+	MULTIPLY,
+	
+	// f(a, b) = 1 - (1 - a)(1 - b)
+	SCREEN,
+	
+	// f(a, b) = { 2ab,   					if a < 0.5
+	//			 { 1 - 2(1 - a)(1 - b),		otherwise
+	OVERLAY,
+	
+	// f(a, b) = { 2ab,   					if b < 0.5
+	//			 { 1 - 2(1 - a)(1 - b),		otherwise
+	HARD_LIGHT,
+	
+	// f(a, b) = { 2ab + (a * a)(1 - 2b),   		if b < 0.5
+	//			 { 2a(1 - b) + sqrt(a) * (2b - 1) ,	otherwise
+	SOPFT_LIGHT
+};
+
 // https://en.wikipedia.org/wiki/X11_color_names
 // ARGB format
 class Color: int
 {
+	static const int ALPHA_CHANNEL = 0;
+	static const int RED_CHANNEL = 1;
+	static const int GREEN_CHANNEL = 2;
+	static const int BLUE_CHANNEL = 3;
+	
 	static const Color ALICE_BLUE = 0xFFF0F8FF;
 	static const Color ANTIQUE_WHITE = 0xFFFAEBD7;
 	static const Color AQUA = 0xFF00FFFF;
@@ -172,6 +202,81 @@ class Color: int
 		return (int)(a * 255.0) << 24 | (int)(r * 255.0) << 16 | (int)(g * 255.0) << 8 | (int)(b * 255.0);
 	}
 	
+	// 0: hue [0, 360]
+	// 1: saturation [0, 1.0]
+	// 2: value [0, 1.0]
+	// 3: alpha [0, 1.0]
+	static Color CreateHSV(int hue, float saturation, float value, float alpha = 1.0)
+	{
+		hue 		= Math.Clamp(hue, 0, 360);
+		saturation 	= Math.Clamp(saturation, 0.0, 1.0);
+		value 		= Math.Clamp(value, 0.0, 1.0);
+				
+		int hexasphere = hue / 60;
+		Print(hexasphere);
+		float c = saturation * value;	
+	    float x = c * (1 - Math.AbsFloat(Math.FMod(hexasphere, 2) - 1));
+	    float m = value - c;
+		float r, g, b;
+		switch (hexasphere) {
+			case 0: {
+				r = c; 
+				g = x; 
+				b = 0;
+				break;
+			}
+			
+			case 1: {
+				r = x; 
+				g = c; 
+				b = 0;
+				break;
+			}
+			
+			case 2: {
+				r = 0; 
+				g = c; 
+				b = x;
+				break;
+			}
+			
+			case 3: {
+				r = 0; 
+				g = x; 
+				b = c;
+				break;
+			}
+			
+			case 4: {
+				r = x; 
+				g = 0; 
+				b = c;
+				break;
+			}
+			
+			case 5: {
+				r = c; 
+				g = 0; 
+				b = x;
+				break;
+			}
+		}		
+				
+		r += m; g += m; b += m;
+		return CreateF(alpha, r, g, b);
+	}
+	
+	static Color Blend(Color a, Color b, BlendMode blend)
+	{
+		switch (blend) {
+			case BlendMode.NORMAL: {
+				return b;
+			}
+		}
+		
+		return a;
+	}
+	
 	void SetAlpha(int alpha)
 	{
 		value = (alpha << 24) ^ value;
@@ -191,89 +296,23 @@ class Color: int
 	{
 		value = (blue << 0) ^ value;
 	}
-}
-
-typedef int Color;
-
-/*
-typedef int Color;
-
-//@ Storage format of color is ARGB
-class Color: int
-{	
-	private void Color();
-	private void ~Color();
 	
-
-	
-	static Color FromHSV(float hue, float saturation, float value, int alpha = 255)
+	// 0 = A, 1 = R, 2 = G, 3 = B
+	void Set(int n, uint8 val)
 	{
-		int hexasphere = Math.FMod(hue, 360.0) / 60;
-		int trientsphere = Math.FMod(hue, 360.0) / 120;
-		int hemisphere = Math.FMod(hue, 360.0) / 180;
-		Print(hexasphere);
-		Print(trientsphere);
-		Print(hemisphere);
-		
-		hue 		= Math.FMod(hue, 60.0);		
-		saturation 	= Math.FMod(saturation, 100.0) / 100.0;
-		value 		= Math.FMod(value, 100.0) / 100.0;
-		
-	    float c = saturation * value;
-	    float x = c * (1.0 - Math.AbsFloat(Math.FMod(hue / 60.0, 2.0) - 1.0));
-	    float m = value - c;
-		
-		int argb;
-		//argb = (x << (trientsphere * 8 + 
-		
-		
-		int r, g, b;
-		// trientsphere 0
-		// hemisphere 0
-	    if (hue >= 0 && hue < 60) {
-	       	r = c + m;  
-			g = x + m;  
-			b = 0 + m; 
-	    }
-		
-		// trientsphere 0
-		// hemisphere 0
-		if (hue >= 180 && hue < 240) {
-	        r = 0 + m; 
-			g = x + m;   
-			b = c + m; 
-	    }
-		
-		// trientsphere 1
-		// hemisphere
-		if (hue >= 60 && hue < 120) {
-			r = x + m; 
-			g = c + m; 
-			b = 0 + m; 
-	    }
-		
-		// trientsphere 1
-		if (hue >= 240 && hue < 300) {
-			r = x + m;  
-			g = 0 + m;  
-			b = c + m; 
-	    }
-		
-		// trientsphere 2
-		if (hue >= 120 && hue < 180) {
-			r = 0 + m; 
-			g = c + m; 
-			b = x + m; 
-	    }
-	    
-		// trientsphere 2
-		if (hue >= 300 && hue < 360) {
-			r = c + m; 
-			g = 0 + m; 
-			b = x + m;
-		}
-		
-		return ARGB(alpha, r, g, b);
+		value = (val << (n * 8)) ^ value;
 	}
+
+	string ToHex()
+	{
+		return Encoding.ToHex(value, 8);
+	}
+	
+/*
+	vector ToVector()
+	{
+		
+	}*/
 }
-*/
+
+typedef int Color;
