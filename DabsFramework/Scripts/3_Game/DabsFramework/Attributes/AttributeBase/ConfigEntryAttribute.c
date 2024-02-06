@@ -1,3 +1,4 @@
+// * see: ConfigObject
 class ConfigEntryAttribute: AttributeBase
 {	
 	protected string m_Name;

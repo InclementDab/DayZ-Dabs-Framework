@@ -11,7 +11,7 @@ class CfgPatches
 
 class CfgMods 
 {
-	class DZ_DabsFramework
+	class DabsFramework
 	{
 		name = "Dabs Framework";
 		dir = "DabsFramework";

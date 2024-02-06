@@ -1,6 +1,6 @@
 [WorkbenchPluginAttribute("Build Mod", "Build the whole damn mod... all of it!", "F8", "", {"ScriptEditor", "ResourceManager"})]
 class PluginBuildMod: PluginProject
-{
+{	
 	void PluginBuildMod()
 	{
 		if (m_LaunchSettings.Repository == string.Empty) {

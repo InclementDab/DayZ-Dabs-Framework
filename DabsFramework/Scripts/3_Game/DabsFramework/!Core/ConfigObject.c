@@ -1,3 +1,4 @@
+// * see: ConfigEntryAttribute
 class ConfigObject: Managed
 {
 	protected string m_Path;
