@@ -6,6 +6,15 @@ class Raycast: Managed
 	Object Hit;
 	int HitComponent;
 	
+	float Length()
+	{
+		if  (!Source || !Bounce) {
+			return 0.0;
+		}
+		
+		return vector.Distance(Source.Position, Bounce.Position);
+	}
+	
 	void Debug()
 	{		
 		Shape.CreateSphere(Color.SKY_BLUE, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, Bounce.Position, 0.2);
