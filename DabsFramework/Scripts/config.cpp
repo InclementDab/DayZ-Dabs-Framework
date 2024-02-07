@@ -58,7 +58,7 @@ class CfgMods
 
 			class workbenchScriptModule
 			{
-				files[] = { "DabsFramework/Scripts/ToolAddons"};
+				files[] = { "DabsFramework/ToolAddons" };
 			};
 		};
     };

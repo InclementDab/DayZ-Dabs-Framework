@@ -7,7 +7,7 @@ GameProjectClass {
 	skeletonDefinitions "DZ/Anims/cfg/skeletons.anim.xml"
    	FileSystem {
 		FileSystemPathClass {
-			Name "Mod Root"
+			Name "Root"
 			Directory "./"
 		} 
 	}
