@@ -6,6 +6,11 @@ class PluginLaunchGameBase: PluginProject
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
 		
+		Print(root);
+		Print(mod_prefix);
+		Print(workbench_directory);
+		return;
+		
 		if (workbench_directory == string.Empty) {
 			Error("CWD is not workbench, you must launch via gproj");
 			return;

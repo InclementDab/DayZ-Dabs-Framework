@@ -1,0 +1,78 @@
+GameProjectClass {
+ ID "DayZ"
+ TITLE "DayZ"
+ Configurations {
+  GameProjectConfigClass PC {
+   platformHardware PC
+	skeletonDefinitions "DZ/Anims/cfg/skeletons.anim.xml"
+   	FileSystem {
+		FileSystemPathClass {
+		Name "Workdrive"
+		Directory "P:/"
+		} 
+	}
+	imageSets {
+		"gui/imagesets/BleedingDrops.imageset"
+		"gui/imagesets/ccgui_enforce.imageset"
+		"gui/imagesets/rover_imageset.imageset"
+		"gui/imagesets/dayz_gui.imageset"
+		"gui/imagesets/dayz_crosshairs.imageset"
+		"gui/imagesets/dayz_inventory.imageset"
+		"gui/imagesets/xbox_buttons.imageset"
+		"gui/imagesets/playstation_buttons.imageset"
+		"gui/imagesets/console_toolbar.imageset"
+		"gui/imagesets/Map2D_UI.imageset"
+		"Graphics/Textures/postprocess/VignetteFrames.imageset"
+	 }
+	 widgetStyles {
+	  	"gui/looknfeel/dayzwidgets.styles"
+	 }
+	 ScriptModules {
+		ScriptModulePathClass {
+			Name "core"
+			Paths {
+				"scripts/1_Core"
+			}
+			EntryPoint ""
+		}
+		ScriptModulePathClass {
+			Name "gameLib"
+			Paths {
+				"scripts/2_GameLib/tools.c"
+			}
+			EntryPoint ""
+		}
+		ScriptModulePathClass {
+			Name "game"
+			Paths {
+				"scripts/3_Game"
+			}
+			EntryPoint "CreateGame"
+		}
+		ScriptModulePathClass {
+			Name "world"
+			Paths {
+			 	"scripts/4_World"
+			 }
+			EntryPoint ""
+		}
+		ScriptModulePathClass {
+			Name "mission"
+			Paths {
+			 	"scripts/5_Mission"
+			 }
+			EntryPoint "CreateMission"
+		}
+	 }
+  }
+  GameProjectConfigClass XBOX_ONE {
+   platformHardware XBOX_ONE
+  }
+  GameProjectConfigClass PS4 {
+   platformHardware PS4
+  }
+  GameProjectConfigClass LINUX {
+   platformHardware LINUX
+  }
+ }
+}
