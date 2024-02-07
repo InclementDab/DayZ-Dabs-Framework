@@ -5,12 +5,7 @@ class PluginProject: PluginDialogBase
 	static const string LAUNCH_BIN = "launch.bin";
 	static const string BUILD_BIN = "build.bin";
 	static const string GPROJ = "dayz.gproj";
-
-//#ifdef DIAG_DEVELOPER
 	static const string EXECUTABLE = "DayZDiag_x64.exe";
-//#else
-//	static const string EXECUTABLE = "DayZ_x64.exe";
-//#endif
 	
 	protected ref map<string, string> m_ProjectSettings = new map<string, string>();
 	protected ref set<string> m_Prefixes = new set<string>();
