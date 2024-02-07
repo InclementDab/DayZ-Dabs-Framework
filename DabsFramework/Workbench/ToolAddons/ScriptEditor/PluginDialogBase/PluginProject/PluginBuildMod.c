@@ -30,8 +30,9 @@ class PluginBuildMod: PluginProject
 			Print("Couldnt find workshop folder in current directory, probably experimental.");
 			game_directory_stable = GetDirectory(game_directory_stable) + "\\DayZ";
 			if (!FileExist(string.Format("%1\\!Workshop", game_directory_stable))) {
-				ErrorDialog("Could not find DayZ Workshop folder. Is your Source Data correctly set?");
-				return;
+				Print("Womp womp");
+				//ErrorDialog("Could not find DayZ Workshop folder. Is your Source Data correctly set?");
+				//return;
 			}
 		}
 		
