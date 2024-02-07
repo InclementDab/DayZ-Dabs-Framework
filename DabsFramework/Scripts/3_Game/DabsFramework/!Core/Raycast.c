@@ -17,7 +17,7 @@ class Raycast: Managed
 	
 	void Debug()
 	{		
-		Shape.CreateSphere(Color.SKY_BLUE, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, Bounce.Position, 0.2);
+		Shape.CreateSphere(LinearColor.SKY_BLUE, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, Bounce.Position, 0.2);
 		
 		Bounce.Debug();
 	}

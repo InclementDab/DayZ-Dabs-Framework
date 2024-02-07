@@ -19,7 +19,7 @@ class Symbols: string
 	{
 		return string.Format("set:solid %1", value);
 	}
-				
+	
 	static const Symbols A = "image:a";
 	static const Symbols ABACUS = "image:abacus";
 	static const Symbols ACCENT_GRAVE = "image:accent_grave";

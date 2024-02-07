@@ -80,7 +80,7 @@ class Plane: Managed
 		
 		//GetDayZGame().DebugDrawText(name, GetPosition().Multiply4(mat), 1);
 		
-		Shape.CreateSphere(Color.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[0].Multiply4(mat), 0.05);
-		Shape.CreateSphere(Color.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[1].Multiply4(mat), 0.05);
+		Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[0].Multiply4(mat), 0.05);
+		Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[1].Multiply4(mat), 0.05);
 	}
 }

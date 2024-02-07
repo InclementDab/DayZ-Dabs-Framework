@@ -58,7 +58,7 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 		
-	static void AnimateColor(notnull Widget source, Color end_color, TimeSpan time, bool loop = false)
+	static void AnimateColor(notnull Widget source, LinearColor end_color, TimeSpan time, bool loop = false)
 	{				
 		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_B;
 		for (int i = 0; i < 4; i++) {
@@ -80,7 +80,7 @@ class WidgetAnimator: Managed
 		}
 	}
 	
-	static void AnimateColor(notnull Widget source, Color start_color, Color end_color, TimeSpan time, bool loop = false)
+	static void AnimateColor(notnull Widget source, LinearColor start_color, LinearColor end_color, TimeSpan time, bool loop = false)
 	{			
 		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_B;
 		for (int i = 0; i < 4; i++) {

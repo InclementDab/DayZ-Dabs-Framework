@@ -29,8 +29,8 @@ class NamedLocation: ConfigObject
 	Symbols GetIcon()
 	{
 		switch (Type) {
-			case CAPITAL:
-			case CITY:
+			case CAPITAL: return Symbols.CITY;
+			/*case CITY:
 			case VILLAGE: return string.Empty;
 			case CAMP: return Symbols.CAMPFIRE;
 			case LOCAL: return string.Empty;
@@ -44,58 +44,58 @@ class NamedLocation: ConfigObject
 			case MEDMILITARY: return Symbols.SHIELD;
 			case SMALLMILITARY: return Symbols.KNIFE;
 			case FEEDSHACK: return Symbols.WHEAT;
-			case DEERSTAND: return Symbols.TOWER_OBSERVATION;
+			case DEERSTAND: return Symbols.TOWER_OBSERVATION;*/
 		}
 		
-		return Symbols.CIRCLE_QUESTION;
+		return string.Empty;
 	}
 	
 	float GetImportance()
 	{
 		switch (Type) {
-			case CAPITAL: return 1.0;
-			case CITY: return 0.7;
-			case VILLAGE: return 0.7;
-			case CAMP: return 0.7;
-			case LOCAL: return 0.35;
-			case HILL: return 0.15;
-			case MARINE: return 0.5;
-			case RUIN: return 0.3;
-			case RAILROAD: return 0.3;
-			case OFFICE: return 0.25;
+			case CAPITAL:
+			case CITY: return 1.0;
+			case VILLAGE:
+			case CAMP: return 0.65;
+			case LOCAL:
+			case HILL:
+			case MARINE:
+			case RUIN:
+			case RAILROAD:
+			case OFFICE:
 			case VIEWPOINT: return 0.25;
 			case BIGMILITARY: return 0.65;
 			case MEDMILITARY: return 0.5;
 			case SMALLMILITARY: return 0.35;
-			case FEEDSHACK: return 0.15;
+			case FEEDSHACK: return 0.2;
 			case DEERSTAND: return 0.1;
 		}
 		
 		return 1.0;
 	}
 	
-	Color GetColor()
+	LinearColor GetColor()
 	{
 		switch (Type) {
-			case CAPITAL: return Color.RED;
-			case CITY: return Color.REDDIT;
-			case VILLAGE: return Color.BLUE;
-			case CAMP: return Color.ORANGE;
-			case LOCAL: return Color.DIM_GRAY;
-			case HILL: return Color.ORANGE;
-			case MARINE: return Color.SKY_BLUE;
-			case RUIN: return Color.BEIGE;
-			case RAILROAD: return Color.BROWN;
-			case OFFICE: return Color.LIGHT_GRAY;
-			case VIEWPOINT: return Color.GOLDENROD;
+			case CAPITAL: return LinearColor.PALE_VIOLET_RED;
+			/*case CITY: return LinearColor.REDDIT;
+			case VILLAGE: return LinearColor.BLUE;
+			case CAMP: return LinearColor.ORANGE;
+			case LOCAL: return LinearColor.DIM_GRAY;
+			case HILL: return LinearColor.ORANGE;
+			case MARINE: return LinearColor.DARK_SEA_GREEN;
+			case RUIN: return LinearColor.BEIGE;
+			case RAILROAD: return LinearColor.BROWN;
+			case OFFICE: return LinearColor.LIGHT_GRAY;
+			case VIEWPOINT: return LinearColor.GREEN;
 			case BIGMILITARY: 
 			case MEDMILITARY: 
-			case SMALLMILITARY: return Color.DARK_ORCHID;
-			case FEEDSHACK: return Color.GOLD;
-			case DEERSTAND: return Color.BURLYWOOD;
+			case SMALLMILITARY: return LinearColor.DARK_ORCHID;
+			case FEEDSHACK: return LinearColor.GOLD;
+			case DEERSTAND: return LinearColor.BURLYWOOD;*/
 		}
 		
-		return 0;
+		return LinearColor.WHITE;
 	}
 	
 	static void OnPositionUpdate(notnull NamedLocation instance)
