@@ -44,16 +44,18 @@ class PluginProject: PluginDialogBase
 			return;
 		}
 		
-		m_GprojSettings = ProjectSettings.Load(current_dir + GPROJ);
-		foreach (ProjectSettings settings: m_GprojSettings.Classes["GameProjectClass"].Classes["Configurations"].Classes["PC"].Classes["ScriptModules"].Classes) {
-			foreach (string path: settings.Classes["Paths"].Data) {
-				path.TrimInPlace();
-				path.Replace("\t", "");
-				path.Replace("\n", "");
-				path.Replace("\r", "");
-				m_Prefixes.Insert(path);
+		// define filePatching folders into m_Prefix
+		array<string> mod_splits = {};
+		m_ProjectSettings["Mods"].Split(";", mod_splits);
+		foreach (string mod_split: mod_splits) {
+			string mod_split_edit = mod_split;
+			mod_split_edit.Replace("@", ""); // more or less a hack, for the moment
+			if (FileExist(string.Format("P:\\%1", mod_split_edit))) {
+				m_Prefixes.Insert(mod_split_edit);
 			}
 		}
+		
+		m_Prefixes.Insert(GetPrefix());
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
