@@ -7,8 +7,8 @@ GameProjectClass {
 	skeletonDefinitions "DZ/Anims/cfg/skeletons.anim.xml"
    	FileSystem {
 		FileSystemPathClass {
-		Name "Workdrive"
-		Directory "P:/"
+			Name "Mod Root"
+			Directory "./"
 		} 
 	}
 	imageSets {
