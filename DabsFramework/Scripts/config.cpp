@@ -2,30 +2,34 @@ class CfgPatches
 {
 	class DF_Scripts
 	{
-        units[] = {};
-        weapons[] = {};
-        requiredVersion = 0.1;
-		requiredAddons[] = {"DZ_Scripts"};
+		requiredAddons[] = { "DZ_Scripts" };
 	};
 };
 
-class CfgMods 
+class CfgAddons
 {
-	class DZ_DabsFramework
-	{
-		name = "Dabs Framework";
-		dir = "DabsFramework";
-		credits = "InclementDab";
-		author = "InclementDab";
-		overview = "DF is a Lightweight framework designed to provide modders with the tools required to create new tools and mods for the community. Created by InclementDab";
-		creditsJson = "DabsFramework/Scripts/Credits.json";
-		versionPath = "DabsFramework/Scripts/Version.hpp";
-		type = "mod";
-		dependencies[] =
-		{
-			"Game", "World", "Mission"
-		};
-		class defs
+    class PreloadAddons
+    {
+        class DabsFramework
+        {
+            list[]={};
+        };
+    };
+};
+
+class CfgMods
+{
+    class DabsFramework
+    {
+        name="Dabs Framework";
+        dir="DabsFramework";
+        picture="DabsFramework\GUI\images\icon.edds";
+        action="https://dab.dev";
+        author="Tyler Paul (InclementDab)";
+        overview = "Dabs Framework is a delightfully lightweight, feature packed addon that gives modders freedom and tools they need for success";
+        defines[] = { "DABSFRAMEWORK_1_8_15" };
+
+        class defs
 		{
 			class imageSets
 			{
@@ -33,55 +37,40 @@ class CfgMods
 				{
 					"DabsFramework/gui/imagesets/prefabs.imageset",
 					"DabsFramework/gui/icons/brands.imageset",
+					"DabsFramework/gui/icons/thin.imageset",
 					"DabsFramework/gui/icons/light.imageset",
 					"DabsFramework/gui/icons/regular.imageset",
-					"DabsFramework/gui/icons/solid.imageset",
-					"DabsFramework/gui/icons/thin.imageset"
+					"DabsFramework/gui/icons/solid.imageset"
 				};
 			};
-
 			class widgetStyles
 			{
-				files[]=
-				{
-					"DabsFramework/gui/looknfeel/prefabs.styles"
-				};
+				files[]= { "DabsFramework/gui/looknfeel/prefabs.styles" };
 			};
 
-			class engineScriptModule
-			{
-				value = "";
-				files[] =
-				{
-					"DabsFramework/scripts/1_core"
-				};
+			class engineScriptModule 
+			{ 
+				files[] = { "DabsFramework/Scripts/1_Core"};
 			};
 
 			class gameScriptModule
 			{
-				value="";
-				files[] = 
-				{
-					"DabsFramework/scripts/3_Game"
-				};
+				files[] = { "DabsFramework/Scripts/3_Game" };
 			};
 			class worldScriptModule
 			{
-				value="";
-				files[] = 
-				{
-					"DabsFramework/scripts/4_World"
-				};
+				files[] = { "DabsFramework/Scripts/4_World" };
 			};
 
 			class missionScriptModule 
 			{
-				value="";
-				files[] = 
-				{
-					"DabsFramework/scripts/5_Mission"
-				};
+				files[] = { "DabsFramework/Scripts/5_Mission" };
+			};
+
+			class workbenchScriptModule
+			{
+				files[] = { "DabsFramework/Scripts/ToolAddons"};
 			};
 		};
-	};
+    };
 };
