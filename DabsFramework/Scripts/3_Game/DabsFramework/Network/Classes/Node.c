@@ -3,7 +3,7 @@ class Node: SerializableBase
 	static ref NodeStateMachine States = new NodeStateMachine();
 	
 	// Initialize States -> Root in order
-	static ref RootNode Root = new RootNode(string.Empty, string.Empty, string.Empty);
+	static ref Node Root = new Node(string.Empty, string.Empty, string.Empty);
 	
 	protected UUID m_UUID;
 	string DisplayName;
@@ -30,24 +30,23 @@ class Node: SerializableBase
 	
 	void AddState(NodeState state)
 	{
-		PrintFormat("[%1] %2, add=%3", m_UUID, DisplayName, typename.EnumToString(NodeState, state));		
+		//PrintFormat("[%1] %2, add=%3", m_UUID, DisplayName, typename.EnumToString(NodeState, state));		
 		States[state].Insert(this);		
 		m_NodeState |= state;
 		OnStateChanged(state, true);
-		State_OnChanged.Invoke(state, true);
 	}
 	
 	void RemoveState(NodeState state)
 	{		
-		PrintFormat("[%1] %2, remove=%3", m_UUID, DisplayName, typename.EnumToString(NodeState, state));		
+		//PrintFormat("[%1] %2, remove=%3", m_UUID, DisplayName, typename.EnumToString(NodeState, state));
 		States[state].RemoveItem(this);
 		m_NodeState &= ~state;
 		OnStateChanged(state, false);
-		State_OnChanged.Invoke(state, false);
 	}
 		
 	void OnStateChanged(NodeState node_state, bool state)
 	{
+		State_OnChanged.Invoke(node_state, state);
 	}
 				
 	void Synchronize(PlayerIdentity identity = null)
@@ -81,6 +80,20 @@ class Node: SerializableBase
 		
 		return node != null;
 	}
+	
+	bool IsAncestor(notnull Node node)
+	{		
+		Node parent = this;
+		while (parent) {
+			if (node == parent) {
+				return true;
+			}
+			
+			parent = parent.Parent;
+		}
+		
+		return false;
+	}
 			
 	void Add(notnull Node node)
 	{
@@ -88,7 +101,12 @@ class Node: SerializableBase
 	}
 	
 	void Set(string uuid, notnull Node node)
-	{		
+	{
+		if (IsAncestor(node)) {
+			Error("Cannot a node as its own child!");
+			return;
+		}
+		
 		Children[uuid] = node;
 		node.Parent = this;
 	}
@@ -190,7 +208,7 @@ class Node: SerializableBase
 		
 		return depth;
 	}
-								
+									
 	override void Write(Serializer serializer, int version)
 	{		
 		serializer.Write(m_UUID);

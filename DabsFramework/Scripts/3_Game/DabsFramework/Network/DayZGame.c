@@ -9,7 +9,7 @@ modded class DayZGame
 			return false;
 		}
 		
-		Node.Root.AfterGameLoad();
+		//Node.Root.AfterGameLoad();
 		return true;
 	}
 	
