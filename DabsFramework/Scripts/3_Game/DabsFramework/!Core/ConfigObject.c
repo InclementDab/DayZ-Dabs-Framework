@@ -14,7 +14,7 @@ class ConfigObject: Managed
 		array<AttributeBase> attributes = AttributeBase.GetCustomAttributes(Type());
 		foreach (AttributeBase attribute: attributes) {
 			ConfigEntryAttribute config_entry_attribute = ConfigEntryAttribute.Cast(attribute);
-			if (!config_entry_attribute) {
+			if (!config_entry_attribute || !config_entry_attribute.Field || !GetGame()) {
 				continue;
 			}
 			
