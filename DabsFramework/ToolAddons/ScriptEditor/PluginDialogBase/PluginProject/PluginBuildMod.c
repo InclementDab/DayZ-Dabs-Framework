@@ -23,9 +23,9 @@ class PluginBuildMod: PluginProject
 			return;
 		}
 		
-		string mod_prefix = GetPrefix();
+		string mod_prefix = GetModPrefix();
 		// Set up our sym link for workshop modding :drool:
-		string game_directory_stable = GetSourceDataDirectory();
+		string game_directory_stable = GetGameDirectory();
 		if (!FileExist(string.Format("%1\\!Workshop", game_directory_stable))) {
 			Print("Couldnt find workshop folder in current directory, probably experimental.");
 			game_directory_stable = GetDirectory(game_directory_stable) + "\\DayZ";

@@ -22,7 +22,7 @@ class PluginProject: PluginDialogBase
 	
 	void PluginProject()
 	{
-		string current_dir = GetCurrentDirectory();
+		string current_dir = GetModRoot();
 		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
 			return;

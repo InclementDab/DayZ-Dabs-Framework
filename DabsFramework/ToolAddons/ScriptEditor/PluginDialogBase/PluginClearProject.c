@@ -9,10 +9,9 @@ class PluginClearProject: PluginDialogBase
 	[ButtonAttribute("Clear")]
 	void Clear()
 	{
-		// Delete both bin files
-		string current_dir = GetCurrentDirectory();
-		Workbench.RunCmd(string.Format("cmd /c del %1", current_dir + PluginProject.LAUNCH_BIN));
-		Workbench.RunCmd(string.Format("cmd /c del %1", current_dir + PluginProject.BUILD_BIN));
+		string current_dir = GetModRoot();
+		Workbench.RunCmd(string.Format("cmd /c del %1\\%2", current_dir, PluginProject.LAUNCH_BIN));
+		Workbench.RunCmd(string.Format("cmd /c del %1\\%2", current_dir, PluginProject.BUILD_BIN));
 	}
 	
 	[ButtonAttribute("Cancel", true)]

@@ -2,9 +2,9 @@ class PluginLaunchGameBase: PluginProject
 {	
 	void LaunchGame(notnull LaunchSettings launch_settings)
 	{
-		string root = GetRootDirectory();
-		string mod_prefix = GetPrefix();
-		string workbench_directory = GetWorkbenchDirectory();
+		string root = GetWorkdrive();
+		string mod_prefix = GetModPrefix();
+		string workbench_directory = GetAppRoot();
 		
 		Print(root);
 		Print(mod_prefix);
@@ -26,7 +26,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		
 		// finding DayZ / DayZ Exp dir		
-		string game_directory = GetSourceDataDirectory();		
+		string game_directory = GetGameDirectory();		
 		string game_exe = game_directory + EXECUTABLE;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));

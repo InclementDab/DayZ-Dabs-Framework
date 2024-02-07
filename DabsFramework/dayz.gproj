@@ -7,9 +7,13 @@ GameProjectClass {
 	skeletonDefinitions "DZ/Anims/cfg/skeletons.anim.xml"
    	FileSystem {
 		FileSystemPathClass {
-			Name "Root"
+			Name "App"
 			Directory "./"
-		} 
+		}
+		FileSystemPathClass {
+			Name "Workdrive"
+			Directory "P:/"
+		}
 	}
 	imageSets {
 		"gui/imagesets/BleedingDrops.imageset"
@@ -62,6 +66,13 @@ GameProjectClass {
 			 	"scripts/5_Mission"
 			 }
 			EntryPoint "CreateMission"
+		}
+
+		ScriptModulePathClass {
+			Name "workbench"
+			Paths {
+				"ToolAddons"
+			}
 		}
 	 }
   }

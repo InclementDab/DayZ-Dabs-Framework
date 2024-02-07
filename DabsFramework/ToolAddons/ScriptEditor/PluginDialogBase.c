@@ -16,72 +16,52 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		Workbench.Dialog(string.Format("Error: %1", Type()), error);
 	}
-
-#ifdef WORKBENCH_PLUS_DEBUG
-	
-	override void Run()
-	{
-		PrintFormat("Run: %1", Type());
-	}
-	
-	override void RunCommandline()
-	{
-		PrintFormat("RunCommandLine: %1", Type());
-	}
-	
-#endif
-	
-	static string GetPrefix()
-	{
-		array<string> current_dir_split = {};
-		string current_directory = GetCurrentDirectory();
-		current_directory.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		current_directory.Split(PATH_SEPERATOR, current_dir_split);
-		return current_dir_split[current_dir_split.Count() - 2];
-	}
-	
-	static string GetSourceDataDirectory()
-	{
-		string abs;
-		Workbench.GetAbsolutePath("$SourceData:", abs);
-		abs.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		return abs;
-	}
-	
-	static string GetCurrentDirectory()
-	{
-		string abs;
-		Workbench.GetAbsolutePath("$CurrentDir:", abs);
-		abs.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		return abs;
-	}
-	
-	static string GetWorkbenchDirectory()
-	{
-		string workbench_dir;
-		Workbench.GetCwd(workbench_dir);
-		
-		if (!FileExist(string.Format("%1\\%2", workbench_dir, "workbenchApp.exe"))) {
-			return string.Empty;
-		}
-		
-		return workbench_dir;
-	}
-	
-	static string GetRootDirectory()
-	{
-		string root_dir;
-		Workbench.GetAbsolutePath(string.Empty, root_dir);
-		return root_dir;
-	}
 	
 	static string GetAbsolutePath(string path)
 	{
 		string absolute_path;
 		Workbench.GetAbsolutePath(path, absolute_path);
+		absolute_path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		return absolute_path;
 	}
+		
+	static string GetGameDirectory()
+	{
+		return GetAbsolutePath("$SourceData:");
+	}
 	
+	static string GetModRoot()
+	{
+		return GetAbsolutePath("$CurrentDir:");
+	}
+		
+	static string GetAppRoot()
+	{
+		string dir = GetAbsolutePath("$App:");		
+		if (!FileExist(string.Format("%1\\%2", dir, "workbenchApp.exe"))) {
+			return string.Empty;
+		}
+		
+		return dir;
+	}
+	
+	static string GetWorkdrive()
+	{
+		return GetAbsolutePath("$Workdrive:");
+	}
+	
+	static string GetRoot()
+	{
+		return GetAbsolutePath(string.Empty);
+	}
+	
+	static string GetModPrefix()
+	{
+		array<string> split = {};
+		GetModRoot().Split(PATH_SEPERATOR, split);
+		return split[split.Count() - 1];
+	}
+		
 	static string GetRelativePath(string root_path, string full_path)
 	{
 		root_path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
@@ -291,21 +271,6 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		return -1;
-	}
-	
-	// 0 is 1_Core, 5 is workbench
-	static string GetCurrentScriptModulePath(int module)
-	{
-		switch (module) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4: return GetDirectory(GetCurrentDirectory()) + "Scripts" + PATH_SEPERATOR + SCRIPT_MODULES[module];
-			case 5: return GetCurrentDirectory();
-		}
-		
-		return string.Empty;
 	}
 	
 	static string StripScriptModuleFromPath(string file)

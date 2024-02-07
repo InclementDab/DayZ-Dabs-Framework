@@ -11,7 +11,7 @@ Profiles/**/Users/*
 
 texHeaders.bin
 launch.bin
-bin.bin
+build.bin
 
 .vscode/
 .idea/
