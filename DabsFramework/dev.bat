@@ -6,4 +6,4 @@ for /f "tokens=2,*" %%a in ('reg query "HKCU\SOFTWARE\Bohemia Interactive\Dayz T
 
 echo %dayz_tools%
 
-"%dayz_tools%\Bin\Workbench\workbenchApp.exe" "-mod=P:\DabsFramework\Scripts -profiles=%cd%\..\Profiles\Workbench"
+"%dayz_tools%\Bin\Workbench\workbenchApp.exe" "-mod=P:\DabsFramework\Scripts;P:\DaysBefore\Scripts -profiles=%cd%\..\Profiles\Workbench"

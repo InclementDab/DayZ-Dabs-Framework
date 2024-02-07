@@ -6,6 +6,17 @@ class CfgPatches
 	};
 };
 
+class CfgAddons
+{
+    class PreloadAddons
+    {
+        class DabsFramework
+        {
+            list[]={};
+        };
+    };
+};
+
 class CfgMods
 {
     class DabsFramework
@@ -61,16 +72,5 @@ class CfgMods
 				files[] = { "DabsFramework/ToolAddons" };
 			};
 		};
-    };
-};
-
-class CfgAddons
-{
-    class PreloadAddons
-    {
-        class DabsFramework
-        {
-            list[]={};
-        };
     };
 };
