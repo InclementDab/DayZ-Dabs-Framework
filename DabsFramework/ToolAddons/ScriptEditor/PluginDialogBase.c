@@ -12,6 +12,8 @@ class PluginDialogBase: WorkbenchPlugin
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
 	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceManager");
 	
+	protected string m_GameDirectory = GetAbsolutePath("$SourceData:");
+	
 	void ErrorDialog(string error)
 	{
 		Workbench.Dialog(string.Format("Error: %1", Type()), error);
@@ -25,11 +27,6 @@ class PluginDialogBase: WorkbenchPlugin
 		return absolute_path;
 	}
 		
-	static string GetGameDirectory()
-	{
-		return GetAbsolutePath("$SourceData:");
-	}
-	
 	static string GetModRoot()
 	{
 		return GetAbsolutePath("$CurrentDir:");
@@ -180,13 +177,7 @@ class PluginDialogBase: WorkbenchPlugin
 				
 		return OpenFile(file, FileMode.WRITE);
 	}
-	
-	static void DeleteFile(string file)
-	{
-		PrintFormat("Deleting file %1", file);
-		Workbench.RunCmd(string.Format("cmd /c del %1", file));
-	}
-	
+		
 	static int RunCommandPrompt(string cmd, bool wait = false)
 	{
 		return Workbench.RunCmd(string.Format("cmd /c %1", cmd), wait);

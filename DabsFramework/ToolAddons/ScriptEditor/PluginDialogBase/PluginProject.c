@@ -1,13 +1,14 @@
 class PluginProject: PluginDialogBase
 {
-	static const string PROJECT_CFG = "project.cfg";
 	static const string SERVER_CFG = "server.cfg";
 	static const string DAYZ_BIN = "dayz.bin";
 	static const string GPROJ = "dayz.gproj";
+	
 	static const string EXECUTABLE = "DayZDiag_x64.exe";
 	
-	protected ref map<string, string> m_ProjectSettings = new map<string, string>();
+
 	protected ref set<string> m_Prefixes = new set<string>();
+	
 	protected string m_ServerConfig;
 	
 	protected ref WorkbenchSettings m_WorkbenchSettings;
@@ -15,10 +16,7 @@ class PluginProject: PluginDialogBase
 	void PluginProject()
 	{
 		string mod_root = GetModRoot();
-		if (!LoadConfig(mod_root + PROJECT_CFG, m_ProjectSettings)) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, mod_root));
-			return;
-		}
+		string repo_root = GetRepositoryRoot();
 
 		// Load launch settings
 		m_WorkbenchSettings = WorkbenchSettings.Load(mod_root + DAYZ_BIN);
@@ -28,11 +26,11 @@ class PluginProject: PluginDialogBase
 		}
 				
 		// Load server config
-		/*m_ServerConfig = current_dir + SERVER_CFG;
+		m_ServerConfig = string.Format("%1\\%2", repo_root, SERVER_CFG);
 		if (!FileExist(m_ServerConfig)) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, current_dir));
+			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, repo_root));
 			return;
-		}*/
+		}
 		
 		string mod_list;
 		if (GetCLIParam("mod", mod_list)) {

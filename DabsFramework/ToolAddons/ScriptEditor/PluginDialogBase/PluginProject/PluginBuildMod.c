@@ -26,7 +26,7 @@ class PluginBuildMod: PluginProject
 		
 		string mod_prefix = GetModPrefix();
 		// Set up our sym link for workshop modding :drool:
-		string game_directory_stable = GetGameDirectory();
+		string game_directory_stable = m_GameDirectory;
 		if (!FileExist(string.Format("%1\\!Workshop", game_directory_stable))) {
 			Print("Couldnt find workshop folder in current directory, probably experimental.");
 			game_directory_stable = GetDirectory(game_directory_stable) + "\\DayZ";
@@ -49,37 +49,35 @@ class PluginBuildMod: PluginProject
 			args += string.Format(" +K=%1",  m_WorkbenchSettings.Key);
 		}
 		
-		if (m_WorkbenchSettings.Dependencies) {
+		string cli_mod;
+		GetCLIParam("mod", cli_mod);
+		if (m_WorkbenchSettings.Dependencies) {			
 			array<string> mod_splits = {};
-			m_ProjectSettings["Mods"].Split(";", mod_splits);
+			cli_mod.Split(";", mod_splits);
 			foreach (string mod_split: mod_splits) {
-				string mod_split_edit = mod_split;
-				mod_split_edit.Replace("@", "");
-				
-				string mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_split_edit));
-				if (FileExist(mod_folder)) {
-					if (BuildFolder(mod_folder, string.Format("%1\\@%2", m_WorkbenchSettings.Mods, mod_split_edit), args)) {
-						Error(string.Format("Build failed: %1", mod_split));
-					}
+				// Packed mod, already build
+				if (mod_split.Contains("@")) {
+					continue;
 				}
+				
+				BuildFolder(mod_split, args);
 			}
-		}
-		
-		// Set up our mod output correctly if not done so already
-		string mod_output = string.Format("%1\\@%2", m_WorkbenchSettings.Mods, mod_prefix);		
-		string main_mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_prefix));
-		if (BuildFolder(main_mod_folder, mod_output, args)) {
-			Error(string.Format("Build failed: %1", main_mod_folder));
 		}
 		
 		// Move contents of Addons folder
 		if (m_WorkbenchSettings.CopyAddons) {
-			CopyFiles(string.Format("%1\\Addons", repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+			//CopyFiles(string.Format("%1\\Addons", repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
 		}
 	}
 	
-	int BuildFolder(string mod_input, string mod_output, string args)
+	int BuildFolder(string mod_input, string args)
 	{
+		array<string> input_path = {};
+		mod_input.Split("\\", input_path);
+		string mod_output = string.Format("%1\\@%2", m_WorkbenchSettings.Mods, input_path[input_path.Count() - 1]);
+		Print(mod_output);
+		return 0;
+		
 		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
