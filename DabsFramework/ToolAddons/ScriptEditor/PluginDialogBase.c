@@ -181,6 +181,12 @@ class PluginDialogBase: WorkbenchPlugin
 		return OpenFile(file, FileMode.WRITE);
 	}
 	
+	static void DeleteFile(string file)
+	{
+		PrintFormat("Deleting file %1", file);
+		Workbench.RunCmd(string.Format("cmd /c del %1", file));
+	}
+	
 	static int RunCommandPrompt(string cmd, bool wait = false)
 	{
 		return Workbench.RunCmd(string.Format("cmd /c %1", cmd), wait);

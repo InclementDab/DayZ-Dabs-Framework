@@ -67,8 +67,14 @@ class WorkbenchSettings: SerializableBase
 	[Attribute("", "combobox", "Build Dependencies", "", ParamEnumArray.FromEnum(YesNo) )]
 	bool Dependencies;
 	
-	void Save(string file)
+	string LastUsedAddress;
+	
+	void Save(string file = string.Empty)
 	{
+		if (file == string.Empty) {
+			file = m_CurrentFileLocation;
+		}
+		
 		FileSerializer serializer = new FileSerializer();
 		if (!serializer.Open(file, FileMode.WRITE)) {
 			return;
@@ -94,6 +100,7 @@ class WorkbenchSettings: SerializableBase
 			settings.Command = "pboProject";
 			settings.Args = "+H";
 			settings.Dependencies = true;
+			settings.LastUsedAddress = "127.0.0.1";
 			settings.Save(file);
 			return settings;
 		}
@@ -128,6 +135,7 @@ class WorkbenchSettings: SerializableBase
 		serializer.Write(Key);
 		serializer.Write(Args);
 		serializer.Write(Dependencies);
+		serializer.Write(LastUsedAddress);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -185,6 +193,10 @@ class WorkbenchSettings: SerializableBase
 		}		
 		
 		if (!serializer.Read(Dependencies)) {
+			return false;
+		}		
+		
+		if (!serializer.Read(LastUsedAddress)) {
 			return false;
 		}
 		

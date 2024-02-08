@@ -10,8 +10,7 @@
 Profiles/**/Users/*
 
 texHeaders.bin
-launch.bin
-build.bin
+dayz.bin
 
 .vscode/
 .idea/

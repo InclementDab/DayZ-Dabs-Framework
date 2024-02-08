@@ -9,8 +9,7 @@ class PluginClearProject: PluginDialogBase
 	[ButtonAttribute("Clear")]
 	void Clear()
 	{
-		string current_dir = GetModRoot();
-		Workbench.RunCmd(string.Format("cmd /c del %1\\%2", current_dir, PluginProject.DAYZ_BIN));
+		DeleteFile(string.Format("%1\\%2", GetModRoot(), PluginProject.DAYZ_BIN));
 	}
 	
 	[ButtonAttribute("Cancel", true)]

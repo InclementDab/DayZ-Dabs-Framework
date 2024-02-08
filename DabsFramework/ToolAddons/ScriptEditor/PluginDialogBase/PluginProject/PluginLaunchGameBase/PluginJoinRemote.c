@@ -2,7 +2,7 @@
 class PluginJoinRemote: PluginLaunchGameBase
 {
 	[Attribute("", "editbox")]
-	string Address = "127.0.0.1";
+	string Address;
 	
 	[Attribute("", "editbox")]
 	int Port = 2302;
@@ -12,6 +12,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 	
 	void PluginJoinRemote()
 	{
+		Address = m_WorkbenchSettings.LastUsedAddress;
 		Workbench.ScriptDialog("Join Remote", DIALOG_TAB_SIZE, this);
 	}
 	
@@ -19,6 +20,8 @@ class PluginJoinRemote: PluginLaunchGameBase
 	void Join()
 	{
 		m_WorkbenchSettings.LaunchType = GameLaunchType.CLIENT;
+		m_WorkbenchSettings.LastUsedAddress = Address;
+		m_WorkbenchSettings.Save();
 		LaunchGame(m_WorkbenchSettings);
 	}
 	
