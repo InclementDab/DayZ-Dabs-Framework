@@ -1,5 +1,5 @@
 [WorkbenchPluginAttribute("Open Directory", "Opens Current Directory", "Ctrl+-", "", {"ScriptEditor"})]
-class PluginOpenDirectory: PluginDialogBase
+class PluginOpenDirectory: PluginProject
 {
 	void PluginOpenDirectory()
 	{

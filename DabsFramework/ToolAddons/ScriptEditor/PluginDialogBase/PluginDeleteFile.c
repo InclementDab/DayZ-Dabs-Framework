@@ -1,5 +1,5 @@
 [WorkbenchPluginAttribute("Delete File", "Deletes Current File", "Ctrl+Shift+Delete", "", {"ScriptEditor"})]
-class PluginDeleteFile: PluginDialogBase
+class PluginDeleteFile: PluginProject
 {
 	protected string m_CurrentFile;
 	

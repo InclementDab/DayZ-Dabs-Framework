@@ -1,5 +1,5 @@
 [WorkbenchPluginAttribute("New File", "Creates New File", "Ctrl+N", "", {"ScriptEditor"})]
-class PluginNewFile: PluginDialogBase
+class PluginNewFile: PluginProject
 {	
 	[Attribute("", "editbox", "Directory (folders will be created automatically)")]
 	string Directory;

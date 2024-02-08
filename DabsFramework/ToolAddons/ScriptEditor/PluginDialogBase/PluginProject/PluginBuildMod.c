@@ -17,13 +17,7 @@ class PluginBuildMod: PluginProject
 			ErrorDialog("You need to set the Mods setting in Plugins -> Configure -> Configure Project");
 			return;
 		}
-		
-		string repository = GetRepositoryRoot();
-		if (repository == string.Empty) {
-			ErrorDialog("You must pass the repository directory to workbench with the -repository argument");
-			return;
-		}
-		
+				
 		string mod_prefix = GetModPrefix();
 		// Set up our sym link for workshop modding :drool:
 		string game_directory_stable = m_GameDirectory;
@@ -37,9 +31,9 @@ class PluginBuildMod: PluginProject
 			}
 		}
 		
-		array<string> dependencies = EnumerateDirectories(string.Format("%1\\Dependencies", repository));
+		array<string> dependencies = EnumerateDirectories(string.Format("%1\\Dependencies", m_Repository));
 		foreach (string dependency: dependencies) {
-			PromiseSymLink(string.Format("%1\\Dependencies\\%2", repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
+			PromiseSymLink(string.Format("%1\\Dependencies\\%2", m_Repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
 		}
 		
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_WorkbenchSettings.Mods);
@@ -66,7 +60,7 @@ class PluginBuildMod: PluginProject
 		
 		// Move contents of Addons folder
 		if (m_WorkbenchSettings.CopyAddons) {
-			//CopyFiles(string.Format("%1\\Addons", repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+			//CopyFiles(string.Format("%1\\Addons", m_Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
 		}
 	}
 	

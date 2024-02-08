@@ -1,5 +1,5 @@
 [WorkbenchPluginAttribute("Clear All Settings", "Deletes Local Project Settings", "", "", {"ScriptEditor", "ResourceManager"})]
-class PluginClearProject: PluginDialogBase
+class PluginClearProject: PluginProject
 {
 	override void Run()
 	{
@@ -9,7 +9,7 @@ class PluginClearProject: PluginDialogBase
 	[ButtonAttribute("Clear")]
 	void Clear()
 	{
-		DeleteFile(string.Format("%1\\%2", GetModRoot(), PluginProject.DAYZ_BIN));
+		DeleteFile(string.Format("%1\\%2", m_Root, PluginProject.DAYZ_BIN));
 	}
 	
 	[ButtonAttribute("Cancel", true)]

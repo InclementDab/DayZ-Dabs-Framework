@@ -1,5 +1,5 @@
 [WorkbenchPluginAttribute("Find Unmodded File", "Searches for the unmodded version of your class", "Ctrl+B", "", {"ScriptEditor"})]
-class PluginNavigateToUnmoddedFile: PluginDialogBase
+class PluginNavigateToUnmoddedFile: PluginProject
 {
 	protected string m_CurrentFile, m_ClassName, m_FinalFileName;
 	protected bool m_IsModded;

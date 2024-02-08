@@ -1,5 +1,5 @@
 [WorkbenchPluginAttribute("Rename File", "Renames current file", "Ctrl+Shift+F2", "", {"ScriptEditor"})]
-class PluginRenameFile: PluginDialogBase
+class PluginRenameFile: PluginProject
 {
 	[Attribute("", "editbox", "New file name")]
 	string File;

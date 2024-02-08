@@ -2,28 +2,15 @@ class PluginLaunchGameBase: PluginProject
 {	
 	void LaunchGame(notnull WorkbenchSettings launch_settings)
 	{
-		string root = GetWorkdrive();
 		string mod_prefix = GetModPrefix();
-		string workbench_directory = GetAppRoot();
-		
-		if (workbench_directory == string.Empty) {
-			Error("CWD is not workbench, you must launch via gproj");
-			return;
-		}
-						
+								
 		// finding DayZ / DayZ Exp dir
 		string game_exe = m_GameDirectory + EXECUTABLE;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
 		}
-		
-		string repository = GetRepositoryRoot();
-		if (repository == string.Empty) {
-			ErrorDialog("You need to pass -repository to Workbench on launch");
-			return;
-		}		
-		
+				
 		if (launch_settings.Profiles == string.Empty) {
 			ErrorDialog("You need to set the Profiles setting in Plugins -> Configure -> Configure Project");
 			return;
@@ -44,8 +31,8 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Set up symlinks so game can launch with our cwd
-		PromiseSymLink(m_GameDirectory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
-		PromiseSymLink(m_GameDirectory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
+		PromiseSymLink(m_GameDirectory + PATH_SEPERATOR_ALT + "Addons", m_AppDirectory + PATH_SEPERATOR_ALT + "Addons");
+		PromiseSymLink(m_GameDirectory + PATH_SEPERATOR_ALT + "bliss", m_AppDirectory + PATH_SEPERATOR_ALT + "bliss");
 
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};
@@ -59,7 +46,7 @@ class PluginLaunchGameBase: PluginProject
 				array<string> prefix_split = {};
 				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
 				
-				string built_path = workbench_directory + PATH_SEPERATOR_ALT;
+				string built_path = m_AppDirectory + PATH_SEPERATOR_ALT;
 				if (prefix_split.Count() < 1) {
 					continue;
 				}
@@ -72,14 +59,14 @@ class PluginLaunchGameBase: PluginProject
 					MakeDirectory(built_path);
 				}
 				
-				PromiseSymLink(root + PATH_SEPERATOR_ALT + prefix, workbench_directory + PATH_SEPERATOR + prefix);
+				PromiseSymLink(m_Workdrive + PATH_SEPERATOR_ALT + prefix, m_AppDirectory + PATH_SEPERATOR + prefix);
 			}
 		}
 		
 		// Now FindFile each 
 		string wb_dir_filename;
 		FileAttr wb_dir_fileattr;
-		FindFileHandle hdnl = FindFile(workbench_directory + PATH_SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
+		FindFileHandle hdnl = FindFile(m_AppDirectory + PATH_SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
 		
 		if (folders_to_save.Find(wb_dir_filename) == -1) {
 			DeleteFile(wb_dir_filename);
@@ -87,7 +74,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
 			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", m_AppDirectory + PATH_SEPERATOR + wb_dir_filename));
 			}
 		}
 		
@@ -116,20 +103,20 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Copy maps and mission info
-		CopyFiles(string.Format("%1\\Profiles\\Global", repository), server_profile_directory);
-		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", repository, launch_settings.Map), server_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Global", m_Repository), server_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", m_Repository, launch_settings.Map), server_profile_directory);
 		
 		string server_cli;
 		if (GetCLIParam("serverid", server_cli)) {
-			CopyFiles(string.Format("%1\\Profiles\\%2", repository, server_cli), server_profile_directory);
+			CopyFiles(string.Format("%1\\Profiles\\%2", m_Repository, server_cli), server_profile_directory);
 		}
 		
-		CopyFiles(string.Format("%1\\Missions\\%3.%2", repository, launch_settings.Map, mod_prefix), server_mission);
-		CopyFiles(string.Format("%1\\Missions\\Global", repository), server_mission);
-		CopyFiles(string.Format("%1\\Missions\\Dev", repository), server_mission);
+		CopyFiles(string.Format("%1\\Missions\\%3.%2", m_Repository, launch_settings.Map, mod_prefix), server_mission);
+		CopyFiles(string.Format("%1\\Missions\\Global", m_Repository), server_mission);
+		CopyFiles(string.Format("%1\\Missions\\Dev", m_Repository), server_mission);
 		
 		string client_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", mod_cli, client_profile_directory);
-		string server_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", mod_cli, server_profile_directory, servermod_cli, m_ServerConfig, server_mission);
+		string server_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", mod_cli, server_profile_directory, servermod_cli, string.Format("%1\\%2", m_Repository, SERVER_CFG), server_mission);
 		string offline_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=@DayZ-Editor;%1\" \"-profiles=%2\" \"-mission=%3\"", mod_cli, client_profile_directory, server_mission);
 
 		string ip, password;
