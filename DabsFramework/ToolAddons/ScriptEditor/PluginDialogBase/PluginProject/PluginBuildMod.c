@@ -3,23 +3,24 @@ class PluginBuildMod: PluginProject
 {	
 	void PluginBuildMod()
 	{
-		if (m_LaunchSettings.Repository == string.Empty) {
-			ErrorDialog("You need to set the Repository setting in Plugins -> Configure -> Configure Project");
-			return;
-		}		
-		
-		if (m_LaunchSettings.Profiles == string.Empty) {
+		if (m_WorkbenchSettings.Profiles == string.Empty) {
 			ErrorDialog("You need to set the Profiles setting in Plugins -> Configure -> Configure Project");
 			return;
 		}		
 		
-		if (m_LaunchSettings.Missions == string.Empty) {
+		if (m_WorkbenchSettings.Missions == string.Empty) {
 			ErrorDialog("You need to set the Missions setting in Plugins -> Configure -> Configure Project");
 			return;
 		}		
 		
-		if (m_LaunchSettings.Mods == string.Empty) {
+		if (m_WorkbenchSettings.Mods == string.Empty) {
 			ErrorDialog("You need to set the Mods setting in Plugins -> Configure -> Configure Project");
+			return;
+		}
+		
+		string repository = GetRepositoryRoot();
+		if (repository == string.Empty) {
+			ErrorDialog("You must pass the repository directory to workbench with the -repository argument");
 			return;
 		}
 		
@@ -36,19 +37,19 @@ class PluginBuildMod: PluginProject
 			}
 		}
 		
-		array<string> dependencies = EnumerateDirectories(string.Format("%1\\Dependencies", m_LaunchSettings.Repository));
+		array<string> dependencies = EnumerateDirectories(string.Format("%1\\Dependencies", repository));
 		foreach (string dependency: dependencies) {
-			PromiseSymLink(string.Format("%1\\Dependencies\\%2", m_LaunchSettings.Repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
+			PromiseSymLink(string.Format("%1\\Dependencies\\%2", repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
 		}
 		
-		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
+		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_WorkbenchSettings.Mods);
 		
-		string args = m_BuildSettings.Args;
-		if (m_BuildSettings.Key != string.Empty) {
-			args += string.Format(" +K=%1",  m_BuildSettings.Key);
+		string args = m_WorkbenchSettings.Args;
+		if (m_WorkbenchSettings.Key != string.Empty) {
+			args += string.Format(" +K=%1",  m_WorkbenchSettings.Key);
 		}
 		
-		if (m_BuildSettings.Dependencies) {
+		if (m_WorkbenchSettings.Dependencies) {
 			array<string> mod_splits = {};
 			m_ProjectSettings["Mods"].Split(";", mod_splits);
 			foreach (string mod_split: mod_splits) {
@@ -57,7 +58,7 @@ class PluginBuildMod: PluginProject
 				
 				string mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_split_edit));
 				if (FileExist(mod_folder)) {
-					if (BuildFolder(mod_folder, string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_split_edit), args)) {
+					if (BuildFolder(mod_folder, string.Format("%1\\@%2", m_WorkbenchSettings.Mods, mod_split_edit), args)) {
 						Error(string.Format("Build failed: %1", mod_split));
 					}
 				}
@@ -65,15 +66,15 @@ class PluginBuildMod: PluginProject
 		}
 		
 		// Set up our mod output correctly if not done so already
-		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);		
+		string mod_output = string.Format("%1\\@%2", m_WorkbenchSettings.Mods, mod_prefix);		
 		string main_mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_prefix));
 		if (BuildFolder(main_mod_folder, mod_output, args)) {
 			Error(string.Format("Build failed: %1", main_mod_folder));
 		}
 		
 		// Move contents of Addons folder
-		if (m_BuildSettings.CopyAddons) {
-			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+		if (m_WorkbenchSettings.CopyAddons) {
+			CopyFiles(string.Format("%1\\Addons", repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
 		}
 	}
 	
@@ -83,6 +84,6 @@ class PluginBuildMod: PluginProject
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		return Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", m_BuildSettings.Command, mod_output, mod_input, args));
+		return Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", m_WorkbenchSettings.Command, mod_output, mod_input, args));
 	}
 }

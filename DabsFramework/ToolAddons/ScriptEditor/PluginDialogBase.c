@@ -61,6 +61,16 @@ class PluginDialogBase: WorkbenchPlugin
 		GetModRoot().Split(PATH_SEPERATOR, split);
 		return split[split.Count() - 1];
 	}
+	
+	static string GetRepositoryRoot()
+	{
+		string repository;
+		if (!GetCLIParam("repository", repository)) {
+			return string.Empty;
+		}
+		
+		return repository;
+	}
 		
 	static string GetRelativePath(string root_path, string full_path)
 	{

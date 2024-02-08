@@ -2,8 +2,7 @@ class PluginProject: PluginDialogBase
 {
 	static const string PROJECT_CFG = "project.cfg";
 	static const string SERVER_CFG = "server.cfg";
-	static const string LAUNCH_BIN = "launch.bin";
-	static const string BUILD_BIN = "build.bin";
+	static const string DAYZ_BIN = "dayz.bin";
 	static const string GPROJ = "dayz.gproj";
 	static const string EXECUTABLE = "DayZDiag_x64.exe";
 	
@@ -11,41 +10,42 @@ class PluginProject: PluginDialogBase
 	protected ref set<string> m_Prefixes = new set<string>();
 	protected string m_ServerConfig;
 	
-	protected ref LaunchSettings m_LaunchSettings;
-	protected ref BuildSettings m_BuildSettings;
-	protected ref ProjectSettings m_GprojSettings;
+	protected ref WorkbenchSettings m_WorkbenchSettings;
 	
 	void PluginProject()
 	{
-		string current_dir = GetModRoot();
-		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
+		string mod_root = GetModRoot();
+		if (!LoadConfig(mod_root + PROJECT_CFG, m_ProjectSettings)) {
+			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, mod_root));
 			return;
 		}
 
 		// Load launch settings
-		m_LaunchSettings = LaunchSettings.Load(current_dir + LAUNCH_BIN);
-		if (!m_LaunchSettings) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", LAUNCH_BIN, current_dir));
+		m_WorkbenchSettings = WorkbenchSettings.Load(mod_root + DAYZ_BIN);
+		if (!m_WorkbenchSettings) {
+			ErrorDialog(string.Format("Failed to load %1 in %2", DAYZ_BIN, mod_root));
 			return;
 		}
-		
-		// Load build settings
-		m_BuildSettings = BuildSettings.Load(current_dir + BUILD_BIN);
-		if (!m_BuildSettings) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", BUILD_BIN, current_dir));
-			return;
-		}
-		
+				
 		// Load server config
-		m_ServerConfig = current_dir + SERVER_CFG;
+		/*m_ServerConfig = current_dir + SERVER_CFG;
 		if (!FileExist(m_ServerConfig)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, current_dir));
 			return;
+		}*/
+		
+		string mod_list;
+		if (GetCLIParam("mod", mod_list)) {
+			array<string> mod_splits = {};
+			mod_list.Split(";", mod_splits);
+			for (int i = 0; i < mod_splits.Count(); i++) {
+				Print(mod_splits[i]);
+			}
 		}
 		
+		
 		// define filePatching folders into m_Prefix
-		array<string> mod_splits = {};
+		/*array<string> mod_splits = {};
 		m_ProjectSettings["Mods"].Split(";", mod_splits);
 		foreach (string mod_split: mod_splits) {
 			string mod_split_edit = mod_split;
@@ -55,7 +55,7 @@ class PluginProject: PluginDialogBase
 			}
 		}
 		
-		m_Prefixes.Insert(GetPrefix());
+		m_Prefixes.Insert(GetModPrefix());*/
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
