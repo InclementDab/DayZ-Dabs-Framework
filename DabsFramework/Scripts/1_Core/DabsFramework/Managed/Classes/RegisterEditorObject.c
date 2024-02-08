@@ -1,4 +1,4 @@
-class RegisterEditorObject
+class RegisterScriptedEntity: Class
 {
 	static ref array<ref Param3<typename, string, string>> Instances = {};
 	

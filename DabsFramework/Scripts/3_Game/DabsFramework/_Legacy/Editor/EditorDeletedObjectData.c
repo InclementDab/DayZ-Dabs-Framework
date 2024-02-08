@@ -77,11 +77,6 @@ class EditorDeletedObjectData: SerializableBase
 		return null;
 	}
 	
-	bool Read(Serializer serializer)
-	{
-		return Read(serializer, 0);
-	}
-
 	override void Write(Serializer serializer, int version)
 	{
 		serializer.Write(Type);

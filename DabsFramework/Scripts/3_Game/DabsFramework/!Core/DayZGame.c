@@ -16,7 +16,7 @@ modded class DayZGame
 	
 	protected ref TTypeNameTypenameMap m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 	protected ref TypeConversionHashMap m_TypeConverterHashMap = new TypeConversionHashMap();
-				
+	
 	void DayZGame()
 	{		
 		m_LoggerManager = new LoggerManager(this);
@@ -175,6 +175,13 @@ modded class DayZGame
 		return world_name;
 	}
 	
+	void SetDate(DateTime date)
+	{
+		int year, month, day, hour, minute, second;
+		date.GetDate(year, month, day, hour, minute, second);
+		GetWorld().SetDate(year, month, day, hour, minute);
+	}
+	
 	LoggerManager GetLoggerManager()
 	{
 		return m_LoggerManager;
@@ -193,6 +200,19 @@ modded class DayZGame
 	ProfileSettings GetProfileSetting(typename profile_settings_type)
 	{
 		return m_ProfileSettings[profile_settings_type];
+	}
+	
+	Object GetTerrainObject()
+	{
+		Object terrain_object;
+		vector position, normal;
+		float fraction;
+		if (!DayZPhysics.RayCastBullet(vector.Zero, vector.Up * -1000.0, PhxInteractionLayers.TERRAIN, null, terrain_object, position, normal, fraction)) {
+			Error("Couldnt find terrain with raycast");
+			return null;
+		}
+		
+		return terrain_object;
 	}
 
 #ifdef DIAG_DEVELOPER

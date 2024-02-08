@@ -34,6 +34,10 @@ class ScriptView: ScriptedViewBase
 	
 	void ScriptView()
 	{				
+		if (!All) {
+			All = {};
+		}
+		
 		All.Insert(this);
 
 #ifndef WORKBENCH
@@ -92,7 +96,7 @@ class ScriptView: ScriptedViewBase
 		
 		//2 delete class instances
 		delete m_Controller;
-
+		
 		//3 unlink our layout, deleting it
 		if (m_LayoutRoot) {
 			m_LayoutRoot.Unlink();

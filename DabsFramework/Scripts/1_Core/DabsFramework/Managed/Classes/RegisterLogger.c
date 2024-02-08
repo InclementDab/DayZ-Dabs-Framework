@@ -1,5 +1,5 @@
 //@ RegisterLogger attribute, see LoggerBase for usage example
-class RegisterLogger
+class RegisterLogger: Class
 {
 	static ref array<typename> RegisteredLoggers = {};
 	

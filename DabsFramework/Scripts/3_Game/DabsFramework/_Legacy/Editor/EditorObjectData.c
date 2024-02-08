@@ -1,7 +1,7 @@
 // temp until i can find a better way to find "First" in a map that doesnt blow the software up
 static int EditorObjectID;
 class EditorObjectData: SerializableBase
-{	
+{		
 	[NonSerialized()]
 	int m_Id;
 	int GetID() { return m_Id; }
