@@ -49,12 +49,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		return GetAbsolutePath("$Workdrive:");
 	}
-	
-	static string GetRoot()
-	{
-		return GetAbsolutePath(string.Empty);
-	}
-	
+		
 	static string GetModPrefix()
 	{
 		array<string> split = {};
