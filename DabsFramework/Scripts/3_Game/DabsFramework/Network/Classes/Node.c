@@ -1,13 +1,39 @@
+enum TreeTraversalType
+{
+	IN_ORDER,
+	PRE_ORDER,
+	POST_ORDER
+};
+
+class RootNode: Node
+{
+	static const string GROUPS = "Groups";
+	static const string MARKERS = "Markers";
+	static const string PLAYERS = "Players";
+		
+	void RootNode(UUID uuid, string display_name = string.Empty, Symbols icon = string.Empty)
+	{
+		Add(new Node(GROUPS, "Groups", Symbols.PEOPLE_LINE));
+		Add(new Node(MARKERS, "Markers", Symbols.LOCATION_DOT));
+		Add(new Node(PLAYERS, "Players", Symbols.PEOPLE));
+		
+		Get(MARKERS).Add(new Node("Static", "Static Markers"));
+		Get(MARKERS).Add(new Node("Dynamic", "Dynamic Markers"));
+		Get(MARKERS).Add(new Node("User", "User Markers"));
+	}
+}
+
 class Node: SerializableBase
-{		
+{
 	static ref NodeStateMachine States = new NodeStateMachine();
 	
 	// Initialize States -> Root in order
-	static ref Node Root = new Node(string.Empty, string.Empty, string.Empty);
+	static ref Node Root = new RootNode(string.Empty, string.Empty, string.Empty);
 	
 	protected UUID m_UUID;
 	string DisplayName;
 	Symbols Icon;
+	LinearColor Color;
 	
 	protected NodeState m_NodeState;
 		
@@ -27,6 +53,30 @@ class Node: SerializableBase
 		DisplayName = display_name;
 		Icon = icon;
 	}
+		
+	/*
+	Node Find(UUID uuid, TreeTraversalType traversal_type)
+	{
+		switch (traversal_type) {
+			
+		}
+	}
+	
+	protected Node FindInOrder(UUID uuid)
+	{
+		Node child = this;
+		while (child.Children.GetElement(0)) {
+			child = child.Children.GetElement(0);
+		}
+		
+		
+		
+	}
+	
+	array<Node> FindMany(typename type, TreeTraversalType traversal_type)
+	{
+		
+	}*/
 	
 	void AddState(NodeState state)
 	{
@@ -214,6 +264,7 @@ class Node: SerializableBase
 		serializer.Write(m_UUID);
 		serializer.Write(DisplayName);
 		serializer.Write(Icon);
+		serializer.Write((int)Color);
 		
 		serializer.Write(Children.Count());
 		foreach (string uuid, Node node: Children) {			
@@ -231,6 +282,7 @@ class Node: SerializableBase
 		serializer.Read(m_UUID);
 		serializer.Read(DisplayName);	
 		serializer.Read(Icon);
+		serializer.Read(Color);
 			
 		int count;
 		serializer.Read(count);
@@ -257,6 +309,13 @@ class Node: SerializableBase
 		}
 		
 		return super.Read(serializer, version);
+	}
+	
+	// a security meaasure that requires the user to authenticate for access to the data
+	// I will somehow write this. no idea how
+	bool FogOfWar()
+	{
+		return false;
 	}
 		
 	UUID GetUUID()
