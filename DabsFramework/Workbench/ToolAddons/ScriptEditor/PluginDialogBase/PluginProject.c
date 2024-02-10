@@ -56,6 +56,7 @@ class PluginProject: PluginDialogBase
 		}
 		
 		m_Prefixes.Insert(GetPrefix());
+		m_Prefixes.Insert("Scripts");
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
