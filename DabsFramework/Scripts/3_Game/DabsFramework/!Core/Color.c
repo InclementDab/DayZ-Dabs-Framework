@@ -206,14 +206,6 @@ class LinearColor: int
 	{
 		return CreateF(rgb[0], rgb[1], rgb[2]);
 	}
-
-	void Unpack(out int a, out int r, out int g, out int b)
-	{
-		a = GetAlpha();
-		r = GetRed();
-		g = GetGreen();
-		b = GetBlue();
-	}
 	
 	// 0: hue [0, 360]
 	// 1: saturation [0, 1.0]
@@ -277,7 +269,7 @@ class LinearColor: int
 				
 		r += m; g += m; b += m;
 		return CreateF(alpha, r, g, b);
-	}
+	}	
 	
 	static LinearColor Blend(LinearColor a, LinearColor b, BlendMode blend)
 	{
@@ -287,7 +279,7 @@ class LinearColor: int
 				return b;
 			}
 			case BlendMode.MULTIPLY: {
-				return a * b;
+				return a.Multiply(b);
 			}
 			case BlendMode.SCREEN: {
 				return 1 - (1 - a) * (1 - b);
@@ -367,12 +359,16 @@ class LinearColor: int
 	}
 	
 	// 0 = A, 1 = R, 2 = G, 3 = B
-	void Set(int n, uint8 val, bool gamut = true)
+	void Set(int n, uint8 val)
 	{
-		if (gamut) {
-			val = uint8.Convert(val);
-		}
+		val = uint8.Convert(val);
 		value = (val << (n * 8)) ^ value;
+	}
+	
+	void Set(int n, float val)
+	{
+		int clamped_val = Math.Clamp(val, 0, 1);
+		value = (clamped_val << (n * 8)) ^ value;
 	}
 
 	// determine perceived brightness of RGB color, not perceptually uniform
@@ -413,11 +409,50 @@ class LinearColor: int
 
 		return dA * dA + dR * dR + dG * dG + dB * dB <= epsilon * epsilon;
 	}
+	
+	LinearColor Add(int val)
+	{
+		return LinearColor.Create(val + GetAlpha(), val + GetRed(), val + GetGreen(), val + GetBlue());
+	}
+	
+	LinearColor Subtract(int val)
+	{
+		return LinearColor.Create(val - GetAlpha(), val - GetRed(), val - GetGreen(), val - GetBlue());
+	}
+	
+	LinearColor Multiply(LinearColor b)
+	{
+		return LinearColor.Create(GetAlpha() * b.GetAlpha() / 255, GetRed() * b.GetRed() / 255, GetGreen() * b.GetGreen() / 255, GetBlue() * b.GetBlue() / 255);
+	}
 
 	// returns true if all the components are zero
 	bool IsZero()
 	{
 		return GetRed() == 0 && GetGreen() == 0 && GetBlue() == 0;
+	}
+	
+	void Unpack(out int a, out int r, out int g, out int b)
+	{
+		a = GetAlpha();
+		r = GetRed();
+		g = GetGreen();
+		b = GetBlue();
+	}
+	
+	vector ToD65Linear()
+	{
+		int a, r, g, b;
+		Unpack(a, r, g, b);
+		
+		vector val = {
+			// Convert sRGB to linear RGB
+	    	Ternary<float>.If(r > 0.04045,  Math.Pow((r + 0.055) / 1.055, 2.4), r / 12.92),
+	    	Ternary<float>.If(g > 0.04045,  Math.Pow((g + 0.055) / 1.055, 2.4), g / 12.92),
+	    	Ternary<float>.If(b > 0.04045,  Math.Pow((b + 0.055) / 1.055, 2.4), b / 12.92),
+		};
+		
+		// Apply the RGB to XYZ conversion matrix
+	    return { r * 0.4124564 + g * 0.3575761 + b * 0.1804375, r * 0.2126729 + g * 0.7151522 + b * 0.0721750, r * 0.0193339 + g * 0.1191920 + b * 0.9503041 };
 	}
 }
 
