@@ -202,6 +202,11 @@ class LinearColor: int
 		return (int)(a * 255.0) << 24 | (int)(r * 255.0) << 16 | (int)(g * 255.0) << 8 | (int)(b * 255.0);
 	}
 
+	static LinearColor Create(vector rgb)
+	{
+		return CreateF(rgb[0], rgb[1], rgb[2]);
+	}
+
 	void Unpack(out int a, out int r, out int g, out int b)
 	{
 		a = GetAlpha();
@@ -223,8 +228,8 @@ class LinearColor: int
 		int hexasphere = hue / 60;
 		Print(hexasphere);
 		float c = saturation * value;	
-	    float x = c * (1 - Math.AbsFloat(Math.FMod(hexasphere, 2) - 1));
-	    float m = value - c;
+		float x = c * (1 - Math.AbsFloat(Math.FMod(hexasphere, 2) - 1));
+		float m = value - c;
 		float r, g, b;
 		switch (hexasphere) {
 			case 0: {
@@ -329,40 +334,63 @@ class LinearColor: int
 		return value & 0xFF;
 	}
 	
-	void SetAlpha(int alpha)
+	void SetAlpha(int alpha, bool gamut = true)
 	{
+		if (gamut) {
+			alpha = uint8.Convert(alpha);
+		}
 		value = (alpha << 24) ^ value;
 	}
 	
-	void SetRed(int red)
+	void SetRed(int red, bool gamut = true)
 	{
+		if (gamut) {
+			red = uint8.Convert(red);
+		}
 		value = (red << 16) ^ value;	
 	}	
 	
-	void SetGreen(int green)
+	void SetGreen(int green, bool gamut = true)
 	{
+		if (gamut) {
+			green = uint8.Convert(green);
+		}
 		value = (green << 8) ^ value;	
 	}	
 	
-	void SetBlue(int blue)
+	void SetBlue(int blue, bool gamut = true)
 	{
+		if (gamut) {
+			blue = uint8.Convert(blue);
+		}
 		value = (blue << 0) ^ value;
 	}
 	
 	// 0 = A, 1 = R, 2 = G, 3 = B
-	void Set(int n, uint8 val)
+	void Set(int n, uint8 val, bool gamut = true)
 	{
+		if (gamut) {
+			val = uint8.Convert(val);
+		}
 		value = (val << (n * 8)) ^ value;
 	}
 
-	// determine perceived brightness of RGB color
+	// determine perceived brightness of RGB color, not perceptually uniform
 	// https://stackoverflow.com/a/596243
 	float GetLuminance()
 	{
-		int r = 0.299 * (GetRed() * GetRed());
-		int g = 0.587 * (GetGreen() * GetGreen());
-		int b = 0.144 * (GetBlue() * GetBlue());
-		return Math.Sqrt(r + g + b);
+		float r = 0.299 * (GetRed() * GetRed());
+		float g = 0.587 * (GetGreen() * GetGreen());
+		float b = 0.144 * (GetBlue() * GetBlue());
+		return Math.SqrFloat(r + g + b);
+	}
+
+	// clamps each component to [min, max] range
+	void Clamp(float min, float max)
+	{
+		SetRed(Math.Clamp(GetRed(), min, max), false);
+		SetGreen(Math.Clamp(GetGreen(), min, max), false);
+		SetBlue(Math.Clamp(GetBlue(), min, max), false);
 	}
 
 	string ToHex()
@@ -373,6 +401,23 @@ class LinearColor: int
 	vector ToVector()
 	{
 		return Vector(GetRed(), GetGreen(), GetBlue());
+	}
+
+	// returns true if the colors differ by at most epsilon in each component, not perceptually uniform
+	bool IsEqual(LinearColor other, float epsilon = 0.0)
+	{
+		int dA = GetAlpha() - other.GetAlpha();
+		int dR = GetRed() - other.GetRed();
+		int dG = GetGreen() - other.GetGreen();
+		int dB = GetBlue() - other.GetBlue();
+
+		return dA * dA + dR * dR + dG * dG + dB * dB <= epsilon * epsilon;
+	}
+
+	// returns true if all the components are zero
+	bool IsZero()
+	{
+		return GetRed() == 0 && GetGreen() == 0 && GetBlue() == 0;
 	}
 }
 
