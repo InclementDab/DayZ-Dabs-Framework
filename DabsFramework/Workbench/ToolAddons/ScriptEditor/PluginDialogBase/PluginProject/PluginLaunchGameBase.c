@@ -153,9 +153,9 @@ class PluginLaunchGameBase: PluginProject
 		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
 		CopyFiles(string.Format("%1\\Missions\\Dev", launch_settings.Repository), server_mission);
 		
-		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
-		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission);
-		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=@DayZ-Editor;%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, server_mission);
+		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-world=%3\"", formatted_mod_list, client_profile_directory, m_LaunchSettings.Map);
+		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server \"-world=%6\"", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, m_LaunchSettings.Map);
+		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=@DayZ-Editor;%1\" \"-profiles=%2\" \"-mission=%3\" \"-world=%4\"", formatted_mod_list, client_profile_directory, server_mission, m_LaunchSettings.Map);
 
 		string ip, password;
 		int port;
@@ -171,7 +171,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 						
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
-			Workbench.RunCmd(game_exe + " " + client_launch_params);
+			Workbench.RunCmd(string.Format("%1 %2 -mission=dayzOffline.%3", game_exe, client_launch_params, m_LaunchSettings.Map));
 			//Workbench.RunCmd(game_exe + " -client2 " + client_launch_params);
 		}	
 		
