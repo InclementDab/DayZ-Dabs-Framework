@@ -272,9 +272,8 @@ class LinearColor: int
 	}	
 	
 	static LinearColor Blend(LinearColor a, LinearColor b, BlendMode blend)
-	{
-		switch (blend)
-		{
+	{		
+		switch (blend) {
 			case BlendMode.NORMAL: {
 				return b;
 			}
@@ -282,7 +281,7 @@ class LinearColor: int
 				return a.Multiply(b);
 			}
 			case BlendMode.SCREEN: {
-				return 1 - (1 - a) * (1 - b);
+				return (a.Subtract(255).Multiply(b.Subtract(255)).Subtract(255);
 			}
 			case BlendMode.OVERLAY: {
 				if (a < 0.5) {
@@ -303,6 +302,7 @@ class LinearColor: int
 				return 2 * a * (1 - b) + Math.SqrInt(a) * (2 * b - 1);
 			}
 		}
+		
 		return a;
 	}
 
@@ -370,23 +370,28 @@ class LinearColor: int
 		int clamped_val = Math.Clamp(val, 0, 1);
 		value = (clamped_val << (n * 8)) ^ value;
 	}
+	
+	int Get(int n)
+	{
+		return (value >> (n * 8) & 0xFF);
+	}
 
 	// determine perceived brightness of RGB color, not perceptually uniform
 	// https://stackoverflow.com/a/596243
 	float GetLuminance()
 	{
-		float r = 0.299 * (GetRed() * GetRed());
-		float g = 0.587 * (GetGreen() * GetGreen());
-		float b = 0.144 * (GetBlue() * GetBlue());
+		float r = 0.299 * (value.GetRed() * value.GetRed());
+		float g = 0.587 * (value.GetGreen() * value.GetGreen());
+		float b = 0.144 * (value.GetBlue() * value.GetBlue());
 		return Math.SqrFloat(r + g + b);
 	}
 
 	// clamps each component to [min, max] range
 	void Clamp(float min, float max)
 	{
-		SetRed(Math.Clamp(GetRed(), min, max), false);
-		SetGreen(Math.Clamp(GetGreen(), min, max), false);
-		SetBlue(Math.Clamp(GetBlue(), min, max), false);
+		SetRed(Math.Clamp(value.GetRed(), min, max), false);
+		SetGreen(Math.Clamp(value.GetGreen(), min, max), false);
+		SetBlue(Math.Clamp(value.GetBlue(), min, max), false);
 	}
 
 	string ToHex()
@@ -394,65 +399,78 @@ class LinearColor: int
 		return Encoding.ToHex(value, 8);
 	}
 	
-	vector ToVector()
-	{
-		return Vector(GetRed(), GetGreen(), GetBlue());
-	}
-
 	// returns true if the colors differ by at most epsilon in each component, not perceptually uniform
 	bool IsEqual(LinearColor other, float epsilon = 0.0)
 	{
-		int dA = GetAlpha() - other.GetAlpha();
-		int dR = GetRed() - other.GetRed();
-		int dG = GetGreen() - other.GetGreen();
-		int dB = GetBlue() - other.GetBlue();
+		int dA = value.GetAlpha() - other.GetAlpha();
+		int dR = value.GetRed() - other.GetRed();
+		int dG = value.GetGreen() - other.GetGreen();
+		int dB = value.GetBlue() - other.GetBlue();
 
 		return dA * dA + dR * dR + dG * dG + dB * dB <= epsilon * epsilon;
 	}
 	
 	LinearColor Add(int val)
 	{
-		return LinearColor.Create(val + GetAlpha(), val + GetRed(), val + GetGreen(), val + GetBlue());
+		return LinearColor.Create(val + value.GetAlpha(), val + value.GetRed(), val + value.GetGreen(), val + value.GetBlue());
 	}
 	
 	LinearColor Subtract(int val)
 	{
-		return LinearColor.Create(val - GetAlpha(), val - GetRed(), val - GetGreen(), val - GetBlue());
+		return LinearColor.Create(val - value.GetAlpha(), val - value.GetRed(), val - value.GetGreen(), val - value.GetBlue());
 	}
 	
 	LinearColor Multiply(LinearColor b)
 	{
-		return LinearColor.Create(GetAlpha() * b.GetAlpha() / 255, GetRed() * b.GetRed() / 255, GetGreen() * b.GetGreen() / 255, GetBlue() * b.GetBlue() / 255);
+		return LinearColor.Create(value.GetAlpha() * b.GetAlpha() / 255, value.GetRed() * b.GetRed() / 255, value.GetGreen() * b.GetGreen() / 255, value.GetBlue() * b.GetBlue() / 255);
 	}
 
 	// returns true if all the components are zero
 	bool IsZero()
 	{
-		return GetRed() == 0 && GetGreen() == 0 && GetBlue() == 0;
+		return value.GetRed() == 0 && value.GetGreen() == 0 && value.GetBlue() == 0;
 	}
 	
 	void Unpack(out int a, out int r, out int g, out int b)
 	{
-		a = GetAlpha();
-		r = GetRed();
-		g = GetGreen();
-		b = GetBlue();
+		a = value.GetAlpha();
+		r = value.GetRed();
+		g = value.GetGreen();
+		b = value.GetBlue();
 	}
 	
 	vector ToD65Linear()
 	{
-		int a, r, g, b;
-		Unpack(a, r, g, b);
-		
-		vector val = {
+		vector rgb = value.ToVector();
+		vector xyz = {
 			// Convert sRGB to linear RGB
-	    	Ternary<float>.If(r > 0.04045,  Math.Pow((r + 0.055) / 1.055, 2.4), r / 12.92),
-	    	Ternary<float>.If(g > 0.04045,  Math.Pow((g + 0.055) / 1.055, 2.4), g / 12.92),
-	    	Ternary<float>.If(b > 0.04045,  Math.Pow((b + 0.055) / 1.055, 2.4), b / 12.92),
+	    	Ternary<float>.If(rgb[0] > 0.04045,  Math.Pow((rgb[0] + 0.055) / 1.055, 2.4), rgb[0] / 12.92),
+	    	Ternary<float>.If(rgb[1] > 0.04045,  Math.Pow((rgb[1] + 0.055) / 1.055, 2.4), rgb[1] / 12.92),
+	    	Ternary<float>.If(rgb[2] > 0.04045,  Math.Pow((rgb[2] + 0.055) / 1.055, 2.4), rgb[2] / 12.92),
 		};
 		
 		// Apply the RGB to XYZ conversion matrix
-	    return { r * 0.4124564 + g * 0.3575761 + b * 0.1804375, r * 0.2126729 + g * 0.7151522 + b * 0.0721750, r * 0.0193339 + g * 0.1191920 + b * 0.9503041 };
+	    return { 
+			xyz[0] * 0.4124564 + xyz[1] * 0.3575761 + xyz[2] * 0.1804375, 
+			xyz[0] * 0.2126729 + xyz[1] * 0.7151522 + xyz[2] * 0.0721750, 
+			xyz[0] * 0.0193339 + xyz[1] * 0.1191920 + xyz[2] * 0.9503041 
+		};
+	}
+	
+	// Returns in clamped float space [0..1]
+	vector ToVector()
+	{
+		return Vector(value.GetRed() / 255.0, value.GetGreen() / 255.0, value.GetBlue() / 255.0);
+	}
+	
+	float Normalize(bool include_alpha = false)
+	{
+		float val;
+		for (int i = !include_alpha; i < 4; i++) {
+			val += value[i];
+		}
+		
+		return val / ((3 + include_alpha) * 255);
 	}
 }
 
