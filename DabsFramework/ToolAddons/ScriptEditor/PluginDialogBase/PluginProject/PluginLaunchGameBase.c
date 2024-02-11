@@ -83,7 +83,11 @@ class PluginLaunchGameBase: PluginProject
 		string mod_cli, servermod_cli;
 		GetCLIParam("mod", mod_cli);
 		GetCLIParam("servermod", servermod_cli);
-				
+		
+		string root_trim = m_Root;
+		root_trim = root_trim.Substring(0, root_trim.Length() - 1);
+		mod_cli += root_trim;
+		
 		MakeDirectory(launch_settings.Profiles);
 		MakeDirectory(launch_settings.Missions);
 		
@@ -116,7 +120,7 @@ class PluginLaunchGameBase: PluginProject
 		CopyFiles(string.Format("%1\\Missions\\Dev", m_Repository), server_mission);
 		
 		string client_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", mod_cli, client_profile_directory);
-		string server_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", mod_cli, server_profile_directory, servermod_cli, string.Format("%1\\%2", m_Repository, SERVER_CFG), server_mission);
+		string server_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", mod_cli, server_profile_directory, servermod_cli, GetAbsolutePath(string.Format("$CurrentDir:%1", SERVER_CFG)), server_mission);
 		string offline_launch_params = WorkbenchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=@DayZ-Editor;%1\" \"-profiles=%2\" \"-mission=%3\"", mod_cli, client_profile_directory, server_mission);
 
 		string ip, password;
