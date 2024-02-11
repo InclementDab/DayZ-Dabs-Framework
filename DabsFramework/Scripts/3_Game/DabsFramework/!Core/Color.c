@@ -20,7 +20,7 @@ enum BlendMode
 	
 	// f(a, b) = { 2ab + (a * a)(1 - 2b),   		if b < 0.5
 	//			 { 2a(1 - b) + sqrt(a) * (2b - 1) ,	otherwise
-	SOPFT_LIGHT
+	SOFT_LIGHT
 };
 
 // https://en.wikipedia.org/wiki/X11_LinearColor_names
@@ -201,6 +201,14 @@ class LinearColor: int
 	{
 		return (int)(a * 255.0) << 24 | (int)(r * 255.0) << 16 | (int)(g * 255.0) << 8 | (int)(b * 255.0);
 	}
+
+	void Unpack(out int a, out int r, out int g, out int b)
+	{
+		a = GetAlpha();
+		r = GetRed();
+		g = GetGreen();
+		b = GetBlue();
+	}
 	
 	// 0: hue [0, 360]
 	// 1: saturation [0, 1.0]
@@ -268,13 +276,57 @@ class LinearColor: int
 	
 	static LinearColor Blend(LinearColor a, LinearColor b, BlendMode blend)
 	{
-		switch (blend) {
+		switch (blend)
+		{
 			case BlendMode.NORMAL: {
 				return b;
 			}
+			case BlendMode.MULTIPLY: {
+				return a * b;
+			}
+			case BlendMode.SCREEN: {
+				return 1 - (1 - a) * (1 - b);
+			}
+			case BlendMode.OVERLAY: {
+				if (a < 0.5) {
+					return 2 * a * b;
+				}
+				return 1 - 2 * (1 - a) * (1 - b);
+			}
+			case BlendMode.HARD_LIGHT: {
+				if (b < 0.5) {
+					return 2 * a * b;
+				}
+				return 1 - 2 * (1 - a) * (1 - b);
+			}
+			case BlendMode.SOFT_LIGHT: {
+				if (b < 0.5) {
+					return 2 * a * b + a * a * (1 - 2 * b);
+				}
+				return 2 * a * (1 - b) + Math.SqrInt(a) * (2 * b - 1);
+			}
 		}
-		
 		return a;
+	}
+
+	int GetAlpha()
+	{
+		return value >> 24 & 0xFF;
+	}
+
+	int GetRed()
+	{
+		return value >> 16 & 0xFF;
+	}
+
+	int GetGreen()
+	{
+		return value >> 8 & 0xFF;
+	}
+
+	int GetBlue()
+	{
+		return value & 0xFF;
 	}
 	
 	void SetAlpha(int alpha)
@@ -303,16 +355,25 @@ class LinearColor: int
 		value = (val << (n * 8)) ^ value;
 	}
 
+	// determine perceived brightness of RGB color
+	// https://stackoverflow.com/a/596243
+	float GetLuminance()
+	{
+		int r = 0.299 * (GetRed() * GetRed());
+		int g = 0.587 * (GetGreen() * GetGreen());
+		int b = 0.144 * (GetBlue() * GetBlue());
+		return Math.Sqrt(r + g + b);
+	}
+
 	string ToHex()
 	{
 		return Encoding.ToHex(value, 8);
 	}
 	
-/*
 	vector ToVector()
 	{
-		
-	}*/
+		return Vector(GetRed(), GetGreen(), GetBlue());
+	}
 }
 
 typedef int LinearColor;
