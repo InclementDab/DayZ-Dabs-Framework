@@ -1,34 +1,9 @@
-enum TreeTraversalType
-{
-	IN_ORDER,
-	PRE_ORDER,
-	POST_ORDER
-};
-
-class RootNode: Node
-{
-	static const string GROUPS = "Groups";
-	static const string MARKERS = "Markers";
-	static const string PLAYERS = "Players";
-		
-	void RootNode(UUID uuid, string display_name = string.Empty, Symbols icon = string.Empty)
-	{
-		Add(new Node(GROUPS, "Groups", Symbols.PEOPLE_LINE));
-		Add(new Node(MARKERS, "Markers", Symbols.LOCATION_DOT));
-		Add(new Node(PLAYERS, "Players", Symbols.PEOPLE));
-		
-		Get(MARKERS).Add(new Node("Static", "Static Markers"));
-		Get(MARKERS).Add(new Node("Dynamic", "Dynamic Markers"));
-		Get(MARKERS).Add(new Node("User", "User Markers"));
-	}
-}
-
 class Node: SerializableBase
 {
 	static ref NodeStateMachine States = new NodeStateMachine();
 	
 	// Initialize States -> Root in order
-	static ref Node Root = new RootNode(string.Empty, string.Empty, string.Empty);
+	static ref Node Root;
 	
 	protected UUID m_UUID;
 	string DisplayName;
@@ -40,6 +15,8 @@ class Node: SerializableBase
 	// Assigned by Get and Set of this class
 	ref map<string, ref Node> Children = new map<string, ref Node>();
 	
+	ref array<NodeView> Views = {};
+	
 	// Assigned by Set() of parent
 	Node Parent;
 	
@@ -47,36 +24,47 @@ class Node: SerializableBase
 	ref ScriptInvoker State_OnChanged = new ScriptInvoker();
 		
 	// This constructor has default variables on purpose. it must have a parameterless alternative, and preperations. used for deserialization
-	void Node(UUID uuid, string display_name = string.Empty, Symbols icon = string.Empty)
+	void Node(UUID uuid, string display_name = string.Empty, Symbols icon = string.Empty, LinearColor color = 0xFFFFFFFF)
 	{
 		m_UUID = uuid;
 		DisplayName = display_name;
 		Icon = icon;
+		Color = color;
+	}
+	
+	void ~Node()
+	{
+		foreach (NodeView view: Views) {
+			delete view;
+		}
+	}
+
+	Node Find(UUID uuid)
+	{
+		if (Children[uuid]) {
+			return Children[uuid];
+		}
+		
+		foreach (Node child: Children) {
+			Node found = child.Find(uuid);
+			if (found) {
+				return found;
+			}
+		}
+		
+		return null;
 	}
 		
-	/*
-	Node Find(UUID uuid, TreeTraversalType traversal_type)
+	void FindMany(typename type, inout notnull array<Node> elements)
 	{
-		switch (traversal_type) {
+		foreach (Node child: Children) {
+			if (child.IsInherited(type)) {
+				elements.Insert(child);
+			}
 			
+			child.FindMany(type, elements);
 		}
 	}
-	
-	protected Node FindInOrder(UUID uuid)
-	{
-		Node child = this;
-		while (child.Children.GetElement(0)) {
-			child = child.Children.GetElement(0);
-		}
-		
-		
-		
-	}
-	
-	array<Node> FindMany(typename type, TreeTraversalType traversal_type)
-	{
-		
-	}*/
 	
 	void AddState(NodeState state)
 	{
@@ -261,7 +249,7 @@ class Node: SerializableBase
 									
 	override void Write(Serializer serializer, int version)
 	{		
-		serializer.Write(m_UUID);
+		serializer.Write((string)m_UUID);
 		serializer.Write(DisplayName);
 		serializer.Write(Icon);
 		serializer.Write((int)Color);
@@ -310,14 +298,7 @@ class Node: SerializableBase
 		
 		return super.Read(serializer, version);
 	}
-	
-	// a security meaasure that requires the user to authenticate for access to the data
-	// I will somehow write this. no idea how
-	bool FogOfWar()
-	{
-		return false;
-	}
-		
+			
 	UUID GetUUID()
 	{
 		return m_UUID;

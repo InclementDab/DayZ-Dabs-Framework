@@ -54,7 +54,7 @@ class NamedLocation: ConfigObject
 	{
 		switch (Type) {
 			case CAPITAL:
-			case CITY: return 1.0;
+			case CITY: return 2.0;
 			case VILLAGE:
 			case CAMP: return 0.65;
 			case LOCAL:
@@ -63,7 +63,7 @@ class NamedLocation: ConfigObject
 			case RUIN:
 			case RAILROAD:
 			case OFFICE:
-			case VIEWPOINT: return 0.25;
+			case VIEWPOINT: return 0.22;
 			case BIGMILITARY: return 0.65;
 			case MEDMILITARY: return 0.5;
 			case SMALLMILITARY: return 0.35;
