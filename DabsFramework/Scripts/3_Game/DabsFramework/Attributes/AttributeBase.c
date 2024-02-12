@@ -69,7 +69,11 @@ class AttributeBase: Class
 	
 	static array<AttributeBase> GetCustomAttributes(typename type)
 	{
-		return m_AttributeBank[type];
+		if (m_AttributeBank.Contains(type)) {
+			return m_AttributeBank[type];
+		}
+		
+		return {};
 	}
 	
 	static FieldInfo FParseLine(string line)

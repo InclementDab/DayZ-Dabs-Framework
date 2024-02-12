@@ -5,7 +5,10 @@ class Node: SerializableBase
 	// Initialize States -> Root in order
 	static ref Node Root;
 	
+	// Only thing our constructor will ever know
 	protected UUID m_UUID;
+	
+	// Serialized data for each node (optional)
 	string DisplayName;
 	Symbols Icon;
 	LinearColor Color;
@@ -24,12 +27,9 @@ class Node: SerializableBase
 	ref ScriptInvoker State_OnChanged = new ScriptInvoker();
 		
 	// This constructor has default variables on purpose. it must have a parameterless alternative, and preperations. used for deserialization
-	void Node(UUID uuid, string display_name = string.Empty, Symbols icon = string.Empty, LinearColor color = 0xFFFFFFFF)
+	void Node(UUID uuid)
 	{
 		m_UUID = uuid;
-		DisplayName = display_name;
-		Icon = icon;
-		Color = color;
 	}
 	
 	void ~Node()
@@ -355,7 +355,7 @@ class Node: SerializableBase
 			tabs += "\t";
 		}
 		
-		PrintFormat("%4:%3[%1] %2: State:%4", m_UUID, DisplayName, tabs, depth, m_NodeState);
+		PrintFormat("%4:%3[%1] %2: State:%5, Ico:%6, Color:%7", m_UUID, DisplayName, tabs, depth, m_NodeState, Icon, Color);
 		
 		foreach (string uuid, Node node: Children) {
 			node.Debug(depth + 1);
