@@ -21,7 +21,7 @@ class ConfigEntryAttribute: AttributeBase
 	{
 		return Ternary<typename>.If(m_Force != EMPTY_TYPENAME, m_Force, Field.DeclaringType);
 	}
-	
+		
 	ScriptCaller GetOnChanged()
 	{
 		return m_OnChanged;

@@ -36,16 +36,23 @@ class AttributeBase: Class
 			FGets(handle, line_content);
 			
 			string tokens[256];
-			if (line_content.ParseString(tokens) == 4) {
-				if (tokens[0] == "modded") {
-					m_ParentType = tokens[2].ToType();
-				} else {
+			int parse_type = line_content.ParseString(tokens);
+			switch (parse_type) {
+				case 4: {
 					m_ParentType = tokens[1].ToType();
+					break;
+				}
+				
+				case 3: {
+					if (tokens[0] == "modded") {
+						m_ParentType = tokens[2].ToType();
+					}
+					break;
 				}
 			}
 		}
 				
-		Field = FParseLine(line_content);
+		Field = FieldInfo.CreateFromString(line_content);
 		CloseFile(handle);
 		
 		if (!m_ParentType) {
@@ -74,96 +81,5 @@ class AttributeBase: Class
 		}
 		
 		return {};
-	}
-	
-	static FieldInfo FParseLine(string line)
-	{
-		string tokens[256];
-		int count = line.ParseString(tokens);
-		FieldInfo field_info = new FieldInfo();
-		for (int i = 0; i < count; i++) {
-			
-			// Reparse
-			string token_parse;
-			int token_type = tokens[i].ParseStringEx(token_parse);
-			//PrintFormat("FParseLine: type=%1 value=%2", token_type, token_parse);
-			switch (token_type) {
-				case 1: {
-					switch (token_parse) {
-						case "protected": {
-							field_info.Visiblity = FieldVisibility.PROTECTED;
-							break;
-						}
-						
-						case "ref": {
-							field_info.Reference = true;
-							break;
-						}
-						
-						case "<": {
-							//Start template
-							
-							break;
-						}
-						
-						case ">": {
-							
-							break;
-						}
-						
-						case "static":
-						case "const": {
-							field_info.Const = true;
-							break;
-						}
-						
-						case ";": {
-							return field_info;
-						}
-						
-						case "=": {
-							field_info.Default = true;
-							break;
-						}
-						
-						default: {
-							PrintFormat("Unhandled token type=%1 value=%2", token_type, token_parse);
-						}
-					}
-					break;
-				}
-				
-				// '='
-				case 2: {
-					field_info.DefaultValue = token_parse;
-					break;
-				}
-				
-				case 3: {
-					switch (token_parse) {
-						default: {
-							if (!field_info.DeclaringType) {
-								field_info.DeclaringType = token_parse.ToType();
-								break;
-							}
-							
-							if (!field_info.Name) {
-								field_info.Name = token_parse;
-								break;
-							}
-							
-							PrintFormat("Unhandled token type=%1 value=%2", token_type, token_parse);
-							break;
-						}
-					}
-					
-					break;
-				}
-				
-				default: PrintFormat("Unhandled token type=%1", token_type); 
-			}
-		}
-		
-		return field_info;
 	}
 }

@@ -19,7 +19,7 @@ class ConfigObject: Managed
 			}
 			
 			typename variable_type = config_entry_attribute.GetVariableType();
-			string config_entry = string.Format("%1 %2", path, config_entry_attribute.GetVariableName());
+			string config_entry = string.Format("%1 %2", path, config_entry_attribute.GetVariableName());			
 			switch (variable_type) {
 				case bool:
 				case int: {
@@ -39,6 +39,22 @@ class ConfigObject: Managed
 				
 				case string: {
 					EnScriptVar<string>.Set(this, config_entry_attribute.Field.Name, GetGame().ConfigGetTextOut(config_entry));
+					break;
+				}
+				
+				case array: {
+					Class array_reference = config_entry_attribute.Field.DeclaringType.Spawn();
+					EnScript.SetClassVar(this, config_entry_attribute.Field.Name, 0, array_reference);
+					
+					array<string> raw_entries = {};					
+					GetGame().ConfigGetTextArrayRaw(config_entry, raw_entries);
+					foreach (string raw: raw_entries) {
+						vector vector_tryparse = raw.ToVector();
+						if (vector_tryparse != vector.Zero) {
+							//g_Script.Call(array_reference, "Insert", vector_tryparse);
+						}
+					}
+					
 					break;
 				}
 				
