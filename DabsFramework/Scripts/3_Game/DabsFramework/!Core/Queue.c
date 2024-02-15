@@ -2,7 +2,7 @@ class Queue<Class T>: Managed
 {
 	static const T EMPTY;
 	
-	protected ref array<ref T> m_Values = {};
+	protected ref array<T> m_Values = {};
 		
 	T Pop()
 	{
