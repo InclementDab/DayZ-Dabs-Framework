@@ -34,6 +34,11 @@ class ProfileSettings: Class
 					break;
 				}
 				
+				case vector: {
+					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(variable_name_formatted, EnScriptVar<vector>.Get(this, variable_name).ToString(false)));
+					break;
+				}
+				
 				// known bug: you cant have default values for array types yet, since ctor order is whackadoodle
 				case String("array<string>").ToType(): {
 					EnScript.SetClassVar(this, variable_name, 0, g_Game.GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
@@ -79,6 +84,11 @@ class ProfileSettings: Class
 				
 				case string: {
 					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<string>.Get(this, variable_name)));
+					break;
+				}
+					
+				case vector: {
+					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<vector>.Get(this, variable_name)));
 					break;
 				}
 				
@@ -137,7 +147,7 @@ class ProfileSettings: Class
 		
 		return default;
 	}
-	
+		
 	array<ref ProfileSettingsCategory> GetCategories()
 	{
 		if (RegisterProfileSettingBase.Instances[Type()]) {
