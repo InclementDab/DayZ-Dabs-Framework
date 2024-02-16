@@ -19,7 +19,7 @@ class AttributeBase: Class
 		array<string> stack_split = {};
 		stack.Split(":", stack_split);
 		m_LineNumber = stack_split[stack_split.Count() - 1].Trim().ToInt();
-		
+				
 		array<string> stack_split_further = {};
 		stack_split[stack_split.Count() - 2].Split(")", stack_split_further);
 		m_File = stack_split_further[1].Trim();
@@ -58,6 +58,12 @@ class AttributeBase: Class
 		if (!m_ParentType) {
 			Error("Attribute registered without parent class");
 			return;
+		}
+		
+		for (int j = 0; j < m_ParentType.GetVariableCount(); j++) {
+			if (m_ParentType.GetVariableName(j) == Field.Name) {
+				Field.DeclaringType = m_ParentType.GetVariableType(j);
+			}
 		}
 		
 		if (!m_AttributeBank[m_ParentType]) {

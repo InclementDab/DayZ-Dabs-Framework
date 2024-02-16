@@ -213,7 +213,7 @@ class LinearColor: int
 	// 3: alpha [0, 1.0]
 	static LinearColor CreateHSV(int hue, float saturation, float value, float alpha = 1.0)
 	{
-		hue 		= Math.Clamp(hue, 0, 360);
+		hue 		= Math.Rollover(hue, 0, 360);
 		saturation 	= Math.Clamp(saturation, 0.0, 1.0);
 		value 		= Math.Clamp(value, 0.0, 1.0);
 				

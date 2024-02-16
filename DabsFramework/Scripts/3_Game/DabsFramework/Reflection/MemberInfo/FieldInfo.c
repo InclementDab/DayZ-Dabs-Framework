@@ -39,12 +39,11 @@ class FieldInfo: MemberInfo
 	
 	static FieldInfo CreateFromString(string tokens[], int count, inout int current, FieldInfo self)
 	{		
-		int template_index;
 		for (; current < count; current++) {
 			// Reparse
 			string token_parse;
 			int token_type = tokens[current].ParseStringEx(token_parse);
-			//PrintFormat("FParseLine: type=%1 value=%2", token_type, token_parse);
+			PrintFormat("FParseLine: type=%1 value=%2", token_type, token_parse);
 			switch (token_type) {
 				case 1: {
 					switch (token_parse) {
@@ -65,7 +64,6 @@ class FieldInfo: MemberInfo
 						}
 						
 						case ">": {
-							++current;
 							return self;
 						}
 						
@@ -81,6 +79,17 @@ class FieldInfo: MemberInfo
 						
 						case "=": {
 							self.Default = true;
+							break;
+						}
+						
+						// array initializer
+						case "{":
+						case "}": {
+							if (!self.DeclaringType.IsInherited(array)) {
+								Error("Array initializer found on non-array type");
+								break;
+							}
+							
 							break;
 						}
 						

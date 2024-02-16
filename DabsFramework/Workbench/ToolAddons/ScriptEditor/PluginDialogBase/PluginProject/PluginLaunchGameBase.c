@@ -64,7 +64,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		// Set up filepatching, needs to either create or delete all links depending on the setting
 		if (launch_settings.FilePatching) {
-			foreach (string prefix: m_Prefixes) {				
+			foreach (string prefix: m_Prefixes) {			
 				array<string> prefix_split = {};
 				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
 				
