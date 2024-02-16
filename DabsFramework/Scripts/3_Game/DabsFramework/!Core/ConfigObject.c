@@ -47,10 +47,17 @@ class ConfigObject: Managed
 								
 				default: {
 					if (variable_type.IsInherited(array)) {				
-						array<string> array_reference = {};
+						/*
+						BUG: This is dereferencing `array_reference` causing zones to be deleted
+						array<string> array_reference;
+						EnScript.GetClassVar(this, variable_name, 0, array_reference);
+						if (!array_reference) {
+							array_reference = {};
+						}
+						
 						GetGame().ConfigGetTextArrayRaw(config_entry, array_reference);
-						EnScript.SetClassVar(this, variable_name, 0, array_reference);
-						break;
+						EnScript.SetClassVar(this, variable_name, 0, array_reference);*/
+						//break;
 					}
 					
 					PrintFormat("Unhandled variable type:%1 name:%2", variable_type, config_entry_attribute.Field.Name);

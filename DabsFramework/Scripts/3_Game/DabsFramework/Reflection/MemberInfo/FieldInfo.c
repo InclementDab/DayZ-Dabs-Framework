@@ -43,7 +43,7 @@ class FieldInfo: MemberInfo
 			// Reparse
 			string token_parse;
 			int token_type = tokens[current].ParseStringEx(token_parse);
-			PrintFormat("FParseLine: type=%1 value=%2", token_type, token_parse);
+			//PrintFormat("FParseLine: type=%1 value=%2", token_type, token_parse);
 			switch (token_type) {
 				case 1: {
 					switch (token_parse) {
