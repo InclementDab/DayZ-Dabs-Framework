@@ -218,7 +218,6 @@ class LinearColor: int
 		value 		= Math.Clamp(value, 0.0, 1.0);
 				
 		int hexasphere = hue / 60;
-		Print(hexasphere);
 		float c = saturation * value;	
 		float x = c * (1 - Math.AbsFloat(Math.FMod(hexasphere, 2) - 1));
 		float m = value - c;
@@ -268,7 +267,7 @@ class LinearColor: int
 		}		
 				
 		r += m; g += m; b += m;
-		return CreateF(alpha, r, g, b);
+		return LinearColor.CreateF(alpha, r, g, b);
 	}	
 	
 	static LinearColor Blend(LinearColor a, LinearColor b, BlendMode blend)
