@@ -56,7 +56,6 @@ class PluginProject: PluginDialogBase
 		}
 		
 		m_Prefixes.Insert(GetPrefix());
-		m_Prefixes.Insert("DZ");
 		m_Prefixes.Insert("Scripts");
 		m_Prefixes.Insert("JM");
 	}
