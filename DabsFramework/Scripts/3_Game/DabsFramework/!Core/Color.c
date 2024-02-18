@@ -27,10 +27,10 @@ enum BlendMode
 // ARGB format
 class LinearColor: int
 {
-	static const int ALPHA_CHANNEL = 0;
-	static const int RED_CHANNEL = 1;
-	static const int GREEN_CHANNEL = 2;
-	static const int BLUE_CHANNEL = 3;
+	static const int ALPHA_CHANNEL = 3;
+	static const int RED_CHANNEL = 2;
+	static const int GREEN_CHANNEL = 1;
+	static const int BLUE_CHANNEL = 0;
 	
 	static const LinearColor ALICE_BLUE = 0xFFF0F8FF;
 	static const LinearColor ANTIQUE_WHITE = 0xFFFAEBD7;
@@ -194,7 +194,7 @@ class LinearColor: int
 		
 	static LinearColor CreateF(float r, float g, float b)
 	{
-		return 255 << 24 | (int)(r * 255.0) << 16 | (int)(g * 255.0) << 8 | (int)(b * 255.0);
+		return 255 << 24 | ((int)(r * 255.0) & 255) << 16 | ((int)(g * 255.0) & 255) << 8 | ((int)(b * 255.0) & 255);
 	}
 	
 	static LinearColor CreateF(float a, float r, float g, float b)
@@ -325,36 +325,30 @@ class LinearColor: int
 		return value & 0xFF;
 	}
 	
-	void SetAlpha(int alpha, bool gamut = true)
+	LinearColor With(int n, uint8 val)
 	{
-		if (gamut) {
-			alpha = uint8.Convert(alpha);
-		}
-		value = (alpha << 24) ^ value;
+		value.Set(n, val);
+		return value;
 	}
 	
-	void SetRed(int red, bool gamut = true)
+	void SetAlpha(int alpha)
 	{
-		if (gamut) {
-			red = uint8.Convert(red);
-		}
-		value = (red << 16) ^ value;	
+		value = (uint8.Convert(alpha) << 24) ^ alpha;
+	}
+	
+	void SetRed(int red)
+	{
+		value = (uint8.Convert(red) << 16) ^ value;	
 	}	
 	
-	void SetGreen(int green, bool gamut = true)
+	void SetGreen(int green)
 	{
-		if (gamut) {
-			green = uint8.Convert(green);
-		}
-		value = (green << 8) ^ value;	
+		value = (uint8.Convert(green) << 8) ^ value;	
 	}	
 	
-	void SetBlue(int blue, bool gamut = true)
+	void SetBlue(int blue)
 	{
-		if (gamut) {
-			blue = uint8.Convert(blue);
-		}
-		value = (blue << 0) ^ value;
+		value = (uint8.Convert(blue) << 0) ^ value;
 	}
 	
 	// 0 = A, 1 = R, 2 = G, 3 = B
@@ -388,9 +382,9 @@ class LinearColor: int
 	// clamps each component to [min, max] range
 	void Clamp(float min, float max)
 	{
-		SetRed(Math.Clamp(value.GetRed(), min, max), false);
-		SetGreen(Math.Clamp(value.GetGreen(), min, max), false);
-		SetBlue(Math.Clamp(value.GetBlue(), min, max), false);
+		SetRed(Math.Clamp(value.GetRed(), min, max));
+		SetGreen(Math.Clamp(value.GetGreen(), min, max));
+		SetBlue(Math.Clamp(value.GetBlue(), min, max));
 	}
 
 	string ToHex()

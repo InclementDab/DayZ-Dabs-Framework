@@ -16,6 +16,7 @@ class NamedLocation: ConfigObject
 	static const string SMALLMILITARY = "SmallMilitary";
 	static const string FEEDSHACK = "FeedShack";
 	static const string DEERSTAND = "DeerStand";
+	static const string TRADER = "Trader";
 	
 	[ConfigEntryAttribute("name")]
 	string Name;
@@ -30,6 +31,7 @@ class NamedLocation: ConfigObject
 	{
 		switch (Type) {
 			case CAPITAL: return Symbols.CITY;
+			case TRADER: return Symbols.COIN;
 			/*case CITY:
 			case VILLAGE: return string.Empty;
 			case CAMP: return Symbols.CAMPFIRE;
@@ -69,6 +71,7 @@ class NamedLocation: ConfigObject
 			case SMALLMILITARY: return 0.35;
 			case FEEDSHACK: return 0.2;
 			case DEERSTAND: return 0.1;
+			case TRADER: return 2.0;
 		}
 		
 		return 1.0;
@@ -78,6 +81,7 @@ class NamedLocation: ConfigObject
 	{
 		switch (Type) {
 			case CAPITAL: return LinearColor.PALE_VIOLET_RED;
+			case TRADER: return LinearColor.GOLD;
 			/*case CITY: return LinearColor.REDDIT;
 			case VILLAGE: return LinearColor.BLUE;
 			case CAMP: return LinearColor.ORANGE;
