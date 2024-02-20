@@ -58,6 +58,7 @@ class PluginProject: PluginDialogBase
 		m_Prefixes.Insert(GetPrefix());
 		m_Prefixes.Insert("Scripts");
 		m_Prefixes.Insert("JM");
+		m_Prefixes.Insert("DabsFramework"); // idk man i just want -mod :(
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
