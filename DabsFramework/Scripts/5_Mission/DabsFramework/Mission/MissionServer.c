@@ -6,7 +6,7 @@ modded class MissionServer
 	{
 		super.OnMissionStart();
 		
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(AfterHiveInit, 0, false, GetCEApi());
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(AfterHiveInit, 0, false, GetHive());
 	}
 	
 	// Called immediately after main() is done, CLE is initialized by this point
@@ -18,7 +18,6 @@ modded class MissionServer
 	override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
 	{
 		super.InvokeOnConnect(player, identity);
-		
 		if (m_JoinedPlayers.Find(identity.GetId()) == -1) {
 			OnPlayerJoined(player, identity);
 			m_JoinedPlayers.Insert(identity.GetId());
