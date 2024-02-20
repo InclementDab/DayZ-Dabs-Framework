@@ -6,7 +6,7 @@ modded class MissionServer
 	{
 		super.OnMissionStart();
 		
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(AfterHiveInit, 0, false, GetCEApi());
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(AfterHiveInit, 0, false, GetHive());
 	}
 	
 	// Called immediately after main() is done, CLE is initialized by this point
