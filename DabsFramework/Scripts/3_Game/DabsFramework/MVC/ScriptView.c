@@ -19,15 +19,7 @@ class CustomDialogWindow: ScriptView
 */
 
 class ScriptView: ScriptedViewBase
-{
-#ifdef WORKBENCH	
-	override void OnWidgetScriptInit(Widget w)
-	{
-		m_LayoutRoot = w;
-		
-	}
-#endif
-	
+{	
 	static ref array<ScriptView> All = {};
 		
 	protected ref ViewController m_Controller;

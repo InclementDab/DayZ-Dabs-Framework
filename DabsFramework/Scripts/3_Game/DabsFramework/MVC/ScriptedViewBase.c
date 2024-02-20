@@ -30,7 +30,7 @@ class ScriptedViewBase: Managed
 		}
 
 #ifdef WORKBENCH
-		if (!GetDayZGame()) {
+		if (!g_Game) {
 			return;
 		}
 #endif
