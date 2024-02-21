@@ -182,6 +182,17 @@ class LinearColor: int
 	static const LinearColor YOUTUBE = LinearColor.Create(255, 0, 0);
 	static const LinearColor REDDIT = LinearColor.Create(255, 69, 0);
 	
+	static array<LinearColor> GetAll()
+	{
+		array<LinearColor> results = {};
+		typename type = LinearColor;
+		for (int i = 0; i < type.GetVariableCount(); i++) {
+			results.Insert(EnumTools.GetEnumValue(LinearColor, i));
+		}
+		
+		return results;
+	}
+	
 	static LinearColor Create(int r, int g, int b)
 	{
 		return 255 << 24 | r << 16 | g << 8 | b;

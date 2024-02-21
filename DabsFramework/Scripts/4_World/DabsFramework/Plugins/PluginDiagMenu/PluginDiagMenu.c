@@ -27,16 +27,7 @@ modded class PluginDiagMenu
 		map<int, ref PPEClassBase> classes = EnScriptVar<map<int, ref PPEClassBase>>.Get(manager, "m_PPEClassMap");
 		
 		Print(classes);
-		foreach (int id, PPEClassBase class_: classes) {		
-			int modded_id = GetModdedDiagID();	
-			m_PPEEffectMenuIDs[id] = modded_id;
-			m_PPEffectsParamData[modded_id] = {};
-			
-			map<int, ref PPEMatClassParameterCommandData> commands = EnScriptVar<map<int, ref PPEMatClassParameterCommandData>>.Get(class_, "m_MaterialParamMapStructure");
-			foreach (int commandid, PPEMatClassParameterCommandData command: commands) {
-				m_PPEffectsParamData[modded_id].InsertAt(GetModdedDiagID(), commandid);
-			}
-		}
+		
 		
 		m_ResetProfilerID = GetModdedDiagID();
 		m_DumpProfilerID = GetModdedDiagID();		
@@ -95,38 +86,7 @@ modded class PluginDiagMenu
 			{
 				map<int, ref PPEClassBase> classes = EnScriptVar<map<int, ref PPEClassBase>>.Get(PPEManagerStatic.GetPPEManager(), "m_PPEClassMap");
 				foreach (int id, PPEClassBase class_: classes) {	
-					int modded_id = m_PPEEffectMenuIDs[id];				
 					
-					Print(class_.GetPostProcessEffectID());
-					string menu_name = GetPostProcessEffectName(class_.GetPostProcessEffectID());
-					Print(menu_name);
-					DiagMenu.RegisterMenu(modded_id, menu_name, m_PPEffectsID);
-					
-					map<int, ref PPEMatClassParameterCommandData> commands = EnScriptVar<map<int, ref PPEMatClassParameterCommandData>>.Get(class_, "m_MaterialParamMapStructure");
-					
-					foreach (int index, int modded_id_item: m_PPEffectsParamData[modded_id]) {
-						Param param = commands[index].GetDefaultValues();
-						Print(param.Type());
-						switch (param.Type().ToString()) {
-							case "Param2<string,bool>": {
-								PPETemplateDefBool def_bool = PPETemplateDefBool.Cast(param);
-								DiagMenu.RegisterBool(modded_id_item, "", def_bool.param1, modded_id);
-								break;
-							}
-							
-							case "Param4<string,int,int,int>": {
-								PPETemplateDefInt def_int = PPETemplateDefInt.Cast(param);
-								DiagMenu.RegisterRange(modded_id_item, "", def_int.param1, modded_id, string.Format("%1,%2,%3,%4", def_int.param3, def_int.param4, def_int.param2, 1));
-								break;
-							}
-							
-							case "Param4<string, float, float, float>": {
-								PPETemplateDefFloat def_float = PPETemplateDefFloat.Cast(param);
-								DiagMenu.RegisterRange(modded_id_item, "", def_int.param1, modded_id, string.Format("%1,%2,%3,%4", def_int.param3, def_int.param4, def_int.param2, 0.001));
-								break;
-							}
-						}
-					}					
 					
 				}
 			}
