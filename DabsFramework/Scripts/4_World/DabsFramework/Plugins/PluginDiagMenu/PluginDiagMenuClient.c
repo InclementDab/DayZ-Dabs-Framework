@@ -1,7 +1,7 @@
 #ifdef DIAG_DEVELOPER
 
 modded class PluginDiagMenuClient
-{	
+{
 	protected override void BindCallbacks()
 	{
 		super.BindCallbacks();
