@@ -3,7 +3,7 @@ class DateTime: int
 	static const int MINUTES_PER_HOUR = 60;
 	static const int HOURS_PER_DAY = 24;
 	
-	static const DateTime EPOCH = 0;
+	static DateTime EPOCH = 0;
 	
 	// https://en.wikipedia.org/wiki/ISO_8601
 	static const string FORMAT_ISO_DATE = "yyyy-MM-dd";
@@ -262,7 +262,7 @@ class DateTime: int
 		
 		// Checking ahead on the next month / year
 		int days_in_month = DateTime.DaysInMonth(month, DateTime.IsLeapYear(year));
-		while (day > days_in_month) {			
+		while (day >= days_in_month) {			
 			day -= days_in_month;
 			month++;
 			if (month > 12) {
