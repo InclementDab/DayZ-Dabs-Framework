@@ -56,7 +56,11 @@ class PluginProject: PluginDialogBase
 		}
 		
 		m_Prefixes.Insert(GetPrefix());
-		m_Prefixes.Insert("Scripts");
+		m_Prefixes.Insert("Scripts");	
+#ifdef DZ_FILEPATCH
+		m_Prefixes.Insert("DZ");	
+#endif
+		m_Prefixes.Insert("Graphics");
 		m_Prefixes.Insert("JM");
 		m_Prefixes.Insert("DabsFramework"); // idk man i just want -mod :(
 	}
