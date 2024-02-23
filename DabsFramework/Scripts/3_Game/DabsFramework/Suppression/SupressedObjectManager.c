@@ -4,7 +4,7 @@ class SuppressedObjectManager: Managed
 	static const int RPC_UNSUPPRESS = -135295236;
 
 	protected ref array<ref SuppressedObject> m_Objects = {};
-	
+		
 	void SuppressedObjectManager()
 	{
 		DayZGame.Event_OnRPC.Insert(OnRPC);
@@ -92,7 +92,7 @@ class SuppressedObjectManager: Managed
 		}
 		
 		rpc.Send(null, RPC_UNSUPPRESS, true);
-#endif		
+#endif
 	}
 	
 	bool IsSuppressed(notnull Object object)
@@ -160,5 +160,10 @@ class SuppressedObjectManager: Managed
 			}
 		}
 #endif
+	}
+	
+	array<ref SuppressedObject> GetObjects()
+	{
+		return m_Objects;
 	}
 }
