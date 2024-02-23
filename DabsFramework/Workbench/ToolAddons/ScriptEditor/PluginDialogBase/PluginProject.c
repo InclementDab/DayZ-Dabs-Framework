@@ -60,6 +60,7 @@ class PluginProject: PluginDialogBase
 		m_Prefixes.Insert("JM");
 		m_Prefixes.Insert("DabsFramework");
 		m_Prefixes.Insert("HypeTrain");
+		m_Prefixes.Insert("Editor");
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
