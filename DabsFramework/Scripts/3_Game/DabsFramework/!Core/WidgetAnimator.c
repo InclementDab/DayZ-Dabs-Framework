@@ -58,47 +58,31 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 		
-	static void AnimateColor(notnull Widget source, LinearColor end_color, TimeSpan time, bool loop = false)
+	static void AnimateColor(notnull Widget source, LinearColor end_color, TimeSpan time, BlendMode blend_mode = BlendMode.NORMAL, bool loop = false)
 	{				
-		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_B;
-		for (int i = 0; i < 4; i++) {
-			if (HasAnimation(source, property)) {
-				CancelAnimate(source, property);
-			}
-			
-			int start_value = WidgetAnimationTimer.GetProperty(source, property) * 255;
-			int end_value = ((end_color >> (i * 8)) & 255);
-			
-			if (start_value != end_value) {
-				WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-				animation_timer.Run(source, property, (float)start_value / 255.0, (float)end_value / 255.0, time, loop);
-				m_RunningTimers.Insert(animation_timer);
-			}
-			
-			// they are bitwise flags so halving the value will return us 
-			property /= 2;
+		WidgetAnimatorProperty property = WidgetAnimatorProperty.LINEAR_COLOR;
+		if (HasAnimation(source, property)) {
+			CancelAnimate(source, property);
+		}
+
+		if (source.GetColor() != end_color) {
+			ColorWidgetAnimationTimer animation_timer = new ColorWidgetAnimationTimer();
+			animation_timer.RunWithBlend(source, property, source.GetColor(), end_color, blend_mode, time, loop);
+			m_RunningTimers.Insert(animation_timer);
 		}
 	}
 	
-	static void AnimateColor(notnull Widget source, LinearColor start_color, LinearColor end_color, TimeSpan time, bool loop = false)
+	static void AnimateColor(notnull Widget source, LinearColor start_color, LinearColor end_color, TimeSpan time, BlendMode blend_mode = BlendMode.NORMAL, bool loop = false)
 	{			
-		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_B;
-		for (int i = 0; i < 4; i++) {
-			if (HasAnimation(source, property)) {
-				CancelAnimate(source, property);
-			}
-			
-			int start_value = ((start_color >> (i * 8)) & 255);
-			int end_value = ((end_color >> (i * 8)) & 255);
-			
-			if (start_value != end_value) {
-				WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-				animation_timer.Run(source, property, (float)start_value / 255.0, (float)end_value / 255.0, time, loop); // WidgetAnimationTimer.GetProperty(source, property)
-				m_RunningTimers.Insert(animation_timer);
-			}
-			
-			// they are bitwise flags so halving the value will return us 
-			property /= 2;
+		WidgetAnimatorProperty property = WidgetAnimatorProperty.LINEAR_COLOR;
+		if (HasAnimation(source, property)) {
+			CancelAnimate(source, property);
+		}
+
+		if (start_color != end_color) {
+			ColorWidgetAnimationTimer animation_timer = new ColorWidgetAnimationTimer();
+			animation_timer.RunWithBlend(source, property, start_color, end_color, blend_mode, time, loop);
+			m_RunningTimers.Insert(animation_timer);
 		}
 	}	
 	

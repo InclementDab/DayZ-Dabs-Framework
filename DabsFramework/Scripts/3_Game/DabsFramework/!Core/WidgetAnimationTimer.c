@@ -1,3 +1,55 @@
+class ColorWidgetAnimationTimer: WidgetAnimationTimer
+{	
+	protected LinearColor m_StartValueColor, m_EndValueColor;
+	protected BlendMode m_BlendMode;
+	
+	void RunWithBlend(Widget source, WidgetAnimatorProperty property, LinearColor start_value, LinearColor end_value, BlendMode blend_mode, int time, bool loop)
+	{
+		m_Source = source;
+		m_Property = property;
+		m_StartValueColor = start_value;
+		m_EndValueColor = end_value;
+		m_BlendMode = blend_mode;
+		m_Time = time;
+		m_Loop = loop;
+		m_StartTime = GetGame().GetTime();
+		
+		if (m_Time <= 0) {
+			Error("Time out of bounds " + m_Time);
+			return;
+		}
+		
+		m_UpdateQueue.Insert(DoAnimate);
+	}
+	
+	protected override void DoAnimate()
+	{
+		if (!m_Source) {
+			m_UpdateQueue.Remove(DoAnimate);
+			delete this;
+			return;
+		}
+		
+		float normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
+		m_Source.SetColor(LinearColor.Lerp(m_StartValueColor, m_EndValueColor, m_BlendMode, normalized));
+		
+		if (normalized >= 1) {	
+			// reset the value once we reach the end
+			if (m_Loop) {
+				m_Source.SetColor(m_StartValueColor);
+				m_StartTime = GetGame().GetTime();
+				return;
+			}
+			
+			m_UpdateQueue.Remove(DoAnimate);
+
+			// finally set end value to make sure it was completed
+			m_Source.SetColor(m_EndValueColor);
+			delete this;
+		}
+	}
+}
+
 class WidgetAnimationTimer: Managed
 {
 	protected Widget m_Source;
@@ -41,9 +93,7 @@ class WidgetAnimationTimer: Managed
 			return;
 		}
 		
-		float normalized = ((GetGame().GetTime() - m_StartTime) / m_Time);
-		normalized = Math.Clamp(normalized, 0, 1);
-		
+		float normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
 		SetProperty(m_Source, m_Property, Math.Lerp(m_StartValue, m_EndValue, normalized));
 		
 		if (normalized >= 1) {	

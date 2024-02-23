@@ -315,6 +315,11 @@ class LinearColor: int
 		
 		return a;
 	}
+	
+	static LinearColor Lerp(LinearColor a, LinearColor b, BlendMode blend, float t)
+	{
+		return LinearColor.Blend(a.Add(t * 255), b.Subtract(a), blend);
+	}
 
 	int GetAlpha()
 	{
@@ -336,7 +341,7 @@ class LinearColor: int
 		return value & 0xFF;
 	}
 	
-	LinearColor With(int n, uint8 val)
+	LinearColor With(int n, int val)
 	{
 		value.Set(n, val);
 		return value;
@@ -344,29 +349,29 @@ class LinearColor: int
 	
 	void SetAlpha(int alpha)
 	{
-		value = (uint8.Convert(alpha) << 24) ^ alpha;
+		Set(ALPHA_CHANNEL, alpha);
 	}
 	
 	void SetRed(int red)
 	{
-		value = (uint8.Convert(red) << 16) ^ value;	
+		Set(RED_CHANNEL, red);
 	}	
 	
 	void SetGreen(int green)
 	{
-		value = (uint8.Convert(green) << 8) ^ value;	
+		Set(GREEN_CHANNEL, green);
 	}	
 	
 	void SetBlue(int blue)
 	{
-		value = (uint8.Convert(blue) << 0) ^ value;
+		Set(BLUE_CHANNEL, blue);
 	}
 	
-	// 0 = A, 1 = R, 2 = G, 3 = B
-	void Set(int n, uint8 val)
+	// 3 = A, 2 = R, 1 = G, 0 = B
+	void Set(int n, int val)
 	{
-		val = uint8.Convert(val);
-		value = (val << (n * 8)) ^ value;
+		val &= 255;
+		value = (val << (n * 8)) | (value & ~(255 << (n * 8)));
 	}
 	
 	void Set(int n, float val)
@@ -427,6 +432,11 @@ class LinearColor: int
 	LinearColor Multiply(LinearColor b)
 	{
 		return LinearColor.Create(value.GetAlpha() * b.GetAlpha() / 255, value.GetRed() * b.GetRed() / 255, value.GetGreen() * b.GetGreen() / 255, value.GetBlue() * b.GetBlue() / 255);
+	}
+	
+	LinearColor Multiply(float t)
+	{
+		return LinearColor.Create(value.GetAlpha() * t, value.GetRed() * t, value.GetGreen() * t, value.GetBlue() * t);
 	}
 
 	// returns true if all the components are zero
