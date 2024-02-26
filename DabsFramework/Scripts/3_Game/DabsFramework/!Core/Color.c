@@ -318,6 +318,10 @@ class LinearColor: int
 	
 	static LinearColor Lerp(LinearColor a, LinearColor b, BlendMode blend, float t)
 	{
+		// temp
+		return LinearColor.Create(Math.Lerp(a.GetAlpha(), b.GetAlpha(), t), Math.Lerp(a.GetRed(), b.GetRed(), t), Math.Lerp(a.GetGreen(), b.GetGreen(), t), Math.Lerp(a.GetBlue(), b.GetBlue(), t)), 
+		
+		
 		return LinearColor.Blend(a.Add(t * 255), b.Subtract(a), blend);
 	}
 
