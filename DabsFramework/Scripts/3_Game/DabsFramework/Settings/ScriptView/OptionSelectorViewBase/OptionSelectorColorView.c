@@ -29,7 +29,7 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		type_converter.GetFromController(m_ProfileSettingsColor, m_ProfileSettingsColor.GetVariableName(), 0);
 		
 		m_OptionSelectorColorViewController.Value = type_converter.GetInt();			
-		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var"});
+		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var", "Alpha"});
 
 		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
 		m_OptionSelectorColorViewController.NotifyPropertyChanged("StartValue");
