@@ -212,6 +212,11 @@ class LinearColor: int
 	{
 		return (int)(a * 255.0) << 24 | (int)(r * 255.0) << 16 | (int)(g * 255.0) << 8 | (int)(b * 255.0);
 	}
+	
+	static LinearColor CreateV(vector v)
+	{
+		return (int)(255.0) << 24 | (int)(v[0] * 255.0) << 16 | (int)(v[1] * 255.0) << 8 | (int)(v[2] * 255.0);
+	}
 
 	static LinearColor Create(vector rgb)
 	{
@@ -479,6 +484,11 @@ class LinearColor: int
 	vector ToVector()
 	{
 		return Vector(value.GetRed() / 255.0, value.GetGreen() / 255.0, value.GetBlue() / 255.0);
+	}
+	
+	LinearColor MultiplyMatrix(vector matrix[3])
+	{
+		return LinearColor.CreateV(value.ToVector().Multiply3(matrix));
 	}
 	
 	float Normalize(bool include_alpha = false)
