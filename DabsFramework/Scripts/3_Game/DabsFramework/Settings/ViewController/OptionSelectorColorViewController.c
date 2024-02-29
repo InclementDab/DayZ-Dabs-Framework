@@ -1,6 +1,6 @@
 class OptionSelectorColorViewController: ViewController
 {	
-	static const int COLOR_GRADIENT_ACCURACY = 3;
+	static const int COLOR_GRADIENT_ACCURACY = 6;
 	
 	int Value, StartValue;
 	
@@ -136,7 +136,7 @@ class OptionSelectorColorViewController: ViewController
 			case "Hue": 
 			case "Saturation": 
 			case "Var": {
-				Value = HSVtoARGB(Hue, Saturation, Var, Alpha);				
+				Value = HSVtoARGB(Hue, Saturation, Var, Alpha);	
 				NotifyPropertyChanged("Value");
 				break;
 			}

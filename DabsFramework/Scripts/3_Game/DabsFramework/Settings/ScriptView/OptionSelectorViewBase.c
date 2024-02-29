@@ -21,7 +21,7 @@ class OptionSelectorViewBase: ScriptView
 	
 	bool IsChanged()
 	{
-		return false;
+		return false; 
 	}
 	
 	bool NeedsRestart()

@@ -16,7 +16,7 @@ GridSpacerWidgetClass Root {
  Rows 4
  {
   ButtonWidgetClass Accordion {
-   visible 1
+   visible 0
    ignorepointer 0
    color 0.1529 0.1529 0.1529 0.8235
    position 0 0
@@ -216,7 +216,6 @@ GridSpacerWidgetClass Root {
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Outline_2px
         }
        }
       }
@@ -257,7 +256,6 @@ GridSpacerWidgetClass Root {
            vexactpos 1
            hexactsize 0
            vexactsize 1
-           style Outline_2px
           }
          }
         }
@@ -285,7 +283,6 @@ GridSpacerWidgetClass Root {
            vexactpos 1
            hexactsize 0
            vexactsize 1
-           style Outline_2px
           }
          }
         }
@@ -711,7 +708,7 @@ GridSpacerWidgetClass Root {
      Columns 1
      Rows 2
      {
-      ButtonWidgetClass ButtonWidget0 {
+      ButtonWidgetClass SelectButton {
        color 0.3843 0.3843 0.3843 1
        size 0.5 1
        halign center_ref
@@ -725,11 +722,6 @@ GridSpacerWidgetClass Root {
        text "Select"
        text_proportion 0.55
        font "gui/fonts/MetronBook"
-       {
-        ScriptParamsClass {
-         Relay_Command "OnSelectExecute"
-        }
-       }
       }
       ButtonWidgetClass CancelButton {
        color 0 0 0 1

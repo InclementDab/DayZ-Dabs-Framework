@@ -8,14 +8,14 @@ class RegisterProfileSettingColor: RegisterProfileSettingBase
 		array<ref ProfileSettingsCategory> categories = Instances[profile_settings_type];
 		foreach (ProfileSettingsCategory category: categories) {
 			if (category && category.Header == category_name) {
-				category.Settings.Insert(new ProfileSettingColor(variable_name, display_name, allow_alpha, require_restart));
+				category.Settings.Insert(new ProfileSettingColor(variable_name, display_name, require_restart, allow_alpha));
 				return; // we found it
 			}
 		}
 			
 		// create new category
 		ProfileSettingsCategory new_category = new ProfileSettingsCategory(category_name);
-		new_category.Settings.Insert(new ProfileSettingColor(variable_name, display_name, allow_alpha, require_restart));
+		new_category.Settings.Insert(new ProfileSettingColor(variable_name, display_name, require_restart, allow_alpha));
 		Instances[profile_settings_type].Insert(new_category);
 	}
 }
