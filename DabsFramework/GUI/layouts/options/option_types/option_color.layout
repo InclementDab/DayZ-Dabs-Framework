@@ -709,7 +709,7 @@ GridSpacerWidgetClass Root {
      Rows 2
      {
       ButtonWidgetClass SelectButton {
-       color 0.3843 0.3843 0.3843 1
+       ignorepointer 1
        size 0.5 1
        halign center_ref
        valign center_ref
@@ -717,9 +717,8 @@ GridSpacerWidgetClass Root {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       style DayZDefaultButtonAll
+       style Colorable
        "no focus" 1
-       text "Select"
        text_proportion 0.55
        font "gui/fonts/MetronBook"
       }
@@ -736,7 +735,6 @@ GridSpacerWidgetClass Root {
        scriptclass "ViewBinding"
        style Colorable
        "no focus" 1
-       text "Cancel"
        text_proportion 0.55
        font "gui/fonts/MetronBook"
        {

@@ -19,16 +19,16 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		m_OptionSelectorColorViewController = OptionSelectorColorViewController.Cast(m_Controller);
 		m_OptionSelectorColorViewController.OnValueChanged = on_changed;
 		
-		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettingsColor.Type());		
+		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());		
 		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingsColor.GetVariableName()]);
 		if (!type_converter) {
-			//Error(string.Format("Invalid variable type on registry type=%1", m_ProfileSettingsColor.GetVariableName()));
+			Error(string.Format("Invalid variable type on registry type=%1", m_ProfileSettingsColor.GetVariableName()));
 			return;
 		}
 		
-		type_converter.GetFromController(m_ProfileSettingsColor, m_ProfileSettingsColor.GetVariableName(), 0);
+		type_converter.GetFromController(m_ProfileSettings, m_ProfileSettingsColor.GetVariableName(), 0);
 		
-		m_OptionSelectorColorViewController.Value = type_converter.GetInt();			
+		m_OptionSelectorColorViewController.Value = type_converter.GetInt();
 		m_OptionSelectorColorViewController.NotifyPropertiesChanged({"Value", "Red", "Green", "Blue", "Hue", "Saturation", "Var", "Alpha"});
 
 		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
@@ -37,6 +37,8 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		if (!profile_setting_color.GetAllowAlpha()) {
 			AlphaSliderRoot.Show(false);
 		}
+		
+		m_OptionSelectorColorViewController.UpdateVisuals();
 	}
 		
 	void OnToggleExecute(ButtonCommandArgs args)
@@ -141,12 +143,16 @@ class OptionSelectorColorView: OptionSelectorViewBase
 		type_converter.SetInt(m_OptionSelectorColorViewController.Value);
 		type_converter.SetToController(m_ProfileSettings, m_ProfileSettingsColor.GetVariableName(), 0);
 		m_ProfileSettings.Save();
+		m_OptionSelectorColorViewController.StartValue = m_OptionSelectorColorViewController.Value;
+		m_OptionSelectorColorViewController.NotifyPropertyChanged("StartValue");
+		m_OptionSelectorColorViewController.UpdateVisuals();
 	}
 	
 	override void Revert()
 	{
 		m_OptionSelectorColorViewController.Value = m_OptionSelectorColorViewController.StartValue;
 		m_OptionSelectorColorViewController.NotifyPropertyChanged("Value");
+		m_OptionSelectorColorViewController.UpdateVisuals();
 	}
 	
 	override bool IsChanged()
