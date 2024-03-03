@@ -56,12 +56,7 @@ class DialogBase: ScriptView
 	{	
 		CloseDialog(DialogResult.Cancel);
 	}
-	
-	private void Delete()
-	{
-		delete this;
-	}
-	
+		
 	ScriptView AddContent(GroupPrefab content)
 	{		
 		array<ref ScriptView> children = content.GetChildren();

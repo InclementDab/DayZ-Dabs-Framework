@@ -153,6 +153,17 @@ class ScriptView: ScriptedViewBase
 		return m_Controller;
 	}
 	
+	// Safest way to delete from inside scriptview. not really needed outside
+	protected void Delete()
+	{
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(_delete);
+	}
+	
+	private void _delete()
+	{
+		delete this;
+	}
+	
 	// Loads .layout file Widgets into Properties of context (when they are the same name)
 	/*
 	Example:
