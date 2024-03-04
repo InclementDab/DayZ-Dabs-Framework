@@ -2,10 +2,10 @@
 class PluginNewFile: PluginDialogBase
 {	
 	[Attribute("", "editbox", "Directory (folders will be created automatically)")]
-	string Directory;
+	string Folder;
 	
 	[Attribute("", "editbox", "File Name (with or without extension)")]
-	string File;
+	string FileName;
 	
 	[Attribute("Managed", "editbox", "Parent class type")]
 	string Parent = "Managed";
@@ -25,9 +25,9 @@ class PluginNewFile: PluginDialogBase
 		current_file_relative.Split("/", current_file_path);
 		
 		for (int i = 0; i < current_file_path.Count() - 1; i++) {
-			Directory += current_file_path[i];
+			Folder += current_file_path[i];
 			if (i != current_file_path.Count() - 2) {
-				Directory += "/";
+				Folder += "/";
 			}
 		}
 		
@@ -50,20 +50,20 @@ class PluginNewFile: PluginDialogBase
 	[ButtonAttribute("OK", true)]
 	void Ok()
 	{		
-		if (File.Length() == 0) {
+		if (FileName.Length() == 0) {
 			return;
 		}
 		
 		// Appending the extension
 		array<string> file_split = {};
-		File.Split(".", file_split);
+		FileName.Split(".", file_split);
 		if (file_split.Count() < 2) {
-			File = file_split[0] + DEFAULT_EXTENSION;
+			FileName = file_split[0] + DEFAULT_EXTENSION;
 		}
 		
-		string absolute_file = GetAbsolutePath(Directory) + PATH_SEPERATOR + File;
+		string absolute_file = GetAbsolutePath(Folder) + PATH_SEPERATOR + FileName;
 		if (FileExist(absolute_file)) {
-			ErrorDialog(string.Format("File %1 already exists!", File));
+			ErrorDialog(string.Format("File %1 already exists!", FileName));
 			return;
 		}
 		
@@ -80,7 +80,7 @@ class PluginNewFile: PluginDialogBase
 		FPrint(file_handle, string.Format("class %1%2\n{\n}", file_split[0], suffix));
 		CloseFile(file_handle);
 		
-		m_FinalFileName = Directory + PATH_SEPERATOR + File;
+		m_FinalFileName = Folder + PATH_SEPERATOR + FileName;
 	}
 
 	[ButtonAttribute("Cancel")]

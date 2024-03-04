@@ -217,38 +217,12 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void CleanLogFolder(string folder)
 	{
-		string name;
-		FileAttr attribute;
-		array<string> files = {};
-
-		FindFileHandle handle = FindFile(folder + PATH_SEPERATOR + "*", name, attribute, 0);
-		if (handle) {
-			if (name.Length() > 0 && !(attribute & FileAttr.DIRECTORY)) {
-				files.Insert(name);
-			}
-
-			while (FindNextFile(handle, name, attribute)) {
-				if (name.Length() > 0 && !(attribute & FileAttr.DIRECTORY)) {
-					files.Insert(name);
-				}
-			}
-		}
-
-		CloseFindFile(handle);
-		
-		map<string, int> amount_found = new map<string, int>();
-		foreach (string file: files) {
-			array<string> file_split = {};
-			file.Split(".", file_split);
-			if (file_split.Count() < 2) {
-				continue;
-			}
-			
-			string extension = file_split[1];
-			amount_found[extension] = amount_found[extension] + 1;
-			if (amount_found[extension] > 5) {
-				DeleteFile(folder + PATH_SEPERATOR_ALT + file);
-			}
+		array<string> all = {};
+		all.InsertAll(Directory.EnumerateFiles(folder, "*.RPT"));
+		all.InsertAll(Directory.EnumerateFiles(folder, "*.log"));
+		all.InsertAll(Directory.EnumerateFiles(folder, "*.ADM"));
+		foreach (string file: all) {
+			DeleteFile(file);
 		}
 	}
 	

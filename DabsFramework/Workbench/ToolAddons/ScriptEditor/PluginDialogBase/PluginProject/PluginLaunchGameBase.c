@@ -137,12 +137,9 @@ class PluginLaunchGameBase: PluginProject
 		MakeDirectory(server_profile_directory);
 		MakeDirectory(server_mission);
 		
-		// Always clean them log folders
-		if (launch_settings.Deloginator) {
-			CleanLogFolder(client_profile_directory);
-			CleanLogFolder(server_profile_directory);
-		}
-				
+		CleanLogFolder(client_profile_directory);
+		CleanLogFolder(server_profile_directory);
+						
 		// Copy maps and mission info
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
