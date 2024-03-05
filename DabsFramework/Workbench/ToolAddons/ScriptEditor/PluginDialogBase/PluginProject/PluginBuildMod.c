@@ -74,7 +74,7 @@ class PluginBuildMod: PluginProject
 		
 		// Move contents of Addons folder
 		if (m_BuildSettings.CopyAddons) {
-			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + PATH_SEPERATOR_ALT + "Addons");
+			CopyFiles(string.Format("%1\\Addons\\%2", m_LaunchSettings.Repository, mod_prefix), mod_output + PATH_SEPERATOR_ALT + "Addons");
 		}
 	}
 	
