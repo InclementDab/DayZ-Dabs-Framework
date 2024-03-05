@@ -67,6 +67,7 @@ class PluginBuildMod: PluginProject
 		// Set up our mod output correctly if not done so already
 		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);		
 		string main_mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_prefix));
+		main_mod_folder.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		if (BuildFolder(main_mod_folder, mod_output, args)) {
 			Error(string.Format("Build failed: %1", main_mod_folder));
 		}
@@ -83,6 +84,6 @@ class PluginBuildMod: PluginProject
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		return Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", m_BuildSettings.Command, mod_output, mod_input, args), true);
+		return Workbench.RunCmd(string.Format("%1 \"%2\" -Mod=\"%3\" %4", m_BuildSettings.Command, mod_input, mod_output, args), true);
 	}
 }
