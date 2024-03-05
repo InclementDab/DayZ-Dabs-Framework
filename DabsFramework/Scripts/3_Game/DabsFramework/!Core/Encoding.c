@@ -56,7 +56,7 @@ class Encoding
 		int result;
 		
 		// Formatting
-		hex.ToUpper();
+		hex.ToLower();
 		hex.TrimInPlace();
 		
 		for (int i = 0; i < hex.Length(); i++) {
