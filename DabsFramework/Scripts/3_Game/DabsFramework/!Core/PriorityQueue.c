@@ -113,7 +113,13 @@ class PriorityQueue<Class TElement, Class TPriority>
 		
 		return PRIORITY_DEFAULT;
 	}
-
+	
+	void Invert()
+	{
+		m_Elements.Invert();
+		m_StrongRefElements.Invert();
+	}
+	
 	// returns max capacity of the queue
 	int GetCapacity()
 	{
