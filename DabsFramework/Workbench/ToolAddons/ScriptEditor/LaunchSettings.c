@@ -15,7 +15,7 @@ enum YesNo
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 1;
+	static const int VERSION = 2;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string SERVER_PROFILE_NAME = "server";
@@ -52,6 +52,9 @@ class LaunchSettings: SerializableBase
 	
 	[Attribute("", "combobox", "Auto Close Game", "", ParamEnumArray.FromEnum(YesNo) )]
 	bool AutoClose;
+	
+	[Attribute("", "combobox", "Disable Mod", "", ParamEnumArray.FromEnum(YesNo) )]
+	bool DisableMod;
 			
 	void Save(string file)
 	{
@@ -107,6 +110,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(Map);
 		serializer.Write(FilePatching);
 		serializer.Write(AutoClose);
+		serializer.Write(DisableMod);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -148,6 +152,14 @@ class LaunchSettings: SerializableBase
 		}		
 		
 		if (!serializer.Read(AutoClose)) {
+			return false;
+		}		
+		
+		if (version < 2) {
+			return true;
+		}
+		
+		if (!serializer.Read(DisableMod)) {
 			return false;
 		}
 		
