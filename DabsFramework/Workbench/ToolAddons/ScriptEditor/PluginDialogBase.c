@@ -221,6 +221,7 @@ class PluginDialogBase: WorkbenchPlugin
 		all.InsertAll(Directory.EnumerateFiles(folder, "*.RPT"));
 		all.InsertAll(Directory.EnumerateFiles(folder, "*.log"));
 		all.InsertAll(Directory.EnumerateFiles(folder, "*.ADM"));
+		all.InsertAll(Directory.EnumerateFiles(folder, "*.mdmp"));
 		foreach (string file: all) {
 			DeleteFile(file);
 		}
