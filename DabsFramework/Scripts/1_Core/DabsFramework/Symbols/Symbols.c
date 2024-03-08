@@ -1,5 +1,14 @@
 class Symbols: string
-{	
+{		
+	void Load(ImageWidget image_widget, int size = 2 /* SymbolSize.IDX_REGULAR */)
+	{		
+		image_widget.LoadImageFile(SymbolSize.IDX_THIN, value.Thin());
+		image_widget.LoadImageFile(SymbolSize.IDX_LIGHT, value.Light());
+		image_widget.LoadImageFile(SymbolSize.IDX_REGULAR, value.Regular());
+		image_widget.LoadImageFile(SymbolSize.IDX_SOLID, value.Solid());
+		image_widget.SetImage(size);
+	}
+	
 	Symbol Light()
 	{		
 		return string.Format("set:light %1", value);
