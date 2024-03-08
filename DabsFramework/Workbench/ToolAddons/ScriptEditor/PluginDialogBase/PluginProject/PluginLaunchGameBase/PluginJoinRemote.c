@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Join Remote", "Lanches DayZ and joins remote", "F5", "", {"ScriptEditor", "ResourceManager"})]
+[WorkbenchPluginAttribute("Join Remote", "Lanches DayZ and joins remote", "Ctrl+F6", "", {"ScriptEditor", "ResourceManager"})]
 class PluginJoinRemote: PluginLaunchGameBase
 {
 	[Attribute("", "editbox")]

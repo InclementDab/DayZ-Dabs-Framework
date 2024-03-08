@@ -57,11 +57,17 @@ class PluginProject: PluginDialogBase
 		
 		m_Prefixes.Insert(GetPrefix());
 		m_Prefixes.Insert("Scripts");
-		//m_Prefixes.Insert("DZ");
+		
+		m_Prefixes.Insert("DZ");
+
 		m_Prefixes.Insert("JM");
 		m_Prefixes.Insert("DabsFramework");
 		m_Prefixes.Insert("HypeTrain");
 		m_Prefixes.Insert("Editor");
+		
+
+		m_Prefixes.Insert("DayZExpansion");
+
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
