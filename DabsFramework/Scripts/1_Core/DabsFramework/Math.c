@@ -1,5 +1,7 @@
 modded class Math
 {
+	static const float EPSILON = 1.19209e-07;
+	
 	// Modulo for floating point numbers
     static float FMod(float num, float divisor)
 	{
@@ -44,15 +46,5 @@ modded class Math
 		}
 		
 		return value % max;
-	}
-	
-	static float Epsilon()
-	{
-		float epsilon = 1.0;
-		while ((1.0 + (epsilon / 2.0)) != 1.0) {
-			epsilon /= 2.0;
-		}
-		
-		return epsilon;
 	}
 }

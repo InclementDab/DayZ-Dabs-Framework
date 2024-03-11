@@ -195,12 +195,12 @@ class LinearColor: int
 	
 	static LinearColor Create(int r, int g, int b)
 	{
-		return 255 << 24 | r << 16 | g << 8 | b;
+		return 255 << 24 | (r & 255) << 16 | (g & 255) << 8 | (b & 255);
 	}
 	
 	static LinearColor Create(int a, int r, int g, int b)
 	{
-		return a << 24 | r << 16 | g << 8 | b;
+		return (a & 255) << 24 | (r & 255) << 16 | (g & 255) << 8 | (b & 255);
 	}
 		
 	static LinearColor CreateF(float r, float g, float b)
@@ -428,9 +428,18 @@ class LinearColor: int
 		return dA * dA + dR * dR + dG * dG + dB * dB <= epsilon * epsilon;
 	}
 	
-	LinearColor Add(int val)
+	LinearColor Add(LinearColor other)
 	{
-		return LinearColor.Create(val + value.GetAlpha(), val + value.GetRed(), val + value.GetGreen(), val + value.GetBlue());
+		if (other.GetAlpha() == 0) {
+			return value;
+		}
+		
+		float linear_addition_factor = value.GetAlpha() / other.GetAlpha();
+		int red = value.GetRed() + (other.GetRed() * linear_addition_factor);
+		int green = value.GetGreen() + (other.GetGreen() * linear_addition_factor);
+		int blue = value.GetBlue() + (other.GetBlue() * linear_addition_factor);
+		int alpha = value.GetAlpha() + other.GetAlpha();
+		return LinearColor.Create(alpha, red, green, blue);
 	}
 	
 	LinearColor Subtract(int val)
