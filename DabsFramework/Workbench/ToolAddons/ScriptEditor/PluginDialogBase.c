@@ -5,7 +5,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const string PATH_SEPERATOR = "\\";
 	static const string PATH_SEPERATOR_ALT = "/";
 	static const string DEFAULT_EXTENSION = ".c";
-	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
+	static const ref array<string> LOG_FILE_TYPES = {"log", "RPT", "ADM", "mdmp"};
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "dta", "platforms"};
 	static const ref array<string> SCRIPT_MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission", "workbench"};
 	
@@ -218,9 +218,10 @@ class PluginDialogBase: WorkbenchPlugin
 	static void CleanLogFolder(string folder)
 	{
 		array<string> all = {};
-		all.InsertAll(Directory.EnumerateFiles(folder, "*.RPT"));
-		all.InsertAll(Directory.EnumerateFiles(folder, "*.log"));
-		all.InsertAll(Directory.EnumerateFiles(folder, "*.ADM"));
+		foreach (string fileType : LOG_FILE_TYPES) {
+			all.InsertAll(Directory.EnumerateFiles(folder, string.Format("*.%1", fileType)));
+		}
+
 		foreach (string file: all) {
 			DeleteFile(file);
 		}

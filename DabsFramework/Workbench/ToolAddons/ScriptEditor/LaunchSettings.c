@@ -106,6 +106,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(ServerPassword);
 		serializer.Write(Map);
 		serializer.Write(FilePatching);
+		serializer.Write(Deloginator);
 		serializer.Write(AutoClose);
 	}
 	
@@ -144,6 +145,10 @@ class LaunchSettings: SerializableBase
 		}		
 		
 		if (!serializer.Read(FilePatching)) {
+			return false;
+		}		
+
+		if (!serializer.Read(Deloginator)) {
 			return false;
 		}		
 		
