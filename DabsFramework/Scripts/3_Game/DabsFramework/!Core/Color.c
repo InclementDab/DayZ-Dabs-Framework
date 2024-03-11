@@ -23,7 +23,7 @@ enum BlendMode
 	SOFT_LIGHT
 };
 
-// https://en.wikipedia.org/wiki/X11_LinearColor_names
+// https://en.wikipedia.org/wiki/X11_color_names
 // ARGB format
 class LinearColor: int
 {
