@@ -83,6 +83,11 @@ class PluginBuildMod: PluginProject
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		return Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", m_BuildSettings.Command, mod_output, mod_input, args), true);
+		string cmd = m_BuildSettings.Command;
+		cmd.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		mod_output.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		mod_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		
+		return Workbench.RunCmd(string.Format("%1 -Mod=%2 %3 %4", cmd, mod_output, mod_input, args), true);
 	}
 }
