@@ -13,15 +13,12 @@ enum YesNo
 	YES = 2147483647,
 };
 
-<<<<<<< HEAD
 enum BuilderType
 {
-	PBO_PROJECT = 0,
-	ADDON_BUILDER,
+	ADDON_BUILDER = 0,
+	PBO_PROJECT,
 };
 
-=======
->>>>>>> parent of b1bf177 (Merge branch 'dev/sandbox' of https://github.com/VinGal0/DayZ-Dabs-Framework into dev/sandbox)
 class LaunchSettings: SerializableBase
 {
 	static const int VERSION = 2;
@@ -118,7 +115,6 @@ class LaunchSettings: SerializableBase
 		serializer.Write(ServerPassword);
 		serializer.Write(Map);
 		serializer.Write(FilePatching);
-		serializer.Write(Deloginator);
 		serializer.Write(AutoClose);
 		serializer.Write(DisableMod);
 	}
@@ -158,10 +154,6 @@ class LaunchSettings: SerializableBase
 		}		
 		
 		if (!serializer.Read(FilePatching)) {
-			return false;
-		}		
-
-		if (!serializer.Read(Deloginator)) {
 			return false;
 		}		
 		
