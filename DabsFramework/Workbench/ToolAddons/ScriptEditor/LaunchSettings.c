@@ -13,6 +13,12 @@ enum YesNo
 	YES = 2147483647,
 };
 
+enum BuilderType
+{
+	ADDON_BUILDER = 0,
+	PBO_PROJECT,
+};
+
 class LaunchSettings: SerializableBase
 {
 	static const int VERSION = 2;
