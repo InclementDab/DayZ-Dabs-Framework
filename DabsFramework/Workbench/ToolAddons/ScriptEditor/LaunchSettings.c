@@ -15,8 +15,8 @@ enum YesNo
 
 enum BuilderType
 {
-	ADDON_BUILDER = 0,
-	PBO_PROJECT,
+	PBO_PROJECT = 0,
+	ADDON_BUILDER,
 };
 
 class LaunchSettings: SerializableBase
