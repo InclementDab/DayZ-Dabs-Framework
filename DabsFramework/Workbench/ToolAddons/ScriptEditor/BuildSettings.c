@@ -92,6 +92,7 @@ class BuildSettings: SerializableBase
 	{
 		serializer.Write(VERSION);
 		serializer.Write(BuildFolders);
+		serializer.Write(Builder);
 		serializer.Write(PboProject_Command);
 		serializer.Write(AddonBuilder_Command);
 		serializer.Write(CopyAddons);
@@ -116,6 +117,10 @@ class BuildSettings: SerializableBase
 				return false;
 			}
 		} else {
+			if (!serializer.Read(Builder)) {
+				return false;
+			}
+
 			if (!serializer.Read(PboProject_Command)) {
 				return false;
 			}
