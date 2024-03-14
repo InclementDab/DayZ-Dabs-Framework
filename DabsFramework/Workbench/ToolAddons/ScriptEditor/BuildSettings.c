@@ -1,6 +1,6 @@
 class BuildSettings: SerializableBase
 {
-	static const int VERSION = 5;
+	static const int VERSION = 4;
 		
 	protected string m_CurrentFileLocation;
 	
@@ -163,14 +163,6 @@ class BuildSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(Dependencies)) {
-			return false;
-		}
-
-		if (version <= 4) {
-			return true;
-		}
-
-		if (!serializer.Read(Builder)) {
 			return false;
 		}
 		
