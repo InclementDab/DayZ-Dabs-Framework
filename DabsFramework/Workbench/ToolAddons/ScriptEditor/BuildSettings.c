@@ -1,6 +1,6 @@
 class BuildSettings: SerializableBase
 {
-	static const int VERSION = 4;
+	static const int VERSION = 5;
 		
 	protected string m_CurrentFileLocation;
 	
@@ -98,7 +98,8 @@ class BuildSettings: SerializableBase
 		serializer.Write(Key);
 		serializer.Write(PboProject_Args);
 		serializer.Write(AddonBuilder_Args);
-		serializer.Write(Dependencies);
+		serializer.Write(Dependencies);	
+		serializer.Write(Builder);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -160,6 +161,14 @@ class BuildSettings: SerializableBase
 			return false;
 		}
 		
+		if (version <= 4) {
+			return true;
+		}
+		
+		if (!serializer.Read(Builder)) {
+			return false;
+		}
+				
 		return true;
 	}
 	
