@@ -13,12 +13,15 @@ enum YesNo
 	YES = 2147483647,
 };
 
+<<<<<<< HEAD
 enum BuilderType
 {
 	PBO_PROJECT = 0,
 	ADDON_BUILDER,
 };
 
+=======
+>>>>>>> parent of b1bf177 (Merge branch 'dev/sandbox' of https://github.com/VinGal0/DayZ-Dabs-Framework into dev/sandbox)
 class LaunchSettings: SerializableBase
 {
 	static const int VERSION = 2;

@@ -28,11 +28,6 @@ modded class Math
 		return Vector(Math.SmoothLerp(p1[0], p2[0], time), Math.SmoothLerp(p1[1], p2[1], time), Math.SmoothLerp(p1[2], p2[2], time));
 	}
 	
-	static float Exp(float v)
-	{
-		return Pow(EULER, v);
-	}
-	
 	// Works very similar to Clamp except it rolls over instead of clamping
 	/* 
 		Examples:

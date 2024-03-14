@@ -43,6 +43,11 @@ class PluginBuildMod: PluginProject
 		
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
 		
+		string args = m_BuildSettings.Args;
+		if (m_BuildSettings.Key != string.Empty) {
+			args += string.Format(" +K=%1",  m_BuildSettings.Key);
+		}
+		
 		if (m_BuildSettings.Dependencies) {
 			array<string> mod_splits = {};
 			m_ProjectSettings["Mods"].Split(";", mod_splits);
@@ -52,7 +57,7 @@ class PluginBuildMod: PluginProject
 				
 				string mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_split_edit));
 				if (FileExist(mod_folder)) {
-					if (BuildFolder(mod_folder, string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_split_edit))) {
+					if (BuildFolder(mod_folder, string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_split_edit), args)) {
 						Error(string.Format("Build failed: %1", mod_split));
 					}
 				}
@@ -63,7 +68,7 @@ class PluginBuildMod: PluginProject
 		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);		
 		string main_mod_folder = GetAbsolutePath(string.Format("$Workdrive:%1", mod_prefix));
 		main_mod_folder.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		if (BuildFolder(main_mod_folder, mod_output)) {
+		if (BuildFolder(main_mod_folder, mod_output, args)) {
 			Error(string.Format("Build failed: %1", main_mod_folder));
 		}
 		
@@ -73,59 +78,12 @@ class PluginBuildMod: PluginProject
 		}
 	}
 	
-	int BuildFolder(string mod_input, string mod_output) {
-		int ret = -1;
-		
-		switch (m_BuildSettings.Builder)
-		{
-		case BuilderType.PBO_PROJECT:
-			ret = BuiildUsingPboProject(mod_input, mod_output);
-			break;
-		case BuilderType.ADDON_BUILDER:
-			ret = BuildUsingAddonBuilder(mod_input, mod_output);
-			break;
-		}
-		
-		return ret;
-	}
-	
-	int BuiildUsingPboProject(string mod_input, string mod_output)
+	int BuildFolder(string mod_input, string mod_output, string args)
 	{
-		string args = m_BuildSettings.PboProject_Args;
-		if (m_BuildSettings.Key != string.Empty) {
-			args += string.Format(" +K=%1",  m_BuildSettings.Key);
-		}
-		
 		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		string cmd = m_BuildSettings.PboProject_Command;
-		cmd.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		mod_output.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		mod_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-
-		return Workbench.RunCmd(string.Format("\"%1\" \"%2\" -Mod=\"%3\" %4", cmd, mod_output, mod_input, args), true);
-	}
-	
-	int BuildUsingAddonBuilder(string mod_input, string mod_output)
-	{
-		string args = m_BuildSettings.AddonBuilder_Args;
-		if (m_BuildSettings.Key != string.Empty) {
-		}
-		
-		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
-		MakeDirectory(mod_output);
-		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
-		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		
-		mod_output = mod_output + PATH_SEPERATOR_ALT + "Addons";
-		
-		string cmd = m_BuildSettings.AddonBuilder_Command;
-		cmd.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		mod_output.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		mod_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-
-		return Workbench.RunCmd(string.Format("\"%1\" \"%2\" \"%3\" %4", cmd, mod_input, mod_output, args), true);
+		return Workbench.RunCmd(string.Format("%1 \"%2\" -Mod=\"%3\" %4", m_BuildSettings.Command, mod_input, mod_output, args), true);
 	}
 }
