@@ -20,21 +20,12 @@ class CustomDialogWindow: ScriptView
 
 	Quick overrides:
 		override bool OnClick(Widget w, int x, int y, int button);
-		override bool OnModalResult(Widget w, int x, int y, int code, int result);
-		override bool OnDoubleClick(Widget w, int x, int y, int button);
-		override bool OnSelect(Widget w, int x, int y);
-		override bool OnItemSelected(Widget w, int x, int y, int row, int column, int oldRow, int oldColumn);
-		override bool OnFocus(Widget w, int x, int y);
 		override bool OnFocusLost(Widget w, int x, int y);
 		override bool OnMouseEnter(Widget w, int x, int y);
 		override bool OnMouseLeave(Widget w, Widget enterW, int x, int y);
 		override bool OnMouseWheel(Widget w, int x, int y, int wheel);
 		override bool OnMouseButtonDown(Widget w, int x, int y, int button);
 		override bool OnMouseButtonUp(Widget w, int x, int y, int button);
-		override bool OnController(Widget w, int control, int value);
-		override bool OnKeyDown(Widget w, int x, int y, int key);
-		override bool OnKeyUp(Widget w, int x, int y, int key);
-		override bool OnKeyPress(Widget w, int x, int y, int key);
 		override bool OnChange(Widget w, int x, int y, bool finished);
 		override bool OnDrag(Widget w, int x, int y);
 		override bool OnDragging(Widget w, int x, int y, Widget reciever);
@@ -42,9 +33,6 @@ class CustomDialogWindow: ScriptView
 		override bool OnDrop(Widget w, int x, int y, Widget reciever);
 		override bool OnDropReceived(Widget w, int x, int y, Widget reciever);
 		override bool OnResize(Widget w, int x, int y);
-		override bool OnChildAdd(Widget w, Widget child);
-		override bool OnChildRemove(Widget w, Widget child);
-		override bool OnUpdate(Widget w);
 
 */
 
