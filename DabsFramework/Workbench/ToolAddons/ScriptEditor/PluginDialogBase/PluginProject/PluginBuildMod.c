@@ -124,7 +124,8 @@ class PluginBuildMod: PluginProject
 		cmd.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		mod_output.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		mod_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-
-		return Workbench.RunCmd(string.Format("\"%1\" %2 %3 %4", cmd, mod_input, mod_output, args), true);
+		string exclude = string.Format("-exclude=%1exclude.lst", GetCurrentDirectory());
+		exclude.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		return Workbench.RunCmd(string.Format("\"%1\" %2 %3 %4 \"%5\"", cmd, mod_input, mod_output, args, exclude), true);
 	}
 }
