@@ -76,30 +76,30 @@ class NamedLocation: ConfigObject
 		
 		return 1.0;
 	}
-	
+	 	
 	LinearColor GetColor()
 	{
 		switch (Type) {
-			case CAPITAL: return LinearColor.PALE_VIOLET_RED;
 			case TRADER: return LinearColor.GOLD;
-			/*case CITY: return LinearColor.REDDIT;
-			case VILLAGE: return LinearColor.BLUE;
-			case CAMP: return LinearColor.ORANGE;
-			case LOCAL: return LinearColor.DIM_GRAY;
-			case HILL: return LinearColor.ORANGE;
-			case MARINE: return LinearColor.DARK_SEA_GREEN;
-			case RUIN: return LinearColor.BEIGE;
-			case RAILROAD: return LinearColor.BROWN;
-			case OFFICE: return LinearColor.LIGHT_GRAY;
-			case VIEWPOINT: return LinearColor.GREEN;
+			case CAPITAL:
+			case CITY:
+			case VILLAGE:
+			case CAMP: return LinearColor.BLACK;
+			case LOCAL:
+			case HILL: return LinearColor.BROWN;
+			case MARINE:
+			case RUIN:
+			case RAILROAD:
+			case OFFICE: 
+			case VIEWPOINT:
 			case BIGMILITARY: 
 			case MEDMILITARY: 
-			case SMALLMILITARY: return LinearColor.DARK_ORCHID;
-			case FEEDSHACK: return LinearColor.GOLD;
-			case DEERSTAND: return LinearColor.BURLYWOOD;*/
+			case SMALLMILITARY: 
+			case FEEDSHACK:
+			case DEERSTAND: return LinearColor.BLACK; 
 		}
 		
-		return LinearColor.WHITE;
+		return LinearColor.BLACK;
 	}
 	
 	static void OnPositionUpdate(notnull NamedLocation instance)

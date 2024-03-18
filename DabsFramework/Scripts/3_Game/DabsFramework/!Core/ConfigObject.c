@@ -41,7 +41,10 @@ class ConfigObject: Managed
 				}
 				
 				case string: {
-					EnScriptVar<string>.Set(this, variable_name, GetGame().ConfigGetTextOut(config_entry));
+					string raw_text;
+					if (GetGame().ConfigGetTextRaw(config_entry, raw_text)) {
+						EnScriptVar<string>.Set(this, variable_name, raw_text);
+					}
 					break;
 				}
 								
