@@ -11,6 +11,21 @@ class FileSystem: string
 	static const string SAVES = "$saves:";
 	static const string STORAGE = "$storage:";
 	
+	string GetFileName()
+	{
+		string temp = value;
+		temp.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		
+		array<string> path_split = {};
+		temp.Split(PATH_SEPERATOR, path_split);
+		
+		if (path_split.Count() == 0) {
+			return string.Empty;
+		}
+		
+		return path_split[path_split.Count() - 1];
+	}
+	
 	string GetFullPath()
 	{
 		return value;

@@ -123,12 +123,29 @@ class PluginLaunchGameBase: PluginProject
 			}
 		}
 		
+		// Copy raw CLE files
+		string repository_mission = string.Format("%1\\Missions\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map);
+		Print(FileExist(string.Format("%1\\ce", repository_mission)));
+		if (FileExist(string.Format("%1\\ce", repository_mission))) {
+			
+			array<string> map_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\map", repository_mission), "*.map");
+			if (map_exports.Count() == 1) {
+				DeleteFile(string.Format("%1\\areaflags.map", repository_mission));
+				CopyFile(map_exports[0], string.Format("%1\\areaflags.map", repository_mission));
+			}
+			
+			MakeDirectory(string.Format("%1\\env", repository_mission));
+			array<string> territory_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\territoryTypes", repository_mission), "*.xml");
+			foreach (FileSystem territory_export: territory_exports) {
+				CopyFile(territory_export, string.Format("%1\\env\\%2", repository_mission, territory_export.GetFileName()));
+			}
+		}
+		
 		MakeDirectory(launch_settings.Profiles);
 		MakeDirectory(launch_settings.Missions);
 		
 		string client_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT_PROFILE_NAME);
 		string server_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.SERVER_PROFILE_NAME);		
-		string offline_mission = string.Format("%1\\Missions\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map);
 		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mod_prefix, launch_settings.Map);
 		
 		// Make the folders if they dont exist yet
@@ -138,7 +155,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		CleanLogFolder(client_profile_directory);
 		CleanLogFolder(server_profile_directory);
-						
+				
 		// Copy maps and mission info
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
@@ -152,7 +169,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
 		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission);
-		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, offline_mission);		
+		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, repository_mission);		
 		
 		string ip, password;
 		int port;
@@ -178,8 +195,8 @@ class PluginLaunchGameBase: PluginProject
 		
 		if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
 			// I DONT LIEK THIS :(
-			if (FileExist(string.Format("%1\\storage_-1", offline_mission))) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", offline_mission))));
+			if (FileExist(string.Format("%1\\storage_-1", repository_mission))) {
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
 			}
 			
 			Workbench.RunCmd(game_exe + " " + offline_launch_params);

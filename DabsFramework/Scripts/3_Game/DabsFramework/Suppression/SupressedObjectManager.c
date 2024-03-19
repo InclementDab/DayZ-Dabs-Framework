@@ -25,14 +25,12 @@ class SuppressedObjectManager: Managed
 		
 	void Suppress(notnull Object object)
 	{
-#ifdef SERVER
 		SuppressMany({ object });
-#endif
 	}
 		
 	void SuppressMany(notnull array<Object> objects)
 	{
-#ifdef SERVER
+
 		array<Object> suppressible_objects = {};
 		foreach (Object object: objects) {
 			if (!IsSuppressible(object)) {
@@ -41,7 +39,7 @@ class SuppressedObjectManager: Managed
 				
 			suppressible_objects.Insert(object);
 		}
-		
+	
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(suppressible_objects.Count());
 		for (int i = 0; i < suppressible_objects.Count(); i++) {
@@ -51,6 +49,7 @@ class SuppressedObjectManager: Managed
 			m_Objects.Insert(new SuppressedObject(suppressible_objects[i]));
 		}
 		
+#ifdef SERVER				
 		rpc.Send(null, RPC_SUPPRESS, true);
 #endif
 	}

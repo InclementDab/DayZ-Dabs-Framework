@@ -23,9 +23,9 @@ class SuppressedObject: SerializableBase
 		vector hide_matrix[4] = { vector.Zero, vector.Zero, vector.Zero, transform[3] };
 		object.SetTransform(hide_matrix);
 		
-		object.ClearFlags(m_Flags, true);
-		object.ClearEventMask(m_Events);
-		object.SetEventMask(EntityEvent.NOTVISIBLE);
+		//object.ClearFlags(m_Flags, true);
+		//object.ClearEventMask(m_Events);
+		//object.SetEventMask(EntityEvent.NOTVISIBLE);
 		object.Update();
 		
 #ifdef SERVER
