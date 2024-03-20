@@ -223,6 +223,11 @@ class LinearColor: int
 		return CreateF(rgb[0], rgb[1], rgb[2]);
 	}
 	
+	static LinearColor FromHex(string hex)
+	{
+		
+	}
+	
 	// 0: hue [0, 360]
 	// 1: saturation [0, 1.0]
 	// 2: value [0, 1.0]
