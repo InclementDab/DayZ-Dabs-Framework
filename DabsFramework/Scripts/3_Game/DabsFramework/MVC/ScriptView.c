@@ -36,6 +36,147 @@ class CustomDialogWindow: ScriptView
 
 */
 
+class QuickView<Class T>: ScriptView
+{
+	// Of type widget!
+	T Root;
+	
+	void QuickView()
+	{
+		if (!T.IsInherited(Widget)) {
+			ErrorEx("QuickView template type must inherit Widget");
+			return;
+		}
+	}
+	
+	protected override Widget CreateWidget(Widget parent)
+	{
+		WidgetType widget_type_id;
+		switch (T) {
+				//!Single-line text. See enf::TextWidget
+			case TextWidget: {
+				widget_type_id = TextWidgetTypeID;
+				break;
+			}
+			//!Multi-line text. See enf::MultilineTextWidget
+			case MultilineTextWidget: {
+				widget_type_id = MultilineTextWidgetTypeID;
+				break;
+			}
+			//!Multi-line edit box. See enf::MultilineTextWidget
+			case MultilineEditBoxWidget: {
+				widget_type_id = MultilineEditBoxWidgetTypeID;
+				break;
+			}
+			//!Multi-line text with images in text. See enf::RichTextWidget
+			case RichTextWidget: {
+				widget_type_id = RichTextWidgetTypeID;
+				break;
+			}
+			//! Render target for enf::BaseWorld. See enf::RenderTargetWidget
+			case RenderTargetWidget: {
+				widget_type_id = RenderTargetWidgetTypeID;
+				break;
+			}
+			//! Picture, or multiple picture. See enf::ImageWidget
+			case ImageWidget: {
+				widget_type_id = ImageWidgetTypeID;
+				break;
+			}
+			//!Console. See enf::ConsoleWidget
+			/*case ConsoleWidget: {
+				widget_type_id = ConsoleWidgetTypeID;
+				break;
+			}*/
+			//!Video player. See enf::VideoWidget
+			case VideoWidget: {
+				widget_type_id = VideoWidgetTypeID;
+				break;
+			}
+			//! Texture used as render target for children widgets. See enf::RTTextureWidget
+			case RTTextureWidget: {
+				widget_type_id = RTTextureWidgetTypeID;
+				break;
+			}
+			case ButtonWidget: {
+				widget_type_id = ButtonWidgetTypeID;
+				break;
+			}
+			case CheckBoxWidget: {
+				widget_type_id = CheckBoxWidgetTypeID;
+				break;
+			}
+			/*case WindowWidget: {
+				widget_type_id = WindowWidgetTypeID;
+				break;
+			}*/
+			case XComboBoxWidget: {
+				//widget_type_id = ComboBoxWidgetTypeID;
+				break;
+			}
+			case SimpleProgressBarWidget: {
+				widget_type_id = SimpleProgressBarWidgetTypeID;
+				break;
+			}
+			case ProgressBarWidget: {
+				widget_type_id = ProgressBarWidgetTypeID;
+				break;
+			}
+			case SliderWidget: {
+				widget_type_id = SliderWidgetTypeID;
+				break;
+			}
+			case BaseListboxWidget: {
+				//widget_type_id = BaseListboxWidgetTypeID;
+				break;
+			}
+			case TextListboxWidget: {
+				widget_type_id = TextListboxWidgetTypeID;
+				break;
+			}
+			//case GenericListboxWidget: {
+				//widget_type_id = GenericListboxWidgetTypeID;
+			//	break;
+			//}
+			case EditBoxWidget: {
+				widget_type_id = EditBoxWidgetTypeID;
+				break;
+			}
+			case PasswordEditBoxWidget: {
+				widget_type_id = PasswordEditBoxWidgetTypeID;
+				break;
+			}
+			case WorkspaceWidget: {
+				widget_type_id = WorkspaceWidgetTypeID;
+				break;
+			}
+			case GridSpacerWidget: {
+				widget_type_id = GridSpacerWidgetTypeID;
+				break;
+			}
+			case WrapSpacerWidget: {
+				widget_type_id = WrapSpacerWidgetTypeID;
+				break;
+			}
+			case ScrollWidget: {
+				widget_type_id = ScrollWidgetTypeID;
+				break;
+			}
+			
+			default: {
+				widget_type_id = FrameWidgetTypeID; // the GOAT
+				break;
+			}
+		}		
+		
+		if (!Class.CastTo(Root, GetGame().GetWorkspace().CreateWidget(widget_type_id, 0, 0, 100, 100, WidgetFlags.VISIBLE | WidgetFlags.SOURCEALPHA | WidgetFlags.BLEND | WidgetFlags.EXACTSIZE | WidgetFlags.EXACTPOS | WidgetFlags.IGNOREPOINTER, -1, 0, parent))) {
+			ErrorEx(string.Format("Could not create widget with typeid %1", widget_type_id));
+		}
+		
+		return Root;
+	}
+}
+
 class ScriptView: ScriptedViewBase
 {	
 	static ref array<ScriptView> All = {};
@@ -49,9 +190,9 @@ class ScriptView: ScriptedViewBase
 		}
 		
 		All.Insert(this);
-
+				
 #ifndef WORKBENCH
-#ifndef NO_GUI
+#ifndef NO_GUI		
 		m_LayoutRoot = CreateWidget(null);
 #endif
 #endif
@@ -117,7 +258,7 @@ class ScriptView: ScriptedViewBase
 			All.RemoveItem(this);
 		}
 	}
-	
+		
 	protected void Update(float dt)
 	{
 	}

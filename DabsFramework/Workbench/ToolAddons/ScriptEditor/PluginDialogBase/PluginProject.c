@@ -64,10 +64,8 @@ class PluginProject: PluginDialogBase
 		m_Prefixes.Insert("DabsFramework");
 		m_Prefixes.Insert("HypeTrain");
 		m_Prefixes.Insert("Editor");
-		
-
-		m_Prefixes.Insert("DayZExpansion");
-
+	
+		//m_Prefixes.Insert("DayZExpansion");
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)

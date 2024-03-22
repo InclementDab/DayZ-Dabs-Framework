@@ -30,12 +30,12 @@ class NamedLocation: ConfigObject
 	Symbols GetIcon()
 	{
 		switch (Type) {
-			case CAPITAL: return Symbols.CITY;
+			case CAPITAL: return string.Empty;
 			case TRADER: return Symbols.COIN;
-			/*case CITY:
-			case VILLAGE: return string.Empty;
+			case CITY: return string.Empty;
+			case VILLAGE: return Symbols.CITY;
 			case CAMP: return Symbols.CAMPFIRE;
-			case LOCAL: return string.Empty;
+			case LOCAL: return Symbols.LOCATION_DOT;
 			case HILL: return Symbols.MOUNTAIN;
 			case MARINE: return Symbols.WAVE;
 			case RUIN: return Symbols.HILL_ROCKSLIDE;
@@ -46,7 +46,7 @@ class NamedLocation: ConfigObject
 			case MEDMILITARY: return Symbols.SHIELD;
 			case SMALLMILITARY: return Symbols.KNIFE;
 			case FEEDSHACK: return Symbols.WHEAT;
-			case DEERSTAND: return Symbols.TOWER_OBSERVATION;*/
+			case DEERSTAND: return Symbols.TOWER_OBSERVATION;
 		}
 		
 		return string.Empty;
