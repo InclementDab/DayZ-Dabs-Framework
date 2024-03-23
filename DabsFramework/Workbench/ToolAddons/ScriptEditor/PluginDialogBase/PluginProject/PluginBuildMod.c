@@ -65,7 +65,7 @@ class PluginBuildMod: PluginProject
 		if (m_BuildSettings.Key != string.Empty) {
 			args += string.Format(" +K=%1",  m_BuildSettings.Key);
 		}
-		
-		Workbench.RunCmd(string.Format("%3 -Mod=%1 P:\\%2 %3", mod_output, mod_prefix, m_BuildSettings.Command));
+
+		Workbench.RunCmd(string.Format("%3 %4 -Mod=%1 P:\\%2", mod_output, mod_prefix, m_BuildSettings.Command, args));
 	}
 }
