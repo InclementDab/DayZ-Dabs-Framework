@@ -29,7 +29,6 @@ class EditorObjectData: SerializableBase
 	[NonSerialized()]
 	ref array<string> Attachments = {};
 	
-	[NonSerialized()]
 	string Model;
 	
 	[NonSerialized()]
@@ -92,7 +91,7 @@ class EditorObjectData: SerializableBase
 		
 		EditorObjectData data = new EditorObjectData();
 		data.Type = target.GetType();
-		data.Model = GetModelName(data.Type);
+		data.Model = target.GetShapeName();
 		data.WorldObject = target;
 		data.Position = data.WorldObject.GetPosition(); 
 		data.Orientation = data.WorldObject.GetOrientation(); 
@@ -143,6 +142,12 @@ class EditorObjectData: SerializableBase
 		serializer.Write(Locked);
 		serializer.Write(AllowDamage);
 		serializer.Write(Simulate);
+		
+		if (version < 4) {
+			return;
+		}
+		
+		serializer.Write(Model);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -197,11 +202,24 @@ class EditorObjectData: SerializableBase
 		serializer.Read(AllowDamage);
 		serializer.Read(Simulate);
 		
+		if (version < 4) {
+			return true;
+		}
+		
+		serializer.Read(Model);
+		
 		return true;
 	}
 	
 	static string GetModelName(string class_name)
 	{
+		Object object = GetGame().CreateObjectEx(class_name, vector.Zero, ECE_LOCAL | ECE_NONE);
+		if (object) {
+			string name = object.GetShapeName();
+			object.Delete();
+			return name;
+		}
+		
 		if (class_name == string.Empty) {
 			return "UNKNOWN_P3D_FILE";
 		}
