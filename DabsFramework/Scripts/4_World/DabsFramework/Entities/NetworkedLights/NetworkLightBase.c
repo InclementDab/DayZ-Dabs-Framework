@@ -9,7 +9,7 @@
 
 
 
-class NetworkLight: ScriptedEntity
+class NetworkLightBase: ScriptedEntity
 {
 	protected ScriptedLightBase m_Light;
 	
@@ -38,7 +38,7 @@ class NetworkLight: ScriptedEntity
 	// Spotlight
 	float SpotLightAngle = 90;
 	
-	void NetworkLight()
+	void NetworkLightBase()
 	{
 		if (GetGame().IsMultiplayer()) {
 			// Booleans
@@ -73,7 +73,7 @@ class NetworkLight: ScriptedEntity
 		}
 	}
 	
-	void ~NetworkLight()
+	void ~NetworkLightBase()
 	{
 		if (m_Light) {
 			m_Light.Destroy();
@@ -129,8 +129,7 @@ class NetworkLight: ScriptedEntity
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 	
-	/*
-	override void Write(inout map<string, ref SerializableParam> serializable_data)
+	void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
 		serializable_data["CastShadow"] = SerializableParam1<bool>.Create(CastShadow);
 		serializable_data["EnableSpecular"] = SerializableParam1<bool>.Create(EnableSpecular);
@@ -150,7 +149,7 @@ class NetworkLight: ScriptedEntity
 		serializable_data["SpotLightAngle"] = SerializableParam1<float>.Create(SpotLightAngle);
 	}
 		
-	override void Read(map<string, ref SerializableParam> serializable_data)
+	void Read(map<string, ref SerializableParam> serializable_data)
 	{		
 		if (serializable_data["CastShadow"]) {
 			CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;
@@ -236,7 +235,7 @@ class NetworkLight: ScriptedEntity
 		m_Light.SetFlareVisible(FlareVisible);
 		//m_Light.SetFlareRelPosition(FlareRelativePosition);
 		m_Light.SetSpotLightAngle(SpotLightAngle);
-	}*/
+	}
 		
 	void PropertyChanged(Class source, string property_name)
 	{

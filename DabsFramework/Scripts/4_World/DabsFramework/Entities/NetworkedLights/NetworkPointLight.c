@@ -1,5 +1,5 @@
 [RegisterScriptedEntity(NetworkPointLight, "Point Light", Symbols.LIGHTBULB.Regular())]
-class NetworkPointLight: NetworkLight
+class NetworkPointLight: NetworkLightBase
 {
 	override ScriptedLightBase CreateLight(vector global_pos = "0 0 0", float fade_in_time_in_s = 0)
 	{

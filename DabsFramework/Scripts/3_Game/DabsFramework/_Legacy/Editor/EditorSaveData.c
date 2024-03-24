@@ -8,15 +8,15 @@ class EditorSaveData
 	vector CameraPosition;
 	
 	ref array<ref EditorObjectData> EditorObjects = {};
-	ref array<ref EditorDeletedObjectData> EditorDeletedObjects = {};	
+	ref array<ref EditorDeletedObjectData> EditorHiddenObjects = {};	
 		
 	void ~EditorSaveData()
 	{
 		delete EditorObjects;
-		delete EditorDeletedObjects;
+		delete EditorHiddenObjects;
 	}
 		
-	void Write(Serializer serializer)
+	void Write(Serializer serializer, int version)
 	{
 		serializer.Write(BIN_CHECK);
 		serializer.Write(Version);
@@ -28,8 +28,8 @@ class EditorSaveData
 			data.Write(serializer, Version);
 		}
 		
-		serializer.Write(EditorDeletedObjects.Count());
-		foreach (EditorDeletedObjectData deleted_data: EditorDeletedObjects) {
+		serializer.Write(EditorHiddenObjects.Count());
+		foreach (EditorDeletedObjectData deleted_data: EditorHiddenObjects) {
 			deleted_data.Write(serializer, Version);
 		}
 	}
@@ -60,7 +60,7 @@ class EditorSaveData
 		for (int j = 0; j < editor_deleted_object_count; j++) {
 			EditorDeletedObjectData deleted_data();
 			deleted_data.Read(serializer, read_version);
-			EditorDeletedObjects.Insert(deleted_data);
+			EditorHiddenObjects.Insert(deleted_data);
 		}
 		
 		return true;
