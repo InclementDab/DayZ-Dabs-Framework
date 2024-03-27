@@ -5,20 +5,6 @@ class PluginLaunchGameBase: PluginProject
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
-		
-		if (workbench_directory == string.Empty) {
-			Error("CWD is not workbench, you must launch via gproj");
-			return;
-		}
-								
-		//! Game launch script
-		// append prefix of current mod
-		if (!m_ProjectSettings["ServerMod"].ToInt() && !launch_settings.DisableMod) {			
-			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
-		} else {
-			m_ProjectSettings["ServerMod"] = m_ProjectSettings["ServerMod"];
-		}
-		
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetSourceDataDirectory();		
 		string game_exe = game_directory + EXECUTABLE;
@@ -27,6 +13,22 @@ class PluginLaunchGameBase: PluginProject
 			return;
 		}
 		
+		if (workbench_directory == string.Empty) {
+			Error("CWD is not workbench, you must launch via gproj");
+			return;
+		}
+		
+		DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
+		CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+								
+		//! Game launch script
+		// append prefix of current mod
+		if (!m_ProjectSettings["ServerMod"].ToInt() && !launch_settings.DisableMod) {			
+			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
+		} else {
+			m_ProjectSettings["ServerMod"] = m_ProjectSettings["ServerMod"];
+		}
+			
 		if (launch_settings.Repository == string.Empty) {
 			ErrorDialog("You need to set the Repository setting in Plugins -> Configure -> Configure Project");
 			return;
@@ -138,7 +140,7 @@ class PluginLaunchGameBase: PluginProject
 				CopyFile(territory_export, string.Format("%1\\env\\%2", repository_mission, territory_export.GetFileName()));
 			}
 		}
-		
+				
 		MakeDirectory(launch_settings.Profiles);
 		MakeDirectory(launch_settings.Missions);
 		
