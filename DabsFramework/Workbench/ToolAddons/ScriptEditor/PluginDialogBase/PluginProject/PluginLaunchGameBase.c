@@ -155,6 +155,7 @@ class PluginLaunchGameBase: PluginProject
 		CleanLogFolder(server_profile_directory);
 				
 		// Copy maps and mission info
+		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
 		if (m_ProjectSettings["Profile"] != string.Empty) {
