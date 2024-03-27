@@ -14,13 +14,13 @@ class Ray: Managed
 		return Position + Direction * distance;
 	}
 	
-	Raycast PerformRaycast(Object ignore = null)
+	Raycast PerformRaycast(Object ignore = null, float distance = 1000.0)
 	{
 		Ray output_ray = new Ray();
 		Object hit_object;
 		
 		float fraction;
-		if (!DayZPhysics.RayCastBullet(Position, Position + Direction * 1000.0, PhxInteractionLayers.ROADWAY | PhxInteractionLayers.TERRAIN | PhxInteractionLayers.CHARACTER | PhxInteractionLayers.VEHICLE | PhxInteractionLayers.ITEM_LARGE | PhxInteractionLayers.ITEM_SMALL | PhxInteractionLayers.BUILDING | PhxInteractionLayers.DOOR, ignore, hit_object, output_ray.Position, output_ray.Direction, fraction)) {			
+		if (!DayZPhysics.RayCastBullet(Position, Position + Direction.Normalized() * distance, PhxInteractionLayers.ROADWAY | PhxInteractionLayers.TERRAIN | PhxInteractionLayers.CHARACTER | PhxInteractionLayers.VEHICLE | PhxInteractionLayers.ITEM_LARGE | PhxInteractionLayers.ITEM_SMALL | PhxInteractionLayers.BUILDING | PhxInteractionLayers.DOOR, ignore, hit_object, output_ray.Position, output_ray.Direction, fraction)) {			
 			return null;
 		}
 				
@@ -31,13 +31,13 @@ class Ray: Managed
 		return raycast;
 	}
 	
-	Raycast PerformRaycastRV(Object ignore = null, Object with = null, float radius = 0.0)
+	Raycast PerformRaycastRV(Object ignore = null, Object with = null, float radius = 0.0, float distance = 1000.0)
 	{
 		Ray output_ray = new Ray();
 		
 		set<Object> rv_results = new set<Object>();
 		int hit_component;
-		if (!DayZPhysics.RaycastRV(Position, Position + Direction * 100.0, output_ray.Position, output_ray.Direction, hit_component, rv_results, with, ignore, false, false, ObjIntersectFire, radius)) {
+		if (!DayZPhysics.RaycastRV(Position, Position + Direction.Normalized() * distance, output_ray.Position, output_ray.Direction, hit_component, rv_results, with, ignore, false, false, ObjIntersectFire | ObjIntersectGeom, radius)) {
 			return null;
 		}
 		
