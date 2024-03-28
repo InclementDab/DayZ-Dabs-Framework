@@ -175,7 +175,11 @@ class PluginLaunchGameBase: PluginProject
 		string ip, password;
 		int port;
 		if (GetConnectionArguments(ip, port, password)) {
-			client_launch_params += string.Format(" -connect=%1 -port=%2 -password=%3", ip, port, password);
+			client_launch_params += string.Format(" -connect=%1 -port=%2", ip, port);
+			if (password) {
+				client_launch_params += string.Format(" -password=%1", password);
+			}
+			
 			server_launch_params += string.Format(" -port=%1", port);
 		}
 		 
