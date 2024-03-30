@@ -17,16 +17,6 @@ class DiscordPayload_Embed: Managed
 	
 	void DiscordPayload_Embed(string _title, string _description, string _url = string.Empty, int _color = 0, array<ref DiscordPayload_EmbedField> _fields = null)
 	{
-		if (_title == string.Empty)
-		{
-			ErrorEx("Title can not be empty!");
-		}
-		
-		if (_description == string.Empty)
-		{
-			ErrorEx("Description can not be empty!");
-		}
-		
 		title = _title;
 		description = _description;
 		url = _url;
