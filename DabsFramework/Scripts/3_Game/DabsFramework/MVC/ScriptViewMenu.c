@@ -33,11 +33,23 @@ class ScriptViewMenu: ScriptView
 	}
 	
 	void ~ScriptViewMenu()
-	{				
+	{
 		// This lazy calls the destructor
 		if (m_UIScriptViewMenu) {
 			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+			
+			if (m_UIScriptViewMenu.GetParentMenu()) {
+				g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu.GetParentMenu(), m_UIScriptViewMenu.GetParentMenu().GetParentMenu());
+			}
 		}
+		
+		bool show_cursor = (m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
+		// Mouse control
+		if (UseMouse() && !show_cursor) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+		}
+		
+		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, show_cursor);
 		
 		// input excludes
 		if (g_Game.GetMission()) {
@@ -74,14 +86,8 @@ class ScriptViewMenu: ScriptView
 	}
 	
 	void OnMenuExit(UIMenuPanel parent_panel)
-	{		
-		// Mouse control
-		if (UseMouse()) {
-			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
-		}
-		
-		bool show_cursor = (m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
-		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, show_cursor);
+	{
+		Close();
 	}
 	
 	void EnterChildMenu(int id)
