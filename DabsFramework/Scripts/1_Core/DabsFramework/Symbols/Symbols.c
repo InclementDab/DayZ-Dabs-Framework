@@ -2,6 +2,10 @@ class Symbols: string
 {		
 	void Load(ImageWidget image_widget, int size = 2 /* SymbolSize.IDX_REGULAR */)
 	{		
+		if (!image_widget) {
+			return;
+		}
+		
 		image_widget.LoadImageFile(SymbolSize.IDX_THIN, value.Thin());
 		image_widget.LoadImageFile(SymbolSize.IDX_LIGHT, value.Light());
 		image_widget.LoadImageFile(SymbolSize.IDX_REGULAR, value.Regular());
