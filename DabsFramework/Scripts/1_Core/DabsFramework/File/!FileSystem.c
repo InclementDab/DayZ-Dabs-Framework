@@ -6,7 +6,7 @@ class FileSystem: string
 	static const string PATH_SEPERATOR_ALT = "/";
 	static const string VOLUME_SEPERATOR = ":";
 	
-	static const string PROFILES = "$profiles:";
+	static const string PROFILE = "$profile:";
 	static const string MISSION = "$mission:";
 	static const string SAVES = "$saves:";
 	static const string STORAGE = "$storage:";
