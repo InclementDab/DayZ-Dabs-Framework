@@ -8,7 +8,7 @@ class WebApiLog: LoggerBase
 	
 	static void Trace(Class source, string function)
 	{
-#ifdef DIAG
+#ifdef DIAG_DEVELOPER
 		string stack_trace;
 		DumpStackString(stack_trace);
 		array<string> stack_trace_lines = {};
@@ -20,17 +20,18 @@ class WebApiLog: LoggerBase
 
 	static void Error(string error)
 	{
-		Print("RearmedAPI threw an error");
-		DumpStack();
+#ifdef DIAG_DEVELOPER
+		Error(error);
+#endif
 		
 		DoLog(WebApiLog, string.Format("[ERROR] %1", error));
-
+	
 		string stack_trace;
 		DumpStackString(stack_trace);
 		DoLog(WebApiLog, stack_trace); 
 	}
 
-#ifdef DIAG
+#ifdef DIAG_DEVELOPER
 	override bool DuplicateToConsole()
 	{
 		return true;
