@@ -47,6 +47,11 @@ class EventManager
 		DayZGame.Event_OnRPC.Insert(OnRPC);
 	}
 	
+	void ~EventManager()
+	{
+		DayZGame.Event_OnRPC.Remove(OnRPC);
+	}
+	
 	/*
 		Run this in your init.c
 	
@@ -228,30 +233,12 @@ class EventManager
 		
 	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
 	{	
-		switch (rpc_type) {
-			case ERPCsDabsFramework.EVENT_PAUSE: {
-				EventPauseParams event_pause_params;
-				if (!ctx.Read(event_pause_params)) {
-					break;
-				}
-				
-				typename eventp_type = event_pause_params.param1.ToType();
-				bool eventp_paused = event_pause_params.param2;
-				int eventp_id = event_pause_params.param3;
-				
-				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
-					// Forced setting for clients since this needs to be controlled separately
-					// the client does not have authority to pause events directly, but we do
-					EnScript.SetClassVar(m_ActiveEvents[eventp_type][eventp_id], "m_IsPaused", 0, eventp_paused);
-				}
-				
-				break;
-			}
-			
+		switch (rpc_type) {			
 			case ERPCsDabsFramework.EVENT_UPDATE: {								
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					string str_event_type;
 					if (!ctx.Read(str_event_type)) {
+						Print(str_event_type);
 						break;
 					}
 					

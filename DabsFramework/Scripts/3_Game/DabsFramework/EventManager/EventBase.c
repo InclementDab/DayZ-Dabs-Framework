@@ -285,7 +285,7 @@ class EventBase: Managed
 		m_IsPaused = state;
 				
 		EventManagerLog.Debug(this, "Sending Event Pause Data, idx: %2, Paused: %3", GetID().ToString(), m_IsPaused.ToString());
-		GetGame().RPCSingleParam(null, ERPCsDabsFramework.EVENT_PAUSE, new EventPauseParams(Type().ToString(), m_IsPaused, GetID()), true, null);
+		SyncToClient(null);
 	}
 	
 	bool IsPaused()
@@ -322,7 +322,11 @@ class EventBase: Managed
 	{
 		EventManagerLog.Debug(this, "Sending active Event Data: %1, idx: %2, Phase: %3", Type().ToString(), GetID().ToString(), typename.EnumToString(EventPhase, GetCurrentPhase()));		
 		ScriptRPC rpc = new ScriptRPC();
-		rpc.Write(Type().ToString());
+		Print(Type());
+		typename type = Type();
+		string type_string = type.ToString();
+		Print(type_string);
+		rpc.Write(type_string);
 		rpc.Write(GetID());
 		rpc.Write(GetCurrentPhase());
 		rpc.Write(GetCurrentPhaseTimeRemaining());
