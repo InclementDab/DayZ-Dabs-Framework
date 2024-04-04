@@ -1,6 +1,8 @@
 //@ It is your responsibility to manage the memory for this menu object
 class ScriptViewMenu: ScriptView
 {		
+	static ref map<UIScriptViewMenu, ScriptViewMenu> AllByMenu = new map<UIScriptViewMenu, ScriptViewMenu>();
+	
 	protected ref UIScriptViewMenu m_UIScriptViewMenu = new UIScriptViewMenu(this);
 	
 	//@ This menu will control its subsequent children UI menus, but NOT children ScriptViewMenu!!!
@@ -8,6 +10,11 @@ class ScriptViewMenu: ScriptView
 	
 	void ScriptViewMenu()
 	{
+		if (!AllByMenu) {
+			AllByMenu = new map<UIScriptViewMenu, ScriptViewMenu>();
+		}
+		
+		AllByMenu[m_UIScriptViewMenu] = this;
 		// We are the parent menu
 		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, g_Game.GetUIManager().GetMenu());
 		
@@ -36,6 +43,7 @@ class ScriptViewMenu: ScriptView
 	{
 		// This lazy calls the destructor
 		if (m_UIScriptViewMenu) {
+			AllByMenu.Remove(m_UIScriptViewMenu);
 			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
 			
 			if (m_UIScriptViewMenu.GetParentMenu()) {
@@ -134,9 +142,22 @@ class ScriptViewMenu: ScriptView
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(_Close);
 	}
 	
+	bool CanClose()
+	{
+		return true;
+	}
+	
+	// tbd how i want to handle this. ive implemented it in the playground in MG::OnUpdate but DF is a weird one
+	bool CanCloseWithEscape()
+	{
+		return CanClose();
+	}
+	
 	private void _Close()
 	{
-		delete this;
+		if (CanClose()) {
+			delete this;
+		}
 	}
 		
 	UIScriptViewMenu GetUIScriptViewMenu()
@@ -147,5 +168,10 @@ class ScriptViewMenu: ScriptView
 	UIScriptedMenu GetChildMenu()
 	{
 		return m_ChildMenu;
+	}
+	
+	static ScriptViewMenu Get(UIScriptedMenu menu)
+	{
+		return AllByMenu[menu];
 	}
 }

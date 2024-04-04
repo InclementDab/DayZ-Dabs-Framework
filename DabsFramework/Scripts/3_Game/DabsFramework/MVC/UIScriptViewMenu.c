@@ -29,6 +29,11 @@ class UIScriptViewMenu: UIScriptedMenu
 	override void UnlockControls()
 	{
 	}
+	
+	override bool UseMouse()
+	{
+		return m_ScriptViewMenu && m_ScriptViewMenu.UseMouse();
+	}
 		
 	override Widget Init()
 	{
