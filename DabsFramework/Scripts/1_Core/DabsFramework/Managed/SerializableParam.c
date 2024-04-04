@@ -34,7 +34,7 @@ class SerializableParam: Managed
 			return null;
 		}
 		
-		if (serializable_param.Read(ctx)) {
+		if (!serializable_param.Read(ctx)) {
 			Error("Failed to deserailize");
 			return null;
 		}
