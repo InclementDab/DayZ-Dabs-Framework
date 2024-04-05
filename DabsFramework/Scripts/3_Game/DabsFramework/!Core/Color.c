@@ -240,7 +240,7 @@ class LinearColor: int
 				
 		int hexasphere = hue / 60;
 		float c = saturation * value;	
-		float x = c * (1 - Math.AbsFloat(Math.FMod(hexasphere, 2) - 1));
+		float x = c * (1 - Math.AbsFloat(Math.FMod(hue / 60.0, 2) - 1));
 		float m = value - c;
 		float r, g, b;
 		switch (hexasphere) {

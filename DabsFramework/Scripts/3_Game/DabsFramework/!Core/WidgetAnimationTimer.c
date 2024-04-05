@@ -75,13 +75,7 @@ class WidgetAnimationTimer: Managed
 		m_EndValue = end_value;
 		m_Time = time;
 		m_Loop = loop;
-		m_StartTime = GetGame().GetTime();
-		
-		if (m_Time <= 0) {
-			Error("Time out of bounds " + m_Time);
-			return;
-		}
-		
+		m_StartTime = GetGame().GetTime();		
 		m_UpdateQueue.Insert(DoAnimate);
 	}
 	
@@ -93,7 +87,11 @@ class WidgetAnimationTimer: Managed
 			return;
 		}
 		
-		float normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
+		float normalized = 1.0;
+		if (m_Time != 0) {
+			normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
+		}
+		
 		SetProperty(m_Source, m_Property, Math.Lerp(m_StartValue, m_EndValue, normalized));
 		
 		if (normalized >= 1) {	
