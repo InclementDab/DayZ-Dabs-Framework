@@ -143,7 +143,7 @@ class EditorObjectData: SerializableBase
 		serializer.Write(AllowDamage);
 		serializer.Write(Simulate);
 		
-		if (version < 4) {
+		if (version < 5) {
 			return;
 		}
 		
@@ -202,7 +202,7 @@ class EditorObjectData: SerializableBase
 		serializer.Read(AllowDamage);
 		serializer.Read(Simulate);
 		
-		if (version < 4) {
+		if (version < 5) {
 			return true;
 		}
 		

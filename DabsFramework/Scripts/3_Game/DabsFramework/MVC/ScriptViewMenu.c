@@ -95,7 +95,11 @@ class ScriptViewMenu: ScriptView
 	
 	void OnMenuExit(UIMenuPanel parent_panel)
 	{
-		Close();
+		if (m_ChildMenu) {
+			m_LayoutRoot.Show(false);
+		} else {
+			Close();
+		}
 	}
 	
 	void EnterChildMenu(int id)
