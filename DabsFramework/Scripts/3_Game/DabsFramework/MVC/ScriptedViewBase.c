@@ -70,7 +70,7 @@ class ScriptedViewBase: Managed
 		// Propagates debug logging even if disabled locally
 		Debug_Logging = Debug_Logging || m_ParentScriptedViewBase.Debug_Logging;
 	}
-
+	
 	void OnWidgetScriptInit(Widget w)
 	{
 		Trace("OnWidgetScriptInit %1", w.ToString());

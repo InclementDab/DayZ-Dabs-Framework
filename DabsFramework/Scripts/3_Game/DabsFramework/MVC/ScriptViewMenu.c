@@ -176,6 +176,10 @@ class ScriptViewMenu: ScriptView
 	
 	static ScriptViewMenu Get(UIScriptedMenu menu)
 	{
+		if (!AllByMenu) {
+			return null;
+		}
+		
 		return AllByMenu[menu];
 	}
 }

@@ -14,8 +14,12 @@ class WidgetAnimator: Managed
 {
 	protected static ref array<ref WidgetAnimationTimer> m_RunningTimers = {};
 	
-	static void Animate(notnull Widget source, WidgetAnimatorProperty property, float end_value, TimeSpan time)
+	static void Animate(Widget source, WidgetAnimatorProperty property, float end_value, TimeSpan time)
 	{				
+		if (!source) {
+			return;
+		}
+
 		if (HasAnimation(source, property)) {
 			CancelAnimate(source, property);
 		}
@@ -25,8 +29,12 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
-	static void Animate(notnull Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time)
+	static void Animate(Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time)
 	{		
+		if (!source) {
+			return;
+		}
+
 		if (HasAnimation(source, property)) {
 			CancelAnimate(source, property);
 		}
@@ -36,8 +44,12 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
-	static void AnimateLoop(notnull Widget source, WidgetAnimatorProperty property, float end_value, int time)
+	static void AnimateLoop(Widget source, WidgetAnimatorProperty property, float end_value, int time)
 	{				
+		if (!source) {
+			return;
+		}
+
 		if (HasAnimation(source, property)) {
 			CancelAnimate(source, property);
 		}
@@ -47,8 +59,12 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
-	static void AnimateLoop(notnull Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time)
+	static void AnimateLoop(Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time)
 	{				
+		if (!source) {
+			return;
+		}
+
 		if (HasAnimation(source, property)) {
 			CancelAnimate(source, property);
 		}
@@ -58,8 +74,12 @@ class WidgetAnimator: Managed
 		m_RunningTimers.Insert(animation_timer);
 	}
 		
-	static void AnimateColor(notnull Widget source, LinearColor end_color, TimeSpan time, BlendMode blend_mode = BlendMode.NORMAL, bool loop = false)
+	static void AnimateColor(Widget source, LinearColor end_color, TimeSpan time, BlendMode blend_mode = BlendMode.NORMAL, bool loop = false)
 	{				
+		if (!source) {
+			return;
+		}
+
 		WidgetAnimatorProperty property = WidgetAnimatorProperty.LINEAR_COLOR;
 		if (HasAnimation(source, property)) {
 			CancelAnimate(source, property);
@@ -72,8 +92,12 @@ class WidgetAnimator: Managed
 		}
 	}
 	
-	static void AnimateColor(notnull Widget source, LinearColor start_color, LinearColor end_color, TimeSpan time, BlendMode blend_mode = BlendMode.NORMAL, bool loop = false)
+	static void AnimateColor(Widget source, LinearColor start_color, LinearColor end_color, TimeSpan time, BlendMode blend_mode = BlendMode.NORMAL, bool loop = false)
 	{			
+		if (!source) {
+			return;
+		}
+
 		WidgetAnimatorProperty property = WidgetAnimatorProperty.LINEAR_COLOR;
 		if (HasAnimation(source, property)) {
 			CancelAnimate(source, property);
@@ -86,8 +110,12 @@ class WidgetAnimator: Managed
 		}
 	}	
 	
-	static void AnimateColorHSV(notnull Widget source, vector start_color, vector end_color, TimeSpan time, bool loop = false)
+	static void AnimateColorHSV(Widget source, vector start_color, vector end_color, TimeSpan time, bool loop = false)
 	{				
+		if (!source) {
+			return;
+		}
+
 		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_V;
 		for (int i = 2; i >= 0; i--) {
 			WidgetAnimationTimer hue_timer = new WidgetAnimationTimer();
@@ -98,8 +126,12 @@ class WidgetAnimator: Managed
 	}
 	
 	// O(n) for now
-	static void CancelAnimate(notnull Widget source, WidgetAnimatorProperty property = int.MIN, bool reset = false)
+	static void CancelAnimate(Widget source, WidgetAnimatorProperty property = int.MIN, bool reset = false)
 	{
+		if (!source) {
+			return;
+		}
+
 		foreach (WidgetAnimationTimer widget_animation_timer: m_RunningTimers) {
 			if (widget_animation_timer && widget_animation_timer.GetWidget() == source && (widget_animation_timer.GetWidgetAnimatorProperty() & property) == widget_animation_timer.GetWidgetAnimatorProperty()) {
 				if (reset) {
@@ -112,9 +144,13 @@ class WidgetAnimator: Managed
 		}
 	}
 		
-	static WidgetAnimatorProperty GetAnimations(notnull Widget source)
+	static WidgetAnimatorProperty GetAnimations(Widget source)
 	{		
 		WidgetAnimatorProperty properties;
+		if (!source) {
+			return properties;
+		}
+
 		foreach (WidgetAnimationTimer widget_animation_timer: m_RunningTimers) {
 			if (widget_animation_timer && widget_animation_timer.GetWidget() == source) {
 				properties |= widget_animation_timer.GetWidgetAnimatorProperty();
@@ -124,8 +160,12 @@ class WidgetAnimator: Managed
 		return properties;
 	}
 	
-	static bool HasAnimation(notnull Widget source, WidgetAnimatorProperty property)
+	static bool HasAnimation(Widget source, WidgetAnimatorProperty property)
 	{
+		if (!source) {
+			return false;
+		}
+
 		foreach (WidgetAnimationTimer widget_animation_timer: m_RunningTimers) {
 			if (widget_animation_timer && widget_animation_timer.GetWidget() == source) {
 				if ((property & widget_animation_timer.GetWidgetAnimatorProperty()) == property) {
