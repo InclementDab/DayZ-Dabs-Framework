@@ -160,17 +160,16 @@ class ProfileSettings: Class
 		return default;
 	}
 	
+	/*
 	static vector GetProfileVector(string variable, vector default = vector.Zero)
 	{
 		string value;
-		Print(variable);
 		if (g_Game.GetProfileString(variable, value)) {
-			Print(value);
 			return value.ToVector();
 		}
 		
 		return default;
-	}
+	}*/
 		
 	array<ref ProfileSettingsCategory> GetCategories()
 	{
