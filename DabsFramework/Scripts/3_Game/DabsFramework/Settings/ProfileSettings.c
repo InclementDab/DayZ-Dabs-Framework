@@ -34,10 +34,20 @@ class ProfileSettings: Class
 					break;
 				}
 				
+				/*
 				case vector: {
-					EnScript.SetClassVar(this, variable_name, 0, GetProfileString(variable_name_formatted, EnScriptVar<vector>.Get(this, variable_name).ToString(false)));
+					// vectors need to be stored, probably because its pointer type
+					Print(variable_name);
+					vector default_value;
+					EnScript.GetClassVar(this, variable_name, 0, default_value);
+					Print(default_value);
+					//vector v0 = EnScriptVar<vector>.Get(this, variable_name);
+					//Print(v0);
+					vector v = GetProfileVector(variable_name_formatted, default_value);
+					Print(v);
+					EnScript.SetClassVar(this, variable_name, 0, v);
 					break;
-				}
+				}*/
 				
 				// known bug: you cant have default values for array types yet, since ctor order is whackadoodle
 				case String("array<string>").ToType(): {
@@ -65,7 +75,6 @@ class ProfileSettings: Class
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(Type());
 		foreach (string variable_name, typename variable_type: properties) {		
 			string variable_name_formatted = GetFormattedSaveName(variable_name);			
-				
 			switch (variable_type) {
 				case bool: {
 					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<bool>.Get(this, variable_name)));
@@ -87,10 +96,13 @@ class ProfileSettings: Class
 					break;
 				}
 					
+				/*
 				case vector: {
-					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<vector>.Get(this, variable_name)));
+					string vector_value = EnScriptVar<vector>.Get(this, variable_name).ToString(false);
+					Print(vector_value);
+					g_Game.SetProfileString(variable_name_formatted, vector_value);
 					break;
-				}
+				}*/
 				
 				case String("array<string>").ToType(): {
 					g_Game.SetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name));
@@ -143,6 +155,18 @@ class ProfileSettings: Class
 		string value;
 		if (g_Game.GetProfileString(variable, value)) {
 			return value;
+		}
+		
+		return default;
+	}
+	
+	static vector GetProfileVector(string variable, vector default = vector.Zero)
+	{
+		string value;
+		Print(variable);
+		if (g_Game.GetProfileString(variable, value)) {
+			Print(value);
+			return value.ToVector();
 		}
 		
 		return default;
