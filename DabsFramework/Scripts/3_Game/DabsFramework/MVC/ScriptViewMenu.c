@@ -43,11 +43,12 @@ class ScriptViewMenu: ScriptView
 	{
 		// This lazy calls the destructor
 		if (m_UIScriptViewMenu) {
+			UIScriptedMenu parent_menu = m_UIScriptViewMenu.GetParentMenu();
 			AllByMenu.Remove(m_UIScriptViewMenu);
 			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
 			
-			if (m_UIScriptViewMenu.GetParentMenu()) {
-				g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu.GetParentMenu(), m_UIScriptViewMenu.GetParentMenu().GetParentMenu());
+			if (parent_menu) {
+				g_Game.GetUIManager().ShowScriptedMenu(parent_menu, parent_menu.GetParentMenu());
 			}
 		}
 		
