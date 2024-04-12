@@ -30,7 +30,6 @@ class SuppressedObjectManager: Managed
 		
 	void SuppressMany(notnull array<Object> objects)
 	{
-
 		array<Object> suppressible_objects = {};
 		foreach (Object object: objects) {
 			if (!IsSuppressible(object)) {
