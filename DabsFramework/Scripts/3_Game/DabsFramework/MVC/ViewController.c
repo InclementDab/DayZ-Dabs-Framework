@@ -43,9 +43,6 @@ class ViewController: ScriptedViewBase
 	// Invoked by PropertyChanged, add your subscribers
 	ref ScriptInvoker OnPropertyChanged = new ScriptInvoker();
 	
-	// Invoked by CollectionChanged, add your subscribers
-	ref ScriptInvoker OnCollectionChanged = new ScriptInvoker();
-	
 	// All View Bindings
 	[NonSerialized()]
 	protected ref ViewBindingHashMap m_ViewBindingHashMap = new ViewBindingHashMap();
@@ -171,9 +168,6 @@ class ViewController: ScriptedViewBase
 	// Override this when you want to have an event AFTER collection is changed
 	void CollectionChanged(string collection_name, CollectionChangedEventArgs args)
 	{
-		if (OnCollectionChanged) {
-			OnCollectionChanged.Invoke(collection_name, args);
-		}
 	}
 
 	protected int LoadDataBindings(Widget w)
