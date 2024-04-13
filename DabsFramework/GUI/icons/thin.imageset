@@ -4,7 +4,7 @@ ImageSetClass  {
 	Textures {
 		ImageSetTextureClass  {
 			mpix 1
-			path "P:\DabsFramework\GUI\icons\thin.edds"
+			path "DabsFramework\GUI\icons\thin.edds"
 		}
 	}
 	Images {
