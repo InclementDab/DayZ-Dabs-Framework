@@ -40,9 +40,6 @@ class TestController: Controller
 // Abstract Class
 class ViewController: ScriptedViewBase
 {
-	// Invoked by PropertyChanged, add your subscribers
-	ref ScriptInvoker OnPropertyChanged = new ScriptInvoker();
-	
 	// All View Bindings
 	[NonSerialized()]
 	protected ref ViewBindingHashMap m_ViewBindingHashMap = new ViewBindingHashMap();
@@ -57,7 +54,7 @@ class ViewController: ScriptedViewBase
 
 	[NonSerialized()]
 	protected ref ScriptedViewBaseHandler m_ScriptedViewBaseHandler = new ScriptedViewBaseHandler(this);
-		
+
 	override void OnWidgetScriptInit(Widget w)
 	{
 		super.OnWidgetScriptInit(w);
@@ -159,9 +156,6 @@ class ViewController: ScriptedViewBase
 	// Override this when you want to have an event AFTER property is changed
 	void PropertyChanged(string property_name)
 	{
-		if (OnPropertyChanged) {
-			OnPropertyChanged.Invoke(property_name);
-		}
 	}
 
 	// Gets called every time an observable collection is changed.
