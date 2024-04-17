@@ -54,7 +54,7 @@ class ViewController: ScriptedViewBase
 
 	[NonSerialized()]
 	protected ref ScriptedViewBaseHandler m_ScriptedViewBaseHandler = new ScriptedViewBaseHandler(this);
-		
+
 	override void OnWidgetScriptInit(Widget w)
 	{
 		super.OnWidgetScriptInit(w);
@@ -154,11 +154,15 @@ class ViewController: ScriptedViewBase
 
 	// Gets called every time a property is changed.
 	// Override this when you want to have an event AFTER property is changed
-	void PropertyChanged(string property_name);
+	void PropertyChanged(string property_name)
+	{
+	}
 
 	// Gets called every time an observable collection is changed.
 	// Override this when you want to have an event AFTER collection is changed
-	void CollectionChanged(string collection_name, CollectionChangedEventArgs args);
+	void CollectionChanged(string collection_name, CollectionChangedEventArgs args)
+	{
+	}
 
 	protected int LoadDataBindings(Widget w)
 	{

@@ -1,4 +1,4 @@
-class RegisterProfileSetting
+class RegisterProfileSetting: Class
 {
 	static ref array<ref Param2<typename, string>> Instances = {};
 	

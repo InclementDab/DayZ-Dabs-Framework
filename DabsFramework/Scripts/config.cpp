@@ -2,16 +2,13 @@ class CfgPatches
 {
 	class DF_Scripts
 	{
-        units[] = {};
-        weapons[] = {};
-        requiredVersion = 0.1;
-		requiredAddons[] = {"DZ_Scripts"};
+		requiredAddons[] = {"DZ_Scripts", "DF_GUI"};
 	};
 };
 
 class CfgMods 
 {
-	class DZ_DabsFramework
+	class DabsFramework
 	{
 		name = "Dabs Framework";
 		dir = "DabsFramework";

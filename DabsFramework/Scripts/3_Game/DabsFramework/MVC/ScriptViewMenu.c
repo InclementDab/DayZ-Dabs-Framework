@@ -1,6 +1,8 @@
 //@ It is your responsibility to manage the memory for this menu object
 class ScriptViewMenu: ScriptView
 {		
+	static ref map<UIScriptedMenu, ScriptViewMenu> AllByMenu = new map<UIScriptedMenu, ScriptViewMenu>();
+	
 	protected ref UIScriptViewMenu m_UIScriptViewMenu = new UIScriptViewMenu(this);
 	
 	//@ This menu will control its subsequent children UI menus, but NOT children ScriptViewMenu!!!
@@ -8,6 +10,11 @@ class ScriptViewMenu: ScriptView
 	
 	void ScriptViewMenu()
 	{
+		if (!AllByMenu) {
+			AllByMenu = new map<UIScriptedMenu, ScriptViewMenu>();
+		}
+		
+		AllByMenu[m_UIScriptViewMenu] = this;
 		// We are the parent menu
 		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, g_Game.GetUIManager().GetMenu());
 		
@@ -27,18 +34,31 @@ class ScriptViewMenu: ScriptView
 		// Handles hiding / showing cursor
 		if (UseMouse()) {
 			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
-			g_Game.GetUIManager().ShowUICursor(true);
 		}
+		
+		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, UseMouse());
 	}
 	
 	void ~ScriptViewMenu()
 	{
-		g_Game.GetUIManager().ShowUICursor(m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
-		
 		// This lazy calls the destructor
 		if (m_UIScriptViewMenu) {
+			UIScriptedMenu parent_menu = UIScriptedMenu.Cast(m_UIScriptViewMenu.GetParentMenu());
+			AllByMenu.Remove(m_UIScriptViewMenu);
 			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+			
+			if (parent_menu) {
+				g_Game.GetUIManager().ShowScriptedMenu(parent_menu, parent_menu.GetParentMenu());
+			}
 		}
+		
+		bool show_cursor = (m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
+		// Mouse control
+		if (UseMouse() && !show_cursor) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+		}
+		
+		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, show_cursor);
 		
 		// input excludes
 		if (g_Game.GetMission()) {
@@ -75,10 +95,11 @@ class ScriptViewMenu: ScriptView
 	}
 	
 	void OnMenuExit(UIMenuPanel parent_panel)
-	{		
-		// Mouse control
-		if (UseMouse()) {
-			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
+	{
+		if (m_ChildMenu) {
+			m_LayoutRoot.Show(false);
+		} else {
+			Close();
 		}
 	}
 	
@@ -126,9 +147,22 @@ class ScriptViewMenu: ScriptView
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(_Close);
 	}
 	
+	bool CanClose()
+	{
+		return true;
+	}
+	
+	// tbd how i want to handle this. ive implemented it in the playground in MG::OnUpdate but DF is a weird one
+	bool CanCloseWithEscape()
+	{
+		return CanClose();
+	}
+	
 	private void _Close()
 	{
-		delete this;
+		if (CanClose()) {
+			delete this;
+		}
 	}
 		
 	UIScriptViewMenu GetUIScriptViewMenu()
@@ -139,5 +173,14 @@ class ScriptViewMenu: ScriptView
 	UIScriptedMenu GetChildMenu()
 	{
 		return m_ChildMenu;
+	}
+	
+	static ScriptViewMenu Get(UIScriptedMenu menu)
+	{
+		if (!AllByMenu) {
+			return null;
+		}
+		
+		return AllByMenu[menu];
 	}
 }

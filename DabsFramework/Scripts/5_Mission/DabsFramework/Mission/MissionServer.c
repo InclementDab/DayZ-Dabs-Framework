@@ -18,7 +18,6 @@ modded class MissionServer
 	override void InvokeOnConnect(PlayerBase player, PlayerIdentity identity)
 	{
 		super.InvokeOnConnect(player, identity);
-		
 		if (m_JoinedPlayers.Find(identity.GetId()) == -1) {
 			OnPlayerJoined(player, identity);
 			m_JoinedPlayers.Insert(identity.GetId());

@@ -16,8 +16,8 @@ modded class OptionsMenu
 				
 		m_OnChangedCaller = ScriptCaller.Create(OnChanged);
 		
-		foreach (Param2<typename, string> register_profile_setting: RegisterProfileSetting.Instances) {			
-			if (RegisterProfileSettingBase.Instances[register_profile_setting.param1].Count() == 0) {
+		foreach (Param2<typename, string> register_profile_setting: RegisterProfileSetting.Instances) {	
+			if (!RegisterProfileSettingBase.Instances[register_profile_setting.param1] || RegisterProfileSettingBase.Instances[register_profile_setting.param1].Count() == 0) {
 				continue;
 			}
 			

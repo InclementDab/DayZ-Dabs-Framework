@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Join Remote", "Lanches DayZ and joins remote", "F5", "", {"ScriptEditor", "ResourceManager"})]
+[WorkbenchPluginAttribute("Join Remote", "Lanches DayZ and joins remote", "Ctrl+F6", "", {"ScriptEditor", "ResourceManager"})]
 class PluginJoinRemote: PluginLaunchGameBase
 {
 	[Attribute("", "editbox")]
@@ -18,6 +18,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 	[ButtonAttribute("Join", true)]
 	void Join()
 	{
+		m_LaunchSettings.AutoClose = false;
 		m_LaunchSettings.LaunchType = GameLaunchType.CLIENT;
 		LaunchGame(m_LaunchSettings);
 	}

@@ -1,4 +1,4 @@
-class RegisterAction
+class RegisterAction: Class
 {
 	static ref array<typename> RegisteredTypes = {};
 	

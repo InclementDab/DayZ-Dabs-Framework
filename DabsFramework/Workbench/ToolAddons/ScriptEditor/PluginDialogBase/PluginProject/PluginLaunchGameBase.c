@@ -5,21 +5,6 @@ class PluginLaunchGameBase: PluginProject
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
-		
-		if (workbench_directory == string.Empty) {
-			Error("CWD is not workbench, you must launch via gproj");
-			return;
-		}
-								
-		//! Game launch script
-		// append prefix of current mod
-		if (!m_ProjectSettings["ServerMod"].ToInt()) {
-			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
-		} else {
-			m_ProjectSettings["ServerMod"] = m_ProjectSettings["ServerMod"] + ";@" + mod_prefix;
-		}
-		
-		
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetSourceDataDirectory();		
 		string game_exe = game_directory + EXECUTABLE;
@@ -28,6 +13,22 @@ class PluginLaunchGameBase: PluginProject
 			return;
 		}
 		
+		if (workbench_directory == string.Empty) {
+			Error("CWD is not workbench, you must launch via gproj");
+			return;
+		}
+		
+		DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
+		CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+								
+		//! Game launch script
+		// append prefix of current mod
+		if (!m_ProjectSettings["ServerMod"].ToInt() && !launch_settings.DisableMod) {			
+			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@" + mod_prefix;
+		} else {
+			m_ProjectSettings["ServerMod"] = m_ProjectSettings["ServerMod"];
+		}
+			
 		if (launch_settings.Repository == string.Empty) {
 			ErrorDialog("You need to set the Repository setting in Plugins -> Configure -> Configure Project");
 			return;
@@ -64,7 +65,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		// Set up filepatching, needs to either create or delete all links depending on the setting
 		if (launch_settings.FilePatching) {
-			foreach (string prefix: m_Prefixes) {				
+			foreach (string prefix: m_Prefixes) {			
 				array<string> prefix_split = {};
 				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
 				
@@ -124,6 +125,22 @@ class PluginLaunchGameBase: PluginProject
 			}
 		}
 		
+		// Copy raw CLE files
+		string repository_mission = string.Format("%1\\Missions\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map);
+		if (FileExist(string.Format("%1\\ce", repository_mission))) {
+			array<string> map_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\map", repository_mission), "*.map");
+			if (map_exports.Count() == 1) {
+				DeleteFile(string.Format("%1\\areaflags.map", repository_mission));
+				CopyFile(map_exports[0], string.Format("%1\\areaflags.map", repository_mission));
+			}
+			
+			MakeDirectory(string.Format("%1\\env", repository_mission));
+			array<string> territory_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\territoryTypes", repository_mission), "*.xml");
+			foreach (FileSystem territory_export: territory_exports) {
+				CopyFile(territory_export, string.Format("%1\\env\\%2", repository_mission, territory_export.GetFileName()));
+			}
+		}
+				
 		MakeDirectory(launch_settings.Profiles);
 		MakeDirectory(launch_settings.Missions);
 		
@@ -136,13 +153,11 @@ class PluginLaunchGameBase: PluginProject
 		MakeDirectory(server_profile_directory);
 		MakeDirectory(server_mission);
 		
-		// Always clean them log folders
-		if (launch_settings.Deloginator) {
-			CleanLogFolder(client_profile_directory);
-			CleanLogFolder(server_profile_directory);
-		}
-		
+		CleanLogFolder(client_profile_directory);
+		CleanLogFolder(server_profile_directory);
+				
 		// Copy maps and mission info
+		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
 		if (m_ProjectSettings["Profile"] != string.Empty) {
@@ -153,14 +168,18 @@ class PluginLaunchGameBase: PluginProject
 		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
 		CopyFiles(string.Format("%1\\Missions\\Dev", launch_settings.Repository), server_mission);
 		
-		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-world=%3\"", formatted_mod_list, client_profile_directory, m_LaunchSettings.Map);
-		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server \"-world=%6\"", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, m_LaunchSettings.Map);
-		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=@DayZ-Editor;%1\" \"-profiles=%2\" \"-mission=%3\" \"-world=%4\"", formatted_mod_list, client_profile_directory, server_mission, m_LaunchSettings.Map);
-
+		string client_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
+		string server_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission);
+		string offline_launch_params = LaunchSettings.BASE_LAUNCH_PARAMS + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-mission=%3\"", formatted_mod_list, client_profile_directory, repository_mission);		
+		
 		string ip, password;
 		int port;
 		if (GetConnectionArguments(ip, port, password)) {
-			client_launch_params += string.Format(" -connect=%1 -port=%2 -password=%3", ip, port, password);
+			client_launch_params += string.Format(" -connect=%1 -port=%2", ip, port);
+			if (password) {
+				client_launch_params += string.Format(" -password=%1", password);
+			}
+			
 			server_launch_params += string.Format(" -port=%1", port);
 		}
 		 
@@ -169,7 +188,7 @@ class PluginLaunchGameBase: PluginProject
 			server_launch_params += " -filePatching";
 			offline_launch_params += " -filePatching";
 		}
-						
+		
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
 			Workbench.RunCmd(string.Format("%1 %2 -mission=dayzOffline.%3", game_exe, client_launch_params, m_LaunchSettings.Map));
 			//Workbench.RunCmd(game_exe + " -client2 " + client_launch_params);
@@ -180,6 +199,11 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
+			// I DONT LIEK THIS :(
+			if (FileExist(string.Format("%1\\storage_-1", repository_mission))) {
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
+			}
+			
 			Workbench.RunCmd(game_exe + " " + offline_launch_params);
 		}
 	}

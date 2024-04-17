@@ -44,7 +44,7 @@ class ViewBinding : ScriptedViewBase
 		Log("Loaded from Widget: %1", m_LayoutRoot.GetName());
 
 		// Check for two way binding support
-		if (Two_Way_Binding && !m_WidgetController.CanTwoWayBind()) {
+		if (Two_Way_Binding && m_WidgetController && !m_WidgetController.CanTwoWayBind()) {
 			Error("Two Way Binding for %1 is not supported!", m_LayoutRoot.Type().ToString());
 		}
 	}

@@ -1,5 +1,7 @@
 modded class Math
 {
+	static const float EPSILON = 1.19209e-07;
+	
 	// Modulo for floating point numbers
     static float FMod(float num, float divisor)
 	{
@@ -26,6 +28,38 @@ modded class Math
 		return Vector(Math.SmoothLerp(p1[0], p2[0], time), Math.SmoothLerp(p1[1], p2[1], time), Math.SmoothLerp(p1[2], p2[2], time));
 	}
 	
+	static float Exp(float v)
+	{
+		return Pow(EULER, v);
+	}
+	
+	static float Ln(float y)
+	{
+	    int log2;
+	    float divisor, x, result;
+	
+	    log2 = Msb((int)y); // See: https://stackoverflow.com/a/4970859/6630230
+	    int int_divisor = (1 << log2);
+		divisor = (float)int_divisor;
+	    x = y / divisor;    // normalized value between [1.0, 2.0]
+	
+	    result = -1.7417939 + (2.8212026 + (-1.4699568 + (0.44717955 - 0.056570851 * x) * x) * x) * x;
+	    result += ((float)log2) * 0.69314718; // ln(2) = 0.69314718
+	
+	    return result;
+	}
+	
+	static int Msb(int v)
+	{
+		int r = 0;
+		while (v) {
+		    r++;
+			v >>= 1;
+		}
+		
+		return r;
+	}
+	
 	// Works very similar to Clamp except it rolls over instead of clamping
 	/* 
 		Examples:
@@ -44,15 +78,5 @@ modded class Math
 		}
 		
 		return value % max;
-	}
-	
-	static float Epsilon()
-	{
-		float epsilon = 1.0;
-		while ((1.0 + (epsilon / 2.0)) != 1.0) {
-			epsilon /= 2.0;
-		}
-		
-		return epsilon;
 	}
 }

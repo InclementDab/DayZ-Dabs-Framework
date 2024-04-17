@@ -16,28 +16,183 @@ class CustomDialogWindow: ScriptView
 	window.FunctionsThatOccurOnUi();
 	....
 	....
+
+
+	Quick overrides:
+		override bool OnClick(Widget w, int x, int y, int button);
+		override bool OnFocusLost(Widget w, int x, int y);
+		override bool OnMouseEnter(Widget w, int x, int y);
+		override bool OnMouseLeave(Widget w, Widget enterW, int x, int y);
+		override bool OnMouseWheel(Widget w, int x, int y, int wheel);
+		override bool OnMouseButtonDown(Widget w, int x, int y, int button);
+		override bool OnMouseButtonUp(Widget w, int x, int y, int button);
+		override bool OnChange(Widget w, int x, int y, bool finished);
+		override bool OnDrag(Widget w, int x, int y);
+		override bool OnDragging(Widget w, int x, int y, Widget reciever);
+		override bool OnDraggingOver(Widget w, int x, int y, Widget reciever);
+		override bool OnDrop(Widget w, int x, int y, Widget reciever);
+		override bool OnDropReceived(Widget w, int x, int y, Widget reciever);
+		override bool OnResize(Widget w, int x, int y);
+
 */
 
-class ScriptView: ScriptedViewBase
+class QuickView<Class T>: ScriptView
 {
-#ifdef WORKBENCH	
-	override void OnWidgetScriptInit(Widget w)
-	{
-		m_LayoutRoot = w;
-		
-	}
-#endif
+	// Of type widget!
+	T Root;
 	
+	void QuickView()
+	{
+		if (!T.IsInherited(Widget)) {
+			ErrorEx("QuickView template type must inherit Widget");
+			return;
+		}
+	}
+	
+	protected override Widget CreateWidget(Widget parent)
+	{
+		WidgetType widget_type_id;
+		switch (T) {
+				//!Single-line text. See enf::TextWidget
+			case TextWidget: {
+				widget_type_id = TextWidgetTypeID;
+				break;
+			}
+			//!Multi-line text. See enf::MultilineTextWidget
+			case MultilineTextWidget: {
+				widget_type_id = MultilineTextWidgetTypeID;
+				break;
+			}
+			//!Multi-line edit box. See enf::MultilineTextWidget
+			case MultilineEditBoxWidget: {
+				widget_type_id = MultilineEditBoxWidgetTypeID;
+				break;
+			}
+			//!Multi-line text with images in text. See enf::RichTextWidget
+			case RichTextWidget: {
+				widget_type_id = RichTextWidgetTypeID;
+				break;
+			}
+			//! Render target for enf::BaseWorld. See enf::RenderTargetWidget
+			case RenderTargetWidget: {
+				widget_type_id = RenderTargetWidgetTypeID;
+				break;
+			}
+			//! Picture, or multiple picture. See enf::ImageWidget
+			case ImageWidget: {
+				widget_type_id = ImageWidgetTypeID;
+				break;
+			}
+			//!Console. See enf::ConsoleWidget
+			/*case ConsoleWidget: {
+				widget_type_id = ConsoleWidgetTypeID;
+				break;
+			}*/
+			//!Video player. See enf::VideoWidget
+			case VideoWidget: {
+				widget_type_id = VideoWidgetTypeID;
+				break;
+			}
+			//! Texture used as render target for children widgets. See enf::RTTextureWidget
+			case RTTextureWidget: {
+				widget_type_id = RTTextureWidgetTypeID;
+				break;
+			}
+			case ButtonWidget: {
+				widget_type_id = ButtonWidgetTypeID;
+				break;
+			}
+			case CheckBoxWidget: {
+				widget_type_id = CheckBoxWidgetTypeID;
+				break;
+			}
+			/*case WindowWidget: {
+				widget_type_id = WindowWidgetTypeID;
+				break;
+			}*/
+			case XComboBoxWidget: {
+				//widget_type_id = ComboBoxWidgetTypeID;
+				break;
+			}
+			case SimpleProgressBarWidget: {
+				widget_type_id = SimpleProgressBarWidgetTypeID;
+				break;
+			}
+			case ProgressBarWidget: {
+				widget_type_id = ProgressBarWidgetTypeID;
+				break;
+			}
+			case SliderWidget: {
+				widget_type_id = SliderWidgetTypeID;
+				break;
+			}
+			case BaseListboxWidget: {
+				//widget_type_id = BaseListboxWidgetTypeID;
+				break;
+			}
+			case TextListboxWidget: {
+				widget_type_id = TextListboxWidgetTypeID;
+				break;
+			}
+			//case GenericListboxWidget: {
+				//widget_type_id = GenericListboxWidgetTypeID;
+			//	break;
+			//}
+			case EditBoxWidget: {
+				widget_type_id = EditBoxWidgetTypeID;
+				break;
+			}
+			case PasswordEditBoxWidget: {
+				widget_type_id = PasswordEditBoxWidgetTypeID;
+				break;
+			}
+			case WorkspaceWidget: {
+				widget_type_id = WorkspaceWidgetTypeID;
+				break;
+			}
+			case GridSpacerWidget: {
+				widget_type_id = GridSpacerWidgetTypeID;
+				break;
+			}
+			case WrapSpacerWidget: {
+				widget_type_id = WrapSpacerWidgetTypeID;
+				break;
+			}
+			case ScrollWidget: {
+				widget_type_id = ScrollWidgetTypeID;
+				break;
+			}
+			
+			default: {
+				widget_type_id = FrameWidgetTypeID; // the GOAT
+				break;
+			}
+		}		
+		
+		if (!Class.CastTo(Root, GetGame().GetWorkspace().CreateWidget(widget_type_id, 0, 0, 100, 100, WidgetFlags.VISIBLE | WidgetFlags.SOURCEALPHA | WidgetFlags.BLEND | WidgetFlags.EXACTSIZE | WidgetFlags.EXACTPOS | WidgetFlags.IGNOREPOINTER, -1, 0, parent))) {
+			ErrorEx(string.Format("Could not create widget with typeid %1", widget_type_id));
+		}
+		
+		return Root;
+	}
+}
+
+class ScriptView: ScriptedViewBase
+{	
 	static ref array<ScriptView> All = {};
 		
 	protected ref ViewController m_Controller;
 	
 	void ScriptView()
 	{				
+		if (!All) {
+			All = {};
+		}
+		
 		All.Insert(this);
-
+				
 #ifndef WORKBENCH
-#ifndef NO_GUI
+#ifndef NO_GUI		
 		m_LayoutRoot = CreateWidget(null);
 #endif
 #endif
@@ -92,7 +247,7 @@ class ScriptView: ScriptedViewBase
 		
 		//2 delete class instances
 		delete m_Controller;
-
+		
 		//3 unlink our layout, deleting it
 		if (m_LayoutRoot) {
 			m_LayoutRoot.Unlink();
@@ -103,7 +258,7 @@ class ScriptView: ScriptedViewBase
 			All.RemoveItem(this);
 		}
 	}
-	
+		
 	protected void Update(float dt)
 	{
 	}
@@ -155,6 +310,17 @@ class ScriptView: ScriptedViewBase
 	ViewController GetController()
 	{
 		return m_Controller;
+	}
+	
+	// Safest way to delete from inside scriptview. not really needed outside
+	protected void Delete()
+	{
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(_delete);
+	}
+	
+	private void _delete()
+	{
+		delete this;
 	}
 	
 	// Loads .layout file Widgets into Properties of context (when they are the same name)

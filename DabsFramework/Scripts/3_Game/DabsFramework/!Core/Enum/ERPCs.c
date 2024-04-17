@@ -1,0 +1,5 @@
+enum ERPCsDabsFramework
+{
+	EVENT_UPDATE = 3059462,
+	EVENT_FUNCTION = 3059464,
+};

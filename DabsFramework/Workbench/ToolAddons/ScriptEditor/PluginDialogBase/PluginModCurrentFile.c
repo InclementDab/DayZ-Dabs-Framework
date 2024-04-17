@@ -6,10 +6,10 @@ class PluginModCurrentFile: PluginDialogBase
 	protected int m_ScriptModule = -1;
 	
 	[Attribute("", "editbox")]
-	string Directory;
+	string Folder;
 	
 	[Attribute("", "editbox")]
-	string File;	
+	string FileName;	
 	
 	[Attribute("", "editbox")]
 	string Prefix;
@@ -46,7 +46,7 @@ class PluginModCurrentFile: PluginDialogBase
 			
 	protected void OnResourceFound(string resource)
 	{
-		if (Directory != string.Empty) {
+		if (Folder != string.Empty) {
 			return;
 		}
 		
@@ -63,16 +63,16 @@ class PluginModCurrentFile: PluginDialogBase
 		array<string> split = {};
 		resource.Split(":", split);
 		Print(resource);
-		Directory = GetPrefix();
-		Print(Directory);
+		Folder = GetPrefix();
+		Print(Folder);
 				
 		array<string> path_split = {};
 		split[1].Split(PATH_SEPERATOR_ALT, path_split);
 		for (int i = 1; i < path_split.Count() - 1; i++) {
-			Directory += PATH_SEPERATOR + path_split[i];
+			Folder += PATH_SEPERATOR + path_split[i];
 		}
 		
-		File = path_split[path_split.Count() - 1];
+		FileName = path_split[path_split.Count() - 1];
 		Workbench.ScriptDialog("New Modded Script", DIALOG_TAB_SIZE, this);
 	}
 	
@@ -98,7 +98,7 @@ class PluginModCurrentFile: PluginDialogBase
 		
 		return;
 		if (FileExist(absolute_file)) {
-			ErrorDialog(string.Format("File %1 already exists!", File));
+			ErrorDialog(string.Format("File %1 already exists!", FileName));
 			return;
 		}
 		
@@ -110,7 +110,7 @@ class PluginModCurrentFile: PluginDialogBase
 		FPrint(file_handle, string.Format("modded class %1\n{\n}", m_ClassName));
 		CloseFile(file_handle);
 		
-		m_FinalFileName = Directory + PATH_SEPERATOR + File;
+		m_FinalFileName = Folder + PATH_SEPERATOR + FileName;
 		Print(m_FinalFileName);
 	}
 	

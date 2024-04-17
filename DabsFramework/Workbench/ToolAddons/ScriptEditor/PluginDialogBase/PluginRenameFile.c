@@ -2,7 +2,7 @@
 class PluginRenameFile: PluginDialogBase
 {
 	[Attribute("", "editbox", "New file name")]
-	string File;
+	string FileName;
 	
 	protected string m_FinalFileName;
 	
@@ -13,7 +13,7 @@ class PluginRenameFile: PluginDialogBase
 		string absolute_file = GetAbsolutePath(current_file);
 		string file_name = GetFile(absolute_file);
 		
-		File = file_name;
+		FileName = file_name;
 		
 		Workbench.ScriptDialog("Rename File", DIALOG_TAB_SIZE, this);
 	}
@@ -30,16 +30,16 @@ class PluginRenameFile: PluginDialogBase
 	{
 		// Appending the extension
 		array<string> file_split = {};
-		File.Split(".", file_split);
+		FileName.Split(".", file_split);
 		if (file_split.Count() < 2) {
-			File = file_split[0] + DEFAULT_EXTENSION;
+			FileName = file_split[0] + DEFAULT_EXTENSION;
 		}
 		
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_file = GetAbsolutePath(current_file);
 		
-		m_FinalFileName = GetDirectory(absolute_file) + PATH_SEPERATOR + File;
+		m_FinalFileName = GetDirectory(absolute_file) + PATH_SEPERATOR + FileName;
 		if (!CopyFile(absolute_file, m_FinalFileName)) {
 			ErrorDialog("Failed to rename file");
 			return;
