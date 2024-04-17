@@ -1,7 +1,7 @@
 //@ It is your responsibility to manage the memory for this menu object
 class ScriptViewMenu: ScriptView
 {		
-	static ref map<UIScriptViewMenu, ScriptViewMenu> AllByMenu = new map<UIScriptViewMenu, ScriptViewMenu>();
+	static ref map<UIScriptedMenu, ScriptViewMenu> AllByMenu = new map<UIScriptedMenu, ScriptViewMenu>();
 	
 	protected ref UIScriptViewMenu m_UIScriptViewMenu = new UIScriptViewMenu(this);
 	
@@ -11,7 +11,7 @@ class ScriptViewMenu: ScriptView
 	void ScriptViewMenu()
 	{
 		if (!AllByMenu) {
-			AllByMenu = new map<UIScriptViewMenu, ScriptViewMenu>();
+			AllByMenu = new map<UIScriptedMenu, ScriptViewMenu>();
 		}
 		
 		AllByMenu[m_UIScriptViewMenu] = this;
@@ -43,7 +43,7 @@ class ScriptViewMenu: ScriptView
 	{
 		// This lazy calls the destructor
 		if (m_UIScriptViewMenu) {
-			UIScriptedMenu parent_menu = m_UIScriptViewMenu.GetParentMenu();
+			UIScriptedMenu parent_menu = UIScriptedMenu.Cast(m_UIScriptViewMenu.GetParentMenu());
 			AllByMenu.Remove(m_UIScriptViewMenu);
 			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
 			
