@@ -86,65 +86,9 @@ class DateTime: int
 		return format;
 	}
 	
-	int GetYear()
-	{
-		int year, month, day, hour, minute, second;
-		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		return year;
-	}	
-	
-	int GetMonth()
-	{
-		int year, month, day, hour, minute, second;
-		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		return month;
-	}
-		
-	int GetDay()
-	{
-		int year, month, day, hour, minute, second;
-		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		return day;
-	}	
-		
-	int GetHour()
-	{
-		int year, month, day, hour, minute, second;
-		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		return hour;
-	}	
-	
-	int GetMinute()
-	{
-		int year, month, day, hour, minute, second;
-		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		return minute;
-	}	
-	
-	int GetSecond()
-	{
-		int year, month, day, hour, minute, second;
-		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		return second;
-	}
-	
 	void GetDate(out int year, out int month, out int day, out int hour, out int minute, out int second)
 	{
 		DateTime.ToDate(value, year, month, day, hour, minute, second);
-	}
-	
-	static int GetDays(int year, int month, int day)
-	{
-		int total_days = day - 1; 
-		for (int epoch_year = 1970; epoch_year < year; epoch_year++) {
-			total_days += DateTime.DaysInYear(epoch_year);
-		}
-		
-		for (int epoch_month = 1; epoch_month < month; epoch_month++) {
-			total_days += DateTime.DaysInMonth(epoch_month, DateTime.IsLeapYear(year));
-		}
-		
-		return total_days;
 	}
 	
 	static DateTime Now(bool utc = true)
@@ -161,7 +105,7 @@ class DateTime: int
 		return DateTime.Create(year, month, day, hour, minute, second);
 	}
 		
-	static DateTime Create(int year, int month, int day, int hour = 0, int minute = 0, int second = 0)
+	static DateTime Create(int year, int month, int day, int hour, int minute, int second)
 	{
 		DateTime timestamp = EPOCH;
 		if (year < 1970) {

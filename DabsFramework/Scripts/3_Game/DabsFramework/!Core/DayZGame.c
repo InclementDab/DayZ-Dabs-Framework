@@ -186,7 +186,7 @@ modded class DayZGame
 	{
 		int year, month, day, hour, minute;
 		GetWorld().GetDate(year, month, day, hour, minute);
-		return DateTime.Create(year, month, day, hour, minute);
+		return DateTime.Create(year, month, day, hour, minute, 0);
 	}
 	
 	LoggerManager GetLoggerManager()

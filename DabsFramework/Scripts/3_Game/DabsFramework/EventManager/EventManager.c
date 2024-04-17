@@ -263,9 +263,18 @@ class EventManager
 						break;
 					}
 					
-					SerializableParam client_param_serialized = SerializableParam.CreateFromSerializer(ctx);
-					if (!client_param_serialized) {
+					// Set up serialized data
+					// this parameter can be null so we check if the ctx reads it successfully
+					string event_param_type;
+					if (!ctx.Read(event_param_type)) {
 						break;
+					}
+					
+					Param client_param;
+					if (event_param_type != "null") {
+						SerializableParam serializeable_param = SerializableParam.Cast(event_param_type.ToType().Spawn());
+						serializeable_param.Read(ctx);
+						client_param = serializeable_param.ToParam();
 					}
 					
 					EventManagerLog.Info(this, "Client received event manager update %1: %2", str_event_type, event_phase.ToString());										
@@ -293,7 +302,7 @@ class EventManager
 						}					
 					}
 					
-					m_ActiveEvents[event_type][event_id].SwitchPhase(event_phase, event_phase_time, client_param_serialized.ToParam());
+					m_ActiveEvents[event_type][event_id].SwitchPhase(event_phase, event_phase_time, client_param);
 					
 					// Forced setting for clients since this needs to be controlled separately
 					// the client does not have authority to pause events directly, but we do
@@ -335,9 +344,10 @@ class EventManager
 					break;
 				}
 				
-				SerializableParam client_fnc_param = SerializableParam.CreateFromSerializer(ctx);
-				if (!client_fnc_param) {
-					break;
+				SerializableParam client_fnc_param;
+				if (event_param_type_fnc != "null") {
+					client_fnc_param = SerializableParam.Cast(event_param_type_fnc.ToType().Spawn());
+					client_fnc_param.Read(ctx);
 				}
 				
 				g_Script.CallFunctionParams(m_ActiveEvents[event_type_fnc][event_id_fnc], event_fnc_name, null, client_fnc_param);				
@@ -367,7 +377,14 @@ class EventManager
 		rpc.Write(target.GetID());
 		rpc.Write(function_name);	
 		
-		params.Serialize(rpc);		
+		// handle data
+		if (params) {
+			rpc.Write(params.GetSerializeableType());
+			params.Write(rpc);
+		} else {
+			rpc.Write("null");
+		}
+		
 		rpc.Send(null, ERPCsDabsFramework.EVENT_FUNCTION, true, identity);
 		return true;
 	}

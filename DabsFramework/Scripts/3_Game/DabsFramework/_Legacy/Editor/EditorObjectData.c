@@ -1,12 +1,12 @@
-// temp until i can find a better way to find "First" in a map that doesnt blow the software up
-static int EditorObjectID;
 class EditorObjectData: SerializableBase
-{		
-	[NonSerialized()]
-	int m_Id;
-	int GetID() { return m_Id; }
+{	
+	int GetID()
+	{
+		
+	}
 	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
+	string Uuid;
 	string Type;
 	string DisplayName;
 	vector Position;
@@ -34,7 +34,7 @@ class EditorObjectData: SerializableBase
 	[NonSerialized()]
 	vector BottomCenter;
 
-	int Flags;
+	EditorObjectFlags Flags;
 	
 	[NonSerialized()]
 	ModStructure Mod;
@@ -47,14 +47,27 @@ class EditorObjectData: SerializableBase
 	
 	[NonSerialized()]
 	ref map<string, ref SerializableParam> Parameters = new map<string, ref SerializableParam>();
-	
-	void EditorObjectData() 
+		
+	Object CreateObject(int flags = ECE_SETUP | ECE_UPDATEPATHGRAPH | ECE_CREATEPHYSICS | ECE_NOLIFETIME | ECE_DYNAMIC_PERSISTENCY)
 	{
-		EditorObjectID++;
-		m_Id = EditorObjectID;
+		if (Type.Contains("\\") || Type.Contains("/")) {
+			return GetGame().CreateStaticObjectUsingP3D(Type, Position, Orientation, Scale);
+		}
+		
+		Object object = GetGame().CreateObjectEx(Type, Position, flags);
+		object.SetOrientation(Orientation);
+		object.SetScale(Scale);
+		return object;
 	}
 	
-	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EditorObjectFlags.ALL)
+	static EditorObjectData Create(Serializer serializer)
+	{
+		EditorObjectData data = new EditorObjectData();
+		data.Read(serializer, 0);
+		return data;
+	}
+	
+	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EFE_DEFAULT)
 	{	
 		return Create(type, transform[3], Math3D.MatrixToAngles(transform), 1, flags);
 	}
@@ -81,7 +94,7 @@ class EditorObjectData: SerializableBase
 		return data;
 	}
 	
-	static EditorObjectData Create(notnull Object target, EditorObjectFlags flags = EditorObjectFlags.ALL)
+	static EditorObjectData Create(notnull Object target, EditorObjectFlags flags = EFE_DEFAULT)
 	{
 		// We do this because all 'baked' objects are ID'd to 3. cant store a bunch of 3's can we?
 		// todo... actually we might be able to :)

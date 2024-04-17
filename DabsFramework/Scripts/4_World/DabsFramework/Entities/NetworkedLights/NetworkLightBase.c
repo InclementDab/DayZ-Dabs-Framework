@@ -1,15 +1,4 @@
-//// Changing the name on purpose because im completely changing serialization
-// TODO: needs to be rewritten when you have magical reading and writing :)
-
-
-
-
-
-
-
-
-
-class NetworkLightBase: ScriptedEntity
+class NetworkLightBase: SerializedBuilding
 {
 	protected ScriptedLightBase m_Light;
 	
@@ -80,13 +69,6 @@ class NetworkLightBase: ScriptedEntity
 		}
 	}
 	
-	override void OnStoreSave(ParamsWriteContext ctx)
-	{
-		super.OnStoreSave(ctx);
-		
-		
-	}
-	
 	ScriptedLightBase CreateLight(vector global_pos = "0 0 0", float fade_in_time_in_s = 0)
 	{
 		return ScriptedLightBase.CreateLight(ScriptedLightBase, global_pos, fade_in_time_in_s);
@@ -129,7 +111,7 @@ class NetworkLightBase: ScriptedEntity
 		m_Light.SetSpotLightAngle(SpotLightAngle);
 	}
 	
-	void Write(inout map<string, ref SerializableParam> serializable_data)
+	override void Write(inout map<string, ref SerializableParam> serializable_data)
 	{
 		serializable_data["CastShadow"] = SerializableParam1<bool>.Create(CastShadow);
 		serializable_data["EnableSpecular"] = SerializableParam1<bool>.Create(EnableSpecular);
@@ -149,7 +131,7 @@ class NetworkLightBase: ScriptedEntity
 		serializable_data["SpotLightAngle"] = SerializableParam1<float>.Create(SpotLightAngle);
 	}
 		
-	void Read(map<string, ref SerializableParam> serializable_data)
+	override void Read(map<string, ref SerializableParam> serializable_data)
 	{		
 		if (serializable_data["CastShadow"]) {
 			CastShadow = SerializableParam1<bool>.Cast(serializable_data["CastShadow"]).param1;

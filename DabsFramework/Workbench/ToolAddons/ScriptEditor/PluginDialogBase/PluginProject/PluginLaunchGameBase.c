@@ -190,7 +190,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
-			Workbench.RunCmd(game_exe + " " + client_launch_params);
+			Workbench.RunCmd(string.Format("%1 %2 -mission=dayzOffline.%3", game_exe, client_launch_params, m_LaunchSettings.Map));
 			//Workbench.RunCmd(game_exe + " -client2 " + client_launch_params);
 		}	
 		

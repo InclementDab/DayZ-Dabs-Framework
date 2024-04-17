@@ -55,4 +55,9 @@ class DiscordPayload_Webhook: Managed
 
 		embeds.Insert(embed);
 	}
+	
+	bool ToJson(out string json)
+    {
+        return JsonSerializer().WriteToString(this, false, json);
+    }
 }

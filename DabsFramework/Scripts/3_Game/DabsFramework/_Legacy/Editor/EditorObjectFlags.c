@@ -1,3 +1,5 @@
+const int EFE_DEFAULT = EditorObjectFlags.BBOX | EditorObjectFlags.MAPMARKER | EditorObjectFlags.OBJECTMARKER | EditorObjectFlags.LISTITEM;
+
 enum EditorObjectFlags
 {
 	NONE = 0,
