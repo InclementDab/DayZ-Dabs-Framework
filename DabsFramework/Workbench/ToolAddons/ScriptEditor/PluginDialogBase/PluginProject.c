@@ -55,17 +55,18 @@ class PluginProject: PluginDialogBase
 			}
 		}
 		
-		m_Prefixes.Insert(GetPrefix());
-		m_Prefixes.Insert("Scripts");
+		// Insert main prefix
+		// all filepatching
+		if (!m_LaunchSettings.DisableMod) {
+			m_Prefixes.Insert(GetPrefix());
+		}
 		
-		//m_Prefixes.Insert("DZ");
-
-		m_Prefixes.Insert("JM");
-		m_Prefixes.Insert("DabsFramework");
-		m_Prefixes.Insert("HypeTrain");
-		m_Prefixes.Insert("Editor");
-	
-		//m_Prefixes.Insert("DayZExpansion");
+		// Insert secondary prefixes
+		array<string> prefix_splits = {};
+		m_ProjectSettings["Prefixes"].Split(",", prefix_splits);
+		foreach (string prefix_split: prefix_splits) {
+			m_Prefixes.Insert(prefix_split);
+		}
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
