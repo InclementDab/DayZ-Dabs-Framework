@@ -2,10 +2,7 @@ class CfgPatches
 {
 	class DF_Scripts
 	{
-        units[] = {};
-        weapons[] = {};
-        requiredVersion = 0.1;
-		requiredAddons[] = {"DZ_Scripts"};
+		requiredAddons[] = {"DZ_Scripts", "DF_GUI"};
 	};
 };
 
@@ -21,7 +18,6 @@ class CfgMods
 		creditsJson = "DabsFramework/Scripts/Credits.json";
 		versionPath = "DabsFramework/Scripts/Version.hpp";
 		type = "mod";
-		defines[] = {"DF_VERSION_1_8_0"};
 		dependencies[] =
 		{
 			"Game", "World", "Mission"

@@ -26,7 +26,7 @@ class RestCallbackBase: RestCallback
     override void OnError(int errorCode)
 	{		
 		WebApiLog.Trace(this, "OnError");
-        WebApiLog.Error(string.Format("%1 returned error from api: %2, completed in %3ms", Type(), typename.EnumToString(ERestResultState, errorCode), GetGame().GetTime() - m_CallTime));
+        Error(string.Format("%1 returned error from api: %2, completed in %3ms", Type(), typename.EnumToString(ERestResultState, errorCode), GetGame().GetTime() - m_CallTime));
 	}
 	
 	override void OnFileCreated(string fileName, int dataSize)
