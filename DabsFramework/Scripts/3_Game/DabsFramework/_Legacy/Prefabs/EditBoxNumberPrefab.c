@@ -77,7 +77,7 @@ class EditBoxNumberPrefab: PrefabBase<StringEvaluater>
 			}
 		}
 		
-		g_Script.CallFunctionParams(m_BindingContext, "PropertyChanged", null, new Param1<string>(m_BindingName));
+		g_Script.Call(m_BindingContext, "PropertyChanged", m_BindingName);
 	}
 	
 	override string GetLayoutFile() 

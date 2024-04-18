@@ -20,7 +20,7 @@ class SliderPrefab: PrefabBase<float>
 				m_PrefabBaseController.CalculatedValue = Math.Clamp(m_PrefabBaseController.CalculatedValue, m_Min, m_Max);
 				m_PrefabBaseController.NotifyPropertyChanged("CalculatedValue", false);
 				EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.CalculatedValue);
-				g_Script.CallFunctionParams(m_BindingContext, "PropertyChanged", null, new Param1<string>(m_BindingName));
+				g_Script.Call(m_BindingContext, "PropertyChanged", m_BindingName);
 				break;
 			}
 			
