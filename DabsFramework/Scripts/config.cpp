@@ -82,3 +82,22 @@ class CfgMods
 		};
 	};
 };
+
+class CfgVehicles
+{
+	class HouseNoDestruct;
+	class NetworkLightBase: HouseNoDestruct
+	{
+		scope=1;
+	};
+
+	class NetworkPointLight: NetworkLightBase
+	{
+		scope=1;
+	};
+
+	class NetworkSpotLight: NetworkLightBase
+	{
+		scope=1;
+	};
+};
