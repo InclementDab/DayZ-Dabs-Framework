@@ -22,7 +22,7 @@ enum BuilderType
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 2;
+	static const int VERSION = 3;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string SERVER_PROFILE_NAME = "server";
@@ -62,6 +62,9 @@ class LaunchSettings: SerializableBase
 	
 	[Attribute("", "combobox", "Disable Mod", "", ParamEnumArray.FromEnum(YesNo) )]
 	bool DisableMod;
+	
+	[Attribute("", "editbox", "Port")]
+	int Port;
 			
 	void Save(string file)
 	{
@@ -87,6 +90,7 @@ class LaunchSettings: SerializableBase
 			settings.FilePatching = true;
 			settings.Deloginator = true;
 			settings.AutoClose = true;
+			settings.Port = 2302;
 			settings.Save(file);
 			return settings;
 		}
@@ -118,6 +122,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(FilePatching);
 		serializer.Write(AutoClose);
 		serializer.Write(DisableMod);
+		serializer.Write(Port);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -167,6 +172,15 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(DisableMod)) {
+			return false;
+		}		
+		
+		if (version < 3) {
+			Port = 2302;
+			return true;
+		}
+		
+		if (!serializer.Read(Port)) {
 			return false;
 		}
 		
