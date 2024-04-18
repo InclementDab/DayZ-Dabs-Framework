@@ -3,7 +3,8 @@ enum GameLaunchType
 	CLIENT = 1,
 	SERVER = 2,
 	BOTH   = 3, //CLIENT | SERVER
-	OFFLINE= 8
+	OFFLINE= 8,
+	EDITOR = 24 // OFFLINE | 16
 };
 
 // int.MAX prevents 'none' from showing up

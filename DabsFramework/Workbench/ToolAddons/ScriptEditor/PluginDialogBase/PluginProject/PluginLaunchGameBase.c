@@ -28,6 +28,10 @@ class PluginLaunchGameBase: PluginProject
 		} else {
 			m_ProjectSettings["ServerMod"] = m_ProjectSettings["ServerMod"];
 		}
+		
+		if (launch_settings.LaunchType & 16) {
+			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@DayZ-Editor";
+		}
 			
 		if (launch_settings.Repository == string.Empty) {
 			ErrorDialog("You need to set the Repository setting in Plugins -> Configure -> Configure Project");
