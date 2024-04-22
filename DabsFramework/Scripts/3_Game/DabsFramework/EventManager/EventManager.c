@@ -93,12 +93,7 @@ class EventManager
 		if (m_NextEventIn <= 0) {
 			EventManagerLog.Info(this, "Trying to select a new event...");												
 			// Just a quick check to make sure we dont run the same event twice
-			typename current_type = GetRandomEvent();
-			while (current_type == m_LastEventType && m_PossibleEventTypes.Count() > 1) {
-				EventManagerLog.Debug(this, "Random event selected was the same as last %1", current_type.ToString());
-				current_type = GetRandomEvent();
-			}
-			
+			typename current_type = GetRandomEvent();			
 			m_LastEventType = current_type;
 			
 			//! Start new event
@@ -509,5 +504,7 @@ class EventManager
 			float value = ((1 / total_freq) * freq) * 100;
 			EventManagerLog.Info(this, "Chance of %1 is %2 percent", type.ToString(), value.ToString());
 		}
+		
+		EventManagerLog.Info(this, "The next event will occur in %1 seconds", m_NextEventIn.ToString());
 	}
 }
