@@ -313,7 +313,7 @@ class ScriptView: ScriptedViewBase
 	}
 	
 	// Safest way to delete from inside scriptview. not really needed outside
-	protected void Delete()
+	void Delete()
 	{
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(_delete);
 	}

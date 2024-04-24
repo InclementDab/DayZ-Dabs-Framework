@@ -77,7 +77,12 @@ class PluginNewFile: PluginDialogBase
 			suffix += ": " + Parent;
 		}
 		
-		FPrint(file_handle, string.Format("class %1%2\n{\n}", file_split[0], suffix));
+		string template = string.Format("class %1%2\n{\n}", file_split[0], suffix);
+		if (file_split[0].ToType()) {
+			template = string.Format("modded class %1\n{\n}", file_split[0]);
+		}
+				
+		FPrint(file_handle, template);
 		CloseFile(file_handle);
 		
 		m_FinalFileName = Folder + PATH_SEPERATOR + FileName;

@@ -34,6 +34,11 @@ class UIScriptViewMenu: UIScriptedMenu
 	{
 		return m_ScriptViewMenu && m_ScriptViewMenu.UseMouse();
 	}
+	
+	override bool UseKeyboard()
+	{
+		return m_ScriptViewMenu && m_ScriptViewMenu.UseKeyboard();
+	}
 		
 	override Widget Init()
 	{

@@ -36,6 +36,10 @@ class ScriptViewMenu: ScriptView
 			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_MOUSE);
 		}
 		
+		if (UseKeyboard()) {
+			g_Game.GetInput().ChangeGameFocus(1, INPUT_DEVICE_KEYBOARD);
+		}
+		
 		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, UseMouse());
 	}
 	
@@ -52,13 +56,18 @@ class ScriptViewMenu: ScriptView
 			}
 		}
 		
-		bool show_cursor = (m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
+		bool use_mouse_parent = (m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseMouse());
 		// Mouse control
-		if (UseMouse() && !show_cursor) {
+		if (UseMouse() && !use_mouse_parent) {
 			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_MOUSE);
 		}
 		
-		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, show_cursor);
+		bool use_keyboard_parent = (m_UIScriptViewMenu && m_UIScriptViewMenu.GetParentMenu() && m_UIScriptViewMenu.GetParentMenu().UseKeyboard());
+		if (UseKeyboard() && !use_keyboard_parent) {
+			g_Game.GetInput().ChangeGameFocus(-1, INPUT_DEVICE_KEYBOARD);
+		}
+		
+		g_Game.GetCallQueue(CALL_CATEGORY_GUI).CallLater(g_Game.SetMouseCursorDesiredVisibility, 0, false, use_mouse_parent);
 		
 		// input excludes
 		if (g_Game.GetMission()) {
@@ -123,6 +132,11 @@ class ScriptViewMenu: ScriptView
 	bool UseMouse()
 	{
 		return true;
+	}
+	
+	bool UseKeyboard()
+	{
+		return false;
 	}
 	
 	//! see <exclude> in bin/specific.xml
