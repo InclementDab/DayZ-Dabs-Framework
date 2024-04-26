@@ -58,7 +58,11 @@ class PluginProject: PluginDialogBase
 		// Insert main prefix
 		// all filepatching
 		if (!m_LaunchSettings.DisableMod) {
-			m_Prefixes.Insert(GetPrefix());
+			array<string> patches_split = {};
+			m_ProjectSettings["Patches"].Split(",", patches_split);
+			foreach (string patch_split: patches_split) {
+				m_Prefixes.Insert(string.Format("%1\\%2", GetPrefix(), patch_split));
+			}
 		}
 		
 		// Insert secondary prefixes
