@@ -203,6 +203,20 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int PromiseSymLink(string source, string target)
 	{
+		target.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		array<string> path_split = {};
+		target.Split(PATH_SEPERATOR, path_split);
+		string path_reconstruct;
+		for (int i = 0; i < path_split.Count(); i++) {
+			path_reconstruct += path_split[i] + PATH_SEPERATOR;
+			if (!FileExist(path_reconstruct) && i < path_split.Count() - 1) {
+				//path_reconstruct = path_reconstruct.Substring(0, path_reconstruct.Length() - 1);
+				PrintFormat("Creating directory: %1", path_reconstruct);
+				
+				Print(MakeDirectory(path_reconstruct));
+			}
+		}
+		
 		if (!FileExist(target)) {
 			return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source, target), true);
 		}

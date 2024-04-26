@@ -71,6 +71,7 @@ class PluginLaunchGameBase: PluginProject
 		if (launch_settings.FilePatching) {
 			foreach (string prefix: m_Prefixes) {			
 				array<string> prefix_split = {};
+				prefix.Replace(PATH_SEPERATOR, PATH_SEPERATOR_ALT);
 				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
 				
 				string built_path = workbench_directory + PATH_SEPERATOR_ALT;
@@ -80,12 +81,6 @@ class PluginLaunchGameBase: PluginProject
 				
 				// Add each root dir to exclude
 				folders_to_save.Insert(prefix_split[0]);
-				
-				for (int k = 0; k < prefix_split.Count() - 1; k++) {
-					built_path += prefix_split[k] + PATH_SEPERATOR_ALT;
-					MakeDirectory(built_path);
-				}
-				
 				PromiseSymLink(root + PATH_SEPERATOR_ALT + prefix, workbench_directory + PATH_SEPERATOR + prefix);
 			}
 		}
