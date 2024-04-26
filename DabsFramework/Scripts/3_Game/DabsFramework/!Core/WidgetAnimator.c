@@ -133,7 +133,7 @@ class WidgetAnimator: Managed
 		}
 
 		foreach (WidgetAnimationTimer widget_animation_timer: m_RunningTimers) {
-			if (widget_animation_timer && widget_animation_timer.GetWidget() == source && (widget_animation_timer.GetWidgetAnimatorProperty() & property) == widget_animation_timer.GetWidgetAnimatorProperty()) {
+			if (widget_animation_timer && widget_animation_timer.GetWidget() == source && (widget_animation_timer.GetWidgetAnimatorProperty() & property)) {
 				if (reset) {
 					WidgetAnimationTimer.SetProperty(source, widget_animation_timer.GetWidgetAnimatorProperty(), widget_animation_timer.GetStartValue());
 				}
