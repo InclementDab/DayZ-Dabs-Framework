@@ -4,16 +4,26 @@ class SymbolHandler: ScriptedWidgetEventHandler
 	
 	reference int Symbol_Size = 2;
 	
+	protected ImageWidget m_ImageWidget;
+	
 	void OnWidgetScriptInit(Widget w)
 	{
 		Symbols symbol = string.Format("image:%1", Symbol_Name);
 		
-		ImageWidget image_widget = ImageWidget.Cast(w);
-		if (!image_widget) {
+		m_ImageWidget = ImageWidget.Cast(w);
+		if (!m_ImageWidget) {
 			ErrorEx("SymbolHandler must be used on image widget");
 			return;
 		}
 		
-		symbol.Load(image_widget, Symbol_Size);
+		symbol.Load(m_ImageWidget, Symbol_Size);
+	}
+	
+	void SetSize(int symbol_size)
+	{
+		Symbols symbol = string.Format("image:%1", Symbol_Name);
+		if (m_ImageWidget) {
+			symbol.Load(m_ImageWidget, symbol_size);
+		}
 	}
 }
