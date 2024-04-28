@@ -19,7 +19,7 @@ class OptionSelectorSliderView: OptionSelectorViewBase
 		PropertyTypeHashMap properties = new PropertyTypeHashMap(m_ProfileSettings.Type());
 		TypeConverter type_converter = GetDayZGame().GetTypeConversion(properties[m_ProfileSettingSlider.GetVariableName()]);
 		if (!type_converter) {
-			Error(string.Format("Invalid variable type on registry type=%1", properties[m_ProfileSettingSlider.GetVariableName()]));
+			Error(string.Format("Invalid variable type on registry type=%1 variable=%2", m_ProfileSettings.Type(), m_ProfileSettingSlider.GetVariableName()));
 			return;
 		}
 		
