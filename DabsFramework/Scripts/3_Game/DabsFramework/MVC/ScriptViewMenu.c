@@ -98,13 +98,14 @@ class ScriptViewMenu: ScriptView
 	{		
 		// Handles re-showing parent menu since UIManager automatically hides it
 		UIScriptedMenu parent_menu = UIScriptedMenu.Cast(parent_panel);
-		if (!HidesParentMenu() && parent_menu && parent_menu.GetLayoutRoot()) {
+		if (!HidesParentMenu(parent_panel) && parent_menu && parent_menu.GetLayoutRoot()) {
 			parent_menu.GetLayoutRoot().Show(true);
 		}
 	}
 	
 	void OnMenuExit(UIMenuPanel parent_panel)
 	{
+		PrintFormat("OnMenuExit");
 		if (m_ChildMenu) {
 			m_LayoutRoot.Show(false);
 		} else {
@@ -151,7 +152,7 @@ class ScriptViewMenu: ScriptView
 		return {};
 	}
 	
-	bool HidesParentMenu()
+	bool HidesParentMenu(UIMenuPanel parent_panel)
 	{
 		return true;
 	}
