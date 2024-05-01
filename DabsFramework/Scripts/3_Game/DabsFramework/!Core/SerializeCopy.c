@@ -6,7 +6,7 @@ class SerializeCopy<Class T>
 	static T CreateCopy(notnull SerializableBase original, int version)
 	{
 		typename current_type = original.Type();
-		SerializableBase serializable_base = current_type.Spawn();
+		SerializableBase serializable_base = SerializableBase.Cast(current_type.Spawn());
 		if (!serializable_base) {
 			return null;
 		}
