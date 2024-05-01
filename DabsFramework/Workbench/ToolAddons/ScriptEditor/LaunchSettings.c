@@ -22,7 +22,7 @@ enum BuilderType
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 3;
+	static const int VERSION = 4;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string SERVER_PROFILE_NAME = "server";
@@ -65,6 +65,9 @@ class LaunchSettings: SerializableBase
 	
 	[Attribute("", "editbox", "Port")]
 	int Port;
+	
+	string JoinAddress, JoinPassword;
+	int JoinPort;
 			
 	void Save(string file)
 	{
@@ -91,6 +94,7 @@ class LaunchSettings: SerializableBase
 			settings.Deloginator = true;
 			settings.AutoClose = true;
 			settings.Port = 2302;
+			settings.JoinAddress = "127.0.0.1";
 			settings.Save(file);
 			return settings;
 		}
@@ -123,6 +127,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(AutoClose);
 		serializer.Write(DisableMod);
 		serializer.Write(Port);
+		serializer.Write(JoinAddress);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -181,6 +186,15 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(Port)) {
+			return false;
+		}
+		
+		if (version < 4) {
+			JoinAddress = "127.0.0.1";
+			return true;
+		}
+		
+		if (!serializer.Read(JoinAddress)) {
 			return false;
 		}
 		

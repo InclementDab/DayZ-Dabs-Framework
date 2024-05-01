@@ -20,6 +20,10 @@ class PluginJoinRemote: PluginLaunchGameBase
 	{
 		m_LaunchSettings.AutoClose = false;
 		m_LaunchSettings.LaunchType = GameLaunchType.CLIENT;
+		m_LaunchSettings.JoinAddress = Address;
+		m_LaunchSettings.JoinPort = Port;
+		m_LaunchSettings.JoinPassword = Password;
+		
 		LaunchGame(m_LaunchSettings);
 	}
 	
@@ -29,10 +33,10 @@ class PluginJoinRemote: PluginLaunchGameBase
 	}
 	
 	override bool GetConnectionArguments(out string ip, out int port, out string password)
-	{
-		ip = Address;
-		port = Port;
-		password = Password;
+	{		
+		ip = m_LaunchSettings.JoinAddress;
+		port = m_LaunchSettings.JoinPort;
+		password = m_LaunchSettings.JoinPassword;
 		return true;
 	}
 }
