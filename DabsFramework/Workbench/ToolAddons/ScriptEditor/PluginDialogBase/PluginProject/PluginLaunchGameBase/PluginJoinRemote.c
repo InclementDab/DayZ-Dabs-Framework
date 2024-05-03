@@ -30,6 +30,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 		
 		m_LaunchSettings.Save(GetCurrentDirectory() + LAUNCH_BIN);
 		LaunchGame(m_LaunchSettings);
+		m_LaunchSettings.Save();
 	}
 	
 	[ButtonAttribute("Cancel")]
