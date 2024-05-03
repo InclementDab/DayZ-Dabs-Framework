@@ -33,6 +33,15 @@ class Symbols: string
 		return string.Format("set:solid %1", value);
 	}
 	
+	static Symbols GetRandom()
+	{
+		typename type = Symbols;
+		int index = Math.RandomInt(0, type.GetVariableCount());
+		string value;
+		type.GetVariableValue(null, index, value);
+		return value;
+	}
+	
 	static const Symbols A = "image:a";
 	static const Symbols ABACUS = "image:abacus";
 	static const Symbols ACCENT_GRAVE = "image:accent_grave";
