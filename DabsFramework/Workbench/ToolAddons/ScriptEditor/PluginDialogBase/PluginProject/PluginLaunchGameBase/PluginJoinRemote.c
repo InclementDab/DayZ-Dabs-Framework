@@ -13,7 +13,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 	void PluginJoinRemote()
 	{
 		Address = m_LaunchSettings.JoinAddress;
-		Port = m_LaunchSettings.JoinPort;
+		Port = m_LaunchSettings.Port;
 		Password = m_LaunchSettings.JoinPassword;
 		
 		Workbench.ScriptDialog("Join Remote", DIALOG_TAB_SIZE, this);		
@@ -25,7 +25,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 		m_LaunchSettings.AutoClose = false;
 		m_LaunchSettings.LaunchType = GameLaunchType.CLIENT;
 		m_LaunchSettings.JoinAddress = Address;
-		m_LaunchSettings.JoinPort = Port;
+		m_LaunchSettings.Port = Port;
 		m_LaunchSettings.JoinPassword = Password;
 		
 		m_LaunchSettings.Save(GetCurrentDirectory() + LAUNCH_BIN);
@@ -40,7 +40,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 	override bool GetConnectionArguments(out string ip, out int port, out string password)
 	{		
 		ip = m_LaunchSettings.JoinAddress;
-		port = m_LaunchSettings.JoinPort;
+		port = m_LaunchSettings.Port;
 		password = m_LaunchSettings.JoinPassword;
 		return true;
 	}
