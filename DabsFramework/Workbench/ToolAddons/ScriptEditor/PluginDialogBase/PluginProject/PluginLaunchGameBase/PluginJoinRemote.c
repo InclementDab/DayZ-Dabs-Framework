@@ -2,17 +2,21 @@
 class PluginJoinRemote: PluginLaunchGameBase
 {
 	[Attribute("", "editbox")]
-	string Address = "127.0.0.1";
+	string Address;
 	
 	[Attribute("", "editbox")]
-	int Port = 2302;
+	int Port;
 	
 	[Attribute("", "editbox")]
 	string Password;
 	
 	void PluginJoinRemote()
 	{
-		Workbench.ScriptDialog("Join Remote", DIALOG_TAB_SIZE, this);
+		Address = m_LaunchSettings.JoinAddress;
+		Port = m_LaunchSettings.JoinPort;
+		Password = m_LaunchSettings.JoinPassword;
+		
+		Workbench.ScriptDialog("Join Remote", DIALOG_TAB_SIZE, this);		
 	}
 	
 	[ButtonAttribute("Join", true)]
@@ -24,6 +28,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 		m_LaunchSettings.JoinPort = Port;
 		m_LaunchSettings.JoinPassword = Password;
 		
+		m_LaunchSettings.Save(GetCurrentDirectory() + LAUNCH_BIN);
 		LaunchGame(m_LaunchSettings);
 	}
 	
