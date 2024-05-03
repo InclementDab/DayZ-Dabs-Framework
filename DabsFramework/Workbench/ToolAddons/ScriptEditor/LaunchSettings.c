@@ -69,8 +69,12 @@ class LaunchSettings: SerializableBase
 	string JoinAddress, JoinPassword;
 	int JoinPort;
 			
-	void Save(string file)
+	void Save(string file = "")
 	{
+		if (file == string.Empty) {
+			file = m_CurrentFileLocation;
+		}
+
 		FileSerializer serializer = new FileSerializer();
 		if (!serializer.Open(file, FileMode.WRITE)) {
 			return;

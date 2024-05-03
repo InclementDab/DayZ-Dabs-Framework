@@ -25,6 +25,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 		m_LaunchSettings.JoinPassword = Password;
 		
 		LaunchGame(m_LaunchSettings);
+		m_LaunchSettings.Save();
 	}
 	
 	[ButtonAttribute("Cancel")]
