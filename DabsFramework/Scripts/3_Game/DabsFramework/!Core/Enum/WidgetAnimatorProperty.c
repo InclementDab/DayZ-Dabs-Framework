@@ -22,5 +22,7 @@ enum WidgetAnimatorProperty
 	COLOR_V		= 8192,
 	
 	EXACT_TEXT 	= 16384,
+	SIZE_EXACT_W = 32768,
+	SIZE_EXACT_H = 65536,
 	LINEAR_COLOR = 1920 // A, R, G, B
 }

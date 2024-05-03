@@ -138,6 +138,18 @@ class WidgetAnimationTimer: Managed
 				source.GetSize(size_w, size_h);
 				source.SetSize(size_w, value);
 				break;
+			}		
+						
+			case WidgetAnimatorProperty.SIZE_EXACT_W: {
+				source.GetScreenSize(size_w, size_h);
+				source.SetScreenSize(value, size_h);
+				break;
+			}
+			
+			case WidgetAnimatorProperty.SIZE_EXACT_H: {
+				source.GetScreenSize(size_w, size_h);
+				source.SetScreenSize(size_w, value);
+				break;
 			}			
 			
 			case WidgetAnimatorProperty.ROTATION_X: {
@@ -233,6 +245,16 @@ class WidgetAnimationTimer: Managed
 			
 			case WidgetAnimatorProperty.SIZE_H: {
 				source.GetSize(size_w, size_h);
+				return size_h;
+			}
+			
+			case WidgetAnimatorProperty.SIZE_EXACT_W: {
+				source.GetScreenSize(size_w, size_h);
+				return size_w;
+			}			
+			
+			case WidgetAnimatorProperty.SIZE_EXACT_H: {
+				source.GetScreenSize(size_w, size_h);
 				return size_h;
 			}			
 			
