@@ -30,6 +30,13 @@ class EventManagerLog: LoggerBase
 	}
 	
 #ifdef DIAG_DEVELOPER
+	override LoggerInstanceMask GetLogMask()
+	{
+		return -1;
+	}
+#endif
+	
+#ifdef DIAG_DEVELOPER
 	override bool DuplicateToConsole()
 	{
 		return true;

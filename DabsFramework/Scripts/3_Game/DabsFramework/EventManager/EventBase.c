@@ -322,10 +322,8 @@ class EventBase: Managed
 	{
 		EventManagerLog.Debug(this, "Sending active Event Data: %1, idx: %2, Phase: %3", Type().ToString(), GetID().ToString(), typename.EnumToString(EventPhase, GetCurrentPhase()));		
 		ScriptRPC rpc = new ScriptRPC();
-		Print(Type());
 		typename type = Type();
 		string type_string = type.ToString();
-		Print(type_string);
 		rpc.Write(type_string);
 		rpc.Write(GetID());
 		rpc.Write(GetCurrentPhase());

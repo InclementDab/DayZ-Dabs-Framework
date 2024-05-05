@@ -29,6 +29,8 @@ modded class OptionsMenu
 			int index = m_Tabber.AddTab(register_profile_setting.param2);
 			m_CustomOptions[index] = new OptionMenuCustom(layoutRoot.FindAnyWidget("Tab_" + index), profile_settings, m_OnChangedCaller);
 		}		
+		
+		OnChanged();
 				
 		return layoutRoot;
 	}

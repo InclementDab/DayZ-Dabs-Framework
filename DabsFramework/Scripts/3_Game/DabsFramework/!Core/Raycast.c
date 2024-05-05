@@ -15,9 +15,9 @@ class Raycast: Managed
 		return vector.Distance(Source.Position, Bounce.Position);
 	}
 	
-	void Debug()
+	void Debug(LinearColor color = 0xFF87CEEB)
 	{		
-		Shape.CreateSphere(LinearColor.SKY_BLUE, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, Bounce.Position, 0.2);
+		Shape.CreateSphere(color, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, Bounce.Position, 0.2);
 		
 		Bounce.Debug();
 	}
