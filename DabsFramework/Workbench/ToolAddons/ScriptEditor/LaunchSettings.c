@@ -136,6 +136,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(DisableMod);
 		serializer.Write(Port);
 		serializer.Write(JoinAddress);
+		serializer.Write(Executable);
 	}
 	
 	override bool Read(Serializer serializer, int version)
