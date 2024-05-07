@@ -118,9 +118,14 @@ class LaunchSettings: SerializableBase
 		
 		int version;
 		if (!serializer.Read(version)) {
-			return false;
+			return null;
 		}
-		
+
+		if (version > VERSION) {
+			Error("Invalid file version read!");
+			return null;
+		}
+
 		if (!settings.Read(serializer, version)) {
 			return null;
 		}
