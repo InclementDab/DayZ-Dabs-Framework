@@ -81,6 +81,8 @@ class PluginDialogBase: WorkbenchPlugin
 		CloseFile(handle);
 		
 		data = data.Trim();
+		data.Replace("\n", "");
+		data.Replace("\r", "");
 		data.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		return data;
 	}
