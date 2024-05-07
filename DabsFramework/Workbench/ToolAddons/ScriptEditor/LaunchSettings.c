@@ -83,7 +83,11 @@ class LaunchSettings: SerializableBase
 			return;
 		}
 		
-		Write(serializer, VERSION);
+		int version = VERSION;
+
+		serializer.Write(version);
+		Write(serializer, version);
+
 		serializer.Close();
 	}
 	
@@ -113,6 +117,10 @@ class LaunchSettings: SerializableBase
 		}
 		
 		int version;
+		if (!serializer.Read(version)) {
+			return false;
+		}
+		
 		if (!settings.Read(serializer, version)) {
 			return null;
 		}
@@ -123,7 +131,6 @@ class LaunchSettings: SerializableBase
 	
 	override void Write(Serializer serializer, int version)
 	{
-		serializer.Write(VERSION);
 		serializer.Write(Repository);
 		serializer.Write(Profiles);
 		serializer.Write(Missions);
@@ -140,11 +147,7 @@ class LaunchSettings: SerializableBase
 	}
 	
 	override bool Read(Serializer serializer, int version)
-	{
-		if (!serializer.Read(version)) {
-			return false;
-		}
-		
+	{		
 		if (!serializer.Read(Repository)) {
 			return false;
 		}
