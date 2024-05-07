@@ -6,8 +6,8 @@ class PluginLaunchGameBase: PluginProject
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
 		// finding DayZ / DayZ Exp dir		
-		string game_directory = GetSourceDataDirectory();		
-		string game_exe = game_directory + launch_settings.Executable;
+		string game_directory = GetDayZDirectory(launch_settings);		
+		string game_exe = game_directory + PATH_SEPERATOR + launch_settings.Executable;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
@@ -18,8 +18,15 @@ class PluginLaunchGameBase: PluginProject
 			return;
 		}
 		
-		DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
-		CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+		bool is_workbench = false;
+		if (FileExist(game_directory + PATH_SEPERATOR + "workbenchApp.exe")) {
+			//is_workbench = true;
+		}
+		
+		if (!is_workbench) {
+			DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
+			CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+		}
 								
 		//! Game launch script
 		// append prefix of current mod
@@ -58,8 +65,10 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Set up symlinks so game can launch with our cwd
-		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
-		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
+		if (!is_workbench) {
+			PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
+			PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
+		}
 
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};

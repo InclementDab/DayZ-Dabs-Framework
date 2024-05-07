@@ -7,6 +7,15 @@ enum GameLaunchType
 	EDITOR = 24 // OFFLINE | 16
 };
 
+enum DayZEnvironmentType
+{
+	//! Custom must be first
+	CUSTOM,
+	
+	STABLE,
+	EXPERIMENTAL,
+};
+
 // int.MAX prevents 'none' from showing up
 enum YesNo
 {
@@ -22,7 +31,7 @@ enum BuilderType
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 5;
+	static const int VERSION = 6;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string SERVER_PROFILE_NAME = "server";
@@ -44,6 +53,12 @@ class LaunchSettings: SerializableBase
 	
 	[Attribute("", "editbox", "Executable")]
 	string Executable;
+	
+	[Attribute("", "combobox", "Environment", "", ParamEnumArray.FromEnum(DayZEnvironmentType) )]
+	int EnvironmentType;
+	
+	[Attribute("", "editbox", "Custom game directory")]
+	string CustomGameDirectory;
 		
 	[Attribute("", "combobox", "Launch", "", ParamEnumArray.FromEnum(GameLaunchType) )]
 	int LaunchType;
@@ -100,6 +115,8 @@ class LaunchSettings: SerializableBase
 		settings.Missions = "P:\\Missions";
 		settings.Mods = "P:\\Mods";
 		settings.Executable = "DayZDiag_x64.exe";
+		settings.EnvironmentType = DayZEnvironmentType.STABLE;
+		settings.CustomGameDirectory = "";
 		settings.Map = "ChernarusPlus";
 		settings.FilePatching = true;
 		settings.Deloginator = true;
@@ -150,6 +167,8 @@ class LaunchSettings: SerializableBase
 		serializer.Write(Port);
 		serializer.Write(JoinAddress);
 		serializer.Write(Executable);
+		serializer.Write(EnvironmentType);
+		serializer.Write(CustomGameDirectory);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -219,6 +238,18 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(Executable)) {
+			return false;
+		}
+		
+		if (version < 6) {
+			return true;
+		}
+		
+		if (!serializer.Read(EnvironmentType)) {
+			return false;
+		}
+		
+		if (!serializer.Read(CustomGameDirectory)) {
 			return false;
 		}
 		

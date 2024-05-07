@@ -40,6 +40,51 @@ class PluginDialogBase: WorkbenchPlugin
 		return current_dir_split[current_dir_split.Count() - 2];
 	}
 	
+	static string GetDayZDirectory(LaunchSettings settings, int environmentType = -1)
+	{
+		if (environmentType == -1) {
+			environmentType = settings.EnvironmentType;
+		}
+		
+		if (environmentType == DayZEnvironmentType.CUSTOM) {
+			string gamePath = settings.CustomGameDirectory;
+			gamePath.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+			return gamePath;
+		}
+		
+		string dayzType;
+		switch (environmentType)
+		{
+		case DayZEnvironmentType.STABLE:
+			dayzType = "dayz";
+			break;
+		case DayZEnvironmentType.EXPERIMENTAL:
+			dayzType = "dayz exp";
+			break;
+		}
+		
+		string outputfile = GetWorkbenchDirectory() + PATH_SEPERATOR + "dayz_install_location.txt";
+				
+		string cmd = "for /F \"tokens=2*\" %a in ('reg query \"HKLM\\SOFTWARE\\Wow6432Node\\Bohemia Interactive\\" + dayzType + "\" /v \"main\"') DO (Echo %b) > \"" + outputfile + "\"";
+		Workbench.RunCmd("cmd /c \"" + cmd + "\"", true);
+		
+		FileHandle handle = OpenFile(outputfile, FileMode.READ);
+		if (!handle) {
+			return string.Empty;
+		}
+		
+		string data, buffer;
+		while (ReadFile(handle, buffer, 256) != 0) {
+		    data += buffer;
+		}
+		
+		CloseFile(handle);
+		
+		data = data.Trim();
+		data.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		return data;
+	}
+	
 	static string GetSourceDataDirectory()
 	{
 		string abs;
