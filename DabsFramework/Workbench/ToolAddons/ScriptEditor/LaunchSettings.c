@@ -95,18 +95,19 @@ class LaunchSettings: SerializableBase
 	{		
 		LaunchSettings settings = new LaunchSettings();
 		settings.m_CurrentFileLocation = file;
+		settings.LaunchType = GameLaunchType.BOTH;
+		settings.Profiles = "P:\\Profiles";
+		settings.Missions = "P:\\Missions";
+		settings.Mods = "P:\\Mods";
+		settings.Executable = "DayZDiag_x64.exe";
+		settings.Map = "ChernarusPlus";
+		settings.FilePatching = true;
+		settings.Deloginator = true;
+		settings.AutoClose = true;
+		settings.Port = 2302;
+		settings.JoinAddress = "127.0.0.1";
+
 		if (!FileExist(file)) {
-			settings.LaunchType = GameLaunchType.BOTH;
-			settings.Profiles = "P:\\Profiles";
-			settings.Missions = "P:\\Missions";
-			settings.Mods = "P:\\Mods";
-			settings.Executable = "DayZDiag_x64.exe";
-			settings.Map = "ChernarusPlus";
-			settings.FilePatching = true;
-			settings.Deloginator = true;
-			settings.AutoClose = true;
-			settings.Port = 2302;
-			settings.JoinAddress = "127.0.0.1";
 			settings.Save(file);
 			return settings;
 		}
@@ -198,7 +199,6 @@ class LaunchSettings: SerializableBase
 		}		
 		
 		if (version < 3) {
-			Port = 2302;
 			return true;
 		}
 		
@@ -207,7 +207,6 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (version < 4) {
-			JoinAddress = "127.0.0.1";
 			return true;
 		}
 		
@@ -216,7 +215,6 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (version < 5) {
-			Executable = "DayZDiag_x64.exe";
 			return true;
 		}
 		
