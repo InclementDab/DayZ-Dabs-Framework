@@ -7,7 +7,7 @@ class PluginLaunchGameBase: PluginProject
 		string workbench_directory = GetWorkbenchDirectory();
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetSourceDataDirectory();		
-		string game_exe = game_directory + EXECUTABLE;
+		string game_exe = game_directory + launch_settings.Executable;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
@@ -54,7 +54,7 @@ class PluginLaunchGameBase: PluginProject
 		}		
 				
 		if (launch_settings.AutoClose) {
-			KillTask(EXECUTABLE);
+			KillTask(launch_settings.Executable);
 		}
 		
 		// Set up symlinks so game can launch with our cwd

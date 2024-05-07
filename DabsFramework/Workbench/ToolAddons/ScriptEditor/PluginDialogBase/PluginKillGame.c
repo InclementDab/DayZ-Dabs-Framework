@@ -3,6 +3,6 @@ class PluginKillGame: PluginProject
 {
 	void PluginKillGame()
 	{
-		KillTask(EXECUTABLE);
+		KillTask(m_LaunchSettings.Executable);
 	}
 }

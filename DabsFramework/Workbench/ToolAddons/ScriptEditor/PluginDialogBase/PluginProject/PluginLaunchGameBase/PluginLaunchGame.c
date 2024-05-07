@@ -3,7 +3,7 @@ class PluginLaunchGame: PluginLaunchGameBase
 {
 	void PluginLaunchGame()
 	{
-		KillTask(EXECUTABLE);
+		KillTask(m_LaunchSettings.Executable);
 		LaunchGame(m_LaunchSettings);
 	}
 	
