@@ -53,35 +53,50 @@ class DateTime: int
 		DateTime.ToDate(value, year, month, day, hour, minute, second);
 		
 		int day_of_week = DateTime.GetDayOfWeek(year, month, day);
-		format.Replace("dddd", DAY_NAME_LONG[day_of_week]);
-		format.Replace("ddd", DAY_NAME_SHORT[day_of_week]);
-		format.Replace("dd", day.ToStringLen(2));
-		format.Replace("d", day.ToString());
+		if (!format.Replace("dddd", DAY_NAME_LONG[day_of_week])) {
+			if (!format.Replace("ddd", DAY_NAME_SHORT[day_of_week])) {
+				if (!format.Replace("dd", day.ToStringLen(2))) {
+					format.Replace("d", day.ToString());
+				}
+			}
+		}
 		
 		int twelve_hour_format = Ternary<int>.If(hour > 12, hour % 12, hour);
-		format.Replace("hh", twelve_hour_format.ToStringLen(2));
-		format.Replace("h", twelve_hour_format.ToString());
-		format.Replace("HH", hour.ToStringLen(2));
-		format.Replace("H", hour.ToString());
+		if (!format.Replace("hh", twelve_hour_format.ToStringLen(2))) {
+			if (!format.Replace("h", twelve_hour_format.ToString())) {
+				if (!format.Replace("HH", hour.ToStringLen(2))) {
+					format.Replace("H", hour.ToString());
+				}
+			}
+		}
 		
-		format.Replace("mm", minute.ToStringLen(2));
-		format.Replace("m", minute.ToString());
+		if (!format.Replace("mm", minute.ToStringLen(2))) {
+			format.Replace("m", minute.ToString());
+		}
 		
-		format.Replace("MMMM", MONTH_NAME_LONG[month - 1]);
-		format.Replace("MMM", MONTH_NAME_SHORT[month - 1]);
-		format.Replace("MM", month.ToStringLen(2));
-		format.Replace("M", month.ToString());
+		if (!format.Replace("MMMM", MONTH_NAME_LONG[month - 1])) {
+			if (!format.Replace("MMM", MONTH_NAME_SHORT[month - 1])) {
+				if (!format.Replace("MM", month.ToStringLen(2))) {
+					format.Replace("M", month.ToString());
+				}
+			}
+		}
 		
-		format.Replace("ss", second.ToStringLen(2));
-		format.Replace("s", second.ToString());
+		if (!format.Replace("ss", second.ToStringLen(2))) {
+			format.Replace("s", second.ToString());
+		}
 		
-		format.Replace("tt", MERIDIEM_LONG[hour / 12]);
-		format.Replace("t", MERIDIEM_SHORT[hour / 12]);
+		if (!format.Replace("tt", MERIDIEM_LONG[hour / 12])) {
+			format.Replace("t", MERIDIEM_SHORT[hour / 12]);
+		}
 		
-		format.Replace("yyyy", year.ToStringLen(4));
-		format.Replace("yyy", year.ToString());
-		format.Replace("yy", year.ToString().Substring(1, 3));
-		format.Replace("y", year.ToString().Substring(2, 2));
+		if (!format.Replace("yyyy", year.ToStringLen(4))) {
+			if (!format.Replace("yyy", year.ToString())) {
+				if (!format.Replace("yy", year.ToString().Substring(1, 3))) {
+					format.Replace("y", year.ToString().Substring(2, 2));
+				}
+			}
+		}
 		
 		return format;
 	}
