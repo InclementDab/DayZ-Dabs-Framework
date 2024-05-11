@@ -81,6 +81,12 @@ class PluginBuildMod: PluginProject
 	
 	int BuiildUsingPboProject(string mod_input, string mod_output)
 	{
+		string cmd = GetRegistryEntryValue("HKCU\\SOFTWARE\\Mikero\\pboProject", "exe");
+		if (!cmd) {
+			ErrorDialog("Failed to find Mikeros PBO Project in registery");
+			return -1;
+		}
+		
 		string args = m_BuildSettings.PboProject_Args;
 		if (m_BuildSettings.Key != string.Empty) {
 			args += string.Format(" +K=%1",  m_BuildSettings.Key);
@@ -90,7 +96,7 @@ class PluginBuildMod: PluginProject
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + PATH_SEPERATOR_ALT + "Keys");
-		string cmd = m_BuildSettings.PboProject_Command;
+				
 		cmd.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		mod_output.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		mod_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
@@ -100,6 +106,16 @@ class PluginBuildMod: PluginProject
 	
 	int BuildUsingAddonBuilder(string mod_input, string mod_output)
 	{
+		string addon_builder_path = GetRegistryEntryValue("HKLM\\SOFTWARE\\WOW6432Node\\bohemia interactive\\Dayz Tools\\AddonBuilder", "path");
+		string addon_builder_exe = GetRegistryEntryValue("HKLM\\SOFTWARE\\WOW6432Node\\bohemia interactive\\Dayz Tools\\AddonBuilder", "exe");
+		
+		if (!addon_builder_path || !addon_builder_exe) {
+			ErrorDialog("Failed to find AddonBuilder in Registery");
+			return -1;
+		}
+		
+		string cmd = string.Format("%1\\%2", addon_builder_path, addon_builder_exe);
+		
 		string args = m_BuildSettings.AddonBuilder_Args;
 		if (m_BuildSettings.Key != string.Empty) {
 		}
@@ -111,7 +127,6 @@ class PluginBuildMod: PluginProject
 		
 		mod_output = mod_output + PATH_SEPERATOR_ALT + "Addons";
 		
-		string cmd = m_BuildSettings.AddonBuilder_Command;
 		cmd.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		mod_output.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		mod_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);

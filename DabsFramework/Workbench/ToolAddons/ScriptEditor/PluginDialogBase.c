@@ -63,12 +63,19 @@ class PluginDialogBase: WorkbenchPlugin
 			break;
 		}
 		
-		string outputfile = GetWorkbenchDirectory() + PATH_SEPERATOR + "dayz_install_location.txt";
-				
-		string cmd = "for /F \"tokens=2*\" %a in ('reg query \"HKLM\\SOFTWARE\\Wow6432Node\\Bohemia Interactive\\" + dayzType + "\" /v \"main\"') DO (Echo %b) > \"" + outputfile + "\"";
+		string data = GetRegistryEntryValue(string.Format("HKLM\\SOFTWARE\\Wow6432Node\\Bohemia Interactive\\%1", dayzType), "main");
+		data.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		return data;
+	}
+	
+	static string GetRegistryEntryValue(string entry, string value)
+	{
+		string output_file = string.Format("%1\\%2", GetWorkbenchDirectory(), "temp.txt");
+		
+		string cmd = "for /F \"tokens=2*\" %a in ('reg query \"" + entry + "\" /v \"" + value + "\"') DO (Echo %b) > \"" + output_file + "\"";
 		Workbench.RunCmd("cmd /c \"" + cmd + "\"", true);
 		
-		FileHandle handle = OpenFile(outputfile, FileMode.READ);
+		FileHandle handle = OpenFile(output_file, FileMode.READ);
 		if (!handle) {
 			return string.Empty;
 		}
@@ -79,11 +86,10 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		CloseFile(handle);
-		
+		DeleteFile(output_file);
 		data = data.Trim();
 		data.Replace("\n", "");
 		data.Replace("\r", "");
-		data.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
 		return data;
 	}
 	

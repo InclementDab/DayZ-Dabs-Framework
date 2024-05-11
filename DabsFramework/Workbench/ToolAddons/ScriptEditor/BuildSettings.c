@@ -9,13 +9,7 @@ class BuildSettings: SerializableBase
 	
 	[Attribute("", "combobox", "Build Command", "", ParamEnumArray.FromEnum(BuilderType))]
 	BuilderType Builder;
-	
-	[Attribute("", "editbox", "Path to pboproject")]
-	string PboProject_Command;
-	
-	[Attribute("", "editbox", "Path to addonbuilder")]
-	string AddonBuilder_Command;
-	
+		
 	[Attribute("", "combobox", "Copy Addons", "", ParamEnumArray.FromEnum(YesNo) )]
 	bool CopyAddons;
 		
@@ -65,8 +59,6 @@ class BuildSettings: SerializableBase
 		if (!FileExist(file)) {
 			//settings.BuildFolders; // default all masked
 			settings.Builder = BuilderType.PBO_PROJECT;
-			settings.PboProject_Command = "pboProject";
-			settings.AddonBuilder_Command = "C:\Program Files (x86)\Steam\steamapps\common\DayZ Tools\Bin\AddonBuilder\AddonBuilder.exe";
 			settings.PboProject_Args = "+H";
 			settings.AddonBuilder_Args = "";
 			settings.Dependencies = true;
@@ -92,8 +84,8 @@ class BuildSettings: SerializableBase
 	{
 		serializer.Write(VERSION);
 		serializer.Write(BuildFolders);
-		serializer.Write(PboProject_Command);
-		serializer.Write(AddonBuilder_Command);
+		serializer.Write(string.Empty);
+		serializer.Write(string.Empty);
 		serializer.Write(CopyAddons);
 		serializer.Write(Key);
 		serializer.Write(PboProject_Args);
@@ -112,16 +104,17 @@ class BuildSettings: SerializableBase
 			return false;
 		}		
 		
+		string _;
 		if (version <= 3) {
-			if (!serializer.Read(PboProject_Command)) {
+			if (!serializer.Read(_)) {
 				return false;
 			}
 		} else {
-			if (!serializer.Read(PboProject_Command)) {
+			if (!serializer.Read(_)) {
 				return false;
 			}
 			
-			if (!serializer.Read(AddonBuilder_Command)) {
+			if (!serializer.Read(_)) {
 				return false;
 			}
 		}
