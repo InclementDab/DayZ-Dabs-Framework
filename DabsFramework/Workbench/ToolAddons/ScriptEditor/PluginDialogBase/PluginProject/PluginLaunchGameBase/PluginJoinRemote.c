@@ -22,13 +22,14 @@ class PluginJoinRemote: PluginLaunchGameBase
 	[ButtonAttribute("Join", true)]
 	void Join()
 	{
-		m_LaunchSettings.AutoClose = false;
-		m_LaunchSettings.LaunchType = GameLaunchType.CLIENT;
 		m_LaunchSettings.JoinAddress = Address;
 		m_LaunchSettings.Port = Port;
 		m_LaunchSettings.JoinPassword = Password;
 		
 		m_LaunchSettings.Save(GetCurrentDirectory() + LAUNCH_BIN);
+		
+		m_LaunchSettings.AutoClose = false;
+		m_LaunchSettings.LaunchType = GameLaunchType.CLIENT;
 		LaunchGame(m_LaunchSettings);
 	}
 	
