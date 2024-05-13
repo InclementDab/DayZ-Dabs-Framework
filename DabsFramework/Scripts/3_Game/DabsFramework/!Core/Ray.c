@@ -17,17 +17,17 @@ class Ray: Managed
 	Raycast PerformRaycast(Object ignore = null, float distance = 1000.0)
 	{
 		Ray output_ray = new Ray();
-		Object hit_object;
 		
-		float fraction;
-		if (!DayZPhysics.RayCastBullet(Position, Position + Direction.Normalized() * distance, PhxInteractionLayers.ROADWAY | PhxInteractionLayers.TERRAIN | PhxInteractionLayers.CHARACTER | PhxInteractionLayers.VEHICLE | PhxInteractionLayers.ITEM_LARGE | PhxInteractionLayers.ITEM_SMALL | PhxInteractionLayers.BUILDING | PhxInteractionLayers.DOOR, ignore, hit_object, output_ray.Position, output_ray.Direction, fraction)) {			
-			return null;
-		}
-				
 		Raycast raycast = new Raycast();
 		raycast.Source = this;
 		raycast.Bounce = output_ray;
-		raycast.Hit = hit_object;		
+		raycast.Distance = distance;
+		float fraction;
+		if (!DayZPhysics.RayCastBullet(Position, Position + Direction.Normalized() * distance, PhxInteractionLayers.ROADWAY | PhxInteractionLayers.TERRAIN | PhxInteractionLayers.CHARACTER | PhxInteractionLayers.VEHICLE | PhxInteractionLayers.ITEM_LARGE | PhxInteractionLayers.ITEM_SMALL | PhxInteractionLayers.BUILDING | PhxInteractionLayers.DOOR, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {			
+			output_ray.Position = Position + Direction.Normalized() * distance;
+			output_ray.Direction = Direction;
+		}
+		
 		return raycast;
 	}
 	
@@ -37,15 +37,18 @@ class Ray: Managed
 		
 		set<Object> rv_results = new set<Object>();
 		int hit_component;
-		if (!DayZPhysics.RaycastRV(Position, Position + Direction.Normalized() * distance, output_ray.Position, output_ray.Direction, hit_component, rv_results, with, ignore, false, false, ObjIntersectFire | ObjIntersectGeom, radius)) {
-			return null;
-		}
 		
 		Raycast raycast = new Raycast();
 		raycast.Source = this;
-		raycast.Bounce = output_ray;
-		raycast.Hit = rv_results[0];	
+		raycast.Bounce = output_ray;		
+		raycast.Distance = distance;
+		if (!DayZPhysics.RaycastRV(Position, Position + Direction.Normalized() * distance, output_ray.Position, output_ray.Direction, hit_component, rv_results, with, ignore, false, false, ObjIntersectView, radius)) {
+			output_ray.Position = Position + Direction.Normalized() * distance;
+			output_ray.Direction = Direction;
+		}
+		
 		raycast.HitComponent = hit_component;
+		raycast.Hit = rv_results[0];
 		return raycast;
 	}
 	

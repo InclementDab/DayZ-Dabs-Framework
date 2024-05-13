@@ -2,6 +2,7 @@ class Raycast: Managed
 {
 	ref Ray Source;
 	ref Ray Bounce;
+	float Distance;
 	
 	Object Hit;
 	int HitComponent;
@@ -24,7 +25,7 @@ class Raycast: Managed
 	
 	Raycast Continue(Object ignore = null)
 	{
-		return Ray(Bounce.Position, Source.Direction).PerformRaycast(ignore);
+		return Ray(Bounce.Position, Source.Direction).PerformRaycast(ignore, Distance - Length());
 	}
 	
 	Raycast Redo(Object ignore = null)
