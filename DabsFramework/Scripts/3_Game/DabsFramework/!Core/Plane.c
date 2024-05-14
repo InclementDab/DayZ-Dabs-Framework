@@ -13,7 +13,7 @@ class Plane: Managed
 			return;
 		}
 	}
-	
+		
 	static Plane Create(vector normal, vector size, vector position, vector aside)
 	{
 		if (vector.Dot(normal, aside) != 0) {
@@ -28,6 +28,22 @@ class Plane: Managed
 		vector corner1 = (-size).Multiply3(matrix);
 				
 		return new Plane(corner0, corner1, normal, aside);
+	}
+	
+	void Multiply4(vector mat[4])
+	{
+		Corner[0] = Corner[0].Multiply4(mat);
+		Corner[1] = Corner[1].Multiply4(mat);
+		Normal = Normal.Multiply3(mat);
+		Aside = Aside.Multiply3(mat);
+	}
+	
+	void Multiply3(vector mat[3])
+	{
+		Corner[0] = Corner[0].Multiply3(mat);
+		Corner[1] = Corner[1].Multiply3(mat);
+		Normal = Normal.Multiply3(mat);
+		Aside = Aside.Multiply3(mat);
 	}
 	
 	void CreateMatrix(out vector mat[4])
@@ -62,8 +78,8 @@ class Plane: Managed
 		
         return source.Position + (d1 / d2) * source.Direction;
     }
-			
-	void Debug(string name, vector mat[4])
+
+	void Debug(vector mat[4], LinearColor color = COLOR_RED_A, ShapeFlags flags = ShapeFlags.ONCE)
 	{		
 		vector plane_matrix[4];
 		CreateMatrix(plane_matrix);
@@ -71,16 +87,13 @@ class Plane: Managed
 		Math3D.MatrixMultiply4(mat, plane_matrix, plane_matrix);
 		
 		Shape.CreateMatrix(plane_matrix);
-					
 		vector p[2] = { Corner[0].Multiply4(mat), Corner[1].Multiply4(mat) };
-		Shape.CreateLines(COLOR_WHITE, ShapeFlags.ONCE, p, 2);
+		Shape.CreateLines(color.With(3, 255), flags, p, 2);
 		
-		Shape bbox = Shape.Create(ShapeType.BBOX, COLOR_RED_A, ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.ADDITIVE, Corner[0], Corner[1]);
+		Shape bbox = Shape.Create(ShapeType.BBOX, color, flags, Corner[0], Corner[1]);
 		bbox.SetMatrix(mat);
 		
-		//GetDayZGame().DebugDrawText(name, GetPosition().Multiply4(mat), 1);
-		
-		Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[0].Multiply4(mat), 0.05);
-		Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[1].Multiply4(mat), 0.05);
+		//Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[0].Multiply4(mat), 0.05);
+		//Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[1].Multiply4(mat), 0.05);
 	}
 }

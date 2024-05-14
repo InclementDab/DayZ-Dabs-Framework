@@ -18,9 +18,18 @@ class Raycast: Managed
 	
 	void Debug(LinearColor color = 0xFF87CEEB)
 	{		
-		Shape.CreateSphere(color, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, Bounce.Position, 0.2);
+		Shape cylinder = Shape.CreateCylinder(color, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, vector.Zero, 0.5, 0.01);
+		vector perpend = Bounce.Direction.Perpend();
+		if (perpend.Length() < 0.5) {
+			perpend = Bounce.Direction * vector.Aside;
+		}
 		
-		Bounce.Debug();
+		vector dir_and_up[4];
+		Math3D.DirectionAndUpMatrix(perpend, Bounce.Direction, dir_and_up);
+		dir_and_up[3] = Bounce.Position;
+		cylinder.SetMatrix(dir_and_up);
+		
+		Bounce.Debug(color);
 	}
 	
 	Raycast Continue(Object ignore = null)
