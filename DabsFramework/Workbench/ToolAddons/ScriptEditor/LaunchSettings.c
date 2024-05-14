@@ -31,9 +31,10 @@ enum BuilderType
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 6;
+	static const int VERSION = 7;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
+	static const string CLIENT2_PROFILE_NAME = "client2";
 	static const string SERVER_PROFILE_NAME = "server";
 	static const string BASE_LAUNCH_PARAMS = "-newErrorsAreWarnings=1 -doLogs -adminlog -scriptDebug=true -profile -resizeable -no_preload_vehicles -idleRender";
 	
@@ -62,6 +63,15 @@ class LaunchSettings: SerializableBase
 		
 	[Attribute("", "combobox", "Launch", "", ParamEnumArray.FromEnum(GameLaunchType) )]
 	int LaunchType;
+
+	[Attribute("", "combobox", "Enable Sandboxie", "", ParamEnumArray.FromEnum(YesNo) )]
+	int SandboxieEnabled;
+
+	[Attribute("", "editbox", "Sandboxie Box (Steam Box)")]
+	string SandboxieBoxPath;
+
+	[Attribute("", "editbox", "Sandboxie Box (Program Files Path, Contains Start.exe)")]
+	string SandboxieInstallPath;
 			
 	[Attribute("", "editbox", "Server password")]
 	string ServerPassword;	
@@ -117,6 +127,9 @@ class LaunchSettings: SerializableBase
 		settings.Executable = "DayZDiag_x64.exe";
 		settings.EnvironmentType = DayZEnvironmentType.STABLE;
 		settings.CustomGameDirectory = "";
+		settings.SandboxieEnabled = false;
+		settings.SandboxieBoxPath = "";
+		settings.SandboxieInstallPath = "";
 		settings.Map = "ChernarusPlus";
 		settings.FilePatching = true;
 		settings.Deloginator = true;
@@ -169,6 +182,9 @@ class LaunchSettings: SerializableBase
 		serializer.Write(Executable);
 		serializer.Write(EnvironmentType);
 		serializer.Write(CustomGameDirectory);
+		serializer.Write(SandboxieEnabled);
+		serializer.Write(SandboxieBoxPath);
+		serializer.Write(SandboxieInstallPath);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -250,6 +266,22 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(CustomGameDirectory)) {
+			return false;
+		}
+
+		if (version < 7) {
+			return true;
+		}
+		
+		if (!serializer.Read(SandboxieEnabled)) {
+			return false;
+		}
+		
+		if (!serializer.Read(SandboxieBoxPath)) {
+			return false;
+		}
+
+		if (!serializer.Read(SandboxieInstallPath)) {
 			return false;
 		}
 		

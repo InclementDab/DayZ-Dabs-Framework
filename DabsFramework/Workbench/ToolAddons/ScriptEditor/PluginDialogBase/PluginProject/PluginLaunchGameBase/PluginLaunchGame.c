@@ -9,7 +9,7 @@ class PluginLaunchGame: PluginLaunchGameBase
 	
 	override bool GetConnectionArguments(out string ip, out int port, out string password)
 	{
-		if (m_LaunchSettings.LaunchType != GameLaunchType.BOTH) {
+		if ((m_LaunchSettings.LaunchType != GameLaunchType.BOTH && !m_LaunchSettings.SandboxieEnabled)) {
 			return false;
 		}
 		
