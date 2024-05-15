@@ -18,16 +18,9 @@ class PluginLaunchGameBase: PluginProject
 			return;
 		}
 		
-		bool is_workbench = false;
-		if (FileExist(game_directory + PATH_SEPERATOR + "workbenchApp.exe")) {
-			//is_workbench = true;
-		}
-		
-		if (!is_workbench) {
-			DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
-			CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
-		}
-								
+		DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
+		CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+						
 		//! Game launch script
 		// append prefix of current mod
 		if (!m_ProjectSettings["ServerMod"].ToInt() && !launch_settings.DisableMod) {			
@@ -65,10 +58,8 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Set up symlinks so game can launch with our cwd
-		if (!is_workbench) {
-			PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
-			PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
-		}
+		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
+		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
 
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};
