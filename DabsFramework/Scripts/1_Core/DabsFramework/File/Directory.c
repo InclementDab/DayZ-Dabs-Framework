@@ -23,6 +23,20 @@ class Directory: FileSystem
 		CloseFindFile(handle);
 		return enumerated_files;
 	}
+	
+	// Gets directory of file
+	static string GetDirectory(string file_input)
+	{
+		file_input.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		array<string> path_seperated = {};
+		file_input.Split(PATH_SEPERATOR, path_seperated);
+		if (path_seperated.Count() <= 1) {
+			return file_input;
+		}
+		
+		path_seperated.RemoveOrdered(path_seperated.Count() - 1);
+		return string.Join(PATH_SEPERATOR, path_seperated);
+	}
 }
 
 typedef string Directory;

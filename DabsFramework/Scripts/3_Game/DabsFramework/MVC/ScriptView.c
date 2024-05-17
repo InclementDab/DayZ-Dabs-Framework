@@ -191,15 +191,17 @@ class ScriptView: ScriptedViewBase
 		
 		All.Insert(this);
 				
-#ifndef WORKBENCH
+#ifndef COMPONENT_SYSTEM
 #ifndef NO_GUI		
 		m_LayoutRoot = CreateWidget(null);
+#else
+		ErrorEx("Attmepted to create layout on SERVER!");
 #endif
 #endif
 		
 		LoadWidgetsAsVariables(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
 
-#ifndef WORKBENCH
+#ifndef COMPONENT_SYSTEM
 #ifndef NO_GUI
 		m_LayoutRoot.GetScript(m_Controller);
 

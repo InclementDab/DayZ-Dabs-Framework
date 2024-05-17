@@ -23,12 +23,12 @@ modded class DayZGame
 		
 		RegisterConversionTemplates(m_TypeConverterHashMap); 
 		RegisterWidgetControllers(m_WidgetControllerHashMap);
-		
-		// dedi and offline
-#ifdef SERVER
-		m_EventManager = new EventManager();
-		m_SuppressedObjectManager = new SuppressedObjectManager();
-#endif
+		 
+		// dedi and IsMissionOffline
+		if (IsDedicatedServer() || !IsMultiplayer()) {
+			m_EventManager = new EventManager();
+			m_SuppressedObjectManager = new SuppressedObjectManager();
+		}
 	}
 			
 	// Override THIS to add your own Custom Conversion Templates

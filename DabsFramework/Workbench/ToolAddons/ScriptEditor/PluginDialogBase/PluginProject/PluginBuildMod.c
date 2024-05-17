@@ -34,7 +34,7 @@ class PluginBuildMod: PluginProject
 		
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
 		
-		if (m_BuildSettings.Dependencies) {
+		/*if (m_BuildSettings.Dependencies) {
 			array<string> mod_splits = {};
 			m_ProjectSettings["Mods"].Split(";", mod_splits);
 			foreach (string mod_split: mod_splits) {
@@ -48,7 +48,7 @@ class PluginBuildMod: PluginProject
 					}
 				}
 			}
-		}
+		}*/
 		
 		// Set up our mod output correctly if not done so already
 		string mod_output = string.Format("%1\\@%2", m_LaunchSettings.Mods, mod_prefix);		
