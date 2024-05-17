@@ -19,11 +19,13 @@ class DiscordWebhook: WebApiBase
 			return;
 		}
 		
+		Print(string_data);
+		
 		HttpArguments arguments = {
 			new HttpArgument("thread_id", thread_id)
 		};
 		
-		m_RestContext.POST(new RestCallbackBase(), arguments.ToQuery(string.Format("/%1/%2", m_WebhookId, m_WebhookToken)), string_data);
+		m_RestContext.POST(new RestCallbackBase(), arguments.ToQuery(string.Format("/%1/%2", GetId(), GetToken())), string_data);
 	}
 	
 	string GetId()

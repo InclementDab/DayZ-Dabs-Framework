@@ -21,6 +21,7 @@ class DiscordPayload_Embed: Managed
 		description = _description;
 		url = _url;
 		color = _color;
+		color = Math.AbsInt(color);
 		if (_fields) {
 			fields = fields;
 		}
@@ -59,6 +60,7 @@ class DiscordPayload_Embed: Managed
 	void SetColor(int _color)
 	{
 		color = _color;
+		color = Math.AbsInt(color);
 	}
 
 	void SetAuthor(string _name, string _url = string.Empty, string _icon_url = string.Empty)

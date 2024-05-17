@@ -34,7 +34,7 @@ class DiscordPayload_Webhook: Managed
 		thread_name = _thread_name;
 	}
 
-	DiscordPayload_Embed CreateEmbed(string _title, string _description)
+	DiscordPayload_Embed CreateEmbed(string _title, string _description, string _url = string.Empty, int _color = 0, array<ref DiscordPayload_EmbedField> _fields = null)
 	{
 		DiscordPayload_Embed embed = new DiscordPayload_Embed(_title, _description);
 		AddEmbed(embed);
