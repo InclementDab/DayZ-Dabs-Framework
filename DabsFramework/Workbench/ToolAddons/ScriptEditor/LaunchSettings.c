@@ -109,6 +109,8 @@ class LaunchSettings: SerializableBase
 		}
 		
 		int version = VERSION;
+		
+		Executable.Replace(PluginDialogBase.PATH_SEPERATOR, PluginDialogBase.PATH_SEPERATOR_ALT);
 
 		serializer.Write(version);
 		Write(serializer, version);
@@ -297,5 +299,23 @@ class LaunchSettings: SerializableBase
 	[ButtonAttribute("Cancel")]
 	void Cancel()
 	{
+	}
+	
+	string GetExecutableName()
+	{
+		if (FileExist(Executable))
+		{
+			string exec = Executable;
+			int index = exec.LastIndexOf(PluginDialogBase.PATH_SEPERATOR_ALT);
+			int size = exec.Length();
+			
+			if (index > 0)
+			{
+				exec = exec.Substring(index + 1, size - (index + 1));
+			}
+			
+			return exec;
+		}
+		return Executable;
 	}
 }

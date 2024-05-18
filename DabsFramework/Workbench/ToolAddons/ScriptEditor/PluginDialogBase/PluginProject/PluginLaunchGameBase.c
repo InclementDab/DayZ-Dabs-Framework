@@ -73,7 +73,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 				
 		if (launch_settings.AutoClose) {
-			KillTask(launch_settings.Executable);
+			KillTask(launch_settings.GetExecutableName());
 		}
 		
 		// Set up symlinks so game can launch with our cwd
@@ -225,8 +225,8 @@ class PluginLaunchGameBase: PluginProject
 		if (launch_settings.FilePatching) {
 			client_launch_params += " -filePatching";
 			client2_launch_params += " -filePatching";
-			server_launch_params += " -filePatching";
-			offline_launch_params += " -filePatching";
+			server_launch_params += " -filePatching -world=none";
+			offline_launch_params += " -filePatching -world=none";
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
@@ -251,6 +251,7 @@ class PluginLaunchGameBase: PluginProject
 				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
 			}
 			
+			Print(game_exe + " " + offline_launch_params);
 			Workbench.RunCmd(game_exe + " " + offline_launch_params);
 		}
 	}
