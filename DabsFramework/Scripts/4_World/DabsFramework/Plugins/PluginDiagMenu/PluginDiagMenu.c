@@ -9,6 +9,7 @@ modded class PluginDiagMenu
 	{
 		super.OnRPC(player, rpc_type, ctx);
 		
+#ifdef DIAG
 		switch (rpc_type) {						
 			case RPC_DIAG_RESET_PROFILER: {
 				EnProfiler.ResetSession(true);
@@ -20,6 +21,7 @@ modded class PluginDiagMenu
 				break;
 			}
 		}
+#endif
 	}
 }
 
