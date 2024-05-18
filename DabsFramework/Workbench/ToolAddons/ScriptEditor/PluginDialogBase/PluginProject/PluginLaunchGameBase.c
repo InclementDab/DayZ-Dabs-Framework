@@ -7,11 +7,7 @@ class PluginLaunchGameBase: PluginProject
 		string workbench_directory = GetWorkbenchDirectory();
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetDayZDirectory(launch_settings);		
-		string game_exe = launch_settings.Executable;
-		if (!FileExist(game_exe)) {
-			game_exe = game_directory + PATH_SEPERATOR + launch_settings.Executable;
-		}
-		
+		string game_exe = game_directory + PATH_SEPERATOR + launch_settings.Executable;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
