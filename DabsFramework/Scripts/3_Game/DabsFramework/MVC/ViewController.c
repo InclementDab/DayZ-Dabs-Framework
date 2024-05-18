@@ -166,7 +166,7 @@ class ViewController: ScriptedViewBase
 
 	protected int LoadDataBindings(Widget w)
 	{
-		ScriptedViewBase view_base;
+		Managed view_base;
 		w.GetScript(view_base);
 
 		// If we find a ViewBinding
