@@ -24,7 +24,7 @@ class Symbol: string
 		return string.Format("%1 image:%2", size, image_split[2]);
 	}
 	
-	static Symbol Format(SymbolSize size, Symbols image)
+	static Symbol FormatSymbol(SymbolSize size, Symbols image)
 	{
 		return string.Format("%1 %2", size, image);
 	}
