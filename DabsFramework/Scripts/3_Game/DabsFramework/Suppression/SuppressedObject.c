@@ -37,7 +37,6 @@ class SuppressedObject: SerializableBase
 	{
 		Object object = GetObject();
 		if (!object) {
-			Error("Failed to unhide object at position " + m_Transform[3]);
 			return;
 		}
 		
