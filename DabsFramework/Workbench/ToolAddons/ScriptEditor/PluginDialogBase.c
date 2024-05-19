@@ -287,10 +287,41 @@ class PluginDialogBase: WorkbenchPlugin
 		array<string> all = {};
 		all.InsertAll(Directory.EnumerateFiles(folder, "*.RPT"));
 		all.InsertAll(Directory.EnumerateFiles(folder, "*.log"));
-		all.InsertAll(Directory.EnumerateFiles(folder, "*.ADM"));
 		all.InsertAll(Directory.EnumerateFiles(folder, "*.mdmp"));
 		foreach (string file: all) {
-			DeleteFile(file);
+			array<string> datetime_split = {};
+			file.Split("_", datetime_split);
+			if (datetime_split.Count() <= 1) {
+				DeleteFile(file);
+				continue;
+			} 
+			
+			string year_month_day = datetime_split[datetime_split.Count() - 2];
+			string hour_minute_second = datetime_split[datetime_split.Count() - 1];
+			array<string> ymd_split = {};
+			year_month_day.Split("-", ymd_split);
+			int year = ymd_split[0].ToInt();
+			int day = ymd_split[2].ToInt();
+			int month = ymd_split[1].ToInt();
+			
+			array<string> hms_split = {};
+			hour_minute_second.Split("-", hms_split);
+			int hour = hms_split[0].ToInt();
+			int minute = hms_split[1].ToInt();
+			int second = hms_split[2].ToInt();
+			DateTime date_time = DateTime.Create(year, month, day, hour, minute, second);
+			TimeSpan age = DateTime.Now(false) - date_time;
+			//PrintFormat("%2 - age %1", age.Format(), file);
+			
+			if (age > TimeSpan.HOUR) {
+				DeleteFile(file);
+			}
+		}
+		
+		all.Clear();
+		all.InsertAll(Directory.EnumerateFiles(folder, "*.ADM"));
+		foreach (string file2: all) {
+			DeleteFile(file2);
 		}
 	}
 	
