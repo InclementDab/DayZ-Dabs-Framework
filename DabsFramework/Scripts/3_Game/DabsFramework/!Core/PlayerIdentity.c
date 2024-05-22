@@ -27,4 +27,17 @@ modded class PlayerIdentity
 		
 		return null;
 	}
+
+	static PlayerIdentity FindByName(string name)
+	{
+		array<PlayerIdentity> player_identities = {};
+		GetDayZGame().GetPlayerIndentities(player_identities);
+		foreach (PlayerIdentity player_identity: player_identities) {
+			if (player_identity.GetName() == name) {
+				return player_identity;
+			}
+		}
+
+		return null;
+	}
 }
