@@ -207,7 +207,8 @@ class PluginLaunchGameBase: PluginProject
 		
 		string ip, password;
 		int port;
-		if (GetConnectionArguments(ip, port, password)) {
+		array<string> args;
+		if (GetConnectionArguments(ip, port, password, args)) {
 			client_launch_params += string.Format(" -connect=%1 -port=%2", ip, port);
 			client2_launch_params += string.Format(" -connect=%1 -port=%2", ip, port);
 			if (password) {
@@ -216,6 +217,13 @@ class PluginLaunchGameBase: PluginProject
 			}
 			
 			server_launch_params += string.Format(" -port=%1", port);
+			
+			if (args) {
+				client_launch_params += string.Join(" ", args);
+				client2_launch_params += string.Join(" ", args);
+				server_launch_params += string.Join(" ", args);
+				offline_launch_params += string.Join(" ", args);
+			}
 		}
 		 
 		if (launch_settings.FilePatching) {
@@ -252,7 +260,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 	}
 	
-	bool GetConnectionArguments(out string ip, out int port, out string password)
+	bool GetConnectionArguments(out string ip, out int port, out string password, out array<string> args)
 	{
 		return false;
 	}

@@ -38,7 +38,7 @@ class PluginJoinRemote: PluginLaunchGameBase
 	{
 	}
 	
-	override bool GetConnectionArguments(out string ip, out int port, out string password)
+	override bool GetConnectionArguments(out string ip, out int port, out string password, out array<string> args)
 	{		
 		ip = m_LaunchSettings.JoinAddress;
 		port = m_LaunchSettings.Port;
