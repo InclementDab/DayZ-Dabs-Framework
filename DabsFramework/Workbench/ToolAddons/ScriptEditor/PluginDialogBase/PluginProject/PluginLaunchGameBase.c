@@ -216,11 +216,11 @@ class PluginLaunchGameBase: PluginProject
 				client2_launch_params += string.Format(" -password=%1", password);
 			}
 			server_launch_params += string.Format(" -port=%1", port);
-			
-			if (m_LaunchSettings.EnableHive) {
-				server_launch_params += "-useDevHive";
-				offline_launch_params += "-useDevHive";
-			}
+		}
+		
+		if (launch_settings.EnableHive) {
+			server_launch_params += "-useDevHive";
+			offline_launch_params += "-useDevHive";
 		}
 		 
 		if (launch_settings.FilePatching) {
