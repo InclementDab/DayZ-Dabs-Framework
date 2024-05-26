@@ -96,7 +96,10 @@ class LaunchSettings: SerializableBase
 			
 	[Attribute("", "editbox", "Server password")]
 	string ServerPassword;	
-			
+	
+	[Attribute("", "combobox", "Disable Mod", "", ParamEnumArray.FromEnum(YesNo) )]
+	bool EnableHive;
+		
 	void Save(string file = "")
 	{
 		if (file == string.Empty) {
@@ -187,6 +190,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(SandboxieEnabled);
 		serializer.Write(SandboxieBoxPath);
 		serializer.Write(SandboxieInstallPath);
+		serializer.Write(EnableHive);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -284,6 +288,14 @@ class LaunchSettings: SerializableBase
 		}
 
 		if (!serializer.Read(SandboxieInstallPath)) {
+			return false;
+		}
+		
+		if (version < 8) {
+			return true;
+		}
+		
+		if (!serializer.Read(EnableHive)) {
 			return false;
 		}
 		

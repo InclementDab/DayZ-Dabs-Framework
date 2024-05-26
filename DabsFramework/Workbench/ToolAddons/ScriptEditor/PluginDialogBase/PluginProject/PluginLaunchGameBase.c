@@ -222,7 +222,7 @@ class PluginLaunchGameBase: PluginProject
 			server_launch_params += "-useDevHive";
 			offline_launch_params += "-useDevHive";
 		}
-		 
+				 
 		if (launch_settings.FilePatching) {
 			client_launch_params += " -filePatching";
 			client2_launch_params += " -filePatching";
@@ -259,6 +259,13 @@ class PluginLaunchGameBase: PluginProject
 	
 	bool GetConnectionArguments(out string ip, out int port, out string password, out array<string> args)
 	{
-		return false;
+		if ((m_LaunchSettings.LaunchType != GameLaunchType.BOTH && !m_LaunchSettings.SandboxieEnabled)) {
+			return false;
+		}
+		
+		ip = "127.0.0.1";
+		port = 2302;
+		password = m_LaunchSettings.ServerPassword;		
+		return true;
 	}
 }
