@@ -47,11 +47,15 @@ class Ray: Managed
 		raycast_params.type = interaction_type;
 		raycast_params.sorted = true;
 		array<ref RaycastRVResult> results = {};
-		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, excludes)) {
+		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, excludes) || results.Count() == 0) {
 			return null;
 		}
 	
-		RaycastRVResult result = results[0];		
+		RaycastRVResult result = results[0];	
+		if (!result) {
+			return null;
+		}
+			
 		raycast.Bounce = new Ray(result.pos, result.dir);
 		raycast.HitComponent = result.component;
 		raycast.Hit = result.obj;
@@ -77,14 +81,10 @@ class Ray: Managed
 		raycast_params.type = interaction_type;
 		raycast_params.sorted = true;
 		array<ref RaycastRVResult> results = {};
-		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, null)) {
+		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, null) || results.Count() == 0) {
 			return null;
 		}
-		
-		if (results.Count() == 0) {
-			return null;
-		}
-	
+			
 		RaycastRVResult result = results[0];
 		raycast.Bounce = new Ray(result.pos, result.dir);
 		raycast.HitComponent = result.component;
