@@ -141,7 +141,7 @@ class Path
             return string.Empty;
         }
 
-        for (int j = first_component; j < max_size; j++) {
+        for (int j = first_component; j < paths.Count(); j++) {
             if (paths[j].Length() == 0) {
                 continue;
             }

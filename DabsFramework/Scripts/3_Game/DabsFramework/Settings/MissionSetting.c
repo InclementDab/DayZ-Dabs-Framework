@@ -33,7 +33,7 @@ class MissionSetting: SerializableBase
 #endif
     }
 
-    bool Save()
+    bool Save(bool sync_to_clients = false)
     {
         if (GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer()) {
             return false;
@@ -44,16 +44,9 @@ class MissionSetting: SerializableBase
             return false;
         }
 
-        JsonSerializer json_file_serializer = new JsonSerializer();
-        if (!json_file_serializer.CanWrite()) {
-            ErrorEx(string.Format("failed write to json file serializer setting type: %1, file: %2", Type(), save_file));
-            return false;
-        }
-
-        MissionSetting mission_settings_copy = this;
-        string file_save_string;
-        if (!json_file_serializer.WriteToString(mission_settings_copy, true, file_save_string)) {
-            ErrorEx(string.Format("failed write to json serialize setting type: %1, file: %2", Type(), save_file));
+        string file_save_string = RegisterMissionSetting.DataToStringStatic(this);
+        if (!file_save_string || file_save_string.Contains("ERROR")) {
+            ErrorEx(file_save_string);
             return false;
         }
 
@@ -67,6 +60,11 @@ class MissionSetting: SerializableBase
         CloseFile(file_handle);
 
         Event_OnSettingsSaved.Invoke(this);
+
+        if (GetGame().IsMultiplayer() && sync_to_clients) {
+            GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Sync);
+        }
+
         return true;
     }
 
@@ -74,6 +72,23 @@ class MissionSetting: SerializableBase
     {
         return 0;
     }
+
+    override void Write(Serializer serializer, int version)
+	{
+		super.Write(serializer, version);
+
+        serializer.Write(Version);
+	}
+
+	override bool Read(Serializer serializer, int version)
+	{
+		if (!super.Read(serializer, version)) {
+            return false;
+        }
+
+        serializer.Read(Version);
+		return true;
+	}
 
 	private void MissionSetting();
 	//private void ~MissionSetting();
