@@ -33,6 +33,53 @@ class File: FileSystem
 	{
 		return OpenFile(value, mode);
 	}
+
+    static array<string> ReadAllLines(string file)
+    {
+        array<string> result = {};
+        if (!File.Exists(file)) {
+            ErrorEx(string.Format("File not found %1", file));
+            return result;
+        }
+
+        FileHandle open_file_handle = OpenFile(file, FileMode.READ);
+        if (!open_file_handle) {
+            ErrorEx(string.Format("File not opened %1", file));
+            return result;
+        }
+
+        string line_content;
+        while (FGets(open_file_handle, line_content) > 0) {
+            result.Insert(line_content);
+        }
+
+        CloseFile(open_file_handle);
+        return result;
+    }
+
+    static string ReadAllText(string file)
+    {
+        string result;
+        if (!File.Exists(file)) {
+            ErrorEx(string.Format("File not found %1", file));
+            return result;
+        }
+
+        FileHandle open_file_handle = OpenFile(file, FileMode.READ);
+        if (!open_file_handle) {
+            ErrorEx(string.Format("File not opened %1", file));
+            return result;
+        }
+
+        string line_content;
+        while (FGets(open_file_handle, line_content) > 0) {
+            result += line_content;
+            result += "\n";
+        }
+
+        CloseFile(open_file_handle);
+        return result;
+    }
 	
 	static File Create(string file)
 	{
