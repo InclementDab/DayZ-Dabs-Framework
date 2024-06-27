@@ -43,6 +43,11 @@ class File: FileSystem
 		CloseFile(OpenFile(file, FileMode.WRITE));
 		return file;
 	}
+
+    static bool Exists(string file)
+    {
+        return FileExist(file);
+    }
 }
 
 typedef string File;
