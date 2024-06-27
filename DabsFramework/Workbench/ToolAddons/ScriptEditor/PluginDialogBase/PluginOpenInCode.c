@@ -6,7 +6,7 @@ class PluginOpenInCode: PluginDialogBase
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_directory = GetAbsolutePath(current_file);
-		absolute_directory.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		absolute_directory.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		
 		int current_line = m_ScriptEditor.GetCurrentLine() + 1;
 		if (Workbench.RunCmd(string.Format("cmd /c \"code --goto %1:%2:1\"", absolute_directory, current_line))) {

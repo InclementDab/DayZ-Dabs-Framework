@@ -26,7 +26,7 @@ class PluginDeleteFile: PluginDialogBase
 	void Ok()
 	{
 		string current_file = m_CurrentFile;
-		current_file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		current_file.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		Workbench.RunCmd(string.Format("cmd /c del %1", current_file));
 	}
 	

@@ -61,7 +61,7 @@ class PluginNewFile: PluginDialogBase
 			FileName = file_split[0] + DEFAULT_EXTENSION;
 		}
 		
-		string absolute_file = GetAbsolutePath(Folder) + PATH_SEPERATOR + FileName;
+		string absolute_file = GetAbsolutePath(Folder) + Path.SEPERATOR + FileName;
 		if (FileExist(absolute_file)) {
 			ErrorDialog(string.Format("File %1 already exists!", FileName));
 			return;
@@ -85,7 +85,7 @@ class PluginNewFile: PluginDialogBase
 		FPrint(file_handle, template);
 		CloseFile(file_handle);
 		
-		m_FinalFileName = Folder + PATH_SEPERATOR + FileName;
+		m_FinalFileName = Folder + Path.SEPERATOR + FileName;
 	}
 
 	[ButtonAttribute("Cancel")]

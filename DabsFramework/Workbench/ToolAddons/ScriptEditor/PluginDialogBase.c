@@ -2,8 +2,8 @@ class PluginDialogBase: WorkbenchPlugin
 {	
 	// Sizes the dialog to max size without putting a scroll bar on the bottom
 	static const string DIALOG_TAB_SIZE = "\t\t\t\t\t\t\t\t\t";
-	static const string PATH_SEPERATOR = "\\";
-	static const string PATH_SEPERATOR_ALT = "/";
+	static const string Path.SEPERATOR = "\\";
+	static const string Path.SEPERATOR_ALT = "/";
 	static const string DEFAULT_EXTENSION = ".c";
 	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "dta", "platforms", "battleye"};
@@ -35,8 +35,8 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		array<string> current_dir_split = {};
 		string current_directory = GetCurrentDirectory();
-		current_directory.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		current_directory.Split(PATH_SEPERATOR, current_dir_split);
+		current_directory.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		current_directory.Split(Path.SEPERATOR, current_dir_split);
 		return current_dir_split[current_dir_split.Count() - 2];
 	}
 	
@@ -48,7 +48,7 @@ class PluginDialogBase: WorkbenchPlugin
 		
 		if (environmentType == DayZEnvironmentType.CUSTOM) {
 			string gamePath = settings.CustomGameDirectory;
-			gamePath.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+			gamePath.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 			return gamePath;
 		}
 		
@@ -64,7 +64,7 @@ class PluginDialogBase: WorkbenchPlugin
 		}
 		
 		string data = GetRegistryEntryValue(string.Format("HKLM\\SOFTWARE\\Wow6432Node\\Bohemia Interactive\\%1", dayzType), "main");
-		data.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		data.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		return data;
 	}
 	
@@ -97,7 +97,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string abs;
 		Workbench.GetAbsolutePath("$SourceData:", abs);
-		abs.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		abs.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		return abs;
 	}
 	
@@ -105,7 +105,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string abs;
 		Workbench.GetAbsolutePath("$CurrentDir:", abs);
-		abs.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		abs.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		return abs;
 	}
 	
@@ -137,21 +137,21 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetRelativePath(string root_path, string full_path)
 	{
-		root_path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		full_path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		root_path.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		full_path.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		
 		array<string> root_path_split = {};
 		array<string> full_path_split = {};
 		
-		root_path.Split(PATH_SEPERATOR, root_path_split);
-		full_path.Split(PATH_SEPERATOR, full_path_split);
+		root_path.Split(Path.SEPERATOR, root_path_split);
+		full_path.Split(Path.SEPERATOR, full_path_split);
 		
 		string result;
 		for (int i = 0; i < full_path_split.Count(); i++) {
 			if (i > root_path_split.Count() - 1 || full_path_split[i] != root_path_split[i]) {
 				result += full_path_split[i];
 				if (i != full_path_split.Count() - 1) {
-					result += PATH_SEPERATOR;
+					result += Path.SEPERATOR;
 				}
 			}
 		}
@@ -161,10 +161,10 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetDirectory(string path)
 	{		
-		path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		path.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		
 		array<string> path_split = {};
-		path.Split(PATH_SEPERATOR, path_split);
+		path.Split(Path.SEPERATOR, path_split);
 		string directory;
 		for (int i = 0; i < path_split.Count() - 1; i++) {
 			if (path_split[i].Contains(".")) {
@@ -174,7 +174,7 @@ class PluginDialogBase: WorkbenchPlugin
 			
 			directory += path_split[i];
 			if (i != path_split.Count() - 1) {
-				directory += PATH_SEPERATOR;
+				directory += Path.SEPERATOR;
 			}
 		}
 		
@@ -183,10 +183,10 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetFile(string path)
 	{
-		path.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		path.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		
 		array<string> path_split = {};
-		path.Split(PATH_SEPERATOR, path_split);
+		path.Split(Path.SEPERATOR, path_split);
 		
 		if (path_split.Count() == 0) {
 			return string.Empty;
@@ -200,7 +200,7 @@ class PluginDialogBase: WorkbenchPlugin
 		array<string> child_directories = {};
 		string file_name;
 		FileAttr file_attributes;
-		FindFileHandle handle = FindFile(path + PATH_SEPERATOR + "*", file_name, file_attributes, FindFileFlags.DIRECTORIES);
+		FindFileHandle handle = FindFile(path + Path.SEPERATOR + "*", file_name, file_attributes, FindFileFlags.DIRECTORIES);
 		if (!handle) {
 			return child_directories;
 		}
@@ -224,8 +224,8 @@ class PluginDialogBase: WorkbenchPlugin
 		// Creates needed directories
 		string absolute_file_rebuild;
 		array<string> absolute_file_split = {};
-		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
-		file.Split(PATH_SEPERATOR, absolute_file_split);
+		file.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		file.Split(Path.SEPERATOR, absolute_file_split);
 		for (int i = 0; i < absolute_file_split.Count(); i++) {
 			if (absolute_file_split[i].Contains(".")) {
 				break;
@@ -237,7 +237,7 @@ class PluginDialogBase: WorkbenchPlugin
 				Workbench.RunCmd("cmd /c mkdir " + absolute_file_rebuild);
 			}
 			
-			absolute_file_rebuild += PATH_SEPERATOR_ALT;
+			absolute_file_rebuild += Path.SEPERATOR_ALT;
 		}
 		
 		// Create the file
@@ -256,12 +256,12 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int PromiseSymLink(string source, string target)
 	{
-		target.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		target.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		array<string> path_split = {};
-		target.Split(PATH_SEPERATOR, path_split);
+		target.Split(Path.SEPERATOR, path_split);
 		string path_reconstruct;
 		for (int i = 0; i < path_split.Count(); i++) {
-			path_reconstruct += path_split[i] + PATH_SEPERATOR;
+			path_reconstruct += path_split[i] + Path.SEPERATOR;
 			if (!FileExist(path_reconstruct) && i < path_split.Count() - 1) {
 				//path_reconstruct = path_reconstruct.Substring(0, path_reconstruct.Length() - 1);
 				PrintFormat("Creating directory: %1", path_reconstruct);
@@ -329,20 +329,20 @@ class PluginDialogBase: WorkbenchPlugin
 	{	
 		string filename;
 		FileAttr fileattr;
-		FindFileHandle hdnl = FindFile(source + PATH_SEPERATOR + "*", filename, fileattr, FindFileFlags.ALL);
+		FindFileHandle hdnl = FindFile(source + Path.SEPERATOR + "*", filename, fileattr, FindFileFlags.ALL);
 		if (fileattr == FileAttr.DIRECTORY) {
-			MakeDirectory(destination + PATH_SEPERATOR + filename);
-			CopyFiles(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+			MakeDirectory(destination + Path.SEPERATOR + filename);
+			CopyFiles(source + Path.SEPERATOR + filename, destination + Path.SEPERATOR + filename);
 		} else {
-			CopyFile(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+			CopyFile(source + Path.SEPERATOR + filename, destination + Path.SEPERATOR + filename);
 		}
 		
 		while (FindNextFile(hdnl, filename, fileattr)) {
 			if (fileattr == FileAttr.DIRECTORY) {
-				MakeDirectory(destination + PATH_SEPERATOR + filename);
-				CopyFiles(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+				MakeDirectory(destination + Path.SEPERATOR + filename);
+				CopyFiles(source + Path.SEPERATOR + filename, destination + Path.SEPERATOR + filename);
 			} else {
-				CopyFile(source + PATH_SEPERATOR + filename, destination + PATH_SEPERATOR + filename);
+				CopyFile(source + Path.SEPERATOR + filename, destination + Path.SEPERATOR + filename);
 			}
 		}
 		
@@ -351,11 +351,11 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int GetScriptModuleFromFile(string file)
 	{
-		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);	
+		file.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);	
 		file.ToLower();
 		
 		array<string> tokens = {};
-		file.Split(PATH_SEPERATOR, tokens);
+		file.Split(Path.SEPERATOR, tokens);
 		foreach (string token: tokens) {
 			int search_result = SCRIPT_MODULES.Find(token);
 			if (search_result != -1) {
@@ -374,7 +374,7 @@ class PluginDialogBase: WorkbenchPlugin
 			case 1:
 			case 2:
 			case 3:
-			case 4: return GetDirectory(GetCurrentDirectory()) + "Scripts" + PATH_SEPERATOR + SCRIPT_MODULES[module];
+			case 4: return GetDirectory(GetCurrentDirectory()) + "Scripts" + Path.SEPERATOR + SCRIPT_MODULES[module];
 			case 5: return GetCurrentDirectory();
 		}
 		
@@ -383,18 +383,18 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string StripScriptModuleFromPath(string file)
 	{				
-		file.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);	
+		file.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);	
 		file.ToLower();
 		
 		string result;
 		array<string> tokens = {};
-		file.Split(PATH_SEPERATOR, tokens);
+		file.Split(Path.SEPERATOR, tokens);
 		for (int i = tokens.Count() - 1; i >= 0; i--) {
 			if (SCRIPT_MODULES.Find(tokens[i]) != -1) {
 				return result;
 			}
 			
-			result = PATH_SEPERATOR + tokens[i] + result;
+			result = Path.SEPERATOR + tokens[i] + result;
 		}
 		
 		return result;

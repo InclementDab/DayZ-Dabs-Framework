@@ -7,7 +7,7 @@ class PluginLaunchGameBase: PluginProject
 		string workbench_directory = GetWorkbenchDirectory();
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetDayZDirectory(launch_settings);		
-		string game_exe = game_directory + PATH_SEPERATOR + launch_settings.Executable;
+		string game_exe = game_directory + Path.SEPERATOR + launch_settings.Executable;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
@@ -73,8 +73,8 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Set up symlinks so game can launch with our cwd
-		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "Addons", workbench_directory + PATH_SEPERATOR_ALT + "Addons");
-		PromiseSymLink(game_directory + PATH_SEPERATOR_ALT + "bliss", workbench_directory + PATH_SEPERATOR_ALT + "bliss");
+		PromiseSymLink(game_directory + Path.SEPERATOR_ALT + "Addons", workbench_directory + Path.SEPERATOR_ALT + "Addons");
+		PromiseSymLink(game_directory + Path.SEPERATOR_ALT + "bliss", workbench_directory + Path.SEPERATOR_ALT + "bliss");
 
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};
@@ -86,24 +86,24 @@ class PluginLaunchGameBase: PluginProject
 		if (launch_settings.FilePatching) {
 			foreach (string prefix: m_Prefixes) {			
 				array<string> prefix_split = {};
-				prefix.Replace(PATH_SEPERATOR, PATH_SEPERATOR_ALT);
-				prefix.Split(PATH_SEPERATOR_ALT, prefix_split);
+				prefix.Replace(Path.SEPERATOR, Path.SEPERATOR_ALT);
+				prefix.Split(Path.SEPERATOR_ALT, prefix_split);
 				
-				string built_path = workbench_directory + PATH_SEPERATOR_ALT;
+				string built_path = workbench_directory + Path.SEPERATOR_ALT;
 				if (prefix_split.Count() < 1) {
 					continue;
 				}
 				
 				// Add each root dir to exclude
 				folders_to_save.Insert(prefix_split[0]);
-				PromiseSymLink(root + PATH_SEPERATOR_ALT + prefix, workbench_directory + PATH_SEPERATOR + prefix);
+				PromiseSymLink(root + Path.SEPERATOR_ALT + prefix, workbench_directory + Path.SEPERATOR + prefix);
 			}
 		}
 		
 		// Now FindFile each 
 		string wb_dir_filename;
 		FileAttr wb_dir_fileattr;
-		FindFileHandle hdnl = FindFile(workbench_directory + PATH_SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
+		FindFileHandle hdnl = FindFile(workbench_directory + Path.SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
 		
 		if (folders_to_save.Find(wb_dir_filename) == -1) {
 			DeleteFile(wb_dir_filename);
@@ -111,7 +111,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
 			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + PATH_SEPERATOR + wb_dir_filename));
+				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + Path.SEPERATOR + wb_dir_filename));
 			}
 		}
 		
@@ -122,7 +122,7 @@ class PluginLaunchGameBase: PluginProject
 		array<string> mod_list = {};
 		m_ProjectSettings["Mods"].Split(";", mod_list);
 		for (int i = 0; i < mod_list.Count(); i++) {
-			formatted_mod_list += launch_settings.Mods + PATH_SEPERATOR + mod_list[i];
+			formatted_mod_list += launch_settings.Mods + Path.SEPERATOR + mod_list[i];
 			if (i != mod_list.Count() - 1) {
 				formatted_mod_list += ";";
 			}
@@ -133,7 +133,7 @@ class PluginLaunchGameBase: PluginProject
 		array<string> server_mod_list = {};
 		m_ProjectSettings["ServerMods"].Split(";", server_mod_list);
 		for (int j = 0; j < server_mod_list.Count(); j++) {
-			formatted_server_mod_list += launch_settings.Mods + PATH_SEPERATOR + server_mod_list[j];
+			formatted_server_mod_list += launch_settings.Mods + Path.SEPERATOR + server_mod_list[j];
 			if (j != server_mod_list.Count() - 1) {
 				formatted_server_mod_list += ";";
 			}

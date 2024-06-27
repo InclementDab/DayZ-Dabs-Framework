@@ -113,7 +113,7 @@ class LaunchSettings: SerializableBase
 		
 		int version = VERSION;
 		
-		Executable.Replace(PluginDialogBase.PATH_SEPERATOR, PluginDialogBase.PATH_SEPERATOR_ALT);
+		Executable.Replace(PluginDialogBase.Path.SEPERATOR, PluginDialogBase.Path.SEPERATOR_ALT);
 
 		serializer.Write(version);
 		Write(serializer, version);
@@ -318,7 +318,7 @@ class LaunchSettings: SerializableBase
 		if (FileExist(Executable))
 		{
 			string exec = Executable;
-			int index = exec.LastIndexOf(PluginDialogBase.PATH_SEPERATOR_ALT);
+			int index = exec.LastIndexOf(PluginDialogBase.Path.SEPERATOR_ALT);
 			int size = exec.Length();
 			
 			if (index > 0)

@@ -39,7 +39,7 @@ class PluginRenameFile: PluginDialogBase
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_file = GetAbsolutePath(current_file);
 		
-		m_FinalFileName = GetDirectory(absolute_file) + PATH_SEPERATOR + FileName;
+		m_FinalFileName = GetDirectory(absolute_file) + Path.SEPERATOR + FileName;
 		if (!CopyFile(absolute_file, m_FinalFileName)) {
 			ErrorDialog("Failed to rename file");
 			return;

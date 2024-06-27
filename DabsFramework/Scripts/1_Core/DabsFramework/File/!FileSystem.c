@@ -1,21 +1,14 @@
 class FileSystem: string
 {
-	static const string WILDCARD = "*";
-
-	static const string VOLUME_SEPERATOR = ":";
-	
-	static const string PROFILE = "$profile";
-	static const string MISSION = "$mission";
-	static const string SAVES = "$saves";
-	static const string STORAGE = "$storage";
+	const string WILDCARD = "*";
 	
 	string GetFileName()
 	{
 		string temp = value;
-		temp.Replace(PATH_SEPERATOR_ALT, PATH_SEPERATOR);
+		temp.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
 		
 		array<string> path_split = {};
-		temp.Split(PATH_SEPERATOR, path_split);
+		temp.Split(Path.SEPERATOR, path_split);
 		
 		if (path_split.Count() == 0) {
 			return string.Empty;
@@ -38,9 +31,10 @@ class FileSystem: string
 					break;
 				}
 				
-				case PATH_SEPERATOR:
-				case PATH_SEPERATOR_ALT:
-				case VOLUME_SEPERATOR: {
+				case Path.SEPERATOR:
+				case Path.SEPERATOR_ALT:
+				case Path.VOLUME_PREFIX:
+				case Path.VOLUME_SEPERATOR: {
 					return string.Empty;
 				}
 			}
