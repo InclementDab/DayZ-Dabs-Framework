@@ -54,7 +54,7 @@ class Path
     static bool IsPathRooted(string path)
     {
         string formatted_path = Path.Format(path);
-        return (formatted_path.Length() > 0 && (formatted_path[0] == Path.VOLUME_PREFIX || formatted_path[formatted_path.Length() - 1] == Path.VOLUME_SEPERATOR));
+        return (formatted_path.Length() > 0 && (formatted_path[0] == Path.VOLUME_PREFIX));
     }
 
     static bool IsDirectorySeperator(string ch)

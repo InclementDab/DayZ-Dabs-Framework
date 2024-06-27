@@ -2,8 +2,6 @@ class PluginDialogBase: WorkbenchPlugin
 {	
 	// Sizes the dialog to max size without putting a scroll bar on the bottom
 	static const string DIALOG_TAB_SIZE = "\t\t\t\t\t\t\t\t\t";
-	static const string Path.SEPERATOR = "\\";
-	static const string Path.SEPERATOR_ALT = "/";
 	static const string DEFAULT_EXTENSION = ".c";
 	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "dta", "platforms", "battleye"};
