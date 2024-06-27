@@ -80,20 +80,15 @@ class Ray: Managed
 		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, null)) {
 			return null;
 		}
+		
+		if (results.Count() == 0) {
+			return null;
+		}
 	
-		RaycastRVResult result = results[0];		
+		RaycastRVResult result = results[0];
 		raycast.Bounce = new Ray(result.pos, result.dir);
 		raycast.HitComponent = result.component;
 		raycast.Hit = result.obj;
-		/*
-		
-		if (!DayZPhysics.RaycastRV(Position, Position + Direction.Normalized() * distance, position, direction, hit_component, rv_results, with, ignore, false, false, interaction_type, radius)) {
-			return null;
-		}
-		
-		raycast.Bounce = new Ray(position, direction);		
-		raycast.HitComponent = hit_component;
-		raycast.Hit = rv_results[0];*/
 		return raycast;
 	}
 	
