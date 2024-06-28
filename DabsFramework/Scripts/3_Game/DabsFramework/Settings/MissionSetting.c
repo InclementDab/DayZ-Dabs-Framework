@@ -36,10 +36,11 @@ class MissionSetting: SerializableBase
     bool Save(bool sync_to_clients = false)
     {
         if (GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer()) {
-            return false;
+            //return false;
         }
 
         string save_file = FindSaveFile();
+        Print(save_file);
         if (!save_file) {
             return false;
         }
