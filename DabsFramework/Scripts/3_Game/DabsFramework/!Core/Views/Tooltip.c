@@ -38,7 +38,7 @@ class TooltipView: ScriptView
 		widget.GetScreenPos(b_x, b_y);
 		widget.GetScreenSize(b_w, b_h);
 		
-		TooltipView tooltip = new TooltipSlotView(text, desc, icon);
+		TooltipView tooltip = new TooltipView(text, desc, icon);
 		
 		float tooltip_w, tooltip_h;
 		tooltip.GetLayoutRoot().GetScreenSize(tooltip_w, tooltip_h);
