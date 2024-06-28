@@ -51,7 +51,7 @@ class TooltipView: ScriptView
 		
 		int s_x, s_y;
 		GetScreenSize(s_x, s_y);
-		/*switch (position) {
+		switch (position) {
 			case TooltipPosition.INSIDE: {
 				if (b_x >= s_x / 2) {
 					if (b_y >= s_y / 2) {
@@ -69,7 +69,7 @@ class TooltipView: ScriptView
 				
 				break;
 			}
-		}*/
+		}
 		
 		vector screen_direction;
 		switch (position) {

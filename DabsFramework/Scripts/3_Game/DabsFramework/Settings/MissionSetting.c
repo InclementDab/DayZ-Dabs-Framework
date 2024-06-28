@@ -40,7 +40,6 @@ class MissionSetting: SerializableBase
         }
 
         string save_file = FindSaveFile();
-        Print(save_file);
         if (!save_file) {
             return false;
         }
