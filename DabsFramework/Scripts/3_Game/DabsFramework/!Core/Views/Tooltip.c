@@ -11,7 +11,8 @@ enum TooltipPosition
 
 class TooltipView: ScriptView
 {
-    Widget Panel, ImgFr;
+    SpacerWidget Panel;
+    Widget ImgFr;
 	TextWidget Text, Desc;
     ImageWidget Img;
 	
@@ -21,7 +22,6 @@ class TooltipView: ScriptView
 		m_LayoutRoot.Show(text != string.Empty);
 		Desc.SetText(desc);
 		Desc.Show(desc != string.Empty);
-
         ImgFr.Show(icon != string.Empty);
         if (icon) {
             Img.LoadImageFile(0, icon.Solid());
@@ -31,7 +31,7 @@ class TooltipView: ScriptView
         Panel.SetColor(GetColor());
 	}
 	
-	static TooltipView CreateOnWidget(Widget widget, string text, TooltipPosition position, Symbols icon = "", string desc = "")
+	static TooltipView CreateOnWidget(Widget widget, string text, TooltipPosition position, string desc = "", Symbols icon = "")
 	{
 		float pos_x, pos_y;
 		float b_x, b_y, b_w, b_h;
@@ -40,12 +40,18 @@ class TooltipView: ScriptView
 		
 		TooltipView tooltip = new TooltipSlotView(text, desc, icon);
 		
-		float w, h;
-		tooltip.GetLayoutRoot().GetScreenSize(w, h);
+		float tooltip_w, tooltip_h;
+		tooltip.GetLayoutRoot().GetScreenSize(tooltip_w, tooltip_h);
+
+        int tt_s_x, tt_s_y, td_s_x, td_s_y;
+        tooltip.Text.GetTextSize(tt_s_x, tt_s_y);
+        tooltip.Desc.GetTextSize(td_s_x, td_s_y);
+        tt_s_x = Math.Max(tt_s_x, td_s_x);
+        tt_s_y = Math.Max(tt_s_y, td_s_y);
 		
 		int s_x, s_y;
 		GetScreenSize(s_x, s_y);
-		switch (position) {
+		/*switch (position) {
 			case TooltipPosition.INSIDE: {
 				if (b_x >= s_x / 2) {
 					if (b_y >= s_y / 2) {
@@ -63,54 +69,56 @@ class TooltipView: ScriptView
 				
 				break;
 			}
-		}
-				
+		}*/
 		
+		vector screen_direction;
 		switch (position) {
 			case TooltipPosition.BOTTOM_LEFT: {
-				pos_x = b_x - w;
-				pos_y = b_y + b_h;
+                screen_direction = Vector(-b_w, -b_h, 0);
 				break;
 			}		
 			
 			case TooltipPosition.TOP_LEFT: {
-				pos_x = b_x - w;
-				pos_y = b_y - h;
+                screen_direction = Vector(-b_w, b_h, 0);
 				break;
 			}
 			
 			case TooltipPosition.BOTTOM_RIGHT: {
-				pos_x = b_x;
-				pos_y = b_y + b_h;
+                screen_direction = Vector(b_w, b_h, 0);
 				break;
 			}
 			
 			case TooltipPosition.TOP_RIGHT: {
-				pos_x = b_x;
-				pos_y = b_y - h;
+                screen_direction = Vector(b_w, -b_h, 0);
 				break;
 			}
 		}
-		
+
+        // offset position from center
+        vector screen_position = Vector(b_x + b_w / 2, b_y + b_h / 2, 0);
+
+        // corner position
+        screen_position = screen_position + screen_direction * 0.8;
+
+       // screen_position[0] = screen_position[0] - tooltip_w;
+        
+        ///tooltip.Panel.SetContentAlignmentH(WidgetAlignment.WA_LEFT);		
 		int screen_x, screen_y;
 		GetScreenSize(screen_x, screen_y);
-		if (pos_x + b_w > screen_x) {
-			pos_x = (screen_x - b_w) - 25;
-		}
+
+        vector tooltip_vec = Vector(tt_s_x, tt_s_y, 0);
+        vector screen_vec = Vector(screen_x, screen_y, 0);
+        for (int i = 0; i < 3; i++) {
+            if (screen_position[i] < screen_vec[i] * 0.1) {
+                screen_position[i] = screen_vec[i] * 0.1;
+            }
+
+            if (screen_position[i] + tooltip_vec[i] > screen_vec[i] * 0.9) {
+                screen_position[i] = screen_vec[i] * 0.9 - tooltip_vec[i];
+            }
+        }
 		
-		if (pos_y + b_h > screen_y) {
-			pos_y = (screen_y - b_h) - 25;
-		}
-		
-		if (pos_x < 0) {
-			pos_x = 25;
-		}
-		
-		if (pos_y < 0) {
-			pos_y = 25;
-		}
-		
-		tooltip.GetLayoutRoot().SetScreenPos(pos_x, pos_y);
+		tooltip.GetLayoutRoot().SetScreenPos(screen_position[0], screen_position[1]);
 		return tooltip;
 	}
 

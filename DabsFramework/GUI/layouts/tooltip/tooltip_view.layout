@@ -65,7 +65,7 @@ GridSpacerWidgetClass Panel {
      "text valign" center
     }
     FrameWidgetClass ImgFr {
-     visible 1
+     visible 0
      clipchildren 1
      inheritalpha 0
      ignorepointer 1
@@ -77,6 +77,7 @@ GridSpacerWidgetClass Panel {
      vexactpos 1
      hexactsize 1
      vexactsize 1
+     fixaspect inside
      {
       ImageWidgetClass Img {
        visible 1
@@ -91,16 +92,19 @@ GridSpacerWidgetClass Panel {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       image0 "set:regular image:circle"
+       scaled 0
+       fixaspect inside
+       image0 "set:regular image:arrow_down_short_wide"
        mode blend
        "src alpha" 1
+       "stretch mode" fit_w
       }
      }
     }
    }
   }
   TextWidgetClass Desc {
-   visible 1
+   visible 0
    clipchildren 1
    inheritalpha 1
    ignorepointer 1
