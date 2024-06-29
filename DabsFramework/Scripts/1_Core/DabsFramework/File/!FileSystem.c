@@ -5,10 +5,10 @@ class FileSystem: string
 	string GetFileName()
 	{
 		string temp = value;
-		temp.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		temp.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		
 		array<string> path_split = {};
-		temp.Split(Path.SEPERATOR, path_split);
+		temp.Split(SystemPath.SEPERATOR, path_split);
 		
 		if (path_split.Count() == 0) {
 			return string.Empty;
@@ -31,10 +31,10 @@ class FileSystem: string
 					break;
 				}
 				
-				case Path.SEPERATOR:
-				case Path.SEPERATOR_ALT:
-				case Path.VOLUME_PREFIX:
-				case Path.VOLUME_SEPERATOR: {
+				case SystemPath.SEPERATOR:
+				case SystemPath.SEPERATOR_ALT:
+				case SystemPath.VOLUME_PREFIX:
+				case SystemPath.VOLUME_SEPERATOR: {
 					return string.Empty;
 				}
 			}

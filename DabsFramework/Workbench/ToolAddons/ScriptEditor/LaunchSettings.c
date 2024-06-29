@@ -91,7 +91,7 @@ class LaunchSettings: SerializableBase
 	[Attribute("", "editbox", "Sandboxie Box (Steam Box)")]
 	string SandboxieBoxPath;
 
-	[Attribute("", "editbox", "Sandboxie Box (Program Files Path, Contains Start.exe)")]
+	[Attribute("", "editbox", "Sandboxie Box (Program Files SystemPath, Contains Start.exe)")]
 	string SandboxieInstallPath;
 			
 	[Attribute("", "editbox", "Server password")]
@@ -113,7 +113,7 @@ class LaunchSettings: SerializableBase
 		
 		int version = VERSION;
 		
-		Executable.Replace(Path.SEPERATOR, Path.SEPERATOR_ALT);
+		Executable.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
 
 		serializer.Write(version);
 		Write(serializer, version);
@@ -318,7 +318,7 @@ class LaunchSettings: SerializableBase
 		if (FileExist(Executable))
 		{
 			string exec = Executable;
-			int index = exec.LastIndexOf(Path.SEPERATOR_ALT);
+			int index = exec.LastIndexOf(SystemPath.SEPERATOR_ALT);
 			int size = exec.Length();
 			
 			if (index > 0)

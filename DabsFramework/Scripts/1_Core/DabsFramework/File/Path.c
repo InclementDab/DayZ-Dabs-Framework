@@ -1,4 +1,4 @@
-class Path
+class SystemPath
 {	
 #ifdef PLATFORM_WINDOWS
 	const string SEPERATOR = "\\";
@@ -23,28 +23,28 @@ class Path
 	
     static string Profile(string path = string.Empty)
     {
-        return Path.Combine(string.Format("%1profile%2", Path.VOLUME_PREFIX, Path.VOLUME_SEPERATOR), path);
+        return SystemPath.Combine(string.Format("%1profile%2", SystemPath.VOLUME_PREFIX, SystemPath.VOLUME_SEPERATOR), path);
     }
 
     static string Mission(string path = string.Empty)
     {
-        return Path.Combine(string.Format("%1mission%2", Path.VOLUME_PREFIX, Path.VOLUME_SEPERATOR), path);
+        return SystemPath.Combine(string.Format("%1mission%2", SystemPath.VOLUME_PREFIX, SystemPath.VOLUME_SEPERATOR), path);
     }
 
     static string Saves(string path = string.Empty)
     {
-        return Path.Combine(string.Format("%1saves%2", Path.VOLUME_PREFIX, Path.VOLUME_SEPERATOR), path);
+        return SystemPath.Combine(string.Format("%1saves%2", SystemPath.VOLUME_PREFIX, SystemPath.VOLUME_SEPERATOR), path);
     }
 
     static string Storage(string path = string.Empty)
     {
-        return Path.Combine(string.Format("%1storage%2", Path.VOLUME_PREFIX, Path.VOLUME_SEPERATOR), path);
+        return SystemPath.Combine(string.Format("%1storage%2", SystemPath.VOLUME_PREFIX, SystemPath.VOLUME_SEPERATOR), path);
     }
 
     static string Format(string path)
     {
         string path_copy = path;
-        path_copy.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+        path_copy.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
         path_copy.Replace("\t", string.Empty);
         path_copy.Replace("\r", string.Empty);
         path_copy.Replace("\n", string.Empty);
@@ -53,13 +53,13 @@ class Path
 
     static bool IsPathRooted(string path)
     {
-        string formatted_path = Path.Format(path);
-        return (formatted_path.Length() > 0 && (formatted_path[0] == Path.VOLUME_PREFIX));
+        string formatted_path = SystemPath.Format(path);
+        return (formatted_path.Length() > 0 && (formatted_path[0] == SystemPath.VOLUME_PREFIX));
     }
 
     static bool IsDirectorySeperator(string ch)
     {
-        return (ch.Length() == 1 && (ch == Path.SEPERATOR || ch == Path.SEPERATOR_ALT));
+        return (ch.Length() == 1 && (ch == SystemPath.SEPERATOR || ch == SystemPath.SEPERATOR_ALT));
     }
 
     static string Join(notnull array<string> paths)
@@ -73,12 +73,12 @@ class Path
 
             max_size += paths[i].Length();
             string last_char = paths[i][paths[i].Length() - 1];
-            if (!Path.IsDirectorySeperator(last_char)) {
+            if (!SystemPath.IsDirectorySeperator(last_char)) {
                 max_size++;
             }
         }
 
-        if (max_size > Path.MAX_SHORT_PATH) {
+        if (max_size > SystemPath.MAX_SHORT_PATH) {
             ErrorEx("INTERNAL ERROR: PATH IS TOO LONG");
             return string.Empty;
         }
@@ -91,12 +91,12 @@ class Path
             if (builder_string.Count() != 0) {
                 string last_str = builder_string[j - 1];
                 string last_ch = last_str[last_str.Length() - 1];
-                if (!Path.IsDirectorySeperator(last_ch)) {
-                    builder_string.Insert(Path.SEPERATOR);
+                if (!SystemPath.IsDirectorySeperator(last_ch)) {
+                    builder_string.Insert(SystemPath.SEPERATOR);
                 }
             }
 
-            builder_string.Insert(Path.Format(paths[j]));
+            builder_string.Insert(SystemPath.Format(paths[j]));
         }
 
         return string.Join(string.Empty, builder_string);
@@ -105,11 +105,11 @@ class Path
     static string Join(string path0, string path1)
     {
         array<string> path_buffer = { path0, path1 };
-        return Path.Join(path_buffer);
+        return SystemPath.Join(path_buffer);
     }
 
     /*
-        Path::Combine, similar to C# implementation
+        SystemPath::Combine, similar to C# implementation
             - if available, will start at root seperator.
     */
 
@@ -123,7 +123,7 @@ class Path
                 continue;
             }
 
-            if (Path.IsPathRooted(paths[i])) {
+            if (SystemPath.IsPathRooted(paths[i])) {
                 first_component = i;
                 max_size = paths[i].Length();
             } else {
@@ -131,12 +131,12 @@ class Path
             }
 
             string last_char = paths[i][paths[i].Length() - 1];
-            if (!Path.IsDirectorySeperator(last_char)) {
+            if (!SystemPath.IsDirectorySeperator(last_char)) {
                 max_size++;
             }
         }
 
-        if (max_size > Path.MAX_SHORT_PATH) {
+        if (max_size > SystemPath.MAX_SHORT_PATH) {
             ErrorEx("INTERNAL ERROR: PATH IS TOO LONG");
             return string.Empty;
         }
@@ -149,12 +149,12 @@ class Path
             if (builder_string.Count() != 0) {
                 string last_str = builder_string[j - 1];
                 string last_ch = last_str[last_str.Length() - 1];
-                if (!Path.IsDirectorySeperator(last_ch)) {
-                    builder_string.Insert(Path.SEPERATOR);
+                if (!SystemPath.IsDirectorySeperator(last_ch)) {
+                    builder_string.Insert(SystemPath.SEPERATOR);
                 }
             }
 
-            builder_string.Insert(Path.Format(paths[j]));
+            builder_string.Insert(SystemPath.Format(paths[j]));
         }
 
         return string.Join(string.Empty, builder_string);
@@ -163,9 +163,9 @@ class Path
 	static string Combine(string path0, string path1)
 	{
         array<string> path_buffer = { path0, path1 };
-        return Path.Combine(path_buffer);
+        return SystemPath.Combine(path_buffer);
 	}
 
-	private void Path();
-	private void ~Path();
+	private void SystemPath();
+	private void ~SystemPath();
 }

@@ -67,9 +67,9 @@ class PluginModCurrentFile: PluginDialogBase
 		Print(Folder);
 				
 		array<string> path_split = {};
-		split[1].Split(Path.SEPERATOR_ALT, path_split);
+		split[1].Split(SystemPath.SEPERATOR_ALT, path_split);
 		for (int i = 1; i < path_split.Count() - 1; i++) {
-			Folder += Path.SEPERATOR + path_split[i];
+			Folder += SystemPath.SEPERATOR + path_split[i];
 		}
 		
 		FileName = path_split[path_split.Count() - 1];
@@ -110,7 +110,7 @@ class PluginModCurrentFile: PluginDialogBase
 		FPrint(file_handle, string.Format("modded class %1\n{\n}", m_ClassName));
 		CloseFile(file_handle);
 		
-		m_FinalFileName = Folder + Path.SEPERATOR + FileName;
+		m_FinalFileName = Folder + SystemPath.SEPERATOR + FileName;
 		Print(m_FinalFileName);
 	}
 	

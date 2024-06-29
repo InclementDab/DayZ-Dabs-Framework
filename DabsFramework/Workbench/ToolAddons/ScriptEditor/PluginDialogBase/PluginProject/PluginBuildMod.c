@@ -59,7 +59,7 @@ class PluginBuildMod: PluginProject
 		
 		// Move contents of Addons folder
 		if (m_BuildSettings.CopyAddons) {
-			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + Path.SEPERATOR_ALT + "Addons");
+			CopyFiles(string.Format("%1\\Addons", m_LaunchSettings.Repository), mod_output + SystemPath.SEPERATOR_ALT + "Addons");
 		}
 	}
 	
@@ -94,12 +94,12 @@ class PluginBuildMod: PluginProject
 		
 		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
-		MakeDirectory(mod_output + Path.SEPERATOR_ALT + "Addons");
-		MakeDirectory(mod_output + Path.SEPERATOR_ALT + "Keys");
+		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Addons");
+		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Keys");
 				
-		cmd.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
-		mod_output.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
-		mod_input.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		cmd.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		mod_output.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		mod_input.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		string excludes = m_ProjectSettings["Excludes"];
 		return Workbench.RunCmd(string.Format("\"%1\" -Mod=%2 %3 %4 -X=%5", cmd, mod_output, mod_input, args, excludes), true);
 	}
@@ -122,17 +122,17 @@ class PluginBuildMod: PluginProject
 		
 		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
-		MakeDirectory(mod_output + Path.SEPERATOR_ALT + "Addons");
-		MakeDirectory(mod_output + Path.SEPERATOR_ALT + "Keys");
+		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Addons");
+		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Keys");
 		
-		mod_output = mod_output + Path.SEPERATOR_ALT + "Addons";
+		mod_output = mod_output + SystemPath.SEPERATOR_ALT + "Addons";
 		
-		cmd.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
-		mod_output.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
-		mod_input.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		cmd.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		mod_output.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		mod_input.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		
 		string exclude = string.Format("\"-exclude=%1exclude.lst\"", GetCurrentDirectory());
-		exclude.Replace(Path.SEPERATOR_ALT, Path.SEPERATOR);
+		exclude.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		exclude = string.Empty;
 		
 		cmd = string.Format("\"%1\" %2 %3 %4", cmd, mod_input, mod_output, args);
