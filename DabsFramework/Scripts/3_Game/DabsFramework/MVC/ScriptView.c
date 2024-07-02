@@ -343,12 +343,8 @@ class ScriptView: ScriptedViewBase
 	}
 	*/
 		
-	static void LoadWidgetsAsVariables(Class context, PropertyTypeHashMap property_map, Widget root_widget)
-	{
-		if (!root_widget) {
-			return;
-		}
-		
+	static void LoadWidgetsAsVariables(Class context, PropertyTypeHashMap property_map, notnull Widget root_widget)
+	{		
 		foreach (string property_name, typename property_type: property_map) {
 			if (!property_type.IsInherited(Widget)) {
 				continue;

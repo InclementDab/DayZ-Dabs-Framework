@@ -293,7 +293,7 @@ class EventManager
 					// Play catch-up to the current phase
 					if (m_ActiveEvents[event_type][event_id].JIPRunPreviousPhases()) {
 						for (int i = m_ActiveEvents[event_type][event_id].GetCurrentPhase(); i < event_phase; i++) {
-							m_ActiveEvents[event_type][event_id].SwitchPhase(i);
+							m_ActiveEvents[event_type][event_id].SwitchPhase(i, 0, client_param);
 						}					
 					}
 					

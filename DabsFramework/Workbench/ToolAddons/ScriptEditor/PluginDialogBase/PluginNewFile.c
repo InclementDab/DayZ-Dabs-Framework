@@ -35,6 +35,8 @@ class PluginNewFile: PluginDialogBase
 		
 		if (parent_folder.ToType()) {
 			Parent = parent_folder;
+		} else {
+			Parent = "Managed";
 		}
 		
 		Workbench.ScriptDialog("New File", DIALOG_TAB_SIZE, this);

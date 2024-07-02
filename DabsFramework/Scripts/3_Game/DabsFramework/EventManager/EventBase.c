@@ -79,9 +79,14 @@ class EventBase: Managed
 	protected void UpdateServer();
 	
 	// Corresponds to the `client_data` parameter of event calls
-	SerializableParam GetClientSyncData(EventPhase phase);
+	SerializableParam GetClientSyncData(EventPhase phase)
+	{
+		return null;
+	}
 	
-	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx);
+	void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
+	{
+	}
 	
 	// Triggers a function call on this class on all clients
 	bool CallFunctionOnClient(string function_name, SerializableParam params, PlayerIdentity identity = null)
