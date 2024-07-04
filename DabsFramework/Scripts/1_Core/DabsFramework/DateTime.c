@@ -51,16 +51,7 @@ class DateTime: int
 	{
 		int year, month, day, hour, minute, second;
 		DateTime.ToDate(value, year, month, day, hour, minute, second);
-		
-		int day_of_week = DateTime.GetDayOfWeek(year, month, day);
-		if (format.Replace("dddd", DAY_NAME_LONG[day_of_week]) != 4) {
-			if (format.Replace("ddd", DAY_NAME_SHORT[day_of_week]) != 3) {
-				if (format.Replace("dd", day.ToStringLen(2)) != 2) {
-					format.Replace("d", day.ToString());
-				}
-			}
-		}
-		
+				
 		int twelve_hour_format = Ternary<int>.If(hour > 12, hour % 12, hour);
 		if (format.Replace("hh", twelve_hour_format.ToStringLen(2)) != 2) {
 			format.Replace("h", twelve_hour_format.ToString());
@@ -94,6 +85,15 @@ class DateTime: int
 			if (format.Replace("yyy", year.ToString()) != 3) {
 				if (format.Replace("yy", year.ToString().Substring(1, 3)) != 2) {
 					format.Replace("y", year.ToString().Substring(2, 2));
+				}
+			}
+		}
+		
+		int day_of_week = DateTime.GetDayOfWeek(year, month, day);
+		if (format.Replace("dddd", DAY_NAME_LONG[day_of_week]) != 4) {
+			if (format.Replace("ddd", DAY_NAME_SHORT[day_of_week]) != 3) {
+				if (format.Replace("dd", day.ToStringLen(2)) != 2) {
+					format.Replace("d", day.ToString());
 				}
 			}
 		}
