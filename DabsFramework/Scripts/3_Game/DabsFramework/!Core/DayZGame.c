@@ -30,18 +30,6 @@ modded class DayZGame
 			m_SuppressedObjectManager = new SuppressedObjectManager();
 		}
 	}
-
-	void ~DayZGame()
-	{
-		// Hoping for a proper cleanup of memory here
-		if (AttributeBase.s_All) {
-			foreach (AttributeBase attribute: AttributeBase.s_All) {
-				delete attribute;
-			}
-
-			delete AttributeBase.s_All;
-		}
-	}
 			
 	// Override THIS to add your own Custom Conversion Templates
 	// this determines how data is represented in the UI itself
