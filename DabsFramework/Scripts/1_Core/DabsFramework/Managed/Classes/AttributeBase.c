@@ -66,7 +66,7 @@ class AttributeBase: Class
 		m_ParentType = attribute_parent_type.ToType();
 
 		//Type = TypeInfo.CreateFromString(line_content);
-		//Field = FieldInfo.CreateFromString(line_content);
+		Field = FieldInfo.CreateFromString(line_content);
 		if (m_ParentType) {
 			Type = TypeInfo.ParseInternal(m_File, m_LineNumber, m_ParentType);
 
