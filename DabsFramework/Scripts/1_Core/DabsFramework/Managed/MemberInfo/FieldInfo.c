@@ -1,12 +1,3 @@
-class DummyAttribute: AttributeBase
-{
-	void DummyAttribute()
-	{
-		Print(m_ParentType);
-		
-	}	
-}
-
 enum FieldVisibility
 {
 	PUBLIC = 0,
