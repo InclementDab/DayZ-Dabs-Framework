@@ -29,12 +29,7 @@ class AttributeBase: Class
 	// returns type of info we are declared on
 	// 0 -> field
 	// 1 -> function
-	// 2 -> method?
-	static int GetStackInfo(string stack, out string file, out int line, out string function)
-	{
-		return -1;
-	}
-	
+	// 2 -> method?	
 	void AttributeBase()
 	{
 		string stack;
@@ -68,9 +63,7 @@ class AttributeBase: Class
 	
 		m_File = attribute_file;
 		m_LineNumber = attribute_file_line + 1;
-		Print(attribute_parent_type);
 		m_ParentType = attribute_parent_type.ToType();
-		Print(m_ParentType);
 
 		//Type = TypeInfo.CreateFromString(line_content);
 		Field = FieldInfo.CreateFromString(line_content);
