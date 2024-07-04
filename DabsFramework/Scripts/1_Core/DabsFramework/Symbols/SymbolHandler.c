@@ -12,7 +12,7 @@ class SymbolHandler: ScriptedWidgetEventHandler
 		
 		m_ImageWidget = ImageWidget.Cast(w);
 		if (!m_ImageWidget) {
-			ErrorEx("SymbolHandler must be used on image widget");
+			ErrorEx(string.Format("SymbolHandler must be used on image widget, %1", w.GetName()));
 			return;
 		}
 		
