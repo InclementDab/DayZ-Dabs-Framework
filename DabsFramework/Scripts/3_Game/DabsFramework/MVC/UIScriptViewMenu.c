@@ -122,7 +122,8 @@ class UIScriptViewMenu: UIScriptedMenu
 
 	override bool OnController(Widget w, int control, int value)
 	{
-		return m_ScriptedViewBaseHandler.OnController(w, control, value);
+		// deletion can occur on game reset and this is the crash point
+		return m_ScriptedViewBaseHandler && m_ScriptedViewBaseHandler.OnController(w, control, value);
 	}
 
 	override bool OnKeyDown(Widget w, int x, int y, int key)

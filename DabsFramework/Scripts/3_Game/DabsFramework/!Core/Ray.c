@@ -30,7 +30,7 @@ class Ray: Managed
 		return raycast;
 	}
 	
-	Raycast PerformRaycastRVEX(float radius = 0.0, float distance = 1000.0, int interaction_type = ObjIntersectView, array<Object> excludes = null)
+	Raycast PerformRaycastRVEX(float radius = 0.0, float distance = 1000.0, int interaction_type = ObjIntersectView, array<Object> excludes = null, bool ground_only = false)
 	{
 		set<Object> rv_results = new set<Object>();
 		int hit_component;
@@ -45,6 +45,7 @@ class Ray: Managed
 		raycast_params.radius = radius;
 		raycast_params.flags = CollisionFlags.NEARESTCONTACT;
 		raycast_params.type = interaction_type;
+		raycast_params.groundOnly = ground_only;
 		raycast_params.sorted = true;
 		array<ref RaycastRVResult> results = {};
 		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, excludes) || results.Count() == 0) {
@@ -62,7 +63,7 @@ class Ray: Managed
 		return raycast;
 	}
 	
-	Raycast PerformRaycastRV(Object ignore = null, Object with = null, float radius = 0.0, float distance = 1000.0, int interaction_type = ObjIntersectView)
+	Raycast PerformRaycastRV(Object ignore = null, Object with = null, float radius = 0.0, float distance = 1000.0, int interaction_type = ObjIntersectView, bool ground_only = false)
 	{
 		set<Object> rv_results = new set<Object>();
 		int hit_component;
@@ -80,6 +81,7 @@ class Ray: Managed
 		raycast_params.flags = CollisionFlags.NEARESTCONTACT;
 		raycast_params.type = interaction_type;
 		raycast_params.sorted = true;
+		raycast_params.groundOnly = ground_only;
 		array<ref RaycastRVResult> results = {};
 		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, null) || results.Count() == 0) {
 			return null;

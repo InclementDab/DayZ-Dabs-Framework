@@ -6,7 +6,6 @@ class EditorObjectData: SerializableBase
 	}
 	
 	//@ Corresponds to the spawnable typename, identical to ITEM_SpawnerObject.name
-	string Uuid;
 	string Type;
 	string DisplayName;
 	vector Position;
