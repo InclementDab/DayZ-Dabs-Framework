@@ -23,7 +23,27 @@ class TimeSpan: int
 	{
 		return (value % MINUTE);
 	}
-		
+
+	TimeSpan ToSeconds()
+	{
+		return value;
+	}
+
+	TimeSpan ToMinutes()
+	{
+		return value / MINUTE;
+	}
+
+	TimeSpan ToHours()
+	{
+		return value / HOUR;
+	}
+
+	TimeSpan ToDays()
+	{
+		return value / DAY;
+	}
+
 	string Format(bool with_zero = true)
 	{
 		/*
