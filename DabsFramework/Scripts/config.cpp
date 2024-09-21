@@ -54,6 +54,15 @@ class CfgMods
 				};
 			};
 
+			class gameLibScriptModule
+			{
+				value="";
+				files[]=
+				{
+					"DabsFramework/scripts/2_GameLib"
+				};
+			};
+
 			class gameScriptModule
 			{
 				value="";
