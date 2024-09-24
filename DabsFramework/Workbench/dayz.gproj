@@ -51,6 +51,7 @@ GameProjectClass {
 					Name "gameLib"
 					Paths {
 						"scripts/2_GameLib"
+						"DabsFramework/Scripts/2_GameLib"
 					}
 					EntryPoint ""
 				}
