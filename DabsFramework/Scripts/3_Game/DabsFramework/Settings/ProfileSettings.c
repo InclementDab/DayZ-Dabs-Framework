@@ -1,4 +1,3 @@
-// known bug: it will attempt to serialize static and const properties, but reflection isnt finished yet
 class ProfileSettings: Class
 {	
 	// Ctor immediately loads all settings
@@ -52,11 +51,7 @@ class ProfileSettings: Class
 				
 				// known bug: you cant have default values for array types yet, since ctor order is whackadoodle
 				case String("array<string>").ToType(): {
-					array<string> string_array_value = {};
-					Print(variable_name);
-					EnScript.GetClassVar(this, variable_name, 0, string_array_value);
-					g_Game.GetProfileStringList(variable_name_formatted, string_array_value);
-					EnScript.SetClassVar(this, variable_name, 0, string_array_value);
+					EnScript.SetClassVar(this, variable_name, 0, g_Game.GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
 					break;
 				}
 				
