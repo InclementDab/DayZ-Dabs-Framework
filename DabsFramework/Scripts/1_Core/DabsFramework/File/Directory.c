@@ -1,22 +1,54 @@
 class Directory: FileSystem
 {		
-	static array<string> EnumerateFiles(string directory, string filter = "*")
+	static array<string> EnumerateDirectories(string directory)
 	{
-		array<string> enumerated_files = {};
+		array<string> enumerated_directories = {};
+		string folder_name;
+		FileAttr folder_attributes;
+		FindFileHandle handle = FindFile(directory + SystemPath.SEPERATOR, folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		if (!handle) {
+			return enumerated_directories;
+		}
+		
+		if (folder_attributes & FileAttr.DIRECTORY) {
+			enumerated_directories.Insert(SystemPath.Combine(directory, folder_name));
+		}
+
+		while (FindNextFile(handle, folder_name, folder_attributes)) {
+			if (folder_attributes & FileAttr.DIRECTORY) {
+				enumerated_directories.Insert(SystemPath.Combine(directory, folder_name));
+			}
+		}
+		
+		CloseFindFile(handle);
+		return enumerated_directories;
+	}
+	
+	static array<string> EnumerateFiles(string directory, string filter = "*", int recursion_depth = 0)
+	{
+		array<string> enumerated_files = {}; 
 		string file_name;
 		FileAttr file_attributes;
-		FindFileHandle handle = FindFile(directory + SystemPath.SEPERATOR + "*", file_name, file_attributes, FindFileFlags.ALL);
+		if (recursion_depth > 0) {
+			array<string> enumerated_directories = Directory.EnumerateDirectories(directory);
+			enumerated_directories.Debug();
+			foreach (string enumerated_directory: enumerated_directories) {
+				enumerated_files.InsertAll(Directory.EnumerateFiles(SystemPath.Combine(enumerated_directory, "*"), filter, recursion_depth - 1));
+			}
+		}
+		
+		FindFileHandle handle = FindFile(SystemPath.Combine(directory, "*"), file_name, file_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
 		if (!handle) {
 			return enumerated_files;
 		}
 		
 		if (File.WildcardMatch(file_name, filter)) {
-			enumerated_files.Insert(directory + SystemPath.SEPERATOR + file_name);
+			enumerated_files.Insert(SystemPath.Combine(directory, file_name));
 		}
 		
 		while (FindNextFile(handle, file_name, file_attributes)) {
 			if (File.WildcardMatch(file_name, filter)) {
-				enumerated_files.Insert(directory + SystemPath.SEPERATOR + file_name);
+				enumerated_files.Insert(SystemPath.Combine(directory, file_name));
 			}
 		}
 		
