@@ -5,7 +5,7 @@ class Directory: FileSystem
 		array<string> enumerated_directories = {};
 		string folder_name;
 		FileAttr folder_attributes;
-		FindFileHandle handle = FindFile(directory + SystemPath.SEPERATOR, folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		FindFileHandle handle = FindFile(directory + SystemPath.SEPERATOR + "*", folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
 		if (!handle) {
 			return enumerated_directories;
 		}
@@ -31,9 +31,8 @@ class Directory: FileSystem
 		FileAttr file_attributes;
 		if (recursion_depth > 0) {
 			array<string> enumerated_directories = Directory.EnumerateDirectories(directory);
-			enumerated_directories.Debug();
 			foreach (string enumerated_directory: enumerated_directories) {
-				enumerated_files.InsertAll(Directory.EnumerateFiles(SystemPath.Combine(enumerated_directory, "*"), filter, recursion_depth - 1));
+				enumerated_files.InsertAll(Directory.EnumerateFiles(enumerated_directory, filter, recursion_depth - 1));
 			}
 		}
 		
