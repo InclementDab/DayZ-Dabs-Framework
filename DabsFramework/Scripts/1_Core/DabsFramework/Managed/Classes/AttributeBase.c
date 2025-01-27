@@ -78,6 +78,8 @@ class AttributeBase: Class
 		if (m_AttributeBank && m_AttributeBank[m_ParentType]) {
 			m_AttributeBank[m_ParentType].RemoveItem(this);
 		}
+
+		delete Field;
 	}
 	
 	static array<AttributeBase> GetCustomAttributes(typename type)
