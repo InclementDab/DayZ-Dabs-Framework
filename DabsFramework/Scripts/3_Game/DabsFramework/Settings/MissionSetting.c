@@ -1,3 +1,57 @@
+//! How to use:
+// 1. Create a config class inheriting from MissionSetting
+// 2. Register it with the RegisterMissionSetting attribute. Wrap the type in a GenericWrapper1, and declare the file name relative to the mission folder.
+// 3. (optional) Override IsSynchronized() to true if you wish to synchronize the information to clients.
+//			You will need to overwrite Read() and Write() as well as shown below
+
+// Final version should look something like this
+/*
+
+	[RegisterMissionSetting(new GenericWrapper1<SimpleCinematicsConfig>, "simple_cinematics.json")]
+	class SimpleCinematicsConfig: MissionSetting
+	{
+		ref array<string> AvailableUsers = {};
+		
+		override void Write(Serializer serializer, int version)
+		{
+			super.Write(serializer, version);
+	
+			serializer.Write(AvailableUsers.Count());
+			foreach (string user: AvailableUsers) {
+				serializer.Write(user);
+			}
+		}
+	
+		override bool Read(Serializer serializer, int version)
+		{
+			if (!super.Read(serializer, version)) {
+	            return false;
+	        }
+			
+			int cnt;
+			serializer.Read(cnt);
+			for (int i = 0; i < cnt; i++) {
+				string v;
+				serializer.Read(v);
+				AvailableUsers.Insert(v);
+			}
+	
+	        
+			return true;
+		}
+			
+		override int GetVersion()
+	    {
+	        return 1;
+	    }
+		
+		override bool IsSynchronized()
+		{
+			return true;
+		}
+	}
+
+*/
 class MissionSetting: SerializableBase
 {
     const int RPC_SYNC = 239432;
@@ -33,6 +87,9 @@ class MissionSetting: SerializableBase
     void Sync(PlayerIdentity identity = null)
     {
 #ifdef SERVER
+#ifdef DIAG_DEVELOPER
+		PrintFormat("Synchronizing Mission Setting: %1, ver: %2, client_sync: %3", Type(), GetVersion(), IsSynchronized());
+#endif
         ScriptRPC sync_rpc = new ScriptRPC();
         sync_rpc.Write(Type().ToString());
         Write(sync_rpc, Version);
@@ -71,7 +128,7 @@ class MissionSetting: SerializableBase
         Event_OnSettingsSaved.Invoke(this);
 
         if (GetGame().IsMultiplayer() && sync_to_clients) {
-            GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Sync);
+            GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Sync, 0, false, null);
         }
 
         return true;
@@ -81,6 +138,11 @@ class MissionSetting: SerializableBase
     {
         return 0;
     }
+	
+	bool IsSynchronized()
+	{
+		return false;
+	}
 
     override void Write(Serializer serializer, int version)
 	{

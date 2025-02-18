@@ -21,7 +21,7 @@ modded class DayZGame
                 }
 
                 MissionSetting mission_setting = MissionSetting.Cast(mission_setting_typename.Spawn());
-                if (!mission_setting.Read(ctx, 0)) {
+                if (!mission_setting.Read(ctx, mission_setting.GetVersion())) {
                     ErrorEx(string.Format("INVALID MissionSetting data: %1", mission_setting_type));
                     break;
                 }
@@ -56,18 +56,28 @@ modded class DayZGame
 
     protected void OnIdentityCreated(notnull PlayerIdentity identity)
     {
+#ifdef DIAG_DEVELOPER
+		PrintFormat("OnIdentityCreated %1", identity);
+#endif
+		
 		// Update identity with mission settings
         foreach (MissionSetting mission_setting: m_MissionSettings) {
-            if (mission_setting) {
+            if (mission_setting && mission_setting.IsSynchronized()) {
                 mission_setting.Sync(identity);
             }
         }
+		
     }
 
     protected void OnMissionPathSet(string path)
     {
         if (!GetGame().IsMultiplayer() || GetGame().IsDedicatedServer()) {
-            foreach (typename mission_setting_type, string mission_setting_file: RegisterMissionSetting<Class>.s_RegisteredInstances) {
+            foreach (typename mission_setting_type, string mission_setting_file: RegisterMissionSetting.s_RegisteredInstances) {
+				if (!RegisterMissionSetting.s_RegisteredAttributes[mission_setting_type]) {
+					ErrorEx(string.Format("failed to create mission setting, the attribute was not registered properly %1", mission_setting_type));
+					continue;
+				}
+				
 				string mission_setting_file_verified = mission_setting_file;
 				if (!SystemPath.IsPathRooted(mission_setting_file_verified)) {
 					if (GetGame().IsDedicatedServer()) {
@@ -78,11 +88,10 @@ modded class DayZGame
 				}
 				
                 bool file_exists = File.Exists(mission_setting_file_verified);
-                JsonSerializer json_file_serializer = new JsonSerializer();
                 MissionSetting mission_setting = MissionSetting.Cast(mission_setting_type.Spawn());
                 if (!mission_setting) {
                     ErrorEx(string.Format("failed to create mission setting type: %1, file: %2", mission_setting_type, mission_setting_file_verified));
-                    break;
+                    continue;
                 }
                 
                 if (!file_exists) {
@@ -94,14 +103,18 @@ modded class DayZGame
                     string file_text = File.ReadAllText(mission_setting_file_verified);
                     if (!file_text) {
                         ErrorEx(string.Format("empty json file found"));
-                        break;
+                        continue;
                     }
-
-                    string json_error;
-                    if (!json_file_serializer.ReadFromString(mission_setting, file_text, json_error)) {
-                        PrintFormat("json error, file: %1, error: %2", mission_setting_file_verified, json_error);
-                        break;
-                    }
+					
+					// some type punning here, but enfusion shits itself when you dont wrap it this way
+					string json_error;
+					Managed managed_value = mission_setting;
+					if (!RegisterMissionSetting.s_RegisteredAttributes[mission_setting_type].ReadFromJson(managed_value, file_text, json_error)) {
+						PrintFormat("json error, file: %1, error: %2", mission_setting_file_verified, json_error);
+                        continue;
+					}
+					
+					mission_setting = MissionSetting.Cast(managed_value);
                 }
 
                 m_MissionSettings[mission_setting_type] = mission_setting;
@@ -116,6 +129,11 @@ modded class DayZGame
         GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(OnMissionPathSet, 0, 0, path);
 	}
 
+	array<MissionSetting> GetAllMissionSettings()
+	{
+		return m_MissionSettings.GetValueArray();
+	}
+	
 	MissionSetting GetMissionSetting(typename mission_settings)
 	{
 		return m_MissionSettings[mission_settings];
