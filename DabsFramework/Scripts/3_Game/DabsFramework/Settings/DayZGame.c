@@ -93,11 +93,12 @@ modded class DayZGame
                     ErrorEx(string.Format("failed to create mission setting type: %1, file: %2", mission_setting_type, mission_setting_file_verified));
                     continue;
                 }
-                
+				
+				int code_mission_version = mission_setting.GetVersion();				
                 if (!file_exists) {
                     bool save_success = mission_setting.Save();
                     if (!save_success) {
-                        ErrorEx(string.Format("failed to save mission settings: %1", mission_setting_file_verified));
+                        ErrorEx(string.Format("failed to save mission settings %2: %1", mission_setting_file_verified, mission_setting_type));
                     }
                 } else {
                     string file_text = File.ReadAllText(mission_setting_file_verified);
@@ -113,8 +114,21 @@ modded class DayZGame
 						PrintFormat("json error, file: %1, error: %2", mission_setting_file_verified, json_error);
                         continue;
 					}
-					
+										
 					mission_setting = MissionSetting.Cast(managed_value);
+					if (!mission_setting) {
+						ErrorEx(string.Format("mission setting error, cast back to MissionSetting failed %1", mission_setting_type));
+                        continue;
+					}
+					
+					int existing_mission_version = mission_setting.Version;
+                    if (existing_mission_version != code_mission_version) {
+                        PrintToRPT(string.Format("mission setting version mismatch %3: updating settings %1 => %2", existing_mission_version, code_mission_version, mission_setting_type));
+                        bool resave_success = mission_setting.Save();
+                        if (!resave_success) {
+                            ErrorEx(string.Format("failed to re-save mission settings %2: %1", mission_setting_file_verified, mission_setting_type));
+                        }
+                    }
                 }
 
                 m_MissionSettings[mission_setting_type] = mission_setting;

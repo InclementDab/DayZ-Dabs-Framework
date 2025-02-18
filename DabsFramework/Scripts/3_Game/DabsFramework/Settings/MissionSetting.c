@@ -110,6 +110,9 @@ class MissionSetting: SerializableBase
             return false;
         }
 
+		// This is a hack fix, since sometimes constructors arent called in typename.Spawn()? the Version text will be __useless__ otherwise
+		Version = GetVersion();
+		
         string file_save_string = RegisterMissionSetting.DataToStringStatic(this);
         if (!file_save_string || file_save_string.Contains("ERROR")) {
             ErrorEx(file_save_string);
@@ -138,7 +141,7 @@ class MissionSetting: SerializableBase
     {
         return 0;
     }
-	
+		
 	bool IsSynchronized()
 	{
 		return false;
