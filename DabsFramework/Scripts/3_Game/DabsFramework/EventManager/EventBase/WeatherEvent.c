@@ -82,12 +82,30 @@ class WeatherEvent: EventBase
 		return -1;
 	}
 	
+	float GetSnowfallTarget()
+	{
+		return -1;
+	}
+	
+	float GetWindDirectionTarget()
+	{
+		return -1;
+	}
+	
+	float GetWindMagnitudeTarget()
+	{
+		return -1;
+	}
+	
 	float GetWeatherTarget(EWeatherPhenomenon change_type)
 	{
 		switch (change_type) {
 			case EWeatherPhenomenon.FOG: 		return GetFogTarget();
 			case EWeatherPhenomenon.RAIN: 		return GetRainTarget();
 			case EWeatherPhenomenon.OVERCAST: 	return GetOvercastTarget();
+			case EWeatherPhenomenon.SNOWFALL: 	return GetSnowfallTarget();
+			case EWeatherPhenomenon.WIND_DIRECTION: 	return GetWindDirectionTarget();
+			case EWeatherPhenomenon.WIND_MAGNITUDE: 	return GetWindMagnitudeTarget();
 		}
 		
 		return -1;
@@ -99,6 +117,9 @@ class WeatherEvent: EventBase
 			case EWeatherPhenomenon.FOG: 		return GetGame().GetWeather().GetFog();
 			case EWeatherPhenomenon.RAIN: 		return GetGame().GetWeather().GetRain();
 			case EWeatherPhenomenon.OVERCAST: 	return GetGame().GetWeather().GetOvercast();
+			case EWeatherPhenomenon.SNOWFALL: 	return GetGame().GetWeather().GetSnowfall();
+			case EWeatherPhenomenon.WIND_DIRECTION: 	return GetGame().GetWeather().GetWindDirection();
+			case EWeatherPhenomenon.WIND_MAGNITUDE: 	return GetGame().GetWeather().GetWindMagnitude();
 		}
 		
 		return null;
