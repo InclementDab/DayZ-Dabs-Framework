@@ -20,6 +20,11 @@ class PrefabBase<Class TValue>: ScriptView
 		m_PrefabBaseController.NotifyPropertyChanged("Value", false);
 	}
 	
+	void ~PrefabBase()
+	{
+		delete m_PrefabBaseController;
+	}
+	
 	void PrefabPropertyChanged(string property_name)
 	{
 		EnScript.SetClassVar(m_BindingContext, m_BindingName, 0, m_PrefabBaseController.Value);		

@@ -11,6 +11,9 @@ class TemplateType<Class T>: Managed
 
 	static typename GetType()
 	{
-		return (new TemplateType<T>()).Type().GetVariableType(0);
+		TemplateType<T> type = new TemplateType<T>();
+		typename type_value = type.Type().GetVariableType(0);
+		delete type;
+		return type_value;
 	}
 }
