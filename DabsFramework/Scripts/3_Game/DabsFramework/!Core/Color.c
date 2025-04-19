@@ -301,7 +301,7 @@ class LinearColor: int
 				return a.Multiply(b);
 			}
 			case BlendMode.SCREEN: {
-				return (a.Subtract(255).Multiply(b.Subtract(255)).Subtract(255);
+				return (a.Subtract(255).Multiply(b.Subtract(255)).Subtract(255));
 			}
 			case BlendMode.OVERLAY: {
 				if (a < 0.5) {
@@ -329,7 +329,7 @@ class LinearColor: int
 	static LinearColor Lerp(LinearColor a, LinearColor b, BlendMode blend, float t)
 	{
 		// temp
-		return LinearColor.Create(Math.Lerp(a.GetAlpha(), b.GetAlpha(), t), Math.Lerp(a.GetRed(), b.GetRed(), t), Math.Lerp(a.GetGreen(), b.GetGreen(), t), Math.Lerp(a.GetBlue(), b.GetBlue(), t)), 
+		return LinearColor.Create(Math.Lerp(a.GetAlpha(), b.GetAlpha(), t), Math.Lerp(a.GetRed(), b.GetRed(), t), Math.Lerp(a.GetGreen(), b.GetGreen(), t), Math.Lerp(a.GetBlue(), b.GetBlue(), t));
 		
 		
 		return LinearColor.Blend(a.Add(t * 255), b.Subtract(a), blend);
