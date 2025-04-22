@@ -31,6 +31,8 @@
 
 class ScopedFunctionTimer: Managed
 {
+	private static ref map<string, int> s_TotalFunctionTime = new map<string, int>();
+	
 	protected int m_StartTime = -1;
 	protected string m_FunctionName;
 	
@@ -45,7 +47,15 @@ class ScopedFunctionTimer: Managed
 	void ~ScopedFunctionTimer()
 	{
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
-		PrintFormat("%1: %2ms", m_FunctionName, GetGame().GetTime() - m_StartTime);
+		
+		int delta_time = GetGame().GetTime() - m_StartTime;
+		PrintFormat("%1: %2ms", m_FunctionName, delta_time);
+		
+		if (!s_TotalFunctionTime) {
+			s_TotalFunctionTime = new map<string, int>();
+		}
+		
+		s_TotalFunctionTime[m_FunctionName] = s_TotalFunctionTime[m_FunctionName] + delta_time;
 #endif
 	}
 	
@@ -54,5 +64,17 @@ class ScopedFunctionTimer: Managed
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
 		PrintFormat("\t%1 - %2: %3ms", m_FunctionName, bookmark, GetGame().GetTime() - m_StartTime);
 #endif		
+	}
+	
+	// Gets the total time from a single function
+	static int GetTotalTime(string function_name)
+	{
+		return s_TotalFunctionTime[function_name];
+	}
+	
+	// Dumps total inclusive time of a function
+	static void DumpTotalTime(string function_name)
+	{
+		PrintFormat("[Total] %1: %2ms", function_name, s_TotalFunctionTime[function_name]);
 	}
 }
