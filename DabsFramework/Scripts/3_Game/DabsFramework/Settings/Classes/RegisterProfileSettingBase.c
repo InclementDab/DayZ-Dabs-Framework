@@ -18,6 +18,11 @@ class RegisterProfileSettingBase: Class
 	// sequential compilation programming. what the hell
 	typename GetCurrentProfileSetting()
 	{
+		if (!RegisterProfileSetting.Instances.IsValidIndex(RegisterProfileSetting.Instances.Count() - 1)) {
+			// throw!
+			return EMPTY_TYPENAME;
+		}
+		
 		typename profile_settings_type = RegisterProfileSetting.Instances[RegisterProfileSetting.Instances.Count() - 1].param1;
 		if (!Instances[profile_settings_type]) {
 			Instances.Insert(profile_settings_type, {});
