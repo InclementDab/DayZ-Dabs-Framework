@@ -30,6 +30,13 @@ modded class DayZGame
 			m_SuppressedObjectManager = new SuppressedObjectManager();
 		}
 	}
+	
+	void ~DayZGame()
+	{
+		for (int i = m_ProfileSettings.Count(); i >= 0; i--) {
+			delete m_ProfileSettings.GetElement(i);
+		}
+	}
 			
 	// Override THIS to add your own Custom Conversion Templates
 	// this determines how data is represented in the UI itself

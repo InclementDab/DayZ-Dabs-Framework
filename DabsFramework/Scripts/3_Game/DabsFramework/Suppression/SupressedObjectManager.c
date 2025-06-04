@@ -25,12 +25,12 @@ class SuppressedObjectManager: Managed
 #endif
 	}
 		
-	void Suppress(notnull Object object)
+	void Suppress(notnull Object object, bool inform_clients = true)
 	{
-		SuppressMany({ object });
+		SuppressMany({ object }, inform_clients);
 	}
 		
-	void SuppressMany(notnull array<Object> objects)
+	void SuppressMany(notnull array<Object> objects, bool inform_clients = true)
 	{
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(objects.Count());
@@ -49,7 +49,9 @@ class SuppressedObjectManager: Managed
 		}
 		
 #ifdef SERVER				
-		rpc.Send(null, RPC_SUPPRESS, true);
+		if (inform_clients) {
+			rpc.Send(null, RPC_SUPPRESS, true);
+		}
 #endif
 	}
 		
@@ -121,8 +123,16 @@ class SuppressedObjectManager: Managed
 					if (!ctx.Read(suppress) || !suppress) {
 						continue;
 					}
-
-					m_Objects.Insert(new SuppressedObject(suppress));
+					
+					Print(suppress);
+					
+					if (m_SuppressedObjectMap.Contains(suppress)) {
+						continue;
+					}
+					
+					SuppressedObject new_suppressed_object = new SuppressedObject(suppress);
+					m_Objects.Insert(new_suppressed_object );
+					m_SuppressedObjectMap[suppress] = new_suppressed_object ;
 				}								
 				
 				break;

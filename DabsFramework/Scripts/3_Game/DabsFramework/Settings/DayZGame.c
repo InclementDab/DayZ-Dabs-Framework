@@ -87,6 +87,12 @@ modded class DayZGame
 					}
 				}
 				
+				// set extension if not present
+				string extension = File.GetExtension(mission_setting_file_verified);
+				if (extension == string.Empty) {
+					mission_setting_file_verified += ".json";
+				}
+				
                 bool file_exists = File.Exists(mission_setting_file_verified);
                 MissionSetting mission_setting = MissionSetting.Cast(mission_setting_type.Spawn());
                 if (!mission_setting) {
@@ -140,7 +146,7 @@ modded class DayZGame
 	{
 		super.SetMissionPath(path);
 
-        GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(OnMissionPathSet, 0, 0, path);
+		OnMissionPathSet(path);
 	}
 
 	array<MissionSetting> GetAllMissionSettings()

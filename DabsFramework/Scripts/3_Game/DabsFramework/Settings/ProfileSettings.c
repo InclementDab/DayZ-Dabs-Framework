@@ -6,7 +6,7 @@ class ProfileSettings: Class
 		g_Game.GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(Load);
 	}
 	
-	private void ~ProfileSettings();
+	void ~ProfileSettings();
 	
 	void Load()
 	{

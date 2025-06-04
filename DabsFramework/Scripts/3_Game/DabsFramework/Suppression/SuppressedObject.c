@@ -20,8 +20,8 @@ class SuppressedObject: SerializableBase
 		object.GetTransform(transform);
 		copyarray(m_Transform, transform);
 		
-		vector hide_matrix[4] = { vector.Zero, vector.Zero, vector.Zero, transform[3] };
-		object.SetTransform(hide_matrix);
+		object.SetScale(0.00001);
+		object.SetPosition(transform[3] - Vector(0, 500, 0));
 		
 		//object.ClearFlags(m_Flags, true);
 		//object.ClearEventMask(m_Events);
@@ -50,5 +50,8 @@ class SuppressedObject: SerializableBase
 #ifdef SERVER
 		GetGame().UpdatePathgraphRegionByObject(object);
 #endif
+		
+		// memory leak otherwise
+		delete m_Object;
 	}
 }
