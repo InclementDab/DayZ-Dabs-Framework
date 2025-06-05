@@ -21,11 +21,10 @@ class SuppressedObject: SerializableBase
 		copyarray(m_Transform, transform);
 		
 		object.SetScale(0.00001);
-		object.SetPosition(transform[3] - Vector(0, 500, 0));
 		
-		//object.ClearFlags(m_Flags, true);
-		//object.ClearEventMask(m_Events);
-		//object.SetEventMask(EntityEvent.NOTVISIBLE);
+		object.ClearFlags(m_Flags, true);
+		object.ClearEventMask(m_Events);
+		object.SetEventMask(EntityEvent.NOTVISIBLE);
 		object.Update();
 		
 		g_Script.CallFunction(object, "DF_OnDeletedFromWorld", null, null);
