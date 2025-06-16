@@ -9,6 +9,11 @@ class Ray: Managed
 		Direction = direction;
 	}
 	
+	static Ray FromPoints(vector start, vector end)
+	{
+		return new Ray(start, vector.Direction(start, end));
+	}
+	
 	vector GetPoint(float distance)
 	{
 		return Position + Direction * distance;
