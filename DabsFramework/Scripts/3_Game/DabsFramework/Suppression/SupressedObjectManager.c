@@ -123,9 +123,7 @@ class SuppressedObjectManager: Managed
 					if (!ctx.Read(suppress) || !suppress) {
 						continue;
 					}
-					
-					Print(suppress);
-					
+										
 					if (m_SuppressedObjectMap.Contains(suppress)) {
 						continue;
 					}
