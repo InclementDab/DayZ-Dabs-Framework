@@ -46,7 +46,7 @@ class LaunchSettings: SerializableBase
 	[Attribute("", "combobox", "Launch", "", ParamEnumArray.FromEnum(GameLaunchType) )]
 	int LaunchType;
 
-	[Attribute("", "combobox", "Load Mission", "", ParamEnumArray.FromEnum(YesNo) )]
+	[Attribute("", "combobox", "Load Offline Mission", "", ParamEnumArray.FromEnum(YesNo) )]
 	int LoadMission;
 	
 	[Attribute("", "combobox", "Environment", "", ParamEnumArray.FromEnum(DayZEnvironmentType) )]
