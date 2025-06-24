@@ -193,6 +193,11 @@ class LinearColor: int
 		return results;
 	}
 	
+	static LinearColor Create(int color)
+	{
+		return color;
+	}
+	
 	static LinearColor Create(int r, int g, int b)
 	{
 		return 255 << 24 | (r & 255) << 16 | (g & 255) << 8 | (b & 255);

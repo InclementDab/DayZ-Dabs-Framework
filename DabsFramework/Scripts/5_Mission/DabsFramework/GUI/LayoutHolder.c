@@ -4,10 +4,7 @@ modded class LayoutHolder
 	{
         // Loads widget_names into variables, if applicable
 		if (m_MainWidget && UsesWidgetVariables()) {
-			auto property_map = new PropertyTypeHashMap(Type());
-			if (property_map) {
-				ScriptView.LoadWidgetsAsVariables(this, property_map, m_MainWidget);
-			}
+			ScriptView.LoadWidgetsAsVariables(this, m_MainWidget);
 		}
 	}
 

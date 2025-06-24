@@ -1,6 +1,11 @@
 class GenericWrapper1<Class T>: GenericWrapper
 {
     private T _;
+	
+	void ~GenericWrapper1()
+	{
+		delete _;
+	}
 
     string GetDataString(T data)
     {

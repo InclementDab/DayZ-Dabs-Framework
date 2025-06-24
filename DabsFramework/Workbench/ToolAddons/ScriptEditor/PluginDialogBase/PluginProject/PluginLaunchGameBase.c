@@ -1,7 +1,7 @@
 class PluginLaunchGameBase: PluginProject
 {	
 	void LaunchGame(notnull LaunchSettings launch_settings)
-	{
+	{		
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
@@ -220,8 +220,8 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		if (launch_settings.EnableHive) {
-			server_launch_params += "-useDevHive";
-			offline_launch_params += "-useDevHive";
+			server_launch_params += " -useDevHive";
+			offline_launch_params += " -useDevHive";
 		}
 				 
 		if (launch_settings.FilePatching) {

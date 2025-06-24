@@ -16,7 +16,6 @@ class PluginDialogBase: WorkbenchPlugin
 	}
 
 #ifdef WORKBENCH_PLUS_DEBUG
-	
 	override void Run()
 	{
 		PrintFormat("Run: %1", Type());
@@ -277,7 +276,8 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void KillTask(string task_name)
 	{
-		Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
+		RunCommandPrompt(string.Format("taskkill /F /IM %1 /T", task_name), true);
+		//Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
 	}
 	
 	static void CleanLogFolder(string folder)

@@ -106,7 +106,8 @@ class PluginBuildMod: PluginProject
 		mod_output.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		mod_input.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		string excludes = m_ProjectSettings["Excludes"];
-		return Workbench.RunCmd(string.Format("\"%1\" -Mod=%2 %3 %4 -X=%5", cmd, mod_output, mod_input, args, excludes), true);
+		string command = string.Format("\"%1\" -Mod=%2 %3 %4 -X=%5", cmd, mod_output, mod_input, args, excludes);
+		return Workbench.RunCmd(command, true);
 	}
 	
 	int BuildUsingAddonBuilder(string mod_input, string mod_output)

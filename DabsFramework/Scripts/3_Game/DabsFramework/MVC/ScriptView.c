@@ -194,15 +194,9 @@ class ScriptView: ScriptedViewBase
 #ifndef COMPONENT_SYSTEM
 #ifndef NO_GUI		
 		m_LayoutRoot = CreateWidget(null);
-#else
-		ErrorEx("Attmepted to create layout on SERVER!");
-#endif
-#endif
 		
-		LoadWidgetsAsVariables(this, new PropertyTypeHashMap(Type()), m_LayoutRoot);
+		LoadWidgetsAsVariables(this, m_LayoutRoot);
 
-#ifndef COMPONENT_SYSTEM
-#ifndef NO_GUI
 		m_LayoutRoot.GetScript(m_Controller);
 
 		// If no Controller is specified in the WB Root
@@ -220,7 +214,7 @@ class ScriptView: ScriptedViewBase
 			}
 
 			// Since its not loaded in the WB, needs to be called here
-			LoadWidgetsAsVariables(m_Controller, new PropertyTypeHashMap(GetControllerType()), m_LayoutRoot);
+			LoadWidgetsAsVariables(m_Controller, m_LayoutRoot);
 			
 			// ViewController controls the hierarchy events
 			m_Controller.OnWidgetScriptInit(m_LayoutRoot);
@@ -230,6 +224,9 @@ class ScriptView: ScriptedViewBase
 		m_LayoutRoot.SetUserData(this);	
 		
 		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
+#else
+		
+		ErrorEx("Attempted to create layout on SERVER!");
 #endif
 #endif
 	}
@@ -260,7 +257,37 @@ class ScriptView: ScriptedViewBase
 			All.RemoveItem(this);
 		}
 	}
+	
+#ifdef DIAG_DEVELOPER
+	// Hot reload all widgets layouts
+	static void ReloadAll()
+	{
+		foreach (ScriptView script_view: All) {
+			if (script_view) {
+				script_view.Reload();
+			}
+		}
+	}
+	
+	protected void Reload()
+	{
+#ifndef COMPONENT_SYSTEM
+#ifndef NO_GUI		
+		Widget parent = m_LayoutRoot.GetParent();
+		m_LayoutRoot.Unlink();
+		delete m_LayoutRoot;
 		
+		m_LayoutRoot = CreateWidget(parent);
+		
+		LoadWidgetsAsVariables(this, m_LayoutRoot);
+		
+		m_Controller.SetParent(this);
+		m_LayoutRoot.SetUserData(this);	
+#endif
+#endif
+	}
+#endif
+	
 	protected void Update(float dt)
 	{
 	}
@@ -343,8 +370,13 @@ class ScriptView: ScriptedViewBase
 	}
 	*/
 		
-	static void LoadWidgetsAsVariables(Class context, PropertyTypeHashMap property_map, notnull Widget root_widget)
+	static void LoadWidgetsAsVariables(Class context, notnull Widget root_widget)
 	{		
+		if (!context) {
+			return;
+		}
+		
+		PropertyTypeHashMap property_map = new PropertyTypeHashMap(context.Type());
 		foreach (string property_name, typename property_type: property_map) {
 			if (!property_type.IsInherited(Widget)) {
 				continue;

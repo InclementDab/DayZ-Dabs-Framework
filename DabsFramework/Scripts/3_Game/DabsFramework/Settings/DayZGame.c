@@ -4,6 +4,20 @@ modded class DayZGame
 
 	protected ref map<typename, ref MissionSetting> m_MissionSettings = new map<typename, ref MissionSetting>();
 
+	void ~DayZGame()
+	{
+		foreach (typename mission_setting_type, MissionSetting mission_setting: m_MissionSettings) {
+			delete mission_setting;
+		}
+		
+		// Cleaning up script instances that get referenced in some magical state. were not sure tbh our top scientist is afk
+		for (int i = GenericWrapper.s_All.Count() - 1; i >= 0; i--) {
+			delete GenericWrapper.s_All[i];
+		}
+		
+		delete GenericWrapper.s_All;
+	}
+	
 #ifndef SERVER
     override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
     {
@@ -71,7 +85,7 @@ modded class DayZGame
 
     protected void OnMissionPathSet(string path)
     {
-        if (!GetGame().IsMultiplayer() || GetGame().IsDedicatedServer()) {
+        if (!GetGame().IsMultiplayer() || GetGame().IsDedicatedServer() && !path.Contains("intro") && !path.Contains("Cutscene")) {
             foreach (typename mission_setting_type, string mission_setting_file: RegisterMissionSetting.s_RegisteredInstances) {
 				if (!RegisterMissionSetting.s_RegisteredAttributes[mission_setting_type]) {
 					ErrorEx(string.Format("failed to create mission setting, the attribute was not registered properly %1", mission_setting_type));
