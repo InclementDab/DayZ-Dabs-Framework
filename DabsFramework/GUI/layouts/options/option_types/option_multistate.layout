@@ -26,15 +26,23 @@ GridSpacerWidgetClass OptionSelector {
    {
     ImageWidgetClass "PreviousButton.Image" {
      ignorepointer 1
-     size 19.69 30
+     size 10 16
      halign center_ref
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     image0 "set:dayz_gui image:arrow_left"
+     scriptclass "SymbolHandler"
+     image0 ""
      mode additive
      "src alpha" 1
+     {
+      ScriptParamsClass {
+       Symbol_Name "chevron_left"
+       Symbol_Size 2
+      }
+     }
     }
    }
    {
@@ -85,15 +93,23 @@ GridSpacerWidgetClass OptionSelector {
    {
     ImageWidgetClass "NextButton.Image" {
      ignorepointer 1
-     size 19.69 30
+     size 10 16
      halign center_ref
+     valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     image0 "set:dayz_gui image:arrow_right"
+     scriptclass "SymbolHandler"
+     image0 ""
      mode additive
      "src alpha" 1
+     {
+      ScriptParamsClass {
+       Symbol_Name "chevron_right"
+       Symbol_Size 2
+      }
+     }
     }
    }
    {

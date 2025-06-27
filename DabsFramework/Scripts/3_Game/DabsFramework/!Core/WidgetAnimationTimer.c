@@ -57,6 +57,7 @@ class WidgetAnimationTimer: Managed
 	protected float m_StartValue, m_EndValue;
 	protected int m_Time, m_StartTime;
 	protected bool m_Loop;
+	protected WidgetAnimatorEasing m_Easing;
 
 	protected ScriptInvoker m_UpdateQueue = GetGame().GetUpdateQueue(CALL_CATEGORY_GUI);
 		
@@ -67,7 +68,7 @@ class WidgetAnimationTimer: Managed
 		}
 	}
 
-	void Run(Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time, bool loop)
+	void Run(Widget source, WidgetAnimatorProperty property, float start_value, float end_value, int time, bool loop, WidgetAnimatorEasing easing)
 	{
 		m_Source = source;
 		m_Property = property;
@@ -77,6 +78,7 @@ class WidgetAnimationTimer: Managed
 		m_Loop = loop;
 		m_StartTime = GetGame().GetTime();		
 		m_UpdateQueue.Insert(DoAnimate);
+		m_Easing = easing;
 	}
 	
 	protected void DoAnimate()
@@ -91,7 +93,49 @@ class WidgetAnimationTimer: Managed
 		if (m_Time != 0) {
 			normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
 		}
-		
+
+		switch (m_Easing) {
+			case WidgetAnimatorEasing.EASE_IN_SINE: normalized = Easing.EaseInSine(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_SINE: normalized = Easing.EaseOutSine(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_SINE: normalized = Easing.EaseInOutSine(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_QUAD: normalized = Easing.EaseInQuad(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_QUAD: normalized = Easing.EaseOutQuad(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_QUAD: normalized = Easing.EaseInOutQuad(normalized); break;
+			
+			case WidgetAnimatorEasing.EASE_IN_CUBIC: normalized = Easing.EaseInCubic(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_CUBIC: normalized = Easing.EaseOutCubic(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_CUBIC: normalized = Easing.EaseInOutCubic(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_QUART: normalized = Easing.EaseInQuart(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_QUART: normalized = Easing.EaseOutQuart(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_QUART: normalized = Easing.EaseInOutQuart(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_QUINT: normalized = Easing.EaseInQuint(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_QUINT: normalized = Easing.EaseOutQuint(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_QUINT: normalized = Easing.EaseInOutQuint(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_EXPONENTIAL: normalized = Easing.EaseInExpo(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_EXPONENTIAL: normalized = Easing.EaseOutExpo(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_EXPONENTIAL: normalized = Easing.EaseInOutExpo(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_CIRC: normalized = Easing.EaseInCirc(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_CIRC: normalized = Easing.EaseOutCirc(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_CIRC: normalized = Easing.EaseInOutCirc(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_BACK: normalized = Easing.EaseInBack(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_BACK: normalized = Easing.EaseOutBack(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_BACK: normalized = Easing.EaseInOutBack(normalized); break;
+
+			case WidgetAnimatorEasing.EASE_IN_ELASTIC: normalized = Easing.EaseInElastic(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_ELASTIC: normalized = Easing.EaseOutElastic(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_ELASTIC: normalized = Easing.EaseInOutElastic(normalized); break;
+			
+			case WidgetAnimatorEasing.EASE_IN_BOUNCE: normalized = Easing.EaseOutBounce(normalized); break;
+			case WidgetAnimatorEasing.EASE_OUT_BOUNCE: normalized = Easing.EaseInBounce(normalized); break;
+			case WidgetAnimatorEasing.EASE_INOUT_BOUNCE: normalized = Easing.EaseInOutBounce(normalized); break;
+		}
+				
 		SetProperty(m_Source, m_Property, Math.Lerp(m_StartValue, m_EndValue, normalized));
 		
 		if (normalized >= 1) {	

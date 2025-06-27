@@ -13,7 +13,7 @@ class WidgetAnimationProperty: Managed
 class WidgetAnimator: Managed
 {
 	protected static ref array<ref WidgetAnimationTimer> m_RunningTimers = {};
-	
+		
 	static void Animate(Widget source, WidgetAnimatorProperty property, float end_value, TimeSpan time)
 	{				
 		if (!source) {
@@ -25,7 +25,7 @@ class WidgetAnimator: Managed
 		}
 		
 		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, false);
+		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, false, 0);
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
@@ -40,7 +40,22 @@ class WidgetAnimator: Managed
 		}
 		
 		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-		animation_timer.Run(source, property, start_value, end_value, time, false);
+		animation_timer.Run(source, property, start_value, end_value, time, false, 0);
+		m_RunningTimers.Insert(animation_timer);
+	}
+	
+	static void AnimateEx(Widget source, WidgetAnimatorProperty property, float end_value, TimeSpan time, WidgetAnimatorEasing easing = 0)
+	{
+		if (!source) {
+			return;
+		}
+
+		if (HasAnimation(source, property)) {
+			CancelAnimate(source, property);
+		}
+		
+		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
+		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, false, easing);
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
@@ -55,7 +70,7 @@ class WidgetAnimator: Managed
 		}
 		
 		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, true);
+		animation_timer.Run(source, property, WidgetAnimationTimer.GetProperty(source, property), end_value, time, true, 0);
 		m_RunningTimers.Insert(animation_timer);
 	}
 	
@@ -70,7 +85,7 @@ class WidgetAnimator: Managed
 		}
 		
 		WidgetAnimationTimer animation_timer = new WidgetAnimationTimer();
-		animation_timer.Run(source, property, start_value, end_value, time, true);
+		animation_timer.Run(source, property, start_value, end_value, time, true, 0);
 		m_RunningTimers.Insert(animation_timer);
 	}
 		
@@ -110,7 +125,7 @@ class WidgetAnimator: Managed
 		}
 	}	
 	
-	static void AnimateColorHSV(Widget source, vector start_color, vector end_color, TimeSpan time, bool loop = false)
+	static void AnimateColorHSV(Widget source, vector start_color, vector end_color, TimeSpan time, bool loop = false, WidgetAnimatorEasing easing = 0)
 	{				
 		if (!source) {
 			return;
@@ -119,7 +134,7 @@ class WidgetAnimator: Managed
 		WidgetAnimatorProperty property = WidgetAnimatorProperty.COLOR_V;
 		for (int i = 2; i >= 0; i--) {
 			WidgetAnimationTimer hue_timer = new WidgetAnimationTimer();
-			hue_timer.Run(source, property, start_color[i], end_color[i], time, loop);
+			hue_timer.Run(source, property, start_color[i], end_color[i], time, loop, easing);
 			m_RunningTimers.Insert(hue_timer);
 			property /= 2;
 		}
