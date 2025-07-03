@@ -38,7 +38,7 @@ class OptionSelectorSliderView: OptionSelectorViewBase
 	{
 		super.Update(dt);
 		
-		if (GetFocus() == EditBox) {
+		if (GetFocus() == EditBox && Slider) {
 			Slider.SetColor(ARGB(255, 200, 0, 0));
 		}
 	}

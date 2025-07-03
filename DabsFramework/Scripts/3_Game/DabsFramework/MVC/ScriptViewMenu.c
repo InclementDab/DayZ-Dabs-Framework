@@ -15,8 +15,11 @@ class ScriptViewMenu: ScriptView
 		}
 		
 		AllByMenu[m_UIScriptViewMenu] = this;
-		// We are the parent menu
-		g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, g_Game.GetUIManager().GetMenu());
+		
+		if (UseUIManager()) {
+			// We are the parent menu
+			g_Game.GetUIManager().ShowScriptedMenu(m_UIScriptViewMenu, g_Game.GetUIManager().GetMenu());
+		}
 		
 		// Handle input excludes
 		g_Game.GetMission().AddActiveInputExcludes(GetInputExcludes());		
@@ -50,7 +53,9 @@ class ScriptViewMenu: ScriptView
 		if (m_UIScriptViewMenu) {
 			UIScriptedMenu parent_menu = UIScriptedMenu.Cast(m_UIScriptViewMenu.GetParentMenu());
 			AllByMenu.Remove(m_UIScriptViewMenu);
-			g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+			if (UseUIManager()) {
+				g_Game.GetUIManager().HideScriptedMenu(m_UIScriptViewMenu);
+			}
 			
 			if (parent_menu) {
 				g_Game.GetUIManager().ShowScriptedMenu(parent_menu, parent_menu.GetParentMenu());
@@ -88,7 +93,7 @@ class ScriptViewMenu: ScriptView
 	}
 	
 	void ShowDialog(string caption, string text, int id, int buttons /*DBT_*/, int default_button /*DBB_*/, int type /*DMT_*/)
-	{
+	{		
 		g_Game.GetUIManager().ShowDialog(caption, text, id, buttons, default_button, type, m_UIScriptViewMenu);
 	}
 	
@@ -139,6 +144,12 @@ class ScriptViewMenu: ScriptView
 	bool UseKeyboard()
 	{
 		return false;
+	}
+	
+	//! Useful if you dont want the game to manage your menu. Really only useful during the respawn process.
+	bool UseUIManager()
+	{
+		return true;
 	}
 	
 	//! see <exclude> in bin/specific.xml
