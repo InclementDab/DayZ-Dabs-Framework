@@ -70,6 +70,13 @@ class PluginProject: PluginDialogBase
 		foreach (string prefix_split: prefix_splits) {
 			m_Prefixes.Insert(prefix_split);
 		}
+		
+		// Setup -repository
+		string repository_cli_param;
+		if (GetCLIParam("repository", repository_cli_param)) {
+			repository_cli_param = SystemPath.Format(repository_cli_param);
+			launch_settings.Repository = repository_cli_param;
+		}
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
