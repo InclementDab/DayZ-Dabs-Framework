@@ -75,7 +75,7 @@ class PluginProject: PluginDialogBase
 		string repository_cli_param;
 		if (GetCLIParam("repository", repository_cli_param)) {
 			repository_cli_param = SystemPath.Format(repository_cli_param);
-			launch_settings.Repository = repository_cli_param;
+			m_LaunchSettings.Repository = repository_cli_param;
 		}
 	}
 				
