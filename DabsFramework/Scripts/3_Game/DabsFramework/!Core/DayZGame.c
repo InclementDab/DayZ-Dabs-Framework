@@ -36,6 +36,10 @@ modded class DayZGame
 		for (int i = m_ProfileSettings.Count(); i >= 0; i--) {
 			delete m_ProfileSettings.GetElement(i);
 		}
+		
+		for (int j = 0; j < RegisterDiagMenu.s_Instances.Count(); j--) {
+			delete RegisterDiagMenu.s_Instances[j];
+		}
 	}
 			
 	// Override THIS to add your own Custom Conversion Templates
