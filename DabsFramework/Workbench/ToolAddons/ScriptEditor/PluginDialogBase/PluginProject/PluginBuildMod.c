@@ -32,8 +32,6 @@ class PluginBuildMod: PluginProject
 			PromiseSymLink(string.Format("%1\\Dependencies\\%2", m_LaunchSettings.Repository, dependency), GetAbsolutePath(string.Format("$Workdrive:%1", dependency)));
 		}
 		
-		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
-		
 		/*if (m_BuildSettings.Dependencies) {
 			array<string> mod_splits = {};
 			m_ProjectSettings["Mods"].Split(";", mod_splits);
@@ -125,7 +123,7 @@ class PluginBuildMod: PluginProject
 		string args = m_BuildSettings.AddonBuilder_Args;
 		if (m_BuildSettings.Key != string.Empty) {
 		}
-		
+				
 		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Addons");
@@ -141,7 +139,12 @@ class PluginBuildMod: PluginProject
 		exclude.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		exclude = string.Empty;
 		
-		cmd = string.Format("\"%1\" %2 %3 %4", cmd, mod_input, mod_output, args);
-		return Workbench.RunCmd(cmd, true);
+		array<string> directories = Directory.EnumerateDirectories(mod_input);
+		foreach (string directory: directories) {
+			string current_cmd = string.Format("\"%1\" %2 %3 %4", cmd, directory, mod_output, args);
+			Workbench.RunCmd(current_cmd, false);
+		}
+		
+		return 0;
 	}
 }
