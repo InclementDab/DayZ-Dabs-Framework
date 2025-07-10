@@ -400,6 +400,11 @@ class ScriptView: ScriptedViewBase
 		}
 	}
 	
+	static void LoadWidgetsAsVariables(Class context, PropertyTypeHashMap hash_map, notnull Widget root_widget)
+	{		
+		LoadWidgetsAsVariables(context, root_widget);
+	}
+	
 	// Working on my own standard here
 	
 	// 	Button
