@@ -77,6 +77,9 @@ class PluginProject: PluginDialogBase
 			repository_cli_param = SystemPath.Format(repository_cli_param);
 			m_LaunchSettings.Repository = repository_cli_param;
 		}
+		
+		string game_directory_stable = GetDayZDirectory(m_LaunchSettings, DayZEnvironmentType.STABLE);
+		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
 	}
 				
 	protected bool LoadConfig(string file, inout map<string, string> settings)
