@@ -1,5 +1,5 @@
 class PluginDialogBase: WorkbenchPlugin
-{	
+{		
 	// Sizes the dialog to max size without putting a scroll bar on the bottom
 	static const string DIALOG_TAB_SIZE = "\t\t\t\t\t\t\t\t\t";
 	static const string DEFAULT_EXTENSION = ".c";
@@ -39,6 +39,10 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetDayZDirectory(LaunchSettings settings, int environmentType = -1)
 	{
+		if (!s_DayZDirectories) {
+			s_DayZDirectories = new map<DayZEnvironmentType, string>();
+		}
+		
 		if (environmentType == -1) {
 			environmentType = settings.EnvironmentType;
 		}
@@ -47,6 +51,10 @@ class PluginDialogBase: WorkbenchPlugin
 			string gamePath = settings.CustomGameDirectory;
 			gamePath.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 			return gamePath;
+		}
+		
+		if (s_DayZDirectories[environmentType]) {
+			return s_DayZDirectories[environmentType];
 		}
 		
 		string dayzType;
@@ -62,9 +70,11 @@ class PluginDialogBase: WorkbenchPlugin
 		
 		string data = GetRegistryEntryValue(string.Format("HKLM\\SOFTWARE\\Wow6432Node\\Bohemia Interactive\\%1", dayzType), "main");
 		data.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		s_DayZDirectories[environmentType] = data;
 		return data;
 	}
 	
+	// VERY VERY SLOW, USE WITH CAUTION
 	static string GetRegistryEntryValue(string entry, string value)
 	{
 		string output_file = string.Format("%1\\%2", GetWorkbenchDirectory(), "temp.txt");
