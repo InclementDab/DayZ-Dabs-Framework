@@ -20,7 +20,8 @@ class SuppressedObject: SerializableBase
 		object.GetTransform(transform);
 		copyarray(m_Transform, transform);
 		
-		object.SetScale(0);
+		object.SetScale(0.000001);
+		object.SetPosition(Vector(0, -10000, 0) + object.GetPosition());
 		
 		object.ClearFlags(m_Flags, true);
 		object.ClearEventMask(m_Events);
