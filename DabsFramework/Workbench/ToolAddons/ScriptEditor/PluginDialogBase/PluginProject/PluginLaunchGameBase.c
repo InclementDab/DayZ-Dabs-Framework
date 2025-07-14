@@ -1,7 +1,7 @@
 class PluginLaunchGameBase: PluginProject
 {	
 	void LaunchGame(notnull LaunchSettings launch_settings)
-	{		
+	{
 		string root = GetRootDirectory();
 		string mod_prefix = GetPrefix();
 		string workbench_directory = GetWorkbenchDirectory();
@@ -178,7 +178,6 @@ class PluginLaunchGameBase: PluginProject
 				ErrorDialog("Client2 directory is not creating correctly, likely an issue you need to investigate on your own.");
 				return;
 			}
-
 		}
 
 		MakeDirectory(server_profile_directory);
@@ -233,13 +232,7 @@ class PluginLaunchGameBase: PluginProject
 
 		if (launch_settings.LoadMission) {
 			client_launch_params += " -mission=dayzOffline." + m_LaunchSettings.Map;
-			
-			if (launch_settings.LaunchType & 16) {
-				// fix for editor launch mode
-				offline_launch_params += string.Format(" -mission=$saves:Editor/Missions/DayZEditor.%1", m_LaunchSettings.Map);
-			} else {
-				offline_launch_params += string.Format(" -mission=%1", repository_mission);
-			}
+			offline_launch_params += string.Format(" -mission=%1", repository_mission);
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
