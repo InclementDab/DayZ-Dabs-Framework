@@ -129,8 +129,8 @@ class SuppressedObjectManager: Managed
 					}
 					
 					SuppressedObject new_suppressed_object = new SuppressedObject(suppress);
-					m_Objects.Insert(new_suppressed_object );
-					m_SuppressedObjectMap[suppress] = new_suppressed_object ;
+					m_Objects.Insert(new_suppressed_object);
+					m_SuppressedObjectMap[suppress] = new_suppressed_object;
 				}								
 				
 				break;

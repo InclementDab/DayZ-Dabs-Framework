@@ -137,7 +137,8 @@ modded class DayZGame
 			}
 			
 			case WorldCleaupEventTypeID: {
-				m_SuppressedObjectManager.UnsuppressAll();
+				// Not certain whats going on with this call happening on game load. todo
+				//m_SuppressedObjectManager.UnsuppressAll();
 				break;
 			}
 		}

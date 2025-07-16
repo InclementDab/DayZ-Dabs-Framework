@@ -73,6 +73,6 @@ class SuppressedObject: SerializableBase
 		}
 		
 		// memory leak otherwise
-		delete m_Object;
+		//delete m_Object;
 	}
 }
