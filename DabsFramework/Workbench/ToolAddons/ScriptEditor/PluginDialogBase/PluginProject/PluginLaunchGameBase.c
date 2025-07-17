@@ -218,6 +218,13 @@ class PluginLaunchGameBase: PluginProject
 			server_launch_params += string.Format(" -port=%1", port);
 		}
 		
+		client_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
+		server_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
+		offline_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
+		
+		offline_launch_params += " -window";
+		client_launch_params += " -window";
+		
 		if (launch_settings.EnableHive) {
 			server_launch_params += " -useDevHive";
 			offline_launch_params += " -useDevHive";

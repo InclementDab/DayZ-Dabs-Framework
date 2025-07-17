@@ -32,7 +32,7 @@ class TypeConversionFloat: TypeConversionTemplate<float>
 
 	override string GetString()
 	{
-		return string.ToString(m_Value, false, false, false);
+		return m_Value.ToString(false);
 	}
 
 	override void SetString(string value)

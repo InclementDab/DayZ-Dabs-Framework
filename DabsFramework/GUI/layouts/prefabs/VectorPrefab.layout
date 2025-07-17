@@ -115,7 +115,7 @@ PanelWidgetClass EditorPosElement {
        style Default
        text "12345678910!"
        "limit visible" 0
-       "exact text" 1
+       "exact text" 0
        font "gui/fonts/Metron22"
        {
         ScriptParamsClass {
@@ -186,7 +186,7 @@ PanelWidgetClass EditorPosElement {
        "no focus" 0
        text "12345678910!"
        "limit visible" 0
-       "exact text" 1
+       "exact text" 0
        font "gui/fonts/Metron22"
        {
         ScriptParamsClass {
@@ -259,7 +259,7 @@ PanelWidgetClass EditorPosElement {
        text "12345678910!"
        "limit visible" 0
        "Use default text" 0
-       "exact text" 1
+       "exact text" 0
        font "gui/fonts/Metron22"
        {
         ScriptParamsClass {
