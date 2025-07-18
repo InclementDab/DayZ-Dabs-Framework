@@ -33,22 +33,23 @@ class ScopedFunctionTimer: Managed
 {
 	private static ref map<string, int> s_TotalFunctionTime = new map<string, int>();
 	
-	protected int m_StartTime = -1;
+	protected int m_StartTime = -1, m_LastDumpTime = -1;
 	protected string m_FunctionName;
+	protected int m_ActionIncrement;
 	
 	void ScopedFunctionTimer(string function_name)
 	{
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
 		m_FunctionName = function_name;
-		m_StartTime = GetGame().GetTime();
+		m_StartTime = g_Game.GetTime();
+		m_LastDumpTime = m_StartTime;
 #endif
 	}	
 	
 	void ~ScopedFunctionTimer()
 	{
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
-		
-		int delta_time = GetGame().GetTime() - m_StartTime;
+		int delta_time = g_Game.GetTime() - m_StartTime;
 		PrintFormat("%1: %2ms", m_FunctionName, delta_time);
 		
 		if (!s_TotalFunctionTime) {
@@ -62,8 +63,21 @@ class ScopedFunctionTimer: Managed
 	void Dump(string bookmark)
 	{
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
-		PrintFormat("\t%1 - %2: %3ms", m_FunctionName, bookmark, GetGame().GetTime() - m_StartTime);
+		string average_time_per_action;
+		if (m_ActionIncrement) {
+			average_time_per_action = string.Format(" (Average Time Per Action: [%1ms])", m_ActionIncrement / (g_Game.GetTime() - m_LastDumpTime));
+		}
+
+		m_ActionIncrement = 0;
+
+		PrintFormat("\t%1 - %2: %3ms inc, %4ms total, %5", m_FunctionName, bookmark, g_Game.GetTime() - m_LastDumpTime, g_Game.GetTime() - m_StartTime, average_time_per_action);
+		m_LastDumpTime = g_Game.GetTime();
 #endif		
+	}
+
+	void IncrementAction()
+	{
+		m_ActionIncrement++;
 	}
 	
 	// Gets the total time from a single function

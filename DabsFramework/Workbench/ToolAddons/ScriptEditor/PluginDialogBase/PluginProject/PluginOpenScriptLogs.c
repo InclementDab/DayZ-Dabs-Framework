@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Open Script Logs", "Open Latest DayZ Script Logs", "Ctrl+[", "", {"ScriptEditor", "ResourceManager"})]
+[WorkbenchPluginAttribute("Open Script Logs", "Open Latest DayZ Script Logs", "Ctrl+]", "", {"ScriptEditor", "ResourceManager"})]
 class PluginOpenScriptLogs: PluginProject
 {
     override void Run()

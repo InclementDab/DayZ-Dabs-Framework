@@ -1,4 +1,4 @@
-[WorkbenchPluginAttribute("Open RPT Logs", "Open Latest DayZ RPT Logs", "Ctrl+]", "", {"ScriptEditor", "ResourceManager"})]
+[WorkbenchPluginAttribute("Open RPT Logs", "Open Latest DayZ RPT Logs", "Ctrl+[", "", {"ScriptEditor", "ResourceManager"})]
 class PluginOpenRPTLogs: PluginOpenScriptLogs
 {
     override string GetFileFilter()
