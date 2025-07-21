@@ -18,8 +18,12 @@ class PluginLaunchGameBase: PluginProject
 			return;
 		}
 		
-		DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
-		CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+		bool is_game_and_workbench_same_directory = IsGameAndWorkbenchSameDirectory(launch_settings);
+		
+		if (!is_game_and_workbench_same_directory) {
+			DeleteFile(string.Format("%1\\steam_appid.txt", workbench_directory));
+			CopyFile(string.Format("%1\\steam_appid.txt", game_directory), string.Format("%1\\steam_appid.txt", workbench_directory));
+		}
 						
 		//! Game launch script
 		// append prefix of current mod
@@ -73,10 +77,12 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Set up symlinks so game can launch with our cwd
-		PromiseSymLink(game_directory + SystemPath.SEPERATOR_ALT + "Addons", workbench_directory + SystemPath.SEPERATOR_ALT + "Addons");
-		PromiseSymLink(game_directory + SystemPath.SEPERATOR_ALT + "bliss", workbench_directory + SystemPath.SEPERATOR_ALT + "bliss");
-		PromiseSymLink(game_directory + SystemPath.SEPERATOR_ALT + "sakhal", workbench_directory + SystemPath.SEPERATOR_ALT + "sakhal");
-
+		if (!is_game_and_workbench_same_directory) {
+			PromiseSymLink(game_directory + SystemPath.SEPERATOR_ALT + "Addons", workbench_directory + SystemPath.SEPERATOR_ALT + "Addons");
+			PromiseSymLink(game_directory + SystemPath.SEPERATOR_ALT + "bliss", workbench_directory + SystemPath.SEPERATOR_ALT + "bliss");
+			PromiseSymLink(game_directory + SystemPath.SEPERATOR_ALT + "sakhal", workbench_directory + SystemPath.SEPERATOR_ALT + "sakhal");
+		}
+		
 		// Delete all extra folders in wb directory
 		array<string> folders_to_save = {};
 		
@@ -101,22 +107,24 @@ class PluginLaunchGameBase: PluginProject
 			}
 		}
 		
-		// Now FindFile each 
-		string wb_dir_filename;
-		FileAttr wb_dir_fileattr;
-		FindFileHandle hdnl = FindFile(workbench_directory + SystemPath.SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
-		
-		if (folders_to_save.Find(wb_dir_filename) == -1) {
-			DeleteFile(wb_dir_filename);
-		}
-		
-		while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
-			if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + SystemPath.SEPERATOR + wb_dir_filename));
+		if (!is_game_and_workbench_same_directory) {
+			// Now FindFile each 
+			string wb_dir_filename;
+			FileAttr wb_dir_fileattr;
+			FindFileHandle hdnl = FindFile(workbench_directory + SystemPath.SEPERATOR + "*", wb_dir_filename, wb_dir_fileattr, FindFileFlags.DIRECTORIES);
+			
+			if (folders_to_save.Find(wb_dir_filename) == -1) {
+				DeleteFile(wb_dir_filename);
 			}
+			
+			while (FindNextFile(hdnl, wb_dir_filename, wb_dir_fileattr)) {
+				if (folders_to_save.Find(wb_dir_filename) == -1 && wb_dir_fileattr == FileAttr.DIRECTORY) {
+					Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", workbench_directory + SystemPath.SEPERATOR + wb_dir_filename));
+				}
+			}
+			
+			CloseFindFile(hdnl);
 		}
-		
-		CloseFindFile(hdnl);
 
 		// Reformats mod list
 		string formatted_mod_list;
@@ -224,6 +232,13 @@ class PluginLaunchGameBase: PluginProject
 		
 		offline_launch_params += " -window";
 		client_launch_params += " -window";
+		client2_launch_params += " -window";
+
+		if (!is_game_and_workbench_same_directory) {
+			offline_launch_params += " -screenwidth=1280 -screenheight=720";
+			client_launch_params += " -screenwidth=1280 -screenheight=720";
+			client2_launch_params += " -screenwidth=1280 -screenheight=720";
+		}
 		
 		if (launch_settings.EnableHive) {
 			server_launch_params += " -useDevHive";

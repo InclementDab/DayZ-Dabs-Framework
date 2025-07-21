@@ -100,6 +100,23 @@ class PluginDialogBase: WorkbenchPlugin
 		return data;
 	}
 	
+	static bool IsGameAndWorkbenchSameDirectory(notnull LaunchSettings launch_settings)
+	{
+		string workbench_directory = GetWorkbenchDirectory();
+		string game_directory = GetDayZDirectory(launch_settings);
+		
+		if (workbench_directory == string.Empty)
+		{
+			return false;
+		}
+		
+		if (FileExist(string.Format("%1\\%2", game_directory, "workbenchApp.exe"))) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	static string GetSourceDataDirectory()
 	{
 		string abs;
@@ -121,11 +138,11 @@ class PluginDialogBase: WorkbenchPlugin
 		string workbench_dir;
 		Workbench.GetCwd(workbench_dir);
 		
-		if (!FileExist(string.Format("%1\\%2", workbench_dir, "workbenchApp.exe"))) {
-			return string.Empty;
+		if (FileExist(string.Format("%1\\%2", workbench_dir, "workbenchApp.exe"))) {
+			return workbench_dir;
 		}
 		
-		return workbench_dir;
+		return string.Empty;
 	}
 	
 	static string GetRootDirectory()
