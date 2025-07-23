@@ -31,7 +31,7 @@ enum BuilderType
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 9;
+	static const int VERSION = 10;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string CLIENT2_PROFILE_NAME = "client2";
@@ -57,6 +57,9 @@ class LaunchSettings: SerializableBase
 	
 	[Attribute("", "editbox", "Executable")]
 	string Executable;
+	
+	[Attribute("", "editbox", "Launch Arguments")]
+	string LaunchArgs;
 	
 	[Attribute("", "editbox", "Map")]
 	string Map;
@@ -132,6 +135,7 @@ class LaunchSettings: SerializableBase
 		settings.Profiles = "P:\\Profiles";
 		settings.Missions = "P:\\Missions";
 		settings.Mods = "P:\\Mods";
+		settings.LaunchArgs = BASE_LAUNCH_PARAMS;
 		settings.Executable = "DayZDiag_x64.exe";
 		settings.EnvironmentType = DayZEnvironmentType.STABLE;
 		settings.CustomGameDirectory = "";
@@ -196,6 +200,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(SandboxieInstallPath);
 		serializer.Write(EnableHive);
 		serializer.Write(LoadMission);
+		serializer.Write(LaunchArgs);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -309,6 +314,15 @@ class LaunchSettings: SerializableBase
 		}
 
 		if (!serializer.Read(LoadMission)) {
+			return false;
+		}
+		
+		if (version < 10) {
+			LaunchArgs = BASE_LAUNCH_PARAMS;
+			return true;
+		}
+		
+		if (!serializer.Read(LaunchArgs)) {
 			return false;
 		}
 		

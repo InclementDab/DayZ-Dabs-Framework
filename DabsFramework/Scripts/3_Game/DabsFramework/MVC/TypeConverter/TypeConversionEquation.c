@@ -27,7 +27,7 @@ class TypeConversionEquation: TypeConversionTemplate<StringEvaluater>
 
 	override void SetFloat(float value)
 	{
-		m_Value = value.ToString();
+		m_Value = value.ToString(false);
 	}
 	
 	override void SetString(string value) 
