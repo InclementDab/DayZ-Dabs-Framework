@@ -233,13 +233,7 @@ class PluginLaunchGameBase: PluginProject
 		offline_launch_params += " -window";
 		client_launch_params += " -window";
 		client2_launch_params += " -window";
-
-		if (!is_game_and_workbench_same_directory) {
-			offline_launch_params += " -screenwidth=1280 -screenheight=720";
-			client_launch_params += " -screenwidth=1280 -screenheight=720";
-			client2_launch_params += " -screenwidth=1280 -screenheight=720";
-		}
-		
+				
 		if (launch_settings.EnableHive) {
 			server_launch_params += " -useDevHive";
 			offline_launch_params += " -useDevHive";
