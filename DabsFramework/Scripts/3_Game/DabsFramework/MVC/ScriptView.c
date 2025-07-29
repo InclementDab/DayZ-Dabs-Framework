@@ -223,7 +223,9 @@ class ScriptView: ScriptedViewBase
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);	
 		
-		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
+		if (UseUpdateLoop()) {
+			GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(Update);
+		}
 #else
 		
 		ErrorEx("Attempted to create layout on SERVER!");
@@ -423,5 +425,10 @@ class ScriptView: ScriptedViewBase
 		}
 				
 		return parent.FindAnyWidget(string.Format("%1.%2", name, classname));	
+	}
+	
+	protected bool UseUpdateLoop()
+	{
+		return true;
 	}
 }
