@@ -49,8 +49,17 @@ class ScopedFunctionTimer: Managed
 	void ~ScopedFunctionTimer()
 	{
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
+		string average_time_per_action;
+		if (m_ActionIncrement) {
+			float denominator = 1;
+			if (g_Game.GetTime() != m_LastDumpTime) {
+				denominator = g_Game.GetTime() - m_LastDumpTime;
+			}
+			average_time_per_action = string.Format(" (Average Time Per Action: [%1ms])", m_ActionIncrement / denominator);
+		}
+		
 		int delta_time = g_Game.GetTime() - m_StartTime;
-		PrintFormat("%1: %2ms", m_FunctionName, delta_time);
+		PrintFormat("%1: %2ms%3", m_FunctionName, delta_time, average_time_per_action);
 		
 		if (!s_TotalFunctionTime) {
 			s_TotalFunctionTime = new map<string, int>();
@@ -65,7 +74,11 @@ class ScopedFunctionTimer: Managed
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
 		string average_time_per_action;
 		if (m_ActionIncrement) {
-			average_time_per_action = string.Format(" (Average Time Per Action: [%1ms])", m_ActionIncrement / (g_Game.GetTime() - m_LastDumpTime));
+			float denominator = 1;
+			if (g_Game.GetTime() != m_LastDumpTime) {
+				denominator = g_Game.GetTime() - m_LastDumpTime;
+			}
+			average_time_per_action = string.Format(" (Average Time Per Action: [%1ms])", m_ActionIncrement / denominator);
 		}
 
 		m_ActionIncrement = 0;
