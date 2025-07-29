@@ -47,8 +47,10 @@ class RegisterDiagMenu: RegisterDiag
 	
 	void ~RegisterDiagMenu()
 	{
-		for (int i = 0; i < Children.Count(); i++) {
-			delete Children[i];
+		if (Children) {
+			for (int i = 0; i < Children.Count(); i++) {
+				delete Children[i];
+			}
 		}
 	}
 }
