@@ -95,7 +95,6 @@ class PluginBuildMod: PluginProject
 			args += string.Format(" +K=%1",  m_BuildSettings.Key);
 		}
 		
-		PrintFormat("Building mod %1 to %2 with args %3", mod_input, mod_output, args);
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Keys");
@@ -104,7 +103,9 @@ class PluginBuildMod: PluginProject
 		mod_output.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		mod_input.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		string excludes = m_ProjectSettings["Excludes"];
-		string command = string.Format("\"%1\" -Mod=%2 %3 %4 -X=%5", cmd, mod_output, mod_input, args, excludes);
+
+		string command = string.Format("\"%1\" -Mod=%2 %3 %4 -W +X=\"%5\"", cmd, mod_output, mod_input, args, excludes);
+		PrintFormat("Building mod %1 to %2 with command %3", mod_input, mod_output, command);
 		return Workbench.RunCmd(command, true);
 	}
 	
