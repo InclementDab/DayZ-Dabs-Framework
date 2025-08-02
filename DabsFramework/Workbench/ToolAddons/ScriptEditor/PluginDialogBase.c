@@ -38,11 +38,7 @@ class PluginDialogBase: WorkbenchPlugin
 	}
 	
 	static string GetDayZDirectory(LaunchSettings settings, int environmentType = -1)
-	{
-		if (!s_DayZDirectories) {
-			s_DayZDirectories = new map<DayZEnvironmentType, string>();
-		}
-		
+	{		
 		if (environmentType == -1) {
 			environmentType = settings.EnvironmentType;
 		}
@@ -52,11 +48,7 @@ class PluginDialogBase: WorkbenchPlugin
 			gamePath.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 			return gamePath;
 		}
-		
-		if (s_DayZDirectories[environmentType]) {
-			return s_DayZDirectories[environmentType];
-		}
-		
+				
 		string dayzType;
 		switch (environmentType)
 		{
@@ -70,13 +62,21 @@ class PluginDialogBase: WorkbenchPlugin
 		
 		string data = GetRegistryEntryValue(string.Format("HKLM\\SOFTWARE\\Wow6432Node\\Bohemia Interactive\\%1", dayzType), "main");
 		data.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
-		s_DayZDirectories[environmentType] = data;
 		return data;
 	}
 	
 	// VERY VERY SLOW, USE WITH CAUTION
 	static string GetRegistryEntryValue(string entry, string value)
 	{
+		string cache_entry = string.Format("%1\\%2", entry, value);
+		if (!s_RegistryEntries) {
+			s_RegistryEntries = new map<string, string>();
+		}
+		
+		if (s_RegistryEntries.Contains(cache_entry)) {
+			return s_RegistryEntries[cache_entry];
+		}
+		
 		string output_file = string.Format("%1\\%2", GetWorkbenchDirectory(), "temp.txt");
 		
 		string cmd = "for /F \"tokens=2*\" %a in ('reg query \"" + entry + "\" /v \"" + value + "\"') DO (Echo %b) > \"" + output_file + "\"";
@@ -97,6 +97,7 @@ class PluginDialogBase: WorkbenchPlugin
 		data = data.Trim();
 		data.Replace("\n", "");
 		data.Replace("\r", "");
+		s_RegistryEntries[cache_entry] = data;
 		return data;
 	}
 	
