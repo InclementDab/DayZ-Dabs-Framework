@@ -55,12 +55,12 @@ class SuppressedObjectManager: Managed
 #endif
 	}
 		
-	void Unsupress(notnull Object object)
+	void Unsupress(notnull Object object, bool inform_clients = true)
 	{
 		UnsupressMany({ object });
 	}
 	
-	void UnsupressMany(notnull array<Object> objects)
+	void UnsupressMany(notnull array<Object> objects, bool inform_clients = true)
 	{
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(objects.Count());
@@ -79,16 +79,20 @@ class SuppressedObjectManager: Managed
 		}
 		
 #ifdef SERVER		
-		rpc.Send(null, RPC_UNSUPPRESS, true);
+		if (inform_clients) {
+			rpc.Send(null, RPC_UNSUPPRESS, true);
+		}
 #endif
 	}
 	
-	void UnsuppressAll()
+	void UnsuppressAll(bool inform_clients = true)
 	{
 		m_Objects.Clear();
 		
 #ifdef SERVER		
-		ScriptRPC().Send(null, RPC_UNSUPPRESS_ALL, true);
+		if (inform_clients) {
+			ScriptRPC().Send(null, RPC_UNSUPPRESS_ALL, true);
+		}
 #endif
 	}
 	
