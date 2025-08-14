@@ -38,6 +38,9 @@ class PluginProject: PluginDialogBase
 		
 		// Load server config
 		m_ServerConfig = current_dir + SERVER_CFG;
+		string temp = m_ServerConfig;
+		temp.Replace("\/", "\\");
+		m_ServerConfig = temp;
 		if (!FileExist(m_ServerConfig)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, current_dir));
 			return;

@@ -264,6 +264,7 @@ class PluginLaunchGameBase: PluginProject
 		}	
 		
 		if ((launch_settings.LaunchType & GameLaunchType.SERVER) == GameLaunchType.SERVER) {
+			Print(game_exe + " " + server_launch_params);
 			Workbench.RunCmd(game_exe + " " + server_launch_params);
 		}
 		
