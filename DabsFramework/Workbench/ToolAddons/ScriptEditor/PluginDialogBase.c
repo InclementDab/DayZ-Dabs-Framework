@@ -150,6 +150,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string root_dir;
 		Workbench.GetAbsolutePath(string.Empty, root_dir);
+		root_dir.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		return root_dir;
 	}
 	
@@ -281,9 +282,16 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int PromiseSymLink(string source, string target)
 	{
-		target.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		if (FileExist(target)) {
+			return 0;
+		}
+		
+		string source_copy = source;
+		string target_copy = target;
+		source_copy.Replace("\\", "/");
+		target_copy.Replace("\\", "/");
 		array<string> path_split = {};
-		target.Split(SystemPath.SEPERATOR, path_split);
+		target_copy.Split(SystemPath.SEPERATOR, path_split);
 		string path_reconstruct;
 		for (int i = 0; i < path_split.Count(); i++) {
 			path_reconstruct += path_split[i] + SystemPath.SEPERATOR;
@@ -295,11 +303,7 @@ class PluginDialogBase: WorkbenchPlugin
 			}
 		}
 		
-		if (!FileExist(target)) {
-			return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source, target), true);
-		}
-		
-		return 0;
+		return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source_copy, target_copy), true);
 	}
 	
 	static void KillTask(string task_name)

@@ -91,11 +91,13 @@ class PluginLaunchGameBase: PluginProject
 		
 		// Set up filepatching, needs to either create or delete all links depending on the setting
 		if (launch_settings.FilePatching) {
-			foreach (string prefix: m_Prefixes) {			
+			foreach (string prefix2: m_Prefixes) {			
+				string prefix = prefix2;
 				array<string> prefix_split = {};
-				prefix.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
-				prefix.Split(SystemPath.SEPERATOR_ALT, prefix_split);
-				
+				string source_folder = root + SystemPath.SEPERATOR + prefix;
+				Print(source_folder.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR));
+				prefix.Split("\\", prefix_split);
+				prefix_split.Debug();
 				string built_path = workbench_directory + SystemPath.SEPERATOR_ALT;
 				if (prefix_split.Count() < 1) {
 					continue;
@@ -103,10 +105,10 @@ class PluginLaunchGameBase: PluginProject
 				
 				// Add each root dir to exclude
 				folders_to_save.Insert(prefix_split[0]);
-				PromiseSymLink(root + SystemPath.SEPERATOR_ALT + prefix, workbench_directory + SystemPath.SEPERATOR + prefix);
+				PromiseSymLink(source_folder, workbench_directory + SystemPath.SEPERATOR + prefix);
 			}
 		}
-		
+						
 		if (!is_game_and_workbench_same_directory) {
 			// Now FindFile each 
 			string wb_dir_filename;
@@ -125,7 +127,7 @@ class PluginLaunchGameBase: PluginProject
 			
 			CloseFindFile(hdnl);
 		}
-
+		
 		// Reformats mod list
 		string formatted_mod_list;
 		array<string> mod_list = {};
