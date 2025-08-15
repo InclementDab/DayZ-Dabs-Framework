@@ -1,21 +1,21 @@
 class SystemPath
 {	
-#ifdef PLATFORM_WINDOWS
-	const string SEPERATOR = "\\";
-#else
+#ifndef PLATFORM_WINDOWS
 	const string SEPERATOR = "/";
+#else
+	const string SEPERATOR = "\\";
 #endif
 
-#ifdef PLATFORM_WINDOWS
+#ifndef PLATFORM_WINDOWS
 	const string SEPERATOR_ALT = "/";
 #else
 	const string SEPERATOR_ALT = "\\";
 #endif
 
-#ifdef PLATFORM_WINDOWS
-    const int MAX_SHORT_PATH = 260;
-#else
+#ifndef PLATFORM_WINDOWS
     const int MAX_SHORT_PATH = 4096;
+#else
+    const int MAX_SHORT_PATH = 260;
 #endif
 
 	const string VOLUME_PREFIX = "$";
