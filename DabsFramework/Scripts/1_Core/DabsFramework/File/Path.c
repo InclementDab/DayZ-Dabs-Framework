@@ -7,9 +7,9 @@ class SystemPath
 #endif
 
 #ifndef PLATFORM_WINDOWS
-	const string SEPERATOR_ALT = "/";
-#else
 	const string SEPERATOR_ALT = "\\";
+#else
+	const string SEPERATOR_ALT = "/";
 #endif
 
 #ifndef PLATFORM_WINDOWS
