@@ -6,6 +6,11 @@ class Symbols: string
 			return;
 		}
 		
+		// This is a problem if this can happen, i think its causing memory leaks
+		if (value == string.Empty) {
+			return;
+		}
+		
 		image_widget.LoadImageFile(SymbolSize.IDX_THIN, value.Thin());
 		image_widget.LoadImageFile(SymbolSize.IDX_LIGHT, value.Light());
 		image_widget.LoadImageFile(SymbolSize.IDX_REGULAR, value.Regular());
