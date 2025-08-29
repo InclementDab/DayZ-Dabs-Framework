@@ -172,4 +172,48 @@ class PriorityQueue<Class TElement, Class TPriority>
 
 		return lowestIndex;
 	}
+
+	// convert elements into a sorted array, highest priority first
+	array<TElement> ToArray()
+	{
+		array<TElement> result = {};
+		result.Reserve(Count());
+
+		if (Count() == 0)
+		{
+			return result;
+		}
+
+		array<int> indices = {};
+		indices.Reserve(Count());
+
+		for (int i = 0; i < Count(); i++)
+		{
+			indices.Insert(i);
+		}
+
+		// O(n^2) - insertion sort
+		for (int j = 1; j < indices.Count(); j++)
+		{
+			int currentIndex = indices[j];
+			TPriority currentPriority = m_Elements[currentIndex].param2;
+			int k = j - 1;
+
+			// shift all high values towards the end as they're lower priority
+			while (k >= 0 && m_Elements[indices[k]].param2 > currentPriority)
+			{
+				indices[k + 1] = indices[k];
+				k--;
+			}
+
+			indices[k + 1] = currentIndex;
+		}
+
+		for (int l = 0; l < indices.Count(); l++)
+		{
+			result.Insert(m_Elements[indices[l]].param1);
+		}
+
+		return result;
+	}
 }
