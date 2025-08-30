@@ -1,4 +1,24 @@
 #ifdef DIAG_DEVELOPER
+
+static int g_TestInt0;
+static int g_TestInt1;
+static int g_TestInt2;
+static float g_TestFloat0;
+static float g_TestFloat1;
+static float g_TestFloat2;
+static string g_TestString0;
+static string g_TestString1;
+static string g_TestString2;
+static vector g_TestVector0;
+static vector g_TestVector1;
+static vector g_TestVector2;
+static typename g_TestType0;
+static typename g_TestType1;
+static typename g_TestType2;
+static Object g_TestObject0;
+static Object g_TestObject1;
+static Object g_TestObject2;
+
 modded class Debug
 {	
 	static const int RPC_UPDATE_DEBUG_SHAPE = 26893386;
