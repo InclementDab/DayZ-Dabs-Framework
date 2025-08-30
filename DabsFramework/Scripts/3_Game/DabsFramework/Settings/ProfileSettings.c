@@ -34,6 +34,16 @@ class ProfileSettings: Class
 					break;
 				}
 				
+				case vector: {
+					vector v = EnScriptVar<vector>.Get(this, variable_name);
+					float v0 = GetProfileFloat(string.Format("%10", variable_name_formatted), v[0]);
+					float v1 = GetProfileFloat(string.Format("%11", variable_name_formatted), v[1]);
+					float v2 = GetProfileFloat(string.Format("%12", variable_name_formatted), v[2]);
+					
+					EnScriptVar<vector>.Set(this, variable_name, Vector(v0, v1, v2));
+					break;
+				}
+				
 				/*
 				case vector: {
 					// vectors need to be stored, probably because its pointer type
@@ -95,15 +105,18 @@ class ProfileSettings: Class
 					g_Game.SetProfileString(variable_name_formatted, string.ToString(EnScriptVar<string>.Get(this, variable_name)));
 					break;
 				}
-					
-				/*
-				case vector: {
-					string vector_value = EnScriptVar<vector>.Get(this, variable_name).ToString(false);
-					Print(vector_value);
-					g_Game.SetProfileString(variable_name_formatted, vector_value);
-					break;
-				}*/
 				
+				case vector: {
+					vector v = EnScriptVar<vector>.Get(this, variable_name);
+					float f = v[0];
+					g_Game.SetProfileString(string.Format("%10", variable_name_formatted), string.ToString(f));
+					f = v[1];
+					g_Game.SetProfileString(string.Format("%11", variable_name_formatted), string.ToString(f));
+					f = v[2];
+					g_Game.SetProfileString(string.Format("%12", variable_name_formatted), string.ToString(f));
+					break;
+				}
+								
 				case String("array<string>").ToType(): {
 					g_Game.SetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name));
 					break;
