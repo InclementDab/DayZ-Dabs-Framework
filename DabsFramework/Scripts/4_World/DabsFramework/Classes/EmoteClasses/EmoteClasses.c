@@ -4,8 +4,10 @@ modded class EmoteDabbing
 	{
 		m_ID = EmoteConstants.ID_EMOTE_DABBING;
 		m_InputActionName = "EmoteDabbing";
-		m_StanceMaskAdditive = DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT;
-		m_AdditiveCallbackUID = DayZPlayerConstants.CMD_GESTUREMOD_DABBING;
+		m_StanceMaskAdditive = 0;
+		m_StanceMaskFullbody = DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT;
+		m_AdditiveCallbackUID = 0;
+		m_FullbodyCallbackUID = DayZPlayerConstants.CMD_GESTUREMOD_DABBING;
 		m_HideItemInHands = true;
 	}
 	
