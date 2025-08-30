@@ -210,8 +210,8 @@ class PluginLaunchGameBase: PluginProject
 		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
 		CopyFiles(string.Format("%1\\Missions\\Dev", launch_settings.Repository), server_mission);
 		
-		string client_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
-		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client2_profile_directory);
+		string client_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client_profile_directory, launch_settings.Name);
+		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client2_profile_directory, launch_settings.Name + " (1)");
 		string server_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server -port=%6", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, launch_settings.Port);
 		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);		
 		
@@ -228,9 +228,9 @@ class PluginLaunchGameBase: PluginProject
 			server_launch_params += string.Format(" -port=%1", port);
 		}
 		
-		client_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
-		server_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
-		offline_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
+		client_launch_params += " -scrDef=ENABLE_LOGGING";
+		server_launch_params += " -scrDef=ENABLE_LOGGING";
+		offline_launch_params += " -scrDef=ENABLE_LOGGING";
 		
 		offline_launch_params += " -window";
 		client_launch_params += " -window";

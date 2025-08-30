@@ -31,7 +31,7 @@ enum BuilderType
 
 class LaunchSettings: SerializableBase
 {
-	static const int VERSION = 10;
+	static const int VERSION = 11;
 	
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string CLIENT2_PROFILE_NAME = "client2";
@@ -60,6 +60,9 @@ class LaunchSettings: SerializableBase
 	
 	[Attribute("", "editbox", "Launch Arguments")]
 	string LaunchArgs;
+	
+	[Attribute("", "editbox", "Name")]
+	string Name;
 	
 	[Attribute("", "editbox", "Map")]
 	string Map;
@@ -136,6 +139,7 @@ class LaunchSettings: SerializableBase
 		settings.Missions = "P:\\Missions";
 		settings.Mods = "P:\\Mods";
 		settings.LaunchArgs = BASE_LAUNCH_PARAMS;
+		settings.Name = "Survivor";
 		settings.Executable = "DayZDiag_x64.exe";
 		settings.EnvironmentType = DayZEnvironmentType.STABLE;
 		settings.CustomGameDirectory = "";
@@ -201,6 +205,7 @@ class LaunchSettings: SerializableBase
 		serializer.Write(EnableHive);
 		serializer.Write(LoadMission);
 		serializer.Write(LaunchArgs);
+		serializer.Write(Name);
 	}
 	
 	override bool Read(Serializer serializer, int version)
@@ -323,6 +328,15 @@ class LaunchSettings: SerializableBase
 		}
 		
 		if (!serializer.Read(LaunchArgs)) {
+			return false;
+		}
+		
+		if (version < 11) {
+			Name = "Survivor";
+			return true;
+		}
+		
+		if (!serializer.Read(Name)) {
 			return false;
 		}
 		
