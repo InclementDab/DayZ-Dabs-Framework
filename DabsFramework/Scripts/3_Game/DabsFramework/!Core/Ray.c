@@ -101,16 +101,10 @@ class Ray: Managed
 	
 	void Debug(LinearColor color = -1, ShapeFlags flags = ShapeFlags.ONCE)
 	{
-		//Shape.CreateArrow(Position, GetPoint(0.5), 1.0, color, flags);
-		vector debug_matrix[4];
-		vector perpend = Direction.Perpend();
-		if (perpend.Length() == 0) {
-			perpend = Direction * vector.Aside;
-		}
-		
-		Math3D.DirectionAndUpMatrix(perpend, Direction.Normalized(), debug_matrix);
-		debug_matrix[3] = Position;
-		
+		//Shape.CreateArrow(Position, GetPoint(0.5), 1.0, color, flags);		
+		Debug.DrawArrow(Position, Position + Direction * 5, 0.5, color, flags);
+	
+		/*	
 		vector cylinder_start_position = vector.Up * Direction.Length() * 0.5;
 		Shape cylinder = Shape.CreateCylinder(color, flags, cylinder_start_position, 0.05, Direction.Length());
 		cylinder.SetMatrix(debug_matrix);
@@ -122,6 +116,6 @@ class Ray: Managed
 			cylinder = Shape.CreateCylinder(color, flags, cylinder_start_position + vector.Up * cylinder_current_position, width, 0.05);
 			cylinder.SetMatrix(debug_matrix);
 			cylinder_current_position += Direction.Length() / (arrowhead_iterations * 2);
-		}
+		}*/
 	}
 }

@@ -16,9 +16,9 @@ class Raycast: Managed
 		return vector.Distance(Source.Position, Bounce.Position);
 	}
 	
-	void Debug(LinearColor color = 0xFF87CEEB)
+	void Debug(LinearColor color = 0xFF87CEEB, ShapeFlags flags = ShapeFlags.ONCE | ShapeFlags.ADDITIVE)
 	{		
-		Shape cylinder = Shape.CreateCylinder(color, ShapeFlags.ONCE | ShapeFlags.ADDITIVE, vector.Zero, 0.5, 0.01);
+		Shape cylinder = Shape.CreateCylinder(LinearColor.YELLOW, flags, vector.Zero, 0.25, 0.01);
 		vector perpend = Bounce.Direction.Perpend();
 		if (perpend.Length() < 0.5) {
 			perpend = Bounce.Direction * vector.Aside;
@@ -29,7 +29,7 @@ class Raycast: Managed
 		dir_and_up[3] = Bounce.Position;
 		cylinder.SetMatrix(dir_and_up);
 		
-		Bounce.Debug(color);
+		Bounce.Debug(color, flags);
 	}
 	
 	Raycast Continue(Object ignore = null)
