@@ -362,8 +362,9 @@ class LinearColor: int
 	
 	LinearColor With(int n, int val)
 	{
-		value.Set(n, val);
-		return value;
+		LinearColor copy = value;
+		copy.Set(n, val);
+		return copy;
 	}
 	
 	void SetAlpha(int alpha)
