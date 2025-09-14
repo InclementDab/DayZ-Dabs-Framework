@@ -103,8 +103,10 @@ modded class MainMenu
 	}
 	
 	// There you go guys.
+	// 9/4/24 honestly, this button helped me out more than most people know. going through a tough time financially and the community really had my back for a long time.
+	// but the time has come to retire this button and thus with it the functionality. thank you to all of my supporters, you are very appreciated
 	bool DF_DisablePatreon()
 	{
-		return false;
+		return true;
 	}
 }
