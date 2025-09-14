@@ -21,6 +21,11 @@ class UIScriptViewMenu: UIScriptedMenu
 		//delete m_ScriptViewMenu;
 	}
 	
+	ScriptViewMenu GetScriptViewMenu()
+	{
+		return m_ScriptViewMenu;
+	}
+	
 	//@ ScriptViewMenu handles control locking
 	override void LockControls()
 	{
