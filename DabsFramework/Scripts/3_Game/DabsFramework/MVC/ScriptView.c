@@ -194,6 +194,9 @@ class ScriptView: ScriptedViewBase
 #ifndef COMPONENT_SYSTEM
 #ifndef NO_GUI		
 		m_LayoutRoot = CreateWidget(null);
+		if (!m_LayoutRoot) {
+			return;
+		}
 		
 		LoadWidgetsAsVariables(this, m_LayoutRoot);
 
