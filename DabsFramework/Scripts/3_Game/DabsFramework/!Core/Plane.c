@@ -50,7 +50,7 @@ class Plane: Managed
 		return true;
 	}
 
-	void Debug(float size = 1, LinearColor color = COLOR_RED_A, ShapeFlags flags = ShapeFlags.ONCE)
+	void Debug(float size = 1, LinearColor color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP | ShapeFlags.ADDITIVE)
 	{
 		vector plane_matrix[4];
 		ToMatrix(plane_matrix);
