@@ -290,5 +290,11 @@ modded class Debug
 		
 		m_DebugShapes.Clear();
 	}
+	
+	static void AddShape(Shape shape, int flags)
+	{
+		if (( flags & ShapeFlags.ONCE ) == 0)
+			m_DebugShapes.Insert(shape);
+	}
 }
 #endif
