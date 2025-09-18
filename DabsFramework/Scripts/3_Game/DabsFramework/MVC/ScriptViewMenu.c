@@ -113,8 +113,6 @@ class ScriptViewMenu: ScriptView
 	{
 		if (m_ChildMenu) {
 			m_LayoutRoot.Show(false);
-		} else {
-			Close();
 		}
 	}
 	
