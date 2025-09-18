@@ -52,6 +52,7 @@ class Plane: Managed
 
 	void Debug(float size = 1, LinearColor color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP | ShapeFlags.ADDITIVE)
 	{
+#ifdef DIAG_DEVELOPER
 		vector plane_matrix[4];
 		ToMatrix(plane_matrix);
 		
@@ -59,5 +60,6 @@ class Plane: Managed
 		Shape bbox = Shape.Create(ShapeType.BBOX, color, flags, Vector(1, 0, 1) * size, Vector(-1, 0, -1) * size);
 		bbox.SetMatrix(plane_matrix);
 		Debug.AddShape(bbox, flags);
+#endif
 	}
 }
