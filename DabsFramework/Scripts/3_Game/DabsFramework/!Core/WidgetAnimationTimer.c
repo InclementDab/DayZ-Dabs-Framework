@@ -216,6 +216,11 @@ class WidgetAnimationTimer: Managed
 			
 			case WidgetAnimatorProperty.COLOR_A: {
 				source.SetAlpha(value);
+				TextWidget text_source = TextWidget.Cast(source);
+				if (text_source) {
+					int outline_color = (text_source.GetOutlineColor() & 0x00FFFFFF) | ((int)(value * 255) << 24);
+					text_source.SetOutline(text_source.GetOutlineSize(), outline_color);
+				}
 				break;
 			}
 			
