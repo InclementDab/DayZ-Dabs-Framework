@@ -13,7 +13,20 @@
 
 // 0: event id
 // 1: event
-typedef map<int, ref EventBase> EventMap;
+class EventMap: map<int, ref EventBase> 
+{
+	int CountActive()
+	{
+		int count_active = 0;
+		foreach (int id, EventBase event_base: this) {
+			if (event_base && event_base.GetCurrentPhase() != EventPhase.DELETE) {
+				count_active++;
+			}
+		}
+		
+		return count_active;
+	}
+}
 
 class EventBase: Managed
 {
@@ -188,11 +201,9 @@ class EventBase: Managed
 				
 				case EventPhase.DELETE:
 				default: {
-					OnEventEndServer();
-					if (GetGame().IsDedicatedServer()) {
-						GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Delete);
-						return;
-					}
+					OnEventEndServer();					
+					delete this;
+					return;
 				}
 			}
 		}
@@ -236,18 +247,13 @@ class EventBase: Managed
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndClient();
-					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Delete);
+					delete this;
 					return;
 				}
 			}
 		}
 	}
-	
-	protected void Delete()
-	{
-		delete this;
-	}
-		
+			
 	float GetCurrentPhaseTimeRemaining()
 	{
 		return m_PhaseTimeRemaining;

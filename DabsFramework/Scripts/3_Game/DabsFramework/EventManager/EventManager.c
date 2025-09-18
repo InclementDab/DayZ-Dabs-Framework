@@ -78,30 +78,28 @@ class EventManager
 	void OnUpdate(float dt)
 	{
 		// Not initialized, dont run
-		if (m_MaxEventCount == 0 || m_PossibleEventTypes.Count() == 0) {
-			return;
-		}
-		
-		foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
-			m_EventCooldowns[event_type] = m_EventCooldowns[event_type] - dt;
-			if (m_EventCooldowns[event_type] <= 0) {
-				m_EventCooldowns.Remove(event_type);
+		if (m_MaxEventCount != 0 && m_PossibleEventTypes.Count() != 0) {
+			foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
+				m_EventCooldowns[event_type] = m_EventCooldowns[event_type] - dt;
+				if (m_EventCooldowns[event_type] <= 0) {
+					m_EventCooldowns.Remove(event_type);
+				}
 			}
-		}
-		
-		m_NextEventIn -= dt;
-		if (m_NextEventIn <= 0) {
-			EventManagerLog.Info(this, "Trying to select a new event...");												
-			// Just a quick check to make sure we dont run the same event twice
-			typename current_type = GetRandomEvent();			
-			m_LastEventType = current_type;
 			
-			//! Start new event
-			StartEvent(current_type);
-			
-			//! Rounding next event time, shouldnt cause issues our numbers arent huge
-			m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
-			EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
+			m_NextEventIn -= dt;
+			if (m_NextEventIn <= 0) {
+				EventManagerLog.Info(this, "Trying to select a new event...");												
+				// Just a quick check to make sure we dont run the same event twice
+				typename current_type = GetRandomEvent();			
+				m_LastEventType = current_type;
+				
+				//! Start new event
+				StartEvent(current_type);
+				
+				//! Rounding next event time, shouldnt cause issues our numbers arent huge
+				m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
+				EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
+			}
 		}
 	}
 	
@@ -155,7 +153,7 @@ class EventManager
 		
 		// event_id is ALWAYS 0 when parallel events are disallowed
 		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
-		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
+		if (m_ActiveEvents[event_type].CountActive() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
 			EventManagerLog.Info(this, "Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
 			return null;
 		}
@@ -196,7 +194,10 @@ class EventManager
 		}
 		
 		// set to discard, its really this simple :)
-		event_base.SwitchPhase(EventPhase.DELETE);
+		if (event_base) {
+			event_base.SwitchPhase(EventPhase.DELETE);
+		}
+		
 		return true;
 	}
 	
