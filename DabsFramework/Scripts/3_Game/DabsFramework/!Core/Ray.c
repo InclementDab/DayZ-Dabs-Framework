@@ -91,9 +91,15 @@ class Ray: Managed
 		if (!DayZPhysics.RaycastRVProxy(raycast_params, results, null) || results.Count() == 0) {
 			return null;
 		}
-			
+		
+#ifdef DIAG_DEVELOPER
+		if (results.Count() > 1) {
+			debug;
+		}
+#endif
+				
 		RaycastRVResult result = results[0];
-		raycast.Bounce = new Ray(result.pos, result.dir);
+		raycast.Bounce = new Ray(result.pos, result.dir.Normalized());
 		raycast.HitComponent = result.component;
 		raycast.Hit = result.obj;
 		return raycast;
