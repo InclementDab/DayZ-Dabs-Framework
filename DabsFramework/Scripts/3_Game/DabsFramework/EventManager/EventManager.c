@@ -202,8 +202,8 @@ class EventManager
 	
 	void DeleteEvent(EventBase event_base)
 	{
-		EventManagerLog.Debug(this, "Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
 		if (m_ActiveEvents && m_ActiveEvents[event_base.Type()]) {
+			EventManagerLog.Debug(this, "Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
 			m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
 		}
 	}
@@ -233,7 +233,6 @@ class EventManager
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					string str_event_type;
 					if (!ctx.Read(str_event_type)) {
-						Print(str_event_type);
 						break;
 					}
 					

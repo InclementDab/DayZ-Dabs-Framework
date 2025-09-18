@@ -52,11 +52,11 @@ class EventBase: Managed
 	void ~EventBase()
 	{
 		EventManagerLog.Debug(this, "~Destroy");
-		m_EventManager.DeleteEvent(this);
-		delete m_StartParams;		
-		delete m_ClientUpdate;		
-		delete m_ServerUpdate;
-		
+		/*
+		if (m_EventManager) {
+			m_EventManager.DeleteEvent(this);
+		}*/
+				
 		if (GetGame() && GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY)) {
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
 		}
@@ -157,55 +157,95 @@ class EventBase: Managed
 						
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
-					thread InitPhaseServer();
+					if (UseThreadedEventPhases()) {
+						thread InitPhaseServer();
+					} else {
+						InitPhaseServer();
+					}
+					
 					break;
 				}
 				
 				case EventPhase.MID: {
-					thread MidPhaseServer();
+					if (UseThreadedEventPhases()) {
+						thread MidPhaseServer();
+					} else {
+						MidPhaseServer();
+					}
+					
 					break;
 				}
 				
 				case EventPhase.END: {
-					thread EndPhaseServer();
+					if (UseThreadedEventPhases()) {
+						thread EndPhaseServer();
+					} else {
+						EndPhaseServer();
+					}
+					
 					break;
 				}
 				
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndServer();
-					delete this;
-					return;
+					if (GetGame().IsDedicatedServer()) {
+						GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Delete);
+						return;
+					}
 				}
 			}
 		}
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {	
-			m_PhaseTimeRemaining = time_remaining;		
+			if (GetGame().IsMultiplayer()) {
+				m_PhaseTimeRemaining = time_remaining;		
+			}
+			
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
-					thread InitPhaseClient(time_remaining, client_data);
+					if (UseThreadedEventPhases()) {
+						thread InitPhaseClient(time_remaining, client_data);
+					} else {
+						InitPhaseClient(time_remaining, client_data);
+					}
+					
 					break;
 				}
 				
 				case EventPhase.MID: {
-					thread MidPhaseClient(time_remaining, client_data);
+					if (UseThreadedEventPhases()) {
+						thread MidPhaseClient(time_remaining, client_data);
+					} else {
+						MidPhaseClient(time_remaining, client_data);
+					}
+
 					break;
 				}
 				
 				case EventPhase.END: {
-					thread EndPhaseClient(time_remaining, client_data);
+					if (UseThreadedEventPhases()) {
+						thread EndPhaseClient(time_remaining, client_data);
+					} else {
+						EndPhaseClient(time_remaining, client_data);
+					}
+					
 					break;
 				}
 				
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndClient();
-					delete this;
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(Delete);
 					return;
 				}
 			}
 		}
+	}
+	
+	protected void Delete()
+	{
+		delete this;
 	}
 		
 	float GetCurrentPhaseTimeRemaining()
@@ -240,6 +280,12 @@ class EventBase: Managed
 			if false, the client will ONLY run ClientMidPhase
 	*/
 	bool JIPRunPreviousPhases()
+	{
+		return true;
+	}
+	
+	// The very BUGGY version of event phases used for the original evr. I suggest turning this off
+	bool UseThreadedEventPhases()
 	{
 		return true;
 	}
@@ -317,7 +363,7 @@ class EventBase: Managed
 			
 			if (GetGame().IsServer()) {
 				EventManagerLog.Debug(this, "Attempting to naturally switch to the next phase");
-				SwitchPhase(GetCurrentPhase() + 1);
+				SwitchPhase(GetCurrentPhase() + 1, GetPhaseLength(GetCurrentPhase() + 1));
 			}
 		}
 	}
