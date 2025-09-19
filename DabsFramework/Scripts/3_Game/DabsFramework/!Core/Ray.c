@@ -27,8 +27,31 @@ class Ray: Managed
 		raycast.Source = this;
 		raycast.Bounce = output_ray;
 		raycast.Distance = distance;
+#ifdef DIAG_DEVELOPER
+		raycast.Radius = 0.01; // Bullet has no radius. Arbitrary
+#endif	
 		float fraction;
 		if (!DayZPhysics.RayCastBullet(Position, Position + Direction.Normalized() * distance, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {			
+			return null;
+		}
+		
+		return raycast;
+	}
+	
+	Raycast PerformRaycastSphere(float radius, Object ignore = null, float distance = 1000.0, PhxInteractionLayers layers = -1)
+	{
+		Ray output_ray = new Ray();
+		
+		Raycast raycast = new Raycast();
+		raycast.Source = this;
+		raycast.Bounce = output_ray;
+		raycast.Distance = distance;
+#ifdef DIAG_DEVELOPER
+		raycast.Radius = radius;
+#endif	
+		
+		float fraction;
+		if (!DayZPhysics.SphereCastBullet(Position, Position + Direction.Normalized() * distance, radius, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {
 			return null;
 		}
 		
@@ -43,6 +66,10 @@ class Ray: Managed
 		Raycast raycast = new Raycast();
 		raycast.Source = this;	
 		raycast.Distance = distance;
+#ifdef DIAG_DEVELOPER
+		raycast.Radius = radius;
+#endif	
+		
 		vector direction;
 		vector position;
 		
@@ -76,6 +103,10 @@ class Ray: Managed
 		Raycast raycast = new Raycast();
 		raycast.Source = this;	
 		raycast.Distance = distance;
+#ifdef DIAG_DEVELOPER
+		raycast.Radius = radius;
+#endif
+		
 		vector direction;
 		vector position;
 		
@@ -105,11 +136,18 @@ class Ray: Managed
 		return raycast;
 	}
 	
-	void Debug(LinearColor color = -1, ShapeFlags flags = ShapeFlags.ONCE)
+	void Debug(float length = 1, LinearColor color = -1, ShapeFlags flags = 104/*ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.NOOUTLINE*/)
 	{
 		//Shape.CreateArrow(Position, GetPoint(0.5), 1.0, color, flags);		
-		Debug.DrawArrow(Position, Position + Direction * 5, 0.5, color, flags);
-	
+		//Debug.DrawArrow(, 0.5, color, flags);
+#ifdef DIAG_DEVELOPER
+		Shape shape = Debug.DrawLine(Position, Position + Direction * length, color, flags);
+		Debug.AddShape(shape, flags);
+		
+		shape = Debug.DrawSphere(Position, 0.01, color, flags);
+		Debug.AddShape(shape, flags);
+#endif
+		
 		/*	
 		vector cylinder_start_position = vector.Up * Direction.Length() * 0.5;
 		Shape cylinder = Shape.CreateCylinder(color, flags, cylinder_start_position, 0.05, Direction.Length());
