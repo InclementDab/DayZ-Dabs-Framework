@@ -95,7 +95,6 @@ class PluginLaunchGameBase: PluginProject
 				string prefix = prefix2;
 				array<string> prefix_split = {};
 				string source_folder = root + SystemPath.SEPERATOR + prefix;
-				Print(source_folder.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR));
 				prefix.Split("\\", prefix_split);
 				prefix_split.Debug();
 				string built_path = workbench_directory + SystemPath.SEPERATOR_ALT;
@@ -227,14 +226,6 @@ class PluginLaunchGameBase: PluginProject
 			}
 			server_launch_params += string.Format(" -port=%1", port);
 		}
-		
-		client_launch_params += " -scrDef=ENABLE_LOGGING";
-		server_launch_params += " -scrDef=ENABLE_LOGGING";
-		offline_launch_params += " -scrDef=ENABLE_LOGGING";
-		
-		offline_launch_params += " -window";
-		client_launch_params += " -window";
-		client2_launch_params += " -window";
 				
 		if (launch_settings.EnableHive) {
 			server_launch_params += " -useDevHive";
