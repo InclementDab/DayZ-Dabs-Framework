@@ -202,7 +202,7 @@ class EventBase: Managed
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndServer();					
-					delete this;
+					m_EventManager.DeleteEvent(this);
 					return;
 				}
 			}
@@ -247,13 +247,13 @@ class EventBase: Managed
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndClient();
-					delete this;
+					m_EventManager.DeleteEvent(this);
 					return;
 				}
 			}
 		}
 	}
-			
+		
 	float GetCurrentPhaseTimeRemaining()
 	{
 		return m_PhaseTimeRemaining;
@@ -318,7 +318,17 @@ class EventBase: Managed
 	{
 		m_StartParams = start_params;
 		
-		SwitchPhase(EventPhase.INIT);
+		if (GetGame().IsMultiplayer()) {
+			SwitchPhase(EventPhase.INIT);
+		} else {
+			SerializableParam serializable_param = GetClientSyncData(EventPhase.INIT);
+			Param param = null;
+			if (serializable_param) {
+				param = serializable_param.ToParam();
+			}
+			
+			SwitchPhase(EventPhase.INIT, GetInitPhaseLength(), param);
+		}
 	}
 		
 	void SetID(int id)
