@@ -33,7 +33,7 @@ class PluginDialogBase: WorkbenchPlugin
 		array<string> current_dir_split = {};
 		string current_directory = GetCurrentDirectory();
 		current_directory.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
-		current_directory.Split(SystemPath.SEPERATOR, current_dir_split);
+		current_directory.Split(SystemPath.SEPERATOR, current_dir_split);		
 		return current_dir_split[current_dir_split.Count() - 2];
 	}
 	
@@ -282,24 +282,23 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int PromiseSymLink(string source, string target)
 	{
-		if (FileExist(target)) {
+		string source_copy = SystemPath.Format(source);
+		string target_copy = SystemPath.Format(target);
+		
+		if (FileExist(target_copy)) {
 			return 0;
 		}
 		
-		string source_copy = source;
-		string target_copy = target;
-		source_copy.Replace("\\", "/");
-		target_copy.Replace("\\", "/");
 		array<string> path_split = {};
 		target_copy.Split(SystemPath.SEPERATOR, path_split);
 		string path_reconstruct;
 		for (int i = 0; i < path_split.Count(); i++) {
 			path_reconstruct += path_split[i] + SystemPath.SEPERATOR;
 			if (!FileExist(path_reconstruct) && i < path_split.Count() - 1) {
-				//path_reconstruct = path_reconstruct.Substring(0, path_reconstruct.Length() - 1);
+				path_reconstruct = path_reconstruct.Substring(0, path_reconstruct.Length() - 1);
+				path_reconstruct.Replace("/", "\\");
 				PrintFormat("Creating directory: %1", path_reconstruct);
-				
-				Print(MakeDirectory(path_reconstruct));
+				MakeDirectory(path_reconstruct);
 			}
 		}
 		
@@ -308,6 +307,8 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void KillTask(string task_name)
 	{
+		
+		
 		RunCommandPrompt(string.Format("taskkill /F /IM %1 /T", task_name), true);
 		//Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
 	}
