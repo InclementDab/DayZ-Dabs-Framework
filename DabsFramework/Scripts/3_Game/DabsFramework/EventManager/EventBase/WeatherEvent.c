@@ -48,6 +48,7 @@ class WeatherEvent: EventBase
 					
 					RequestWeatherChange(j, highest_value_end, GetEndPhaseLength(), GetEndPhaseLength());
 				}
+				
 				break;
 			}
 			
@@ -61,6 +62,7 @@ class WeatherEvent: EventBase
 					
 					weather_phenom.SetLimits(0, highest_value_delete);
 				}
+				
 				break;
 			}
 		}
