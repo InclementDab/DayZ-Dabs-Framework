@@ -96,7 +96,6 @@ class PluginLaunchGameBase: PluginProject
 				array<string> prefix_split = {};
 				string source_folder = root + SystemPath.SEPERATOR + prefix;
 				prefix.Split("\\", prefix_split);
-				prefix_split.Debug();
 				string built_path = workbench_directory + SystemPath.SEPERATOR_ALT;
 				if (prefix_split.Count() < 1) {
 					continue;
@@ -245,6 +244,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
+			Print("CLIENT: " + game_exe + " " + client_launch_params);
 			Workbench.RunCmd(string.Format("%1 %2", game_exe, client_launch_params));
 
 			if (launch_settings.SandboxieEnabled) {
@@ -257,7 +257,7 @@ class PluginLaunchGameBase: PluginProject
 		}	
 		
 		if ((launch_settings.LaunchType & GameLaunchType.SERVER) == GameLaunchType.SERVER) {
-			Print(game_exe + " " + server_launch_params);
+			Print("SERVER: " + game_exe + " " + server_launch_params);
 			Workbench.RunCmd(game_exe + " " + server_launch_params);
 		}
 		
@@ -267,7 +267,7 @@ class PluginLaunchGameBase: PluginProject
 				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
 			}
 			
-			Print(game_exe + " " + offline_launch_params);
+			Print("OFFLINE: " + game_exe + " " + offline_launch_params);
 			Workbench.RunCmd(game_exe + " " + offline_launch_params);
 		}
 	}
