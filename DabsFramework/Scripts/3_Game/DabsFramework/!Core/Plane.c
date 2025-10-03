@@ -24,7 +24,7 @@ class Plane: Managed
 	vector GetAside()
 	{
 		vector normal = Normal.Normalized();
-		if (Math.AbsFloat(vector.Dot(vector.Up, normal)) - 1.0 <= Math.EPSILON) {
+		if (Math.AbsFloat(vector.Dot(vector.Up, normal)) > 0.99) {
 			return normal * vector.Aside;
 		} else {
 			return normal * vector.Up;
