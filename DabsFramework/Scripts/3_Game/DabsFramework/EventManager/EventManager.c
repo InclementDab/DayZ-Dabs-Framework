@@ -147,13 +147,14 @@ class EventManager
 			EventManagerLog.Info(this, "Failed to start event %1", event_type.ToString());
 			return null;
 		}
+				
+		// event_id. should be index 0 if MaxEventsCount() doesnt return greater than 1. unless another event was ran by force=true
+		int event_id = m_AmountOfEventsRan[event_type];
 		
 		// increment the amount of these events ran
 		m_AmountOfEventsRan[event_type] = m_AmountOfEventsRan[event_type] + 1;
 		
-		// event_id is ALWAYS 0 when parallel events are disallowed
-		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
-		if (m_ActiveEvents[event_type].CountActive() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
+		if (m_ActiveEvents[event_type].CountActive() >= event_base.MaxEventCount() && !force) { 
 			EventManagerLog.Info(this, "Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
 			return null;
 		}
@@ -167,7 +168,7 @@ class EventManager
 		}
 		
 		if (!event_base.EventActivateCondition() && !force) {
-			EventManagerLog.Info(this, "Could not run %1, failed ActivateCondition", event_type.ToString());
+			EventManagerLog.Info(this, "Could not run %1, failed  ", event_type.ToString());
 			return null;
 		}
 		
