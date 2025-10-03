@@ -11,7 +11,7 @@ class Ray: Managed
 	
 	static Ray FromPoints(vector start, vector end)
 	{
-		return new Ray(start, vector.Direction(start, end));
+		return new Ray(start, (end - start).Normalized());
 	}
 	
 	vector GetPoint(float distance)
@@ -89,7 +89,7 @@ class Ray: Managed
 			return null;
 		}
 			
-		raycast.Bounce = new Ray(result.pos, result.dir);
+		raycast.Bounce = new Ray(result.pos, result.dir.Normalized());
 		raycast.HitComponent = result.component;
 		raycast.Hit = result.obj;
 		return raycast;
@@ -141,10 +141,37 @@ class Ray: Managed
 		//Shape.CreateArrow(Position, GetPoint(0.5), 1.0, color, flags);		
 		//Debug.DrawArrow(, 0.5, color, flags);
 #ifdef DIAG_DEVELOPER
-		Shape shape = Debug.DrawLine(Position, Position + Direction * length, color, flags);
+		vector camera_direction = GetGame().GetCurrentCameraDirection();
+		
+		vector perpend;
+		if (Math.AbsFloat(vector.Dot(Direction, camera_direction)) > 0.999) {
+			perpend = Direction * (camera_direction * vector.Aside);
+		} else {
+			perpend = Direction * camera_direction;
+		}
+		
+		perpend.Normalize();
+		
+		vector end = GetPoint(length);
+		vector lines[3] = {
+			Position, end
+		};
+		
+		Shape shape = Shape.CreateLines(color, flags, lines, 2);
 		Debug.AddShape(shape, flags);
 		
-		shape = Debug.DrawSphere(Position, 0.01, color, flags);
+		lines = {
+			Position + perpend * 0.1 * length, Position - perpend * 0.1 * length
+		};
+		
+		shape = Shape.CreateLines(color, flags, lines, 2);
+		Debug.AddShape(shape, flags);
+		
+		lines = {
+			end + perpend * length * 0.1 - Direction * length * 0.1, end, end - perpend * length * 0.1 - Direction * length * 0.1
+		};
+		
+		shape = Shape.CreateLines(color, flags, lines, 3);
 		Debug.AddShape(shape, flags);
 #endif
 		
