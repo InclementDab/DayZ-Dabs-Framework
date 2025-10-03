@@ -33,22 +33,29 @@ class Raycast: Managed
 		Math3D.DirectionAndUpMatrix(perpend, Source.Direction, dir_and_up);
 		dir_and_up[3] = Source.Position + Source.Direction * length * 0.5;
 		
-		Source.Debug(length / 2, LinearColor.BLUE, flags);
-		Bounce.Debug(length / 2, LinearColor.GREEN, flags);
-		
 		Shape shape;// = Shape.CreateSphere(LinearColor.BLUE, flags, Bounce.Position, 0.1);
 		//Debug.AddShape(shape, flags);
 		//shape = Shape.CreateSphere(LinearColor.RED, flags, Source.Position, 0.1);
 		//Debug.AddShape(shape, flags);
 		
-		shape = Shape.CreateCylinder(color, flags, vector.Zero, Radius, length);
+		shape = Shape.CreateCylinder(color, flags, vector.Zero, 0.001, length);
 		shape.SetMatrix(dir_and_up);
 		Debug.AddShape(shape, flags);
 		
 		if (Hit) {
-			shape = Shape.CreateSphere(LinearColor.BLUE, flags | ShapeFlags.NOZBUFFER, Bounce.Position, Radius / 2);
+			dir_and_up[3] = Bounce.GetPoint(Radius);
+			shape = Shape.CreateSphere(color, flags, vector.Zero, Radius);
+			shape.SetMatrix(dir_and_up);
 			Debug.AddShape(shape, flags);
+			
+			
+			//shape = Shape.CreateSphere(LinearColor.BLUE, flags | ShapeFlags.NOZBUFFER, Bounce.Position, Radius / 2);
+			//Debug.AddShape(shape, flags);
 		}
+		
+				
+		Source.Debug(length, LinearColor.BLUE, flags | ShapeFlags.NOZBUFFER);
+		Bounce.Debug(length, LinearColor.GREEN, flags | ShapeFlags.NOZBUFFER);
 #endif
 	}
 	
