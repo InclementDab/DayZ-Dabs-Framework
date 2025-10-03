@@ -36,7 +36,7 @@ class LaunchSettings: SerializableBase
 	static const string CLIENT_PROFILE_NAME = "client";
 	static const string CLIENT2_PROFILE_NAME = "client2";
 	static const string SERVER_PROFILE_NAME = "server";
-	static const string BASE_LAUNCH_PARAMS = "-newErrorsAreWarnings=1 -doLogs -adminlog -scriptDebug=true -profile -resizeable -no_preload_vehicles -idleRender -scrDef=ENABLE_LOGGING -nopause -window -nosplash";
+	static const string BASE_LAUNCH_PARAMS = "-newErrorsAreWarnings=1 -doLogs -adminlog -scriptDebug=true -profile -resizeable -no_preload_vehicles -idleRender -scrDef=ENABLE_LOGGING -nopause -nosplash";
 	
 	protected string m_CurrentFileLocation;
 	
