@@ -148,8 +148,13 @@ class PluginLaunchGameBase: PluginProject
 			}
 		}
 		
+		string mission_folder_name = m_ProjectSettings["MissionDir"];
+		if (!mission_folder_name) {
+			mission_folder_name = "Missions";
+		}
+		
 		// Copy raw CLE files
-		string repository_mission = string.Format("%1\\Missions\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map);
+		string repository_mission = string.Format("%1\\%4\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map, mission_folder_name);
 		if (FileExist(string.Format("%1\\ce", repository_mission))) {
 			array<string> map_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\map", repository_mission), "*.map");
 			if (map_exports.Count() == 1) {
@@ -194,7 +199,7 @@ class PluginLaunchGameBase: PluginProject
 		CleanLogFolder(client_profile_directory);
 		CleanLogFolder(client2_profile_directory);
 		CleanLogFolder(server_profile_directory);
-				
+		
 		// Copy maps and mission info
 		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client2_profile_directory);
@@ -204,9 +209,9 @@ class PluginLaunchGameBase: PluginProject
 			CopyFiles(string.Format("%1\\Profiles\\%2", launch_settings.Repository, m_ProjectSettings["Profile"]), server_profile_directory);
 		}
 		
-		CopyFiles(string.Format("%1\\Missions\\%3.%2", launch_settings.Repository, launch_settings.Map, mod_prefix), server_mission);
-		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
-		CopyFiles(string.Format("%1\\Missions\\Dev", launch_settings.Repository), server_mission);
+		CopyFiles(string.Format("%1\\%4\\%3.%2", launch_settings.Repository, launch_settings.Map, mod_prefix, mission_folder_name), server_mission);
+		CopyFiles(string.Format("%1\\%2\\Global", launch_settings.Repository, mission_folder_name), server_mission);
+		CopyFiles(string.Format("%1\\%2\\Dev", launch_settings.Repository, mission_folder_name), server_mission);
 		
 		string client_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client_profile_directory, launch_settings.Name);
 		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client2_profile_directory, launch_settings.Name + " (1)");
