@@ -358,6 +358,10 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void CopyFiles(string source, string destination)
 	{	
+		if (!File.Exists(source)) {
+			return;
+		}
+		
 		string filename;
 		FileAttr fileattr;
 		FindFileHandle hdnl = FindFile(source + SystemPath.SEPERATOR + "*", filename, fileattr, FindFileFlags.ALL);

@@ -155,7 +155,7 @@ class PluginLaunchGameBase: PluginProject
 		
 		// Copy raw CLE files
 		string repository_mission = string.Format("%1\\%4\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map, mission_folder_name);
-		if (FileExist(string.Format("%1\\ce", repository_mission))) {
+		if (File.Exists(string.Format("%1\\ce", repository_mission))) {
 			array<string> map_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\map", repository_mission), "*.map");
 			if (map_exports.Count() == 1) {
 				DeleteFile(string.Format("%1\\areaflags.map", repository_mission));
