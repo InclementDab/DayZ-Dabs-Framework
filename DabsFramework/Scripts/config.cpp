@@ -18,6 +18,10 @@ class CfgMods
 		creditsJson = "DabsFramework/Scripts/Credits.json";
 		versionPath = "DabsFramework/Scripts/Version.hpp";
 		type = "mod";
+        defines[] = { 
+			//"DF_MISSION_FRAMEWORK"
+		};
+
 		dependencies[] =
 		{
 			"Game", "World", "Mission"
@@ -47,7 +51,6 @@ class CfgMods
 
 			class engineScriptModule
 			{
-				value = "";
 				files[] =
 				{
 					"DabsFramework/scripts/1_core"
@@ -56,7 +59,6 @@ class CfgMods
 
 			class gameLibScriptModule
 			{
-				value="";
 				files[]=
 				{
 					"DabsFramework/scripts/2_GameLib"
@@ -65,7 +67,6 @@ class CfgMods
 
 			class gameScriptModule
 			{
-				value="";
 				files[] = 
 				{
 					"DabsFramework/scripts/3_Game"
@@ -73,7 +74,6 @@ class CfgMods
 			};
 			class worldScriptModule
 			{
-				value="";
 				files[] = 
 				{
 					"DabsFramework/scripts/4_World"
@@ -82,7 +82,7 @@ class CfgMods
 
 			class missionScriptModule 
 			{
-				value="";
+				//value="CreateMissionWithHandler";
 				files[] = 
 				{
 					"DabsFramework/scripts/5_Mission"
