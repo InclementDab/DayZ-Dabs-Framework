@@ -1,9 +1,18 @@
+enum ESymbolSize
+{
+	THIN = 0,
+	LIGHT = 1,
+	REGULAR = 2,
+	SOLID = 3
+}
+
 class SymbolSize: string
 {
-	static const int IDX_THIN = 0;
-	static const int IDX_LIGHT = 1;
-	static const int IDX_REGULAR = 2;
-	static const int IDX_SOLID = 3;
+	// Legacy
+	static const ESymbolSize IDX_THIN = ESymbolSize.THIN;
+	static const ESymbolSize IDX_LIGHT = ESymbolSize.LIGHT;
+	static const ESymbolSize IDX_REGULAR = ESymbolSize.REGULAR;
+	static const ESymbolSize IDX_SOLID = ESymbolSize.SOLID;
 	
 	static const SymbolSize THIN = "set:thin";
 	static const SymbolSize LIGHT = "set:light";
