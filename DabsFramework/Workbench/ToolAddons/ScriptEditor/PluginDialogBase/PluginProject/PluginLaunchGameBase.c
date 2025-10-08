@@ -218,6 +218,8 @@ class PluginLaunchGameBase: PluginProject
 		string server_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server -port=%6", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, launch_settings.Port);
 		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);		
 		
+		offline_launch_params += " -offline";
+		
 		string ip, password;
 		int port;
 		array<string> args;
