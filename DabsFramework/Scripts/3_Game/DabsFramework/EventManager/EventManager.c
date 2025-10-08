@@ -14,8 +14,8 @@
 class EventManager
 {			
 	// Enable / Disable the multiple event system
-	protected int m_MaxEventCount, m_EventFreqMin, m_EventFreqMax;
-	protected float m_NextEventIn;
+	protected int m_MaxEventCount;
+	protected float m_NextEventIn, m_EventFreqMin, m_EventFreqMax;
 	protected typename m_LastEventType;
 	
 	//				 EVRStorm
@@ -55,14 +55,15 @@ class EventManager
 	/*
 		Run this in your init.c
 	
-		0 (int): Minimum time between events
-		1 (int): Maximum time between events
+		0 (float): Minimum time between events
+		1 (float): Maximum time between events
 		2 (int): Maximum amount of parallel events
 	*/
-	void Run(int min_between_events = 550, int max_between_events = 3500, int max_event_count = 2)
-	{
+	void Run(float min_between_events = 550, float max_between_events = 3500, int max_event_count = 2)
+	{			
 		EventManagerLog.Info(this, "Initializing Event Manager");
 		m_MaxEventCount = max_event_count;
+		
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
 				
@@ -76,7 +77,7 @@ class EventManager
 	}
 	
 	void OnUpdate(float dt)
-	{
+	{		
 		// Not initialized, dont run
 		if (m_MaxEventCount != 0 && m_PossibleEventTypes.Count() != 0) {
 			foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
