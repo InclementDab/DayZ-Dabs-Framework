@@ -84,7 +84,7 @@ class File: FileSystem
     {
         array<string> result = {};
         if (!File.Exists(file)) {
-            ErrorEx(string.Format("File not found %1", file));
+            //ErrorEx(string.Format("File not found %1", file));
             return result;
         }
 
