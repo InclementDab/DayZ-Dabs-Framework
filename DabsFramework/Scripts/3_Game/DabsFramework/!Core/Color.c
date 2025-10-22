@@ -423,7 +423,7 @@ class LinearColor: int
 		SetBlue(Math.Clamp(value.GetBlue(), min, max));
 	}
 
-	string ToHex()
+	string ToHexColor()
 	{
 		return Encoding.ToHex(value, 8);
 	}
