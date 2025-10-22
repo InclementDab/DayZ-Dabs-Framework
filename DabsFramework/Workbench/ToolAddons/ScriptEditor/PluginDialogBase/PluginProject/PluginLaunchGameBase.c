@@ -74,6 +74,7 @@ class PluginLaunchGameBase: PluginProject
 				
 		if (launch_settings.AutoClose) {
 			KillTask(launch_settings.GetExecutableName());
+			KillTask("CrashReporter.exe");
 		}
 		
 		// Set up symlinks so game can launch with our cwd
