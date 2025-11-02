@@ -304,7 +304,8 @@ class QuickView<Class T>: ScriptView
 	
 	void QuickView()
 	{
-		if (!T.IsInherited(Widget)) {
+		typename t = T;
+		if (!t.IsInherited(Widget)) {
 			ErrorEx("QuickView template type must inherit Widget");
 			return;
 		}
