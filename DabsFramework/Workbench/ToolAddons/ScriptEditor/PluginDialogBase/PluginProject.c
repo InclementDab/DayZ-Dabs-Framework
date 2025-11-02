@@ -17,6 +17,13 @@ class PluginProject: PluginDialogBase
 	
 	void PluginProject()
 	{
+
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_dir = GetCurrentDirectory();
 		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));

@@ -3,6 +3,12 @@ class PluginOpenDirectory: PluginDialogBase
 {
 	void PluginOpenDirectory()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_directory = GetDirectory(GetAbsolutePath(current_file));

@@ -14,6 +14,19 @@ class PluginNewFile: PluginDialogBase
 	
 	void PluginNewFile()
 	{		
+	}
+	
+	void ~PluginNewFile()
+	{
+		if (m_FinalFileName != string.Empty) {
+			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
+		}
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file_relative;
 		if (!m_ScriptEditor.GetCurrentFile(current_file_relative)) {
 			Error("Failed to acquire current file");
@@ -40,13 +53,6 @@ class PluginNewFile: PluginDialogBase
 		}
 		
 		Workbench.ScriptDialog("New File", DIALOG_TAB_SIZE, this);
-	}
-	
-	void ~PluginNewFile()
-	{
-		if (m_FinalFileName != string.Empty) {
-			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
-		}
 	}
 	
 	[ButtonAttribute("OK", true)]

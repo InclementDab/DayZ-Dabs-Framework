@@ -12,11 +12,17 @@ class PluginJoinRemote: PluginLaunchGameBase
 	
 	void PluginJoinRemote()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		Address = m_LaunchSettings.JoinAddress;
 		Port = m_LaunchSettings.Port;
 		Password = m_LaunchSettings.JoinPassword;
 		
-		Workbench.ScriptDialog("Join Remote", DIALOG_TAB_SIZE, this);		
+		Workbench.ScriptDialog("Join Remote", DIALOG_TAB_SIZE, this);
 	}
 	
 	[ButtonAttribute("Join", true)]

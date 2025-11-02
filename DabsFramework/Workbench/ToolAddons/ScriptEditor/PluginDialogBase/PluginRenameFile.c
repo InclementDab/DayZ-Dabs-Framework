@@ -8,6 +8,19 @@ class PluginRenameFile: PluginDialogBase
 	
 	void PluginRenameFile()
 	{
+	}
+	
+	void ~PluginRenameFile()
+	{
+		if (m_FinalFileName != string.Empty) {
+			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
+		}
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_file = GetAbsolutePath(current_file);
@@ -16,13 +29,6 @@ class PluginRenameFile: PluginDialogBase
 		FileName = file_name;
 		
 		Workbench.ScriptDialog("Rename File", DIALOG_TAB_SIZE, this);
-	}
-	
-	void ~PluginRenameFile()
-	{
-		if (m_FinalFileName != string.Empty) {
-			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
-		}
 	}
 	
 	[ButtonAttribute("Ok", true)]

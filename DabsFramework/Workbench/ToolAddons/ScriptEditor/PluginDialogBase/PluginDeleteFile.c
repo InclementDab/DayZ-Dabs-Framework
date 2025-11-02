@@ -5,6 +5,12 @@ class PluginDeleteFile: PluginDialogBase
 	
 	void PluginDeleteFile() 
 	{	
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file_relative;
 		if (!m_ScriptEditor.GetCurrentFile(current_file_relative)) {
 			Error("Failed to acquire current file");
