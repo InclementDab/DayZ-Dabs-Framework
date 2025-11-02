@@ -75,7 +75,7 @@ class Ray: Managed
 		
 		RaycastRVParams raycast_params = new RaycastRVParams(Position, Position + Direction.Normalized() * distance);
 		raycast_params.radius = radius;
-		raycast_params.flags = CollisionFlags.NEARESTCONTACT;
+		raycast_params.flags = CollisionFlags.FIRSTCONTACT;
 		raycast_params.type = interaction_type;
 		raycast_params.groundOnly = ground_only;
 		raycast_params.sorted = true;
