@@ -61,7 +61,9 @@ class ProfileSettings: Class
 				
 				// known bug: you cant have default values for array types yet, since ctor order is whackadoodle
 				case String("array<string>").ToType(): {
-					EnScript.SetClassVar(this, variable_name, 0, g_Game.GetProfileStringList(variable_name_formatted, EnScriptVar<array<string>>.Get(this, variable_name)));
+					array<string> current_value_array = EnScriptVar<array<string>>.Get(this, variable_name);
+					g_Game.GetProfileStringList(variable_name_formatted, current_value_array);
+					EnScript.SetClassVar(this, variable_name, 0, current_value_array);
 					break;
 				}
 				
