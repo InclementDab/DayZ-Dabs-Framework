@@ -8,12 +8,13 @@ class PluginNewFile: PluginDialogBase
 	string FileName;
 	
 	[Attribute("Managed", "editbox", "Parent class type")]
-	string Parent = "Managed";
+	string Parent;
 		
 	protected string m_FinalFileName;
 	
 	void PluginNewFile()
 	{		
+		Parent = "Managed";
 	}
 	
 	void ~PluginNewFile()
