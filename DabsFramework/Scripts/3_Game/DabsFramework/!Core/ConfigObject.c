@@ -19,13 +19,16 @@ class ConfigObject: Managed
 			}
 			
 			string config_entry = string.Format("%1 %2", path, config_entry_attribute.GetVariableName());			
-			
 			string variable_name = config_entry_attribute.Field.Name;
 			typename variable_type = config_entry_attribute.GetVariableType();
 			
 			switch (variable_type) {
-				case bool:
-				case int: {
+				case bool: {
+					EnScriptVar<bool>.Set(this, variable_name, GetGame().ConfigGetInt(config_entry));
+					break;
+				}
+				
+				case int: {					
 					EnScriptVar<int>.Set(this, variable_name, GetGame().ConfigGetInt(config_entry));
 					break;
 				}
