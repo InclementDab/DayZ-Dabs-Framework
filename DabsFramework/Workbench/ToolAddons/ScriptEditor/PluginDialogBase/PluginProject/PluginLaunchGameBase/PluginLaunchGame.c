@@ -3,6 +3,12 @@ class PluginLaunchGame: PluginLaunchGameBase
 {
 	void PluginLaunchGame()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		KillTask(m_LaunchSettings.Executable);
 		LaunchGame(m_LaunchSettings);
 	}
