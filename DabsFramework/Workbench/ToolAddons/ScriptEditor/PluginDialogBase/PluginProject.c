@@ -17,13 +17,6 @@ class PluginProject: PluginDialogBase
 	
 	void PluginProject()
 	{
-
-	}
-	
-	override void Run()
-	{
-		super.Run();
-		
 		string current_dir = GetCurrentDirectory();
 		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
@@ -99,7 +92,7 @@ class PluginProject: PluginDialogBase
 		string game_directory_stable = GetDayZDirectory(m_LaunchSettings, DayZEnvironmentType.STABLE);
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
 	}
-				
+					
 	protected bool LoadConfig(string file, inout map<string, string> settings)
 	{
 		if (!FileExist(file)) {
