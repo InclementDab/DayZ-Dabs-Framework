@@ -8,6 +8,7 @@ class PluginLaunchGameBase: PluginProject
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetDayZDirectory(launch_settings);		
 		string game_exe = game_directory + SystemPath.SEPERATOR + launch_settings.Executable;
+		string mission_name = mod_prefix;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
@@ -155,7 +156,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		// Copy raw CLE files
-		string repository_mission = string.Format("%1\\%4\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map, mission_folder_name);
+		string repository_mission = string.Format("%1\\%4\\%2.%3", launch_settings.Repository, mission_name, launch_settings.Map, mission_folder_name);
 		if (File.Exists(string.Format("%1\\ce", repository_mission))) {
 			array<string> map_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\map", repository_mission), "*.map");
 			if (map_exports.Count() == 1) {
@@ -176,7 +177,7 @@ class PluginLaunchGameBase: PluginProject
 		string client_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT_PROFILE_NAME);
 		string client2_profile_directory  = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT2_PROFILE_NAME);
 		string server_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.SERVER_PROFILE_NAME);		
-		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mod_prefix, launch_settings.Map);
+		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mission_name, launch_settings.Map);
 		
 		// Make the folders if they dont exist yet
 		MakeDirectory(client_profile_directory);
@@ -204,13 +205,17 @@ class PluginLaunchGameBase: PluginProject
 		// Copy maps and mission info
 		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client2_profile_directory);
+		
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), client_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), client2_profile_directory);
+		
 		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
 		if (m_ProjectSettings["Profile"] != string.Empty) {
 			CopyFiles(string.Format("%1\\Profiles\\%2", launch_settings.Repository, m_ProjectSettings["Profile"]), server_profile_directory);
 		}
 		
-		CopyFiles(string.Format("%1\\%4\\%3.%2", launch_settings.Repository, launch_settings.Map, mod_prefix, mission_folder_name), server_mission);
+		CopyFiles(string.Format("%1\\%4\\%3.%2", launch_settings.Repository, launch_settings.Map, mission_name, mission_folder_name), server_mission);
 		CopyFiles(string.Format("%1\\%2\\Global", launch_settings.Repository, mission_folder_name), server_mission);
 		CopyFiles(string.Format("%1\\%2\\Dev", launch_settings.Repository, mission_folder_name), server_mission);
 		
