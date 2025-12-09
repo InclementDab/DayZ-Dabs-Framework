@@ -144,9 +144,19 @@ class PluginLaunchGameBase: PluginProject
 		array<string> server_mod_list = {};
 		m_ProjectSettings["ServerMods"].Split(";", server_mod_list);
 		for (int j = 0; j < server_mod_list.Count(); j++) {
-			formatted_server_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+			if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
+				// introducing a bug idc. 
+				formatted_mod_list += ";" + launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+			} else {
+				formatted_server_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+			}
+			
 			if (j != server_mod_list.Count() - 1) {
-				formatted_server_mod_list += ";";
+				if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
+					formatted_mod_list += ";";
+				} else {
+					formatted_server_mod_list += ";";
+				}
 			}
 		}
 		
