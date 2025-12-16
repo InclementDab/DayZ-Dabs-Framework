@@ -38,6 +38,41 @@ class Ray: Managed
 		return raycast;
 	}
 	
+	// Raycast bullet that supports multiple ignores
+	Raycast PerformRaycastMulti(array<Object> ignores = null, float distance = 1000.0, PhxInteractionLayers layers = -1)
+	{
+		Ray output_ray = new Ray();
+		
+		Raycast raycast = new Raycast();
+		raycast.Source = this;
+		raycast.Bounce = output_ray;
+		raycast.Distance = distance;
+#ifdef DIAG_DEVELOPER
+		raycast.Radius = 0.01; // Bullet has no radius. Arbitrary
+#endif	
+		float fraction;
+
+		vector position = Position;
+		Object ignore = null;		
+		while (DayZPhysics.RayCastBullet(position, position + Direction.Normalized() * distance, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {
+			if (!ignores || ignores.Find(raycast.Hit) == -1) {
+				return raycast;
+			}
+			
+			distance -= vector.Distance(position, output_ray.Position);
+			
+			// incase we've somehow reached the end of the rainbow
+			if (distance <= Math.EPSILON) {
+				return raycast;
+			}
+			
+			ignore = raycast.Hit;
+			position = output_ray.Position;
+		}
+		
+		return null;
+	}
+	
 	Raycast PerformRaycastSphere(float radius, Object ignore = null, float distance = 1000.0, PhxInteractionLayers layers = -1)
 	{
 		Ray output_ray = new Ray();
@@ -96,20 +131,14 @@ class Ray: Managed
 	}
 	
 	Raycast PerformRaycastRV(Object ignore = null, Object with = null, float radius = 0.0, float distance = 1000.0, int interaction_type = ObjIntersectView, bool ground_only = false)
-	{
-		set<Object> rv_results = new set<Object>();
-		int hit_component;
-		
+	{		
 		Raycast raycast = new Raycast();
 		raycast.Source = this;	
 		raycast.Distance = distance;
 #ifdef DIAG_DEVELOPER
 		raycast.Radius = radius;
 #endif
-		
-		vector direction;
-		vector position;
-		
+				
 		RaycastRVParams raycast_params = new RaycastRVParams(Position, Position + Direction.Normalized() * distance);
 		raycast_params.ignore = ignore;
 		raycast_params.with = with;
