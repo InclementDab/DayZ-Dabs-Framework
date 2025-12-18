@@ -14,8 +14,8 @@
 class EventManager
 {			
 	// Enable / Disable the multiple event system
-	protected int m_MaxEventCount, m_EventFreqMin, m_EventFreqMax;
-	protected float m_NextEventIn;
+	protected int m_MaxEventCount;
+	protected float m_NextEventIn, m_EventFreqMin, m_EventFreqMax;
 	protected typename m_LastEventType;
 	
 	//				 EVRStorm
@@ -55,14 +55,15 @@ class EventManager
 	/*
 		Run this in your init.c
 	
-		0 (int): Minimum time between events
-		1 (int): Maximum time between events
+		0 (float): Minimum time between events
+		1 (float): Maximum time between events
 		2 (int): Maximum amount of parallel events
 	*/
-	void Run(int min_between_events = 550, int max_between_events = 3500, int max_event_count = 2)
-	{
+	void Run(float min_between_events = 550, float max_between_events = 3500, int max_event_count = 2)
+	{			
 		EventManagerLog.Info(this, "Initializing Event Manager");
 		m_MaxEventCount = max_event_count;
+		
 		m_EventFreqMin = min_between_events;
 		m_EventFreqMax = max_between_events;
 				
@@ -76,32 +77,30 @@ class EventManager
 	}
 	
 	void OnUpdate(float dt)
-	{
+	{		
 		// Not initialized, dont run
-		if (m_MaxEventCount == 0 || m_PossibleEventTypes.Count() == 0) {
-			return;
-		}
-		
-		foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
-			m_EventCooldowns[event_type] = m_EventCooldowns[event_type] - dt;
-			if (m_EventCooldowns[event_type] <= 0) {
-				m_EventCooldowns.Remove(event_type);
+		if (m_MaxEventCount != 0 && m_PossibleEventTypes.Count() != 0) {
+			foreach (typename event_type, float event_cooldown: m_EventCooldowns) {
+				m_EventCooldowns[event_type] = m_EventCooldowns[event_type] - dt;
+				if (m_EventCooldowns[event_type] <= 0) {
+					m_EventCooldowns.Remove(event_type);
+				}
 			}
-		}
-		
-		m_NextEventIn -= dt;
-		if (m_NextEventIn <= 0) {
-			EventManagerLog.Info(this, "Trying to select a new event...");												
-			// Just a quick check to make sure we dont run the same event twice
-			typename current_type = GetRandomEvent();			
-			m_LastEventType = current_type;
 			
-			//! Start new event
-			StartEvent(current_type);
-			
-			//! Rounding next event time, shouldnt cause issues our numbers arent huge
-			m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
-			EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
+			m_NextEventIn -= dt;
+			if (m_NextEventIn <= 0) {
+				EventManagerLog.Info(this, "Trying to select a new event...");												
+				// Just a quick check to make sure we dont run the same event twice
+				typename current_type = GetRandomEvent();			
+				m_LastEventType = current_type;
+				
+				//! Start new event
+				StartEvent(current_type);
+				
+				//! Rounding next event time, shouldnt cause issues our numbers arent huge
+				m_NextEventIn = Math.RandomFloat(m_EventFreqMin, m_EventFreqMax);
+				EventManagerLog.Info(this, "Next selection will occur in %1 seconds", m_NextEventIn.ToString());
+			}
 		}
 	}
 	
@@ -149,13 +148,14 @@ class EventManager
 			EventManagerLog.Info(this, "Failed to start event %1", event_type.ToString());
 			return null;
 		}
+				
+		// event_id. should be index 0 if MaxEventsCount() doesnt return greater than 1. unless another event was ran by force=true
+		int event_id = m_AmountOfEventsRan[event_type];
 		
 		// increment the amount of these events ran
 		m_AmountOfEventsRan[event_type] = m_AmountOfEventsRan[event_type] + 1;
 		
-		// event_id is ALWAYS 0 when parallel events are disallowed
-		int event_id = m_AmountOfEventsRan[event_type] * (event_base.MaxEventCount() > 1);
-		if (m_ActiveEvents[event_type].Count() >= event_base.MaxEventCount()) {  // do not put force here, even FORCE wont allow multiple events to be run
+		if (m_ActiveEvents[event_type].CountActive() >= event_base.MaxEventCount() && !force) { 
 			EventManagerLog.Info(this, "Could not start %1 as the max amount of events for this type has been achieved (%2)", event_type.ToString(), event_base.MaxEventCount().ToString());
 			return null;
 		}
@@ -169,7 +169,7 @@ class EventManager
 		}
 		
 		if (!event_base.EventActivateCondition() && !force) {
-			EventManagerLog.Info(this, "Could not run %1, failed ActivateCondition", event_type.ToString());
+			EventManagerLog.Info(this, "Could not run %1, failed  ", event_type.ToString());
 			return null;
 		}
 		
@@ -196,14 +196,17 @@ class EventManager
 		}
 		
 		// set to discard, its really this simple :)
-		event_base.SwitchPhase(EventPhase.DELETE);
+		if (event_base) {
+			event_base.SwitchPhase(EventPhase.DELETE);
+		}
+		
 		return true;
 	}
 	
 	void DeleteEvent(EventBase event_base)
 	{
-		EventManagerLog.Debug(this, "Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
 		if (m_ActiveEvents && m_ActiveEvents[event_base.Type()]) {
+			EventManagerLog.Debug(this, "Deleting %1, idx: %2", event_base.Type().ToString(), event_base.GetID().ToString());
 			m_ActiveEvents[event_base.Type()].Remove(event_base.GetID());
 		}
 	}
@@ -233,7 +236,6 @@ class EventManager
 				if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {
 					string str_event_type;
 					if (!ctx.Read(str_event_type)) {
-						Print(str_event_type);
 						break;
 					}
 					

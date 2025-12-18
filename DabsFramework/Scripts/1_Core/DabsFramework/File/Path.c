@@ -1,5 +1,11 @@
 class SystemPath
 {	
+	const string SEPERATOR = "\\";
+	const string SEPERATOR_ALT = "/";
+    const int MAX_SHORT_PATH = 260;
+	
+	/*
+	// As of 1.29 Exp, Defines are broken in WB 1_Core. Hopefully fixed by stable
 #ifdef PLATFORM_WINDOWS
 	const string SEPERATOR = "\\";
 #else
@@ -16,7 +22,7 @@ class SystemPath
     const int MAX_SHORT_PATH = 260;
 #else
     const int MAX_SHORT_PATH = 4096;
-#endif
+#endif*/
 
 	const string VOLUME_PREFIX = "$";
 	const string VOLUME_SEPERATOR = ":";

@@ -1,99 +1,65 @@
 class Plane: Managed
 {	
-	vector Corner[2], Normal, Aside;
+	vector Position, Normal;
 	
-	void Plane(vector corner0, vector corner1, vector normal, vector aside)
+	void Plane(vector position = vector.Zero, vector normal = vector.Up)
 	{
-		Corner[0] = corner0;
-		Corner[1] = corner1;
-		Normal = normal.Normalized();
-		Aside = aside.Normalized();
-		if (vector.Dot(Normal, Aside) != 0) {
-			//Error("Non orthongonal basis vectors used");
-			return;
-		}
+		Position = position;
+		Normal = normal;
 	}
-		
-	static Plane Create(vector normal, vector size, vector position, vector aside)
+			
+	void ToMatrix(out vector mat[4])
 	{
-		if (vector.Dot(normal, aside) != 0) {
-			PrintFormat("Non orthongonal basis vectors used %1", vector.Dot(normal, aside));
-		}
-		
-		vector matrix[3];
-		Math3D.DirectionAndUpMatrix(aside, normal, matrix);
-		size = size * 0.5;
-		size[2] = 0;
-		vector corner0 = size.Multiply3(matrix);
-		vector corner1 = (-size).Multiply3(matrix);
-				
-		return new Plane(corner0, corner1, normal, aside);
-	}
-	
-	void Multiply4(vector mat[4])
-	{
-		Corner[0] = Corner[0].Multiply4(mat);
-		Corner[1] = Corner[1].Multiply4(mat);
-		Normal = Normal.Multiply3(mat);
-		Aside = Aside.Multiply3(mat);
-	}
-	
-	void Multiply3(vector mat[3])
-	{
-		Corner[0] = Corner[0].Multiply3(mat);
-		Corner[1] = Corner[1].Multiply3(mat);
-		Normal = Normal.Multiply3(mat);
-		Aside = Aside.Multiply3(mat);
-	}
-	
-	void CreateMatrix(out vector mat[4])
-	{
+		vector aside = GetAside();
 		mat = {
-			Aside,
+			aside,
 			Normal,
-			Aside * Normal,
-			(Corner[0] + Corner[1]) * 0.5
+			aside * Normal,
+			Position
 		};
 				
 		Math3D.MatrixOrthogonalize4(mat);
 	}
 	
-	vector GetPosition()
+	vector GetAside()
 	{
-		return (Corner[0] + Corner[1]) * 0.5;
+		vector normal = Normal.Normalized();
+		if (Math.AbsFloat(vector.Dot(vector.Up, normal)) > 0.99) {
+			return normal * vector.Aside;
+		} else {
+			return normal * vector.Up;
+		}
 	}
-	
-	vector GetSize()
-	{
-		return (Corner[1] - Corner[0]) * 0.5;
-	}
-	
-	vector Intersect(notnull Ray source, vector mat[4])
+		
+	vector Intersect(notnull Ray source)
     {
-        float d1 = vector.Dot(Normal.Multiply3(mat), source.Position - GetPosition().Multiply4(mat));
-		float d2 = vector.Dot(Normal.Multiply3(mat), -source.Direction);
+		vector intersection = vector.Zero;
+        IntersectEx(source, intersection);
+		return intersection;
+    }
+	
+	bool IntersectEx(notnull Ray source, out vector intersection)
+	{
+		float d1 = vector.Dot(Normal, source.Position - Position);
+		float d2 = vector.Dot(Normal, -source.Direction);
 		if (d2 == 0) {
-			return mat[3];
+			return false;
 		}
 		
-        return source.Position + (d1 / d2) * source.Direction;
-    }
+        intersection = source.Position + (d1 / d2) * source.Direction;
+		return true;
+	}
 
-	void Debug(vector mat[4], LinearColor color = COLOR_RED_A, ShapeFlags flags = ShapeFlags.ONCE)
-	{		
+	void Debug(float size = 1, LinearColor color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP | ShapeFlags.ADDITIVE)
+	{
+#ifdef DIAG_DEVELOPER
 		vector plane_matrix[4];
-		CreateMatrix(plane_matrix);
+		ToMatrix(plane_matrix);
 		
-		Math3D.MatrixMultiply4(mat, plane_matrix, plane_matrix);
-		
-		Shape.CreateMatrix(plane_matrix);
-		vector p[2] = { Corner[0].Multiply4(mat), Corner[1].Multiply4(mat) };
-		Shape.CreateLines(color.With(3, 255), flags, p, 2);
-		
-		//Shape bbox = Shape.Create(ShapeType.BBOX, color, flags, Corner[0], Corner[1]);
-		//bbox.SetMatrix(mat);
-		
-		//Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[0].Multiply4(mat), 0.05);
-		//Shape.CreateSphere(LinearColor.PALE_GREEN, ShapeFlags.DOUBLESIDE | ShapeFlags.ONCE, Corner[1].Multiply4(mat), 0.05);
+		Shape.CreateMatrix(plane_matrix);		
+		Shape bbox = Shape.Create(ShapeType.BBOX, color, flags, Vector(1, 0, 1) * size, Vector(-1, 0, -1) * size);
+		bbox.SetMatrix(plane_matrix);
+		Debug.AddShape(bbox, flags);
+#endif
 	}
 }

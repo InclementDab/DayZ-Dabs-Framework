@@ -14,6 +14,17 @@ class File: FileSystem
 		return path_split[path_split.Count() - 1];
 	}
 	
+	static string GetNameWithoutExtension(string file)
+	{
+		string file_name = File.GetName(file);
+		int last_period = file_name.LastIndexOf(".");
+		if (last_period < 0) {
+			return file_name;
+		}
+		
+		return file_name.Substring(0, last_period);
+	}
+	
 	static string GetExtension(string file)
 	{
 		for (int i = file.Length(); --i >= 0; ) {
@@ -73,7 +84,7 @@ class File: FileSystem
     {
         array<string> result = {};
         if (!File.Exists(file)) {
-            ErrorEx(string.Format("File not found %1", file));
+            //ErrorEx(string.Format("File not found %1", file));
             return result;
         }
 
@@ -128,6 +139,11 @@ class File: FileSystem
 
     static bool Exists(string file)
     {
+		// Fixes a weird bug where FileExist("") returns true
+		if (file == string.Empty) {
+			return false;
+		}
+		
         return FileExist(file);
     }
 }

@@ -3,6 +3,12 @@ class PluginOpenInCode: PluginDialogBase
 {
 	void PluginOpenInCode()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_directory = GetAbsolutePath(current_file);

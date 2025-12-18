@@ -3,6 +3,10 @@ class PluginKillGame: PluginDialogBase
 {
 	void PluginKillGame()
 	{
+	}
+	
+	override void Run()
+	{
 		string current_dir = GetCurrentDirectory();
 		LaunchSettings launch_settings = LaunchSettings.Load(current_dir + "launch.bin");
 		if (!launch_settings) {

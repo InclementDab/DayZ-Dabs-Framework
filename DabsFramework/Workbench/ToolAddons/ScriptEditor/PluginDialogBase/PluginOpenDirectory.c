@@ -3,10 +3,16 @@ class PluginOpenDirectory: PluginDialogBase
 {
 	void PluginOpenDirectory()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file;
 		m_ScriptEditor.GetCurrentFile(current_file);
 		string absolute_directory = GetDirectory(GetAbsolutePath(current_file));
-		
+		absolute_directory.Replace("/", "\\");
 #ifdef PLATFORM_WINDOWS
 		Workbench.RunCmd(string.Format("explorer %1", absolute_directory));
 #else 

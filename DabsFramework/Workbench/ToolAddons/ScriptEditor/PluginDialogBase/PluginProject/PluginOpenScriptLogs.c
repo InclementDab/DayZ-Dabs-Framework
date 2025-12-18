@@ -3,6 +3,8 @@ class PluginOpenScriptLogs: PluginProject
 {
     override void Run()
     {
+		super.Run();
+		
         if (!FileExist(m_LaunchSettings.Profiles)) {
             return;
         }

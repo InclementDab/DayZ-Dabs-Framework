@@ -33,7 +33,7 @@ class PluginDialogBase: WorkbenchPlugin
 		array<string> current_dir_split = {};
 		string current_directory = GetCurrentDirectory();
 		current_directory.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
-		current_directory.Split(SystemPath.SEPERATOR, current_dir_split);
+		current_directory.Split(SystemPath.SEPERATOR, current_dir_split);		
 		return current_dir_split[current_dir_split.Count() - 2];
 	}
 	
@@ -150,6 +150,7 @@ class PluginDialogBase: WorkbenchPlugin
 	{
 		string root_dir;
 		Workbench.GetAbsolutePath(string.Empty, root_dir);
+		root_dir.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		return root_dir;
 	}
 	
@@ -281,29 +282,33 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static int PromiseSymLink(string source, string target)
 	{
-		target.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		string source_copy = SystemPath.Format(source);
+		string target_copy = SystemPath.Format(target);
+		
+		if (FileExist(target_copy)) {
+			return 0;
+		}
+		
 		array<string> path_split = {};
-		target.Split(SystemPath.SEPERATOR, path_split);
+		target_copy.Split(SystemPath.SEPERATOR, path_split);
 		string path_reconstruct;
 		for (int i = 0; i < path_split.Count(); i++) {
 			path_reconstruct += path_split[i] + SystemPath.SEPERATOR;
 			if (!FileExist(path_reconstruct) && i < path_split.Count() - 1) {
-				//path_reconstruct = path_reconstruct.Substring(0, path_reconstruct.Length() - 1);
+				path_reconstruct = path_reconstruct.Substring(0, path_reconstruct.Length() - 1);
+				path_reconstruct.Replace("/", "\\");
 				PrintFormat("Creating directory: %1", path_reconstruct);
-				
-				Print(MakeDirectory(path_reconstruct));
+				MakeDirectory(path_reconstruct);
 			}
 		}
 		
-		if (!FileExist(target)) {
-			return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source, target), true);
-		}
-		
-		return 0;
+		return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source_copy, target_copy), true);
 	}
 	
 	static void KillTask(string task_name)
 	{
+		
+		
 		RunCommandPrompt(string.Format("taskkill /F /IM %1 /T", task_name), true);
 		//Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
 	}
@@ -353,6 +358,10 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void CopyFiles(string source, string destination)
 	{	
+		if (!File.Exists(source)) {
+			return;
+		}
+		
 		string filename;
 		FileAttr fileattr;
 		FindFileHandle hdnl = FindFile(source + SystemPath.SEPERATOR + "*", filename, fileattr, FindFileFlags.ALL);

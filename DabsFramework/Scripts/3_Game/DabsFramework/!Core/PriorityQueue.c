@@ -114,6 +114,16 @@ class PriorityQueue<Class TElement, Class TPriority>
 		return PRIORITY_DEFAULT;
 	}
 	
+	TElement GetElementAtIndex(int i)
+	{
+		return m_Elements[i].param1;
+	}
+	
+	TPriority GetPriorityAtIndex(int i)
+	{
+		return m_Elements[i].param2;
+	}
+	
 	void Invert()
 	{
 		m_Elements.Invert();

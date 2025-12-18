@@ -1,6 +1,7 @@
 class PluginProject: PluginDialogBase
 {
 	static const string PROJECT_CFG = "project.cfg";
+	static const string USER_CFG = "user.cfg";
 	static const string SERVER_CFG = "server.cfg";
 	static const string LAUNCH_BIN = "launch.bin";
 	static const string BUILD_BIN = "build.bin";
@@ -16,10 +17,23 @@ class PluginProject: PluginDialogBase
 	
 	void PluginProject()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_dir = GetCurrentDirectory();
 		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
 			return;
+		}		
+		
+		if (FileExist(current_dir + USER_CFG)) {
+			if (!LoadConfig(current_dir + USER_CFG, m_ProjectSettings)) {
+				ErrorDialog(string.Format("Failed to load %1 in %2", USER_CFG, current_dir));
+				return;
+			}
 		}
 
 		// Load launch settings
@@ -84,7 +98,7 @@ class PluginProject: PluginDialogBase
 		string game_directory_stable = GetDayZDirectory(m_LaunchSettings, DayZEnvironmentType.STABLE);
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
 	}
-				
+					
 	protected bool LoadConfig(string file, inout map<string, string> settings)
 	{
 		if (!FileExist(file)) {
@@ -123,7 +137,7 @@ class PluginProject: PluginDialogBase
 				key += token;
 			}
 			
-			settings[key] = line;
+			settings[key] = settings[key] + line;
 		}
 		
 		return true;

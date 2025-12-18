@@ -362,8 +362,9 @@ class LinearColor: int
 	
 	LinearColor With(int n, int val)
 	{
-		value.Set(n, val);
-		return value;
+		LinearColor copy = value;
+		copy.Set(n, val);
+		return copy;
 	}
 	
 	void SetAlpha(int alpha)
@@ -422,7 +423,7 @@ class LinearColor: int
 		SetBlue(Math.Clamp(value.GetBlue(), min, max));
 	}
 
-	string ToHex()
+	string ToHexColor()
 	{
 		return Encoding.ToHex(value, 8);
 	}

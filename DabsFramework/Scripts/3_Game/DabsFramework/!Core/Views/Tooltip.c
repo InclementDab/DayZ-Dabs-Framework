@@ -105,7 +105,7 @@ class TooltipView: ScriptView
         vector screen_position = Vector(b_x + b_w / 2, b_y + b_h / 2, 0);
 
         // corner position
-        screen_position = screen_position - screen_direction * 0.8;
+       // screen_position = screen_position - screen_direction * 0.8;
 
        // screen_position[0] = screen_position[0] - tooltip_w;
         
@@ -117,11 +117,11 @@ class TooltipView: ScriptView
         vector screen_vec = Vector(screen_x, screen_y, 0);
         for (int i = 0; i < 3; i++) {
             if (screen_position[i] < screen_vec[i] * 0.1) {
-                screen_position[i] = screen_vec[i] * 0.1;
+                //screen_position[i] = screen_vec[i] * 0.1;
             }
 
             if (screen_position[i] + tooltip_vec[i] > screen_vec[i] * 0.9) {
-                screen_position[i] = screen_vec[i] * 0.9 - tooltip_vec[i];
+               // screen_position[i] = screen_vec[i] * 0.9 - tooltip_vec[i];
             }
         }
 		

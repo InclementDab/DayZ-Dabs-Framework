@@ -5,6 +5,12 @@ class PluginDeleteFile: PluginDialogBase
 	
 	void PluginDeleteFile() 
 	{	
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		string current_file_relative;
 		if (!m_ScriptEditor.GetCurrentFile(current_file_relative)) {
 			Error("Failed to acquire current file");
@@ -25,8 +31,7 @@ class PluginDeleteFile: PluginDialogBase
 	[ButtonAttribute("OK", true)]
 	void Ok()
 	{
-		string current_file = m_CurrentFile;
-		current_file.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		string current_file = SystemPath.Format(m_CurrentFile);
 		Workbench.RunCmd(string.Format("cmd /c del %1", current_file));
 	}
 	

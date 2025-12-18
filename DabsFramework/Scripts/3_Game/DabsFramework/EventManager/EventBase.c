@@ -13,7 +13,20 @@
 
 // 0: event id
 // 1: event
-typedef map<int, ref EventBase> EventMap;
+class EventMap: map<int, ref EventBase> 
+{
+	int CountActive()
+	{
+		int count_active = 0;
+		foreach (int id, EventBase event_base: this) {
+			if (event_base && event_base.GetCurrentPhase() != EventPhase.DELETE) {
+				count_active++;
+			}
+		}
+		
+		return count_active;
+	}
+}
 
 class EventBase: Managed
 {
@@ -52,11 +65,11 @@ class EventBase: Managed
 	void ~EventBase()
 	{
 		EventManagerLog.Debug(this, "~Destroy");
-		m_EventManager.DeleteEvent(this);
-		delete m_StartParams;		
-		delete m_ClientUpdate;		
-		delete m_ServerUpdate;
-		
+		/*
+		if (m_EventManager) {
+			m_EventManager.DeleteEvent(this);
+		}*/
+				
 		if (GetGame() && GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY)) {
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(UpdateTimeRemaining);
 		}
@@ -157,51 +170,84 @@ class EventBase: Managed
 						
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
-					thread InitPhaseServer();
+					if (UseThreadedEventPhases()) {
+						thread InitPhaseServer();
+					} else {
+						InitPhaseServer();
+					}
+					
 					break;
 				}
 				
 				case EventPhase.MID: {
-					thread MidPhaseServer();
+					if (UseThreadedEventPhases()) {
+						thread MidPhaseServer();
+					} else {
+						MidPhaseServer();
+					}
+					
 					break;
 				}
 				
 				case EventPhase.END: {
-					thread EndPhaseServer();
+					if (UseThreadedEventPhases()) {
+						thread EndPhaseServer();
+					} else {
+						EndPhaseServer();
+					}
+					
 					break;
 				}
 				
 				case EventPhase.DELETE:
 				default: {
-					OnEventEndServer();
-					delete this;
+					OnEventEndServer();					
+					m_EventManager.DeleteEvent(this);
 					return;
 				}
 			}
 		}
 		
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer()) {	
-			m_PhaseTimeRemaining = time_remaining;		
+			if (GetGame().IsMultiplayer()) {
+				m_PhaseTimeRemaining = time_remaining;		
+			}
+			
 			switch (m_EventPhase) {
 				case EventPhase.INIT: {
-					thread InitPhaseClient(time_remaining, client_data);
+					if (UseThreadedEventPhases()) {
+						thread InitPhaseClient(time_remaining, client_data);
+					} else {
+						InitPhaseClient(time_remaining, client_data);
+					}
+					
 					break;
 				}
 				
 				case EventPhase.MID: {
-					thread MidPhaseClient(time_remaining, client_data);
+					if (UseThreadedEventPhases()) {
+						thread MidPhaseClient(time_remaining, client_data);
+					} else {
+						MidPhaseClient(time_remaining, client_data);
+					}
+
 					break;
 				}
 				
 				case EventPhase.END: {
-					thread EndPhaseClient(time_remaining, client_data);
+					if (UseThreadedEventPhases()) {
+						thread EndPhaseClient(time_remaining, client_data);
+					} else {
+						EndPhaseClient(time_remaining, client_data);
+					}
+					
 					break;
 				}
 				
 				case EventPhase.DELETE:
 				default: {
 					OnEventEndClient();
-					delete this;
+					m_EventManager.DeleteEvent(this);
 					return;
 				}
 			}
@@ -244,6 +290,12 @@ class EventBase: Managed
 		return true;
 	}
 	
+	// The very BUGGY version of event phases used for the original evr. I suggest turning this off
+	bool UseThreadedEventPhases()
+	{
+		return true;
+	}
+	
 	float GetClientTick()
 	{
 		return 0.01;
@@ -266,7 +318,17 @@ class EventBase: Managed
 	{
 		m_StartParams = start_params;
 		
-		SwitchPhase(EventPhase.INIT);
+		if (GetGame().IsMultiplayer()) {
+			SwitchPhase(EventPhase.INIT);
+		} else {
+			SerializableParam serializable_param = GetClientSyncData(EventPhase.INIT);
+			Param param = null;
+			if (serializable_param) {
+				param = serializable_param.ToParam();
+			}
+			
+			SwitchPhase(EventPhase.INIT, GetInitPhaseLength(), param);
+		}
 	}
 		
 	void SetID(int id)
@@ -317,7 +379,7 @@ class EventBase: Managed
 			
 			if (GetGame().IsServer()) {
 				EventManagerLog.Debug(this, "Attempting to naturally switch to the next phase");
-				SwitchPhase(GetCurrentPhase() + 1);
+				SwitchPhase(GetCurrentPhase() + 1, GetPhaseLength(GetCurrentPhase() + 1));
 			}
 		}
 	}

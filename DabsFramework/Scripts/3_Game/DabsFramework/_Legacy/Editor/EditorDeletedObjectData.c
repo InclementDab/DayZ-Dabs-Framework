@@ -75,13 +75,23 @@ class EditorDeletedObjectData: SerializableBase
 		array<Object> objects = {};
 		GetGame().GetObjectsAtPosition3D(Position, radius, objects, null);			
 		
+		string model_name_formatted = ModelName;
+		model_name_formatted.ToLower();
+		model_name_formatted.TrimInPlace();
+		model_name_formatted.Replace("/", "\\");
+		
 		foreach (Object object: objects) {
 			if (!object) {
 				continue;
 			}
+			
+			string shape_name = object.GetShapeName();
+			shape_name.ToLower();
+			shape_name.TrimInPlace();
+			shape_name.Replace("/", "\\");
 
 			// New way of doing it
-			if (ModelName && ModelName == object.GetShapeName()) {
+			if (model_name_formatted && model_name_formatted == shape_name) {
 				return object;
 			}
 			
@@ -93,7 +103,7 @@ class EditorDeletedObjectData: SerializableBase
 			}
 		}
 		
-		PrintToRPT(string.Format("[DF] Failed to find %1:%4 in %2m of %3", Type, radius, Position, ModelName)); 
+		//PrintToRPT(string.Format("[DF] Failed to find %1:%4 in %2m of %3", Type, radius, Position, ModelName)); 
 		return null;
 	}
 	

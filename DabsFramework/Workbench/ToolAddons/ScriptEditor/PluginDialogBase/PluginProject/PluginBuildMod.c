@@ -3,6 +3,12 @@ class PluginBuildMod: PluginProject
 {	
 	void PluginBuildMod()
 	{
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
 		if (m_LaunchSettings.Repository == string.Empty) {
 			ErrorDialog("You need to set the Repository setting in Plugins -> Configure -> Configure Project");
 			return;
@@ -94,18 +100,22 @@ class PluginBuildMod: PluginProject
 		if (m_BuildSettings.Key != string.Empty) {
 			args += string.Format(" +K=%1",  m_BuildSettings.Key);
 		}
-		
+				
 		MakeDirectory(mod_output);
 		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Addons");
 		MakeDirectory(mod_output + SystemPath.SEPERATOR_ALT + "Keys");
-				
-		cmd.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
-		mod_output.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
-		mod_input.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
+		
+		Print(SystemPath.SEPERATOR);
+		
+		cmd = SystemPath.Format(cmd);
+		mod_output = SystemPath.Format(mod_output);
+		
+		Print(mod_output);
 		string excludes = m_ProjectSettings["Excludes"];
 
 		string command = string.Format("\"%1\" -Mod=%2 %3 %4 -W +X=\"%5\"", cmd, mod_output, mod_input, args, excludes);
 		PrintFormat("Building mod %1 to %2 with command %3", mod_input, mod_output, command);
+		return 0;
 		return Workbench.RunCmd(command, true);
 	}
 	

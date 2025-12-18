@@ -1,3 +1,4 @@
+
 class EditorObjectData: SerializableBase
 {	
 	int GetID()
@@ -59,6 +60,7 @@ class EditorObjectData: SerializableBase
 		Object object = GetGame().CreateObjectEx(Type, Position, flags);
 		object.SetOrientation(Orientation);
 		object.SetScale(Scale);
+		object.Update();
 		return object;
 	}
 	

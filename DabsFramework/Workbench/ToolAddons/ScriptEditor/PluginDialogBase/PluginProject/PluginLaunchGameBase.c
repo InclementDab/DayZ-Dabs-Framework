@@ -8,6 +8,7 @@ class PluginLaunchGameBase: PluginProject
 		// finding DayZ / DayZ Exp dir		
 		string game_directory = GetDayZDirectory(launch_settings);		
 		string game_exe = game_directory + SystemPath.SEPERATOR + launch_settings.Executable;
+		string mission_name = mod_prefix;
 		if (!FileExist(game_exe)) {
 			ErrorDialog(string.Format("Could not find the game at %1", game_exe));
 			return;
@@ -74,6 +75,7 @@ class PluginLaunchGameBase: PluginProject
 				
 		if (launch_settings.AutoClose) {
 			KillTask(launch_settings.GetExecutableName());
+			KillTask("CrashReporter.exe");
 		}
 		
 		// Set up symlinks so game can launch with our cwd
@@ -91,11 +93,11 @@ class PluginLaunchGameBase: PluginProject
 		
 		// Set up filepatching, needs to either create or delete all links depending on the setting
 		if (launch_settings.FilePatching) {
-			foreach (string prefix: m_Prefixes) {			
+			foreach (string prefix2: m_Prefixes) {			
+				string prefix = prefix2;
 				array<string> prefix_split = {};
-				prefix.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
-				prefix.Split(SystemPath.SEPERATOR_ALT, prefix_split);
-				
+				string source_folder = root + SystemPath.SEPERATOR + prefix;
+				prefix.Split("\\", prefix_split);
 				string built_path = workbench_directory + SystemPath.SEPERATOR_ALT;
 				if (prefix_split.Count() < 1) {
 					continue;
@@ -103,10 +105,10 @@ class PluginLaunchGameBase: PluginProject
 				
 				// Add each root dir to exclude
 				folders_to_save.Insert(prefix_split[0]);
-				PromiseSymLink(root + SystemPath.SEPERATOR_ALT + prefix, workbench_directory + SystemPath.SEPERATOR + prefix);
+				PromiseSymLink(source_folder, workbench_directory + SystemPath.SEPERATOR + prefix);
 			}
 		}
-		
+						
 		if (!is_game_and_workbench_same_directory) {
 			// Now FindFile each 
 			string wb_dir_filename;
@@ -125,7 +127,7 @@ class PluginLaunchGameBase: PluginProject
 			
 			CloseFindFile(hdnl);
 		}
-
+		
 		// Reformats mod list
 		string formatted_mod_list;
 		array<string> mod_list = {};
@@ -142,15 +144,30 @@ class PluginLaunchGameBase: PluginProject
 		array<string> server_mod_list = {};
 		m_ProjectSettings["ServerMods"].Split(";", server_mod_list);
 		for (int j = 0; j < server_mod_list.Count(); j++) {
-			formatted_server_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+			if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
+				// introducing a bug idc. 
+				formatted_mod_list += ";" + launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+			} else {
+				formatted_server_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+			}
+			
 			if (j != server_mod_list.Count() - 1) {
-				formatted_server_mod_list += ";";
+				if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
+					formatted_mod_list += ";";
+				} else {
+					formatted_server_mod_list += ";";
+				}
 			}
 		}
 		
+		string mission_folder_name = m_ProjectSettings["MissionDir"];
+		if (!mission_folder_name) {
+			mission_folder_name = "Missions";
+		}
+		
 		// Copy raw CLE files
-		string repository_mission = string.Format("%1\\Missions\\%2.%3", launch_settings.Repository, mod_prefix, launch_settings.Map);
-		if (FileExist(string.Format("%1\\ce", repository_mission))) {
+		string repository_mission = string.Format("%1\\%4\\%2.%3", launch_settings.Repository, mission_name, launch_settings.Map, mission_folder_name);
+		if (File.Exists(string.Format("%1\\ce", repository_mission))) {
 			array<string> map_exports = Directory.EnumerateFiles(string.Format("%1\\ce\\map", repository_mission), "*.map");
 			if (map_exports.Count() == 1) {
 				DeleteFile(string.Format("%1\\areaflags.map", repository_mission));
@@ -170,7 +187,7 @@ class PluginLaunchGameBase: PluginProject
 		string client_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT_PROFILE_NAME);
 		string client2_profile_directory  = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT2_PROFILE_NAME);
 		string server_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.SERVER_PROFILE_NAME);		
-		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mod_prefix, launch_settings.Map);
+		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mission_name, launch_settings.Map);
 		
 		// Make the folders if they dont exist yet
 		MakeDirectory(client_profile_directory);
@@ -194,24 +211,30 @@ class PluginLaunchGameBase: PluginProject
 		CleanLogFolder(client_profile_directory);
 		CleanLogFolder(client2_profile_directory);
 		CleanLogFolder(server_profile_directory);
-				
+		
 		// Copy maps and mission info
 		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client_profile_directory);
 		CopyFiles(string.Format("%1\\Profiles\\Client", launch_settings.Repository), client2_profile_directory);
+		
 		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), server_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), client_profile_directory);
+		CopyFiles(string.Format("%1\\Profiles\\Global", launch_settings.Repository), client2_profile_directory);
+		
 		CopyFiles(string.Format("%1\\Profiles\\Maps\\%2", launch_settings.Repository, launch_settings.Map), server_profile_directory);
 		if (m_ProjectSettings["Profile"] != string.Empty) {
 			CopyFiles(string.Format("%1\\Profiles\\%2", launch_settings.Repository, m_ProjectSettings["Profile"]), server_profile_directory);
 		}
 		
-		CopyFiles(string.Format("%1\\Missions\\%3.%2", launch_settings.Repository, launch_settings.Map, mod_prefix), server_mission);
-		CopyFiles(string.Format("%1\\Missions\\Global", launch_settings.Repository), server_mission);
-		CopyFiles(string.Format("%1\\Missions\\Dev", launch_settings.Repository), server_mission);
+		CopyFiles(string.Format("%1\\%4\\%3.%2", launch_settings.Repository, launch_settings.Map, mission_name, mission_folder_name), server_mission);
+		CopyFiles(string.Format("%1\\%2\\Global", launch_settings.Repository, mission_folder_name), server_mission);
+		CopyFiles(string.Format("%1\\%2\\Dev", launch_settings.Repository, mission_folder_name), server_mission);
 		
-		string client_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);
-		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client2_profile_directory);
+		string client_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client_profile_directory, launch_settings.Name);
+		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client2_profile_directory, launch_settings.Name + " (1)");
 		string server_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server -port=%6", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, launch_settings.Port);
 		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);		
+		
+		offline_launch_params += " -offline";
 		
 		string ip, password;
 		int port;
@@ -225,14 +248,6 @@ class PluginLaunchGameBase: PluginProject
 			}
 			server_launch_params += string.Format(" -port=%1", port);
 		}
-		
-		client_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
-		server_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
-		offline_launch_params += " -scrDef=CFGMODS_DEFINE_TEST";
-		
-		offline_launch_params += " -window";
-		client_launch_params += " -window";
-		client2_launch_params += " -window";
 				
 		if (launch_settings.EnableHive) {
 			server_launch_params += " -useDevHive";
@@ -252,6 +267,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.CLIENT) == GameLaunchType.CLIENT) {
+			Print("CLIENT: " + game_exe + " " + client_launch_params);
 			Workbench.RunCmd(string.Format("%1 %2", game_exe, client_launch_params));
 
 			if (launch_settings.SandboxieEnabled) {
@@ -264,17 +280,17 @@ class PluginLaunchGameBase: PluginProject
 		}	
 		
 		if ((launch_settings.LaunchType & GameLaunchType.SERVER) == GameLaunchType.SERVER) {
-			Print(game_exe + " " + server_launch_params);
+			Print("SERVER: " + game_exe + " " + server_launch_params);
 			Workbench.RunCmd(game_exe + " " + server_launch_params);
 		}
 		
 		if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
 			// I DONT LIEK THIS :(
-			if (FileExist(string.Format("%1\\storage_-1", repository_mission))) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
-			}
+			//if (FileExist(string.Format("%1\\storage_-1", repository_mission))) {
+			//	Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
+			//}
 			
-			Print(game_exe + " " + offline_launch_params);
+			Print("OFFLINE: " + game_exe + " " + offline_launch_params);
 			Workbench.RunCmd(game_exe + " " + offline_launch_params);
 		}
 	}
