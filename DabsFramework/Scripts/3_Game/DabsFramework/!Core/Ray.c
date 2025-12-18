@@ -53,7 +53,7 @@ class Ray: Managed
 		float fraction;
 
 		vector position = Position;
-		Object ignore = null;		
+		Object ignore = null;
 		while (DayZPhysics.RayCastBullet(position, position + Direction.Normalized() * distance, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {
 			if (!ignores || ignores.Find(raycast.Hit) == -1) {
 				return raycast;
