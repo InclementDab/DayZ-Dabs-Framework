@@ -286,9 +286,9 @@ class PluginLaunchGameBase: PluginProject
 		
 		if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
 			// I DONT LIEK THIS :(
-			if (FileExist(string.Format("%1\\storage_-1", repository_mission))) {
-				Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
-			}
+			//if (FileExist(string.Format("%1\\storage_-1", repository_mission))) {
+			//	Workbench.RunCmd(string.Format("cmd /c rmdir /s /q \"%1\"", GetAbsolutePath(string.Format("%1\\storage_-1", repository_mission))));
+			//}
 			
 			Print("OFFLINE: " + game_exe + " " + offline_launch_params);
 			Workbench.RunCmd(game_exe + " " + offline_launch_params);
