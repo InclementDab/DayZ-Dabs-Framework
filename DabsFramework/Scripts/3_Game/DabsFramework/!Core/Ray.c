@@ -55,11 +55,23 @@ class Ray: Managed
 		vector position = Position;
 		Object ignore = null;
 		while (DayZPhysics.RayCastBullet(position, position + Direction.Normalized() * distance, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {
+			
+			distance = vector.Distance(position, output_ray.Position);
+
+			// If the ray travelled zero distance return to avoid loop lock.
+			if (distance < Math.EPSILON) 
+			{
+				// Print("[MultiRay] Break: Zero length segment detected.");
+				return null;
+			}
+			
 			if (!ignores || ignores.Find(raycast.Hit) == -1) {
 				return raycast;
 			}
 			
-			distance -= vector.Distance(position, output_ray.Position);
+			
+			// Advance starting position past the hit point
+            position = output_ray.Position + (Direction.Normalized() * Math.EPSILON * 4);
 			
 			// incase we've somehow reached the end of the rainbow
 			if (distance <= Math.EPSILON) {
@@ -67,7 +79,6 @@ class Ray: Managed
 			}
 			
 			ignore = raycast.Hit;
-			position = output_ray.Position;
 		}
 		
 		return null;
