@@ -211,6 +211,12 @@ class EventManager
 		}
 	}
 	
+	// Doesnt actually update the clients. just called to do a force cleanup
+	void CleanupEvents()
+	{
+		m_ActiveEvents.Clear();
+	}
+		
 	// you only need to worry about event_id if you allow parralel events
 	// returns if event was succesfully cancelled
 	bool CancelEvent(typename event_type, int event_id = 0)
