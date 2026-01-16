@@ -5,11 +5,13 @@ modded class PlayerIdentity
 	{
 		array<PlayerIdentity> player_identities = {};
 		GetDayZGame().GetPlayerIndentities(player_identities);
-		foreach (PlayerIdentity player_identity: player_identities) {
-			if (player_identity.GetId() == id) {
-				return player_identity;
-			}
-		}
+		for (int i = 0; i < player_identities.Count(); i++)
+        {
+            if (player_identities[i].GetId() == id)
+            {
+                return player_identities[i];
+            }
+        }
 		
 		return null;
 	}
@@ -19,11 +21,13 @@ modded class PlayerIdentity
 	{
 		array<PlayerIdentity> player_identities = {};
 		GetDayZGame().GetPlayerIndentities(player_identities);
-		foreach (PlayerIdentity player_identity: player_identities) {
-			if (player_identity.GetPlainId() == plain_id) {
-				return player_identity;
-			}
-		}
+		for (int i = 0; i < player_identities.Count(); i++)
+        {
+            if (player_identities[i].GetPlainId() == plain_id)
+            {
+                return player_identities[i];
+            }
+        }
 		
 		return null;
 	}
@@ -32,11 +36,13 @@ modded class PlayerIdentity
 	{
 		array<PlayerIdentity> player_identities = {};
 		GetDayZGame().GetPlayerIndentities(player_identities);
-		foreach (PlayerIdentity player_identity: player_identities) {
-			if (player_identity.GetName() == name) {
-				return player_identity;
-			}
-		}
+		for (int i = 0; i < player_identities.Count(); i++)
+        {
+            if (player_identities[i].GetName() == name)
+            {
+                return player_identities[i];
+            }
+        }
 
 		return null;
 	}
