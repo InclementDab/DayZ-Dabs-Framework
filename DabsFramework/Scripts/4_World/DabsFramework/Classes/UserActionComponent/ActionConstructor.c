@@ -4,7 +4,7 @@ modded class ActionConstructor
 	{
 		super.RegisterActions(actions);
 		
-		foreach (typename action: RegisterAction.RegisteredTypes) {
+		foreach (int hash, typename action: RegisterAction.RegisteredTypes) {
 			actions.Insert(action);
 		}
 	}

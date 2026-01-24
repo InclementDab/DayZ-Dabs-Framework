@@ -1,16 +1,17 @@
 class RegisterAction: Class
 {
-	static ref array<typename> RegisteredTypes = {};
+	static ref map<int, typename> RegisteredTypes = new map<int, typename>();
 	
 	void RegisterAction(typename action_type)
 	{		
 		if (!RegisteredTypes) {
-			RegisteredTypes = {};
+			RegisteredTypes = new map<int, typename>();
 		}
 		
-		RegisteredTypes.Insert(action_type);
+		int hash = action_type.ToString().Hash();
+		RegisteredTypes[hash] = action_type;
 		
 		// Always sort, so load order between server & client makes no difference
-		Sort(RegisteredTypes, RegisteredTypes.Count());
+		//Sort(RegisteredTypes, RegisteredTypes.Count());
 	}
 }
