@@ -99,6 +99,24 @@ class MissionSetting: SerializableBase
 #endif
     }
 
+	// Slow, only calls once on mission assign per instance
+	GenericWrapper GenerateWrapperInstance()
+	{		
+		string wrapper_generator_code = string.Format("GenericWrapper GenerateWrapperInstance() { return new GenericWrapper1<%1>(); }", Type());
+		string wrapper_generator_file = SystemPath.Profile("_generated.c");
+		DeleteFile(wrapper_generator_file);
+		FileHandle handle = OpenFile(wrapper_generator_file, FileMode.WRITE);
+		FPrintln(handle, wrapper_generator_code);
+		CloseFile(handle);
+		
+		ScriptModule module = ScriptModule.LoadScript(GetGame().GameScript, wrapper_generator_file, false);
+		GenericWrapper wrapper;
+		module.CallFunction(null, "GenerateWrapperInstance", wrapper, null);
+		module.Release();
+
+		return wrapper;
+	}
+		
     bool Save(bool sync_to_clients = false)
     {
         if (GetGame().IsMultiplayer() && !GetGame().IsDedicatedServer()) {
@@ -113,7 +131,16 @@ class MissionSetting: SerializableBase
 		// This is a hack fix, since sometimes constructors arent called in typename.Spawn()? the Version text will be __useless__ otherwise
 		Version = GetVersion();
 		
-        string file_save_string = RegisterMissionSetting.DataToStringStatic(this);
+        GenericWrapper data_class_wrapper = GenerateWrapperInstance();
+        if (!data_class_wrapper) {
+            ErrorEx("No data class wrapper");
+            return false;
+        }
+
+        string file_save_string;
+        g_Script.CallFunction(data_class_wrapper, "GetDataString", file_save_string, this);
+		delete data_class_wrapper;
+		
         if (!file_save_string || file_save_string.Contains("ERROR")) {
             ErrorEx(file_save_string);
             return false;

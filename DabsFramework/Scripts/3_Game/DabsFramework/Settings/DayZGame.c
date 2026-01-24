@@ -1,22 +1,8 @@
 modded class DayZGame
 {
-    protected ref array<PlayerIdentity> m_GameIdentities = {};
+    protected ref array<string> m_GameIdentities = {};
 
 	protected ref map<typename, ref MissionSetting> m_MissionSettings = new map<typename, ref MissionSetting>();
-
-	void ~DayZGame()
-	{
-		foreach (typename mission_setting_type, MissionSetting mission_setting: m_MissionSettings) {
-			delete mission_setting;
-		}
-		
-		// Cleaning up script instances that get referenced in some magical state. were not sure tbh our top scientist is afk
-		for (int i = GenericWrapper.s_All.Count() - 1; i >= 0; i--) {
-			delete GenericWrapper.s_All[i];
-		}
-		
-		delete GenericWrapper.s_All;
-	}
 	
 #ifndef SERVER
     override void OnRPC(PlayerIdentity sender, Object target, int rpc_type, ParamsReadContext ctx)
@@ -27,6 +13,8 @@ modded class DayZGame
             case MissionSetting.RPC_SYNC: {
                 string mission_setting_type;
                 ctx.Read(mission_setting_type);
+				
+				Print(mission_setting_type);
 
                 typename mission_setting_typename = mission_setting_type.ToType();
                 if (!mission_setting_typename) {
@@ -39,6 +27,10 @@ modded class DayZGame
                     ErrorEx(string.Format("INVALID MissionSetting data: %1", mission_setting_type));
                     break;
                 }
+				
+#ifdef DIAG_DEVELOPER
+				PrintFormat("Registered Mission Setting %1", mission_setting_typename);
+#endif
 
                 m_MissionSettings[mission_setting_typename] = mission_setting;
                 break;
@@ -58,8 +50,10 @@ modded class DayZGame
                 PrintFormat("EOnClientPrepare: (identity=%1, use_db=%2, position=%3, yaw=%4, preload_timeout=%5)", client_prepare_event_params.param1, client_prepare_event_params.param2, client_prepare_event_params.param3, client_prepare_event_params.param4, client_prepare_event_params.param5);
 #endif
                 PlayerIdentity identity = client_prepare_event_params.param1;
-                if (identity && m_GameIdentities.Find(identity) == -1) {
-                    m_GameIdentities.Insert(identity);
+
+                if (identity && m_GameIdentities.Find(identity.GetId()) == -1) {
+                    m_GameIdentities.Insert(identity.GetId());
+					
                     OnIdentityCreated(identity);
                 }
 
@@ -71,7 +65,7 @@ modded class DayZGame
     protected void OnIdentityCreated(notnull PlayerIdentity identity)
     {
 #ifdef DIAG_DEVELOPER
-		PrintFormat("OnIdentityCreated %1", identity);
+		PrintFormat("OnIdentityCreated %1", identity.GetId());
 #endif
 		
 		// Update identity with mission settings
@@ -80,18 +74,12 @@ modded class DayZGame
                 mission_setting.Sync(identity);
             }
         }
-		
     }
 
     protected void OnMissionPathSet(string path)
     {
         if (!GetGame().IsMultiplayer() || GetGame().IsDedicatedServer() && !path.Contains("intro") && !path.Contains("Cutscene")) {
-            foreach (typename mission_setting_type, string mission_setting_file: RegisterMissionSetting.s_RegisteredInstances) {
-				if (!RegisterMissionSetting.s_RegisteredAttributes[mission_setting_type]) {
-					ErrorEx(string.Format("failed to create mission setting, the attribute was not registered properly %1", mission_setting_type));
-					continue;
-				}
-				
+            foreach (typename mission_setting_type, string mission_setting_file: RegisterMissionSetting.s_RegisteredInstances) {				
 				string mission_setting_file_verified = mission_setting_file;
 				if (!SystemPath.IsPathRooted(mission_setting_file_verified)) {
 					if (GetGame().IsDedicatedServer()) {
@@ -130,7 +118,13 @@ modded class DayZGame
 					// some type punning here, but enfusion shits itself when you dont wrap it this way
 					string json_error;
 					Managed managed_value = mission_setting;
-					if (!RegisterMissionSetting.s_RegisteredAttributes[mission_setting_type].ReadFromJson(managed_value, file_text, json_error)) {
+					GenericWrapper wrapper = mission_setting.GenerateWrapperInstance();
+					if (!wrapper) {
+						PrintFormat("Invalid Wrapper Instance: %1", mission_setting_type);
+						continue;
+					}
+					
+					if (!wrapper.ReadFromJson(managed_value, file_text, json_error)) {
 						PrintFormat("json error, file: %1, error: %2", mission_setting_file_verified, json_error);
                         continue;
 					}
@@ -151,6 +145,9 @@ modded class DayZGame
                     }
                 }
 
+#ifdef DIAG_DEVELOPER
+				PrintFormat("Registered Mission Setting %1 to %2", mission_setting_type, mission_setting_file);
+#endif
                 m_MissionSettings[mission_setting_type] = mission_setting;
             }
         }		
@@ -162,7 +159,7 @@ modded class DayZGame
 
 		OnMissionPathSet(path);
 	}
-
+	
 	array<MissionSetting> GetAllMissionSettings()
 	{
 		return m_MissionSettings.GetValueArray();
