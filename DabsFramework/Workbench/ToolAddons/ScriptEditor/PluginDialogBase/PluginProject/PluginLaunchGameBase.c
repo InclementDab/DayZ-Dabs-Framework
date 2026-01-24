@@ -188,6 +188,16 @@ class PluginLaunchGameBase: PluginProject
 		string client2_profile_directory  = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.CLIENT2_PROFILE_NAME);
 		string server_profile_directory = string.Format("%1\\%2\\%3", launch_settings.Profiles, mod_prefix, LaunchSettings.SERVER_PROFILE_NAME);		
 		string server_mission = string.Format("%1\\%2.%3", launch_settings.Missions, mission_name, launch_settings.Map);
+		string offline_profile_directory = client_profile_directory;
+		
+		// Dumb hack
+		Print(mod_prefix);
+		if (mod_prefix == "DabsLabs") {
+			client_profile_directory = string.Format("%1\\Missions\\Client", launch_settings.Repository);
+			offline_profile_directory = string.Format("%1\\Missions\\Offline", launch_settings.Repository);
+			server_profile_directory = string.Format("%1\\Missions\\Server", launch_settings.Repository);
+			server_mission = repository_mission;
+		}
 		
 		// Make the folders if they dont exist yet
 		MakeDirectory(client_profile_directory);
@@ -232,7 +242,7 @@ class PluginLaunchGameBase: PluginProject
 		string client_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client_profile_directory, launch_settings.Name);
 		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-name=%3\"", formatted_mod_list, client2_profile_directory, launch_settings.Name + " (1)");
 		string server_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server -port=%6", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, launch_settings.Port);
-		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, client_profile_directory);		
+		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-mod=%1\" \"-profiles=%2\"", formatted_mod_list, offline_profile_directory);		
 		
 		offline_launch_params += " -offline";
 		
@@ -250,6 +260,7 @@ class PluginLaunchGameBase: PluginProject
 		}
 				
 		if (launch_settings.EnableHive) {
+			client_launch_params += " -useDevHive";
 			server_launch_params += " -useDevHive";
 			offline_launch_params += " -useDevHive";
 		}
