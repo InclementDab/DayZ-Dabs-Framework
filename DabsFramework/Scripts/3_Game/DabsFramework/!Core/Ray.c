@@ -52,22 +52,25 @@ class Ray: Managed
 #endif	
 		float fraction;
 
+		float surface_offset = 0.0001;
+		
 		vector position = Position;
+		vector direction = Direction.Normalized();
 		Object ignore = null;
-		while (DayZPhysics.RayCastBullet(position, position + Direction.Normalized() * distance, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {
-			if (!ignores || ignores.Find(raycast.Hit) == -1) {
+		while (DayZPhysics.RayCastBullet(position, Position + direction * raycast.Distance, layers, ignore, raycast.Hit, output_ray.Position, output_ray.Direction, fraction)) {
+			if (!ignores || ignores.Find(raycast.Hit) == -1 || !raycast.Hit) {
 				return raycast;
 			}
-			
-			distance -= vector.Distance(position, output_ray.Position);
+						
+			distance -= vector.Distance(position, output_ray.Position) + surface_offset;
 			
 			// incase we've somehow reached the end of the rainbow
-			if (distance <= Math.EPSILON) {
+			if (distance <= Math.AbsFloat(surface_offset * 2)) {
 				return raycast;
 			}
 			
 			ignore = raycast.Hit;
-			position = output_ray.Position;
+			position = output_ray.Position + direction * surface_offset;
 		}
 		
 		return null;
