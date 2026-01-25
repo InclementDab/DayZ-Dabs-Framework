@@ -98,24 +98,6 @@ class MissionSetting: SerializableBase
         Event_OnSynchronized.Invoke(this, identity);
 #endif
     }
-
-	// Slow, only calls once on mission assign per instance
-	GenericWrapper GenerateWrapperInstance()
-	{		
-		string wrapper_generator_code = string.Format("GenericWrapper GenerateWrapperInstance() { return new GenericWrapper1<%1>(); }", Type());
-		string wrapper_generator_file = SystemPath.Profile("_generated.c");
-		DeleteFile(wrapper_generator_file);
-		FileHandle handle = OpenFile(wrapper_generator_file, FileMode.WRITE);
-		FPrintln(handle, wrapper_generator_code);
-		CloseFile(handle);
-		
-		ScriptModule module = ScriptModule.LoadScript(GetGame().GameScript, wrapper_generator_file, false);
-		GenericWrapper wrapper;
-		module.CallFunction(null, "GenerateWrapperInstance", wrapper, null);
-		module.Release();
-
-		return wrapper;
-	}
 		
     bool Save(bool sync_to_clients = false)
     {
@@ -130,16 +112,12 @@ class MissionSetting: SerializableBase
 
 		// This is a hack fix, since sometimes constructors arent called in typename.Spawn()? the Version text will be __useless__ otherwise
 		Version = GetVersion();
-		
-        GenericWrapper data_class_wrapper = GenerateWrapperInstance();
-        if (!data_class_wrapper) {
-            ErrorEx("No data class wrapper");
-            return false;
-        }
-
-        string file_save_string;
-        g_Script.CallFunction(data_class_wrapper, "GetDataString", file_save_string, this);
-		delete data_class_wrapper;
+				
+		string file_save_string;
+		if (!WriteToJson(file_save_string)) {
+			ErrorEx("Failed to write json");
+			return false;
+		}
 		
         if (!file_save_string || file_save_string.Contains("ERROR")) {
             ErrorEx(file_save_string);
@@ -163,6 +141,20 @@ class MissionSetting: SerializableBase
 
         return true;
     }
+	
+	bool WriteToJson(out string json_string, bool nice = true)
+	{
+		JsonSerializer serializer = new JsonSerializer();		
+		return serializer.WriteToString(this, nice, json_string);
+	}
+	
+	bool ReadFromJson(string json_string, out string json_error)
+	{
+		// What hellish things are happening under the hood here?
+		JsonSerializer serializer = new JsonSerializer();
+		bool result = serializer.ReadFromString(this, json_string, json_error);
+		return result;
+	}
 
     int GetVersion()
     {

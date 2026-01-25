@@ -114,22 +114,13 @@ modded class DayZGame
                         ErrorEx(string.Format("empty json file found"));
                         continue;
                     }
-					
-					// some type punning here, but enfusion shits itself when you dont wrap it this way
+										
 					string json_error;
-					Managed managed_value = mission_setting;
-					GenericWrapper wrapper = mission_setting.GenerateWrapperInstance();
-					if (!wrapper) {
-						PrintFormat("Invalid Wrapper Instance: %1", mission_setting_type);
-						continue;
-					}
-					
-					if (!wrapper.ReadFromJson(managed_value, file_text, json_error)) {
+					if (!mission_setting.ReadFromJson(file_text, json_error)) {
 						PrintFormat("json error, file: %1, error: %2", mission_setting_file_verified, json_error);
                         continue;
 					}
-										
-					mission_setting = MissionSetting.Cast(managed_value);
+					
 					if (!mission_setting) {
 						ErrorEx(string.Format("mission setting error, cast back to MissionSetting failed %1", mission_setting_type));
                         continue;
