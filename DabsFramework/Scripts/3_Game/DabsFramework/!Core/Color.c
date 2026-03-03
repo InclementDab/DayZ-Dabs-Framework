@@ -300,7 +300,7 @@ class LinearColor: int
 	{		
 		switch (blend) {
 			case BlendMode.NORMAL: {
-				return b;
+				return a.Subtract(b);
 			}
 			case BlendMode.MULTIPLY: {
 				return a.Multiply(b);
