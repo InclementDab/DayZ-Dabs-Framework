@@ -31,6 +31,14 @@ class TooltipView: ScriptView
         Panel.SetColor(GetColor());
 	}
 	
+	static TooltipView CreateOnWidgetDelayed(Widget widget, string text, TooltipPosition position, int delay = 250, string desc = "", Symbols icon = "")
+	{
+		TooltipView view = CreateOnWidget(widget, text, position, desc, icon);
+		view.GetLayoutRoot().Show(false);
+		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(view.GetLayoutRoot().Show, delay, false, true, true);		
+		return view;
+	}
+	
 	static TooltipView CreateOnWidget(Widget widget, string text, TooltipPosition position, string desc = "", Symbols icon = "")
 	{
 		float pos_x, pos_y;
