@@ -6,7 +6,7 @@ class TimeSpan: int
 	
 	TimeSpan GetDays()
 	{
-		return (value / (24 * HOUR));
+		return (value / DAY);
 	}
 	
 	TimeSpan GetHours()
