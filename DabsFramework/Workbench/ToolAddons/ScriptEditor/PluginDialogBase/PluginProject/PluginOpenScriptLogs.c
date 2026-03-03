@@ -10,13 +10,29 @@ class PluginOpenScriptLogs: PluginProject
         }
 		
         string profile_folder = SystemPath.Combine(m_LaunchSettings.Profiles, GetPrefix());
+		
+		bool is_dl = m_LaunchSettings.Repository.Contains("DabsLabs");
+		if (is_dl) {
+			profile_folder = string.Format("%1\\Missions", m_LaunchSettings.Repository);
+		}
+		
 		array<string> subfolders = {};
 		if (m_LaunchSettings.LaunchType & GameLaunchType.SERVER) {
             subfolders.Insert("server");
 		}
 
         if (m_LaunchSettings.LaunchType & (GameLaunchType.CLIENT | GameLaunchType.OFFLINE)) {
-            subfolders.Insert("client");
+			if (!is_dl) {
+            	subfolders.Insert("client");
+			} else {
+				if (m_LaunchSettings.LaunchType & GameLaunchType.CLIENT) {
+					subfolders.Insert("client");
+				}
+				
+				if (m_LaunchSettings.LaunchType & GameLaunchType.OFFLINE) {
+					subfolders.Insert("offline");
+				}
+			}
         }
 				
         array<string> files_to_open = {};

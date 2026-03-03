@@ -10,6 +10,10 @@ class PluginProject: PluginDialogBase
 	protected ref map<string, string> m_ProjectSettings = new map<string, string>();
 	protected ref set<string> m_Prefixes = new set<string>();
 	protected string m_ServerConfig;
+	protected string m_Prefix;
+	protected string m_RootDirectory;
+	protected string m_WorkbenchDirectory;
+	protected string m_DayZDirectory;
 	
 	protected ref LaunchSettings m_LaunchSettings;
 	protected ref BuildSettings m_BuildSettings;
@@ -88,6 +92,11 @@ class PluginProject: PluginDialogBase
 			repository_cli_param = SystemPath.Format(repository_cli_param);
 			m_LaunchSettings.Repository = repository_cli_param;
 		}
+		
+		m_Prefix = GetPrefix();
+		m_RootDirectory = GetRootDirectory();
+		m_WorkbenchDirectory = GetWorkbenchDirectory();
+		m_DayZDirectory = GetDayZDirectory(m_LaunchSettings);
 	}
 	
 	override void Run()

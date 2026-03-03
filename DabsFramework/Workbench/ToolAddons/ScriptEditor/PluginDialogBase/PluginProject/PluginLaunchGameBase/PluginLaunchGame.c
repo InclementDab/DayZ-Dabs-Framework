@@ -9,7 +9,6 @@ class PluginLaunchGame: PluginLaunchGameBase
 	{
 		super.Run();
 		
-		KillTask(m_LaunchSettings.Executable);
 		LaunchGame(m_LaunchSettings);
 	}
 	

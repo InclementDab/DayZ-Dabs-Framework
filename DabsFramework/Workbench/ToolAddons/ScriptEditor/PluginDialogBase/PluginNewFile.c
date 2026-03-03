@@ -7,21 +7,20 @@ class PluginNewFile: PluginDialogBase
 	[Attribute("", "editbox", "File Name (with or without extension)")]
 	string FileName;
 	
-	[Attribute("Managed", "editbox", "Parent class type")]
-	string Parent;
+	//[Attribute("Managed", "editbox", "Parent class type")]
+	//string Parent;
 		
 	protected string m_FinalFileName;
 	
 	void PluginNewFile()
 	{		
-		Parent = "Managed";
+		//Parent = "Managed";
+		FileName = string.Empty;
 	}
 	
 	void ~PluginNewFile()
 	{
-		if (m_FinalFileName != string.Empty) {
-			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
-		}
+		
 	}
 	
 	override void Run()
@@ -33,26 +32,10 @@ class PluginNewFile: PluginDialogBase
 			Error("Failed to acquire current file");
 			return;
 		}
-		
-		// Reconstructing the directory
-		array<string> current_file_path = {};
-		current_file_relative.Split("/", current_file_path);
-		
-		for (int i = 0; i < current_file_path.Count() - 1; i++) {
-			Folder += current_file_path[i];
-			if (i != current_file_path.Count() - 2) {
-				Folder += "/";
-			}
-		}
-		
-		string parent_folder = current_file_path[current_file_path.Count() - 2];
-		
-		if (parent_folder.ToType()) {
-			Parent = parent_folder;
-		} else {
-			Parent = "Managed";
-		}
-		
+				
+		Folder = Directory.GetDirectory(current_file_relative);				
+		FileName = string.Empty;
+				
 		Workbench.ScriptDialog("New File", DIALOG_TAB_SIZE, this);
 	}
 	
@@ -81,20 +64,12 @@ class PluginNewFile: PluginDialogBase
 			return;
 		}
 		
-		string suffix;
-		if (Parent != string.Empty) {
-			suffix += ": " + Parent;
-		}
-		
-		string template = string.Format("class %1%2\n{\n}", file_split[0], suffix);
-		if (file_split[0].ToType()) {
-			template = string.Format("modded class %1\n{\n}", file_split[0]);
-		}
-				
-		FPrint(file_handle, template);
 		CloseFile(file_handle);
 		
 		m_FinalFileName = Folder + SystemPath.SEPERATOR + FileName;
+		if (m_FinalFileName != string.Empty) {
+			m_ScriptEditor.SetOpenedResource(m_FinalFileName);
+		}
 	}
 
 	[ButtonAttribute("Cancel")]

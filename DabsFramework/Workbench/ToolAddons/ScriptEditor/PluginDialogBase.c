@@ -3,12 +3,20 @@ class PluginDialogBase: WorkbenchPlugin
 	// Sizes the dialog to max size without putting a scroll bar on the bottom
 	static const string DIALOG_TAB_SIZE = "\t\t\t\t\t\t\t\t\t";
 	static const string DEFAULT_EXTENSION = ".c";
+	static const string DUMMY_FILE = "$CurrentDir:_";
 	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "sakhal", "dta", "platforms", "battleye"};
 	static const ref array<string> SCRIPT_MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission", "workbench"};
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
 	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceManager");
+	
+	void PluginDialogBase()
+	{
+		if (!FileExist(DUMMY_FILE)) {
+			CloseFile(OpenFile(DUMMY_FILE, FileMode.WRITE));
+		}
+	}
 	
 	void ErrorDialog(string error)
 	{
@@ -106,8 +114,7 @@ class PluginDialogBase: WorkbenchPlugin
 		string workbench_directory = GetWorkbenchDirectory();
 		string game_directory = GetDayZDirectory(launch_settings);
 		
-		if (workbench_directory == string.Empty)
-		{
+		if (workbench_directory == string.Empty) {
 			return false;
 		}
 		
@@ -246,13 +253,17 @@ class PluginDialogBase: WorkbenchPlugin
 	}
 	
 	static FileHandle CreateFile(string file)
-	{		
+	{
+		CopyFile(DUMMY_FILE, file);
+		return OpenFile(file, FileMode.WRITE);
+				
 		// Creates needed directories
-		string absolute_file_rebuild;
+		/*string absolute_file_rebuild;
 		array<string> absolute_file_split = {};
 		file.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
 		file.Split(SystemPath.SEPERATOR, absolute_file_split);
 		for (int i = 0; i < absolute_file_split.Count(); i++) {
+			Print(absolute_file_split[i]);
 			if (absolute_file_split[i].Contains(".")) {
 				break;
 			}
@@ -271,8 +282,8 @@ class PluginDialogBase: WorkbenchPlugin
 		if (result != 0) {
 			return null;
 		}
-				
-		return OpenFile(file, FileMode.WRITE);
+		
+		return OpenFile(file, FileMode.WRITE);*/
 	}
 	
 	static int RunCommandPrompt(string cmd, bool wait = false)
@@ -307,8 +318,6 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static void KillTask(string task_name)
 	{
-		
-		
 		RunCommandPrompt(string.Format("taskkill /F /IM %1 /T", task_name), true);
 		//Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
 	}
