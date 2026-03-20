@@ -20,7 +20,11 @@ class ConfigObject: Managed
 			
 			string config_entry = string.Format("%1 %2", path, config_entry_attribute.GetVariableName());			
 			string variable_name = config_entry_attribute.Field.Name;
-			typename variable_type = config_entry_attribute.GetVariableType();
+			typename variable_type = config_entry_attribute.GetVariableType();			
+			
+			if (!GetGame().ConfigIsExisting(config_entry)) {
+				continue;
+			}
 			
 			switch (variable_type) {
 				case bool: {
@@ -28,7 +32,7 @@ class ConfigObject: Managed
 					break;
 				}
 				
-				case int: {					
+				case int: {
 					EnScriptVar<int>.Set(this, variable_name, GetGame().ConfigGetInt(config_entry));
 					break;
 				}
