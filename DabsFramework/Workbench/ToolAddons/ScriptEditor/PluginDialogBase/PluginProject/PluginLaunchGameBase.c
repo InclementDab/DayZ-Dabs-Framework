@@ -122,7 +122,7 @@ class PluginLaunchGameBase: PluginProject
 				
 		if (launch_settings.AutoClose) {
 			KillTask(launch_settings.GetExecutableName());
-			KillTask("CrashReporter.exe");
+			KillTask("CrashReporter.exe", false);
 		}
 										
 		// Reformats mod list
@@ -242,7 +242,7 @@ class PluginLaunchGameBase: PluginProject
 		string client2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-profiles=%2\" \"-mod=%1\" \"-name=%3\"", formatted_mod_list, client2_profile_directory, launch_settings.Name + " (1)");
 		string server_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-profiles=%2\" \"-mod=%1\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server -port=%6", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server_mission, launch_settings.Port);
 		string server2_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-profiles=%2\" \"-mod=%1\" \"-serverMod=%3\" \"-config=%4\" \"-mission=%5\" -server -port=%6", formatted_mod_list, server_profile_directory, formatted_server_mod_list, m_ServerConfig, server2_mission, launch_settings.Port);
-		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-profiles=%2\" \"-mod=%1\"", formatted_mod_list, offline_profile_directory);		
+		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-profiles=%2\" \"-mod=%1\" \"-config=%3\"", formatted_mod_list, offline_profile_directory, m_ServerConfig);		
 		
 		offline_launch_params += " -offline";
 		
