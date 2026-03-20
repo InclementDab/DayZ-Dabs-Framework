@@ -50,21 +50,21 @@ class ScopedFunctionTimer: Managed
 		
 		m_FunctionName = function_name;
 		m_StartTime = g_Game.GetTime();
-		m_StartTick = TickCount(0);
 		m_LastDumpTime = m_StartTime;
+		m_StartTick = TickCount(0); // goes last
 #endif
 	}	
 	
 	void ~ScopedFunctionTimer()
 	{
 #ifdef DEBUG_SCOPED_FUNCTION_TIMERS
+		int tick_total = TickCount(m_StartTick); // goes first
+		int delta_time = g_Game.GetTime() - m_StartTime;
 		string average_time_per_action;
-		int tick_total = TickCount(m_StartTick);
 		if (m_ActionIncrement) {
 			average_time_per_action = string.Format(" (Average Time Per Action: [%1ms, %2 ticks each])", (g_Game.GetTime() - m_LastDumpTime) / m_ActionIncrement, tick_total / m_ActionIncrement);
 		}
 		
-		int delta_time = g_Game.GetTime() - m_StartTime;
 		PrintFormat("%1: %2ms (%4 total ticks)%3", m_FunctionName, delta_time, average_time_per_action, tick_total);
 		
 		if (!s_TotalFunctionTime) {
