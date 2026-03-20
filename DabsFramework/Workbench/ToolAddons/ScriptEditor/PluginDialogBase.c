@@ -316,10 +316,10 @@ class PluginDialogBase: WorkbenchPlugin
 		return RunCommandPrompt(string.Format("mklink /j \"%2\" \"%1\"", source_copy, target_copy), true);
 	}
 	
-	static void KillTask(string task_name)
+	static void KillTask(string task_name, bool wait = true)
 	{
-		RunCommandPrompt(string.Format("taskkill /F /IM %1 /T", task_name), true);
-		//Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), true);
+		RunCommandPrompt(string.Format("taskkill /F /IM %1 /T", task_name), wait);
+		//Workbench.RunCmd(string.Format("taskkill /F /IM %1 /T", task_name), wait);
 	}
 	
 	static void CleanLogFolder(string folder)
