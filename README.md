@@ -1,6 +1,6 @@
 # DayZ-Dabs-Framework
 
-Dabs Framework is a complete, open-source modding framework for DayZ Standalone. Created lovingly by [InclementDab](https://twitter.com/InclementDab)
+Dabs Framework is a complete, open-source modding framework for DayZ Standalone.
 
 ## Using the Workbench Plugins
 
