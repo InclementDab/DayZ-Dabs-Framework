@@ -68,8 +68,8 @@ class SuppressedObject: SerializableBase
 		//object.CreateDynamicPhysics(m_PhysicsMask);
 		object.Update();	
 		
-		if (m_UpdatedPathgraph) {
-			GetGame().UpdatePathgraphRegionByObject(object);
+		if (g_Game && m_UpdatedPathgraph) {
+			g_Game.UpdatePathgraphRegionByObject(object);
 		}
 		
 		// memory leak otherwise
