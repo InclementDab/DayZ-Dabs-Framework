@@ -12,7 +12,7 @@ modded class DayZGame
 	protected ref EventManager m_EventManager;
 	protected ref SuppressedObjectManager m_SuppressedObjectManager;
 	
-	protected ref map<typename, ProfileSettings> m_ProfileSettings = new map<typename, ProfileSettings>();
+	protected ref map<typename, ref ProfileSettings> m_ProfileSettings = new map<typename, ref ProfileSettings>();
 	
 	protected ref TTypeNameTypenameMap m_WidgetControllerHashMap = new TTypeNameTypenameMap();
 	protected ref TypeConversionHashMap m_TypeConverterHashMap = new TypeConversionHashMap();
@@ -30,18 +30,7 @@ modded class DayZGame
 			m_SuppressedObjectManager = new SuppressedObjectManager();
 		}
 	}
-	
-	void ~DayZGame()
-	{
-		for (int i = m_ProfileSettings.Count(); i >= 0; i--) {
-			delete m_ProfileSettings.GetElement(i);
-		}
-		
-		for (int j = 0; j < RegisterDiagMenu.s_Instances.Count(); j--) {
-			delete RegisterDiagMenu.s_Instances[j];
-		}
-	}
-			
+				
 	// Override THIS to add your own Custom Conversion Templates
 	// this determines how data is represented in the UI itself
 	// i.e. you can assign a TextWidget to float, due to the TypeConversion's GetString()
