@@ -20,6 +20,15 @@ class Raycast: Managed
 		return vector.Distance(Source.Position, Bounce.Position);
 	}
 	
+	float LengthSq()
+	{
+		if  (!Source || !Bounce) {
+			return 0.0;
+		}
+		
+		return vector.DistanceSq(Source.Position, Bounce.Position);
+	}
+	
 	void Debug(LinearColor color = 0xFF87CEEB, ShapeFlags flags = 104/*ShapeFlags.ONCE | ShapeFlags.TRANSP | ShapeFlags.NOOUTLINE*/)
 	{	
 #ifdef DIAG_DEVELOPER
