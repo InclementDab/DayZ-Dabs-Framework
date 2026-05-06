@@ -14,7 +14,7 @@ class SuppressedObject: SerializableBase
 	void SuppressedObject(notnull Object object, bool update_pathgraph = true)
 	{
 		m_Object = new OLinkT(object);
-		m_UpdatedPathgraph = update_pathgraph && object.CanAffectPathgraph() && g_Game.IsServer();
+		m_UpdatedPathgraph = update_pathgraph && object.CanAffectPathgraph() && g_Game && g_Game.IsServer();
 		m_PhysicsMask = dBodyGetInteractionLayer(object);
 		
 		m_Flags = object.GetFlags();

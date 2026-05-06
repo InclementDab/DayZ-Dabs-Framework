@@ -14,8 +14,6 @@ modded class DayZGame
                 string mission_setting_type;
                 ctx.Read(mission_setting_type);
 				
-				Print(mission_setting_type);
-
                 typename mission_setting_typename = mission_setting_type.ToType();
                 if (!mission_setting_typename) {
                     ErrorEx(string.Format("INVALID MissionSetting type: %1", mission_setting_type));
@@ -61,7 +59,7 @@ modded class DayZGame
             }
         }
     }
-
+	
     protected void OnIdentityCreated(notnull PlayerIdentity identity)
     {
 #ifdef DIAG_DEVELOPER
@@ -75,6 +73,17 @@ modded class DayZGame
             }
         }
     }
+	
+	void OnIdentityDestroyed(PlayerIdentity identity, string uid)
+	{
+#ifdef DIAG_DEVELOPER
+		PrintFormat("OnIdentityDestroyed %1", uid);
+#endif
+		
+		if (m_GameIdentities.Find(uid) != -1) {
+			m_GameIdentities.RemoveItem(uid);
+		}
+	}
 
     protected void OnMissionPathSet(string path)
     {

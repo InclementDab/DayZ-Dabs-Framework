@@ -33,6 +33,15 @@ modded class MissionServer
 			supressed_object_manager.DispatchInfo(identity);
 		}
 	}
+	
+	override void PlayerDisconnected(PlayerBase player, PlayerIdentity identity, string uid)
+	{
+		super.PlayerDisconnected(player, identity, uid);
+		
+		if (g_Game) {
+			g_Game.OnIdentityDestroyed(identity, uid);
+		}
+	}
 		
 	override void OnClientDisconnectedEvent(PlayerIdentity identity, PlayerBase player, int logoutTime, bool authFailed)
 	{
