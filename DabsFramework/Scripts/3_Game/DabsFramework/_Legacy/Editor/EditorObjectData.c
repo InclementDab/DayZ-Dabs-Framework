@@ -73,7 +73,12 @@ class EditorObjectData: SerializableBase
 	
 	static EditorObjectData Create(string type, vector transform[4], EditorObjectFlags flags = EFE_DEFAULT)
 	{
-		return Create(type, transform[3], Math3D.MatrixToAngles(transform), transform[0].Length(), flags);
+		float scale = transform[0].Length();
+		
+		vector transform_copy[4];
+		copyarray(transform_copy, transform);		
+		Math3D.MatrixOrthogonalize4(transform_copy);
+		return Create(type, transform[3], Math3D.MatrixToAngles(transform_copy), scale, flags);
 	}
 	
 	static EditorObjectData Create(string type, vector position, vector orientation, float scale, EditorObjectFlags flags)
