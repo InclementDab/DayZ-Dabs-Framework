@@ -24,7 +24,9 @@ class NamedLocation: ConfigObject
 	[ConfigEntryAttribute("position", vector, ScriptCaller.Create(OnPositionUpdate))]
 	vector Position;
 	
-	[ConfigEntryAttribute("type")]
+	[ConfigEntryAttribute("type", string, ScriptCaller.Create(OnTypeUpdate))]
+	string m_ConfigType;
+	
 	string Type;
 	
 	Symbols GetIcon()
@@ -101,10 +103,15 @@ class NamedLocation: ConfigObject
 		
 		return LinearColor.BLACK;
 	}
-	
+
 	static void OnPositionUpdate(notnull NamedLocation instance)
 	{
 		instance.Position = Vector(instance.Position[0], GetGame().SurfaceY(instance.Position[0], instance.Position[1]), instance.Position[1]);
+	}
+	
+	static void OnTypeUpdate(notnull NamedLocation instance)
+	{
+		instance.Type = instance.m_ConfigType;
 	}
 	
 	static array<ref NamedLocation> EnumerateAllLocations()
