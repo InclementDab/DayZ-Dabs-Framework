@@ -46,7 +46,12 @@ class Plane: Managed
 			return false;
 		}
 		
-        intersection = source.Position + (d1 / d2) * source.Direction;
+		float d3 = d1 / d2;
+		if (d3 < 0) {
+			return false;
+		}
+				
+        intersection = source.Position + d3 * source.Direction;
 		return true;
 	}
 
