@@ -27,7 +27,7 @@ class PositionWithRadius2D: Managed
 		return Vector(x, y, z);
 	}
 	
-	vector GetRandomPointOnEdge(bool snap_y_to_surface = false)
+	vector GetRandomPointOnEdge(bool snap_y_to_surface = false, vector collison_detection_edge = "0 0 0")
 	{
 		for (int i = 0; i < 5; i++) {
 			float random = Math.RandomFloat01();
@@ -42,10 +42,12 @@ class PositionWithRadius2D: Managed
 				}
 			}
 
-			array<Object> excludedObjects = new array<Object>;
-			array<Object> nearbyObjects = new array<Object>;
-			if (GetGame().IsBoxColliding(Vector(x, y, z), "0 0 0", "3 5 3", excludedObjects, nearbyObjects)) {
-				continue;
+			if (collison_detection_edge.LengthSq() > 0) {
+				array<Object> excludedObjects = new array<Object>;
+				array<Object> nearbyObjects = new array<Object>;
+				if (GetGame().IsBoxColliding(Vector(x, y, z), "0 0 0", collison_detection_edge, excludedObjects, nearbyObjects)) {
+					continue;
+				}
 			}
 
 			break;
