@@ -33,11 +33,11 @@ modded class DayZGame
 	
 	void ~DayZGame()
 	{
-		for (int i = m_ProfileSettings.Count(); i >= 0; i--) {
+		for (int i = m_ProfileSettings.Count() - 1; i >= 0; i--) {
 			delete m_ProfileSettings.GetElement(i);
 		}
 		
-		for (int j = 0; j < RegisterDiagMenu.s_Instances.Count(); j--) {
+		for (int j = 0; j < RegisterDiagMenu.s_Instances.Count(); j++) {
 			delete RegisterDiagMenu.s_Instances[j];
 		}
 	}
