@@ -5,9 +5,7 @@ class Directory: FileSystem
 		array<string> enumerated_directories = {};
 		string folder_name;
 		FileAttr folder_attributes;
-		string find_pattern = directory + SystemPath.SEPERATOR + "*";
-		find_pattern.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
-		FindFileHandle handle = FindFile(find_pattern, folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		FindFileHandle handle = FindFile(directory + SystemPath.SEPERATOR + "*", folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
 		if (!handle) {
 			return enumerated_directories;
 		}
@@ -38,9 +36,7 @@ class Directory: FileSystem
 			}
 		}
 		
-		string find_pattern = SystemPath.Combine(directory, "*");
-		find_pattern.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
-		FindFileHandle handle = FindFile(find_pattern, file_name, file_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		FindFileHandle handle = FindFile(SystemPath.Combine(directory, "*"), file_name, file_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
 		if (!handle) {
 			return enumerated_files;
 		}
