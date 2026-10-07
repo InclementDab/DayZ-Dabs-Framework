@@ -49,7 +49,7 @@ class DataBindingHashMap: map<string, autoptr ViewBindingSet>
 
 // 0: Relay_Command parameter
 // 1: Command Value
-typedef map<string, RelayCommand> RelayCommandHashMap
+typedef map<string, RelayCommand> RelayCommandHashMap;
 
 // 0: Source Type
 // 1: Conversion Type
