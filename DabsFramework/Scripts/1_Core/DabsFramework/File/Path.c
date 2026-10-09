@@ -95,13 +95,13 @@ class SystemPath
             return string.Empty;
         }
 
-        for (int j = 0; j < max_size; j++) {
+        for (int j = 0; j < paths.Count(); j++) {
             if (paths[j].Length() == 0) {
                 continue;
             }
 
             if (builder_string.Count() != 0) {
-                string last_str = builder_string[j - 1];
+                string last_str = builder_string[builder_string.Count() - 1];
                 string last_ch = last_str[last_str.Length() - 1];
                 if (!SystemPath.IsDirectorySeperator(last_ch)) {
                     builder_string.Insert(SystemPath.SEPERATOR);
@@ -159,7 +159,7 @@ class SystemPath
             }
 
             if (builder_string.Count() != 0) {
-                string last_str = builder_string[j - 1];
+                string last_str = builder_string[builder_string.Count() - 1];
                 string last_ch = last_str[last_str.Length() - 1];
                 if (!SystemPath.IsDirectorySeperator(last_ch)) {
                     builder_string.Insert(SystemPath.SEPERATOR);
