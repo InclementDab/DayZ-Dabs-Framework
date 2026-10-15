@@ -34,6 +34,7 @@ class PluginLaunchGameBase: PluginProject
 			PromiseSymLink(m_DayZDirectory + SystemPath.SEPERATOR_ALT + "Addons", m_WorkbenchDirectory + SystemPath.SEPERATOR_ALT + "Addons");
 			PromiseSymLink(m_DayZDirectory + SystemPath.SEPERATOR_ALT + "bliss", m_WorkbenchDirectory + SystemPath.SEPERATOR_ALT + "bliss");
 			PromiseSymLink(m_DayZDirectory + SystemPath.SEPERATOR_ALT + "sakhal", m_WorkbenchDirectory + SystemPath.SEPERATOR_ALT + "sakhal");
+			PromiseSymLink(m_DayZDirectory + SystemPath.SEPERATOR_ALT + "nasdara", m_WorkbenchDirectory + SystemPath.SEPERATOR_ALT + "nasdara");
 			
 			// Now FindFile each 
 			string wb_dir_filename;
@@ -84,7 +85,7 @@ class PluginLaunchGameBase: PluginProject
 		if (launch_settings.LaunchType & 16) {
 			m_ProjectSettings["Mods"] = m_ProjectSettings["Mods"] + ";@DayZ-Editor";
 		}
-			
+								
 		if (launch_settings.Repository == string.Empty) {
 			ErrorDialog("You need to set the Repository setting in Plugins -> Configure -> Configure Project");
 			return;

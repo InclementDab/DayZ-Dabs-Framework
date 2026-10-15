@@ -38,6 +38,11 @@ class PluginDialogBase: WorkbenchPlugin
 	
 	static string GetPrefix()
 	{
+		string prefix;
+		if (GetCLIParam("prefix", prefix)) {
+			return prefix;
+		}
+				
 		array<string> current_dir_split = {};
 		string current_directory = GetCurrentDirectory();
 		current_directory.Replace(SystemPath.SEPERATOR_ALT, SystemPath.SEPERATOR);
