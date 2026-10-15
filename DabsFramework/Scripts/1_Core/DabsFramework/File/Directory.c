@@ -5,7 +5,16 @@ class Directory: FileSystem
 		array<string> enumerated_directories = {};
 		string folder_name;
 		FileAttr folder_attributes;
-		FindFileHandle handle = FindFile(directory + SystemPath.SEPERATOR + "*", folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		// 1.30 (DZEXP-134) only lists $profile:/$mission: folders with flags -1 and a forward-slash pattern.
+		// 1.29 finds nothing with -1 and falls through to the original call.
+		string find_pattern = directory + SystemPath.SEPERATOR + "*";
+		string forward_pattern = find_pattern;
+		forward_pattern.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
+		FindFileHandle handle = FindFile(forward_pattern, folder_name, folder_attributes, -1);
+		if (!handle) {
+			handle = FindFile(find_pattern, folder_name, folder_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		}
+		
 		if (!handle) {
 			return enumerated_directories;
 		}
@@ -36,7 +45,14 @@ class Directory: FileSystem
 			}
 		}
 		
-		FindFileHandle handle = FindFile(SystemPath.Combine(directory, "*"), file_name, file_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		string find_pattern = SystemPath.Combine(directory, "*");
+		string forward_pattern = find_pattern;
+		forward_pattern.Replace(SystemPath.SEPERATOR, SystemPath.SEPERATOR_ALT);
+		FindFileHandle handle = FindFile(forward_pattern, file_name, file_attributes, -1);
+		if (!handle) {
+			handle = FindFile(find_pattern, file_name, file_attributes, FindFileFlags.ALL | FindFileFlags.DIRECTORIES | FindFileFlags.ARCHIVES);
+		}
+		
 		if (!handle) {
 			return enumerated_files;
 		}
