@@ -29,8 +29,8 @@ class SampleController: ViewController
 	void SampleController()
 	{
 		// This is just to get you into this file. Ignore it :)
-		if (!ShowedTutorialMessage)
-			Workbench.Dialog("Welcome to LayoutBindingManager!", "Check \"SampleController\" class for an example on how to use this utility!");
+		//if (!ShowedTutorialMessage)
+		//	Workbench.Dialog("Welcome to LayoutBindingManager!", "Check \"SampleController\" class for an example on how to use this utility!");
 		
 		ShowedTutorialMessage = true;
 	}
