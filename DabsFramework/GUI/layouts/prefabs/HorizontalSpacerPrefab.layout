@@ -7,8 +7,8 @@ WrapSpacerWidgetClass ControlerButtonPrefab {
  hexactsize 0
  vexactsize 0
  scriptclass ""
- Padding 5
- Margin 0
+ Padding 7
+ Margin 2
  "Size To Content V" 1
  content_halign center
  content_valign center

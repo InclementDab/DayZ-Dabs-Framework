@@ -1,6 +1,6 @@
 WrapSpacerWidgetClass EditBoxPrefab {
  visible 1
- size 1 24
+ size 1 30
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -12,6 +12,7 @@ WrapSpacerWidgetClass EditBoxPrefab {
  Padding 0
  Margin 0
  content_valign center
+ color 1 1 1 1
  {
   FrameWidgetClass CaptionFrame {
    ignorepointer 1
@@ -24,7 +25,7 @@ WrapSpacerWidgetClass EditBoxPrefab {
    {
     TextWidgetClass Caption {
      clipchildren 0
-     ignorepointer 0
+     ignorepointer 1
      position 0 0
      size 1 1
      halign center_ref
@@ -39,10 +40,11 @@ WrapSpacerWidgetClass EditBoxPrefab {
      style Normal
      text "Caption"
      font "gui/fonts/MetronBook16"
-     "text offset" -12 0
+     "text offset" -10 0
      "size to text h" 0
      "text halign" right
      "text valign" center
+     color 0.6588 0.7059 0.7686 1
      {
       ScriptParamsClass {
        Binding_Name "Caption"
@@ -61,7 +63,7 @@ WrapSpacerWidgetClass EditBoxPrefab {
    {
     TextWidgetClass ContentText {
      visible 1
-     size 0.7 1
+     size 0.96 1
      valign center_ref
      hexactpos 1
      vexactpos 1
@@ -69,11 +71,13 @@ WrapSpacerWidgetClass EditBoxPrefab {
      vexactsize 0
      scriptclass "ViewBinding"
      style Normal
-     font "gui/fonts/etelkatextpro"
+     font "gui/fonts/MetronBook16"
      "exact text" 0
-     "size to text h" 1
+     "size to text h" 0
      "size to text v" 0
      "text valign" center
+     color 0.8667 0.8902 0.9255 1
+     "text offset" 8 0
      {
       ScriptParamsClass {
        Binding_Name "Value"

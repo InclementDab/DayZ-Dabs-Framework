@@ -1,6 +1,6 @@
 WrapSpacerWidgetClass Root {
- color 0.7059 0.7059 0.7059 0.9412
- size 0.25 167
+ color 1 1 1 1
+ size 0.25 177
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -10,7 +10,7 @@ WrapSpacerWidgetClass Root {
  {
   TextWidgetClass ColorPickerCaption {
    ignorepointer 1
-   size 1 16
+   size 1 22
    halign center_ref
    hexactpos 1
    vexactpos 1
@@ -18,9 +18,10 @@ WrapSpacerWidgetClass Root {
    vexactsize 1
    scriptclass "ViewBinding"
    text "ColorPickerCaption"
-   font "gui/fonts/sdf_MetronLight30"
-   "text offset" 9 0
+   font "gui/fonts/MetronBook16"
+   "text offset" 8 0
    "text valign" center
+   color 0.8667 0.8902 0.9255 1
    {
     ScriptParamsClass {
      Binding_Name "Caption"
@@ -28,18 +29,19 @@ WrapSpacerWidgetClass Root {
    }
   }
   PanelWidgetClass OutlineColorPickerSpacer {
-   ignorepointer 0
-   size 2 0.85
+   ignorepointer 1
+   size 5 0.85
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 0
+   color 1 1 1 0
   }
   PanelWidgetClass HSVColorGradientPanel {
    ignorepointer 1
-   color 0.7059 0.7059 0.7059 1
+   color 0.2549 0.2941 0.3451 1
    position 0 0
    size 140 142
    hexactpos 0
@@ -47,6 +49,7 @@ WrapSpacerWidgetClass Root {
    hexactsize 1
    vexactsize 1
    scriptclass ""
+   style rover_sim_colorable
    {
     CanvasWidgetClass HSVColorGradient {
      ignorepointer 0
@@ -72,10 +75,11 @@ WrapSpacerWidgetClass Root {
        "src alpha" 1
        filter 1
        pivot 0 0
+       color 0.9490 0.9647 0.9843 1
        {
         ImageWidgetClass HSVColorPickerIconBlackOutline {
          ignorepointer 1
-         color 0 0 0 1
+         color 0.0235 0.0275 0.0353 1
          size 22 22
          halign center_ref
          valign center_ref
@@ -96,24 +100,26 @@ WrapSpacerWidgetClass Root {
    }
   }
   PanelWidgetClass OutlineColorPickerSpacer0 {
-   ignorepointer 0
-   size 5 0.85
+   ignorepointer 1
+   size 7 0.85
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 0
+   color 1 1 1 0
   }
   PanelWidgetClass ColorSpectrumGradientPanel {
    ignorepointer 1
-   color 0.7059 0.7059 0.7059 1
+   color 0.2549 0.2941 0.3451 1
    size 22 142
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
+   style rover_sim_colorable
    {
     CanvasWidgetClass ColorSpectrumGradient {
      ignorepointer 0
@@ -130,7 +136,7 @@ WrapSpacerWidgetClass Root {
        visible 1
        clipchildren 0
        ignorepointer 1
-       color 1 1 1 0.9961
+       color 0.9490 0.9647 0.9843 1
        position 0 0
        size 1 6
        halign center_ref
@@ -142,7 +148,7 @@ WrapSpacerWidgetClass Root {
         PanelWidgetClass ColorSpectrumPickerPanelBlackOutline {
          clipchildren 0
          ignorepointer 1
-         color 0 0 0 1
+         color 0.0314 0.0431 0.0588 1
          size 1 8
          halign center_ref
          valign center_ref
@@ -158,24 +164,26 @@ WrapSpacerWidgetClass Root {
    }
   }
   PanelWidgetClass ColorPickerLightnessGradientSpacer {
-   ignorepointer 0
-   size 5 0.85
+   ignorepointer 1
+   size 7 0.85
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 0
+   color 1 1 1 0
   }
   PanelWidgetClass ColorLightnessGradientPanel {
    ignorepointer 1
-   color 0.7059 0.7059 0.7059 1
+   color 0.2549 0.2941 0.3451 1
    size 22 142
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
+   style rover_sim_colorable
    {
     CanvasWidgetClass ColorLightnessGradient {
      ignorepointer 0
@@ -192,7 +200,7 @@ WrapSpacerWidgetClass Root {
        visible 1
        clipchildren 0
        ignorepointer 1
-       color 1 1 1 0.9961
+       color 0.9490 0.9647 0.9843 1
        position 0 0
        size 1 6
        halign center_ref
@@ -204,7 +212,7 @@ WrapSpacerWidgetClass Root {
         PanelWidgetClass ColorLightnessPickerPanelBlackOutline {
          clipchildren 0
          ignorepointer 1
-         color 0 0 0 1
+         color 0.0314 0.0431 0.0588 1
          size 1 8
          halign center_ref
          valign center_ref
@@ -220,24 +228,26 @@ WrapSpacerWidgetClass Root {
    }
   }
   PanelWidgetClass ColorRedGradientSpacer {
-   ignorepointer 0
-   size 20 0.85
+   ignorepointer 1
+   size 12 0.85
    halign center_ref
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 0
+   color 1 1 1 0
   }
   PanelWidgetClass ColorRedGradientPanel {
    ignorepointer 1
-   color 0.7059 0.7059 0.7059 1
+   color 0.2549 0.2941 0.3451 1
    size 22 142
    valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
+   style rover_sim_colorable
    {
     CanvasWidgetClass ColorRedGradient {
      ignorepointer 0
@@ -254,7 +264,7 @@ WrapSpacerWidgetClass Root {
        visible 1
        clipchildren 0
        ignorepointer 1
-       color 1 1 1 0.9961
+       color 0.9490 0.9647 0.9843 1
        position 0 0
        size 1 6
        halign center_ref
@@ -266,7 +276,7 @@ WrapSpacerWidgetClass Root {
         PanelWidgetClass ColorRedPickerPanelBlackOutline {
          clipchildren 0
          ignorepointer 1
-         color 0 0 0 1
+         color 0.0314 0.0431 0.0588 1
          size 1 8
          halign center_ref
          valign center_ref
@@ -289,6 +299,7 @@ WrapSpacerWidgetClass Root {
    vexactpos 0
    hexactsize 1
    vexactsize 1
+   color 0.1373 0.1569 0.1843 1
    {
     WrapSpacerWidgetClass ColorSlidersContainer {
      ignorepointer 1
@@ -299,21 +310,22 @@ WrapSpacerWidgetClass Root {
      hexactsize 1
      vexactsize 1
      scriptclass "ViewBinding"
-     Margin 0
+     Margin 2
+     Padding 0
      {
       FrameWidgetClass RedSliderFrame {
        ignorepointer 1
        position 0 0
-       size 1 20
+       size 1 22
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
        {
         SliderWidgetClass RedSlider {
-         color 1 0 0 1
+         color 0.8157 0.2902 0.3216 1
          position 5 0
-         size 0.75 16
+         size 0.75 18
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -334,7 +346,7 @@ WrapSpacerWidgetClass Root {
         }
         FrameWidgetClass RedEditboxFrame {
          ignorepointer 1
-         size 60 20
+         size 60 22
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -342,9 +354,9 @@ WrapSpacerWidgetClass Root {
          {
           EditBoxWidgetClass RedEditBox {
            clipchildren 1
-           color 1 1 1 0.9961
-           position 10 0
-           size 28 12
+           color 0.8667 0.8902 0.9255 1
+           position 4 0
+           size 44 20
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -352,9 +364,9 @@ WrapSpacerWidgetClass Root {
            hexactsize 1
            vexactsize 1
            scriptclass "ViewBinding"
-           style ServerBrowser
+           style Default
            text "255"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/MetronBook16"
            {
             ScriptParamsClass {
              Binding_Name "Red"
@@ -364,15 +376,16 @@ WrapSpacerWidgetClass Root {
           }
           PanelWidgetClass RedTextOutline {
            ignorepointer 1
-           color 0.7059 0.7059 0.7059 0.9961
-           position 8 0
-           size 35 16
+           color 0.3333 0.3882 0.4510 1
+           position 4 0
+           size 48 22
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
+           style Outline_1px
           }
          }
         }
@@ -380,16 +393,16 @@ WrapSpacerWidgetClass Root {
       }
       FrameWidgetClass GreenSliderFrame {
        ignorepointer 1
-       size 1 20
+       size 1 22
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
        {
         SliderWidgetClass GreenSlider {
-         color 0 1 0 1
+         color 0.2824 0.6902 0.4902 1
          position 5 0
-         size 0.75 15
+         size 0.75 18
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -410,7 +423,7 @@ WrapSpacerWidgetClass Root {
         }
         FrameWidgetClass GreenEditboxFrame {
          ignorepointer 1
-         size 60 20
+         size 60 22
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -418,9 +431,9 @@ WrapSpacerWidgetClass Root {
          {
           EditBoxWidgetClass GreenEditBox {
            clipchildren 1
-           color 1 1 1 0.9961
-           position 10 0
-           size 28 12
+           color 0.8667 0.8902 0.9255 1
+           position 4 0
+           size 44 20
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -428,9 +441,9 @@ WrapSpacerWidgetClass Root {
            hexactsize 1
            vexactsize 1
            scriptclass "ViewBinding"
-           style ServerBrowser
+           style Default
            text "255"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/MetronBook16"
            {
             ScriptParamsClass {
              Binding_Name "Green"
@@ -440,15 +453,16 @@ WrapSpacerWidgetClass Root {
           }
           PanelWidgetClass GreenTextOutline {
            ignorepointer 1
-           color 0.7059 0.7059 0.7059 0.9961
-           position 8 0
-           size 35 16
+           color 0.3333 0.3882 0.4510 1
+           position 4 0
+           size 48 22
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
+           style Outline_1px
           }
          }
         }
@@ -456,16 +470,16 @@ WrapSpacerWidgetClass Root {
       }
       FrameWidgetClass BlueSliderFrame {
        ignorepointer 1
-       size 1 20
+       size 1 22
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
        {
         SliderWidgetClass BlueSlider {
-         color 0 0 1 1
+         color 0.2902 0.5451 0.8510 1
          position 5 0
-         size 0.75 16
+         size 0.75 18
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -487,7 +501,7 @@ WrapSpacerWidgetClass Root {
         FrameWidgetClass BlueEditboxFrame {
          ignorepointer 1
          position 0 0
-         size 60 20
+         size 60 22
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -495,9 +509,9 @@ WrapSpacerWidgetClass Root {
          {
           EditBoxWidgetClass BlueEditBox {
            clipchildren 1
-           color 1 1 1 0.9961
-           position 10 0
-           size 28 12
+           color 0.8667 0.8902 0.9255 1
+           position 4 0
+           size 44 20
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -505,9 +519,9 @@ WrapSpacerWidgetClass Root {
            hexactsize 1
            vexactsize 1
            scriptclass "ViewBinding"
-           style ServerBrowser
+           style Default
            text "255"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/MetronBook16"
            {
             ScriptParamsClass {
              Binding_Name "Blue"
@@ -517,15 +531,16 @@ WrapSpacerWidgetClass Root {
           }
           PanelWidgetClass BlueTextOutline {
            ignorepointer 1
-           color 0.7059 0.7059 0.7059 0.9961
-           position 8 0
-           size 35 16
+           color 0.3333 0.3882 0.4510 1
+           position 4 0
+           size 48 22
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
+           style Outline_1px
           }
          }
         }
@@ -533,16 +548,16 @@ WrapSpacerWidgetClass Root {
       }
       FrameWidgetClass AlphaSliderFrame {
        ignorepointer 1
-       size 1 20
+       size 1 22
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
        {
         SliderWidgetClass AlphaSlider {
-         color 0.7059 0.7059 0.7059 0.5882
+         color 0.6588 0.7059 0.7686 1
          position 5 0
-         size 0.75 16
+         size 0.75 18
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -564,7 +579,7 @@ WrapSpacerWidgetClass Root {
         FrameWidgetClass AlphaEditboxFrame {
          ignorepointer 1
          position 0 0
-         size 60 20
+         size 60 22
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -572,8 +587,8 @@ WrapSpacerWidgetClass Root {
          {
           EditBoxWidgetClass AlphaEditBox {
            clipchildren 1
-           position 10 0
-           size 28 12
+           position 4 0
+           size 44 20
            halign center_ref
            valign center_ref
            hexactpos 1
@@ -581,9 +596,10 @@ WrapSpacerWidgetClass Root {
            hexactsize 1
            vexactsize 1
            scriptclass "ViewBinding"
-           style ServerBrowser
+           style Default
            text "255"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/MetronBook16"
+           color 0.8667 0.8902 0.9255 1
            {
             ScriptParamsClass {
              Binding_Name "Alpha"
@@ -593,15 +609,16 @@ WrapSpacerWidgetClass Root {
           }
           PanelWidgetClass AlphaTextOutline {
            ignorepointer 1
-           color 0.7059 0.7059 0.7059 0.9961
-           position 8 0
-           size 35 16
+           color 0.3333 0.3882 0.4510 1
+           position 4 0
+           size 48 22
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
+           style Outline_1px
           }
          }
         }
@@ -610,7 +627,7 @@ WrapSpacerWidgetClass Root {
       PanelWidgetClass CurrentLastColorPanel {
        ignorepointer 1
        position 0 0
-       size 1 52
+       size 1 54
        hexactpos 1
        vexactpos 1
        hexactsize 0
@@ -626,8 +643,8 @@ WrapSpacerWidgetClass Root {
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         Padding 5
-         Margin 0
+         Padding 3
+         Margin 1
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 2
@@ -635,20 +652,21 @@ WrapSpacerWidgetClass Root {
          {
           TextWidgetClass CurrentColorText {
            ignorepointer 1
-           size 135 14
+           size 135 20
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
            text "Current Color"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/MetronBook16"
            "text offset" 3 0
            "text valign" center
+           color 0.6588 0.7059 0.7686 1
           }
           PanelWidgetClass CurrentColorVisual {
            ignorepointer 0
            position 0 0
-           size 60 14
+           size 60 20
            hexactpos 1
            vexactpos 1
            hexactsize 1
@@ -664,20 +682,21 @@ WrapSpacerWidgetClass Root {
           }
           TextWidgetClass LastSavedColorText {
            ignorepointer 1
-           size 135 14
+           size 135 20
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 1
            text "Last Saved"
-           font "gui/fonts/sdf_MetronLight42"
+           font "gui/fonts/MetronBook16"
            "text offset" 3 0
            "exact text" 0
            "text valign" center
+           color 0.6588 0.7059 0.7686 1
           }
           PanelWidgetClass LastSavedColorVisual {
            ignorepointer 0
-           size 60 14
+           size 60 20
            hexactpos 1
            vexactpos 1
            hexactsize 1

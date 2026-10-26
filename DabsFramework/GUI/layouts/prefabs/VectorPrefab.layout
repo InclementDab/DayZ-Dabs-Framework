@@ -1,5 +1,7 @@
-PanelWidgetClass EditorPosElement {
+PanelWidgetClass {
+ Name "EditorPosElement"
  clipchildren 0
+ color 1 1 1 1
  size 1 24
  halign center_ref
  valign center_ref
@@ -9,7 +11,8 @@ PanelWidgetClass EditorPosElement {
  vexactsize 1
  scriptclass ""
  {
-  WrapSpacerWidgetClass PositionSpacer {
+  WrapSpacerWidgetClass "{00000000EC5EDB13}" {
+   Name "PositionSpacer"
    clipchildren 1
    ignorepointer 1
    size 1 1
@@ -20,7 +23,8 @@ PanelWidgetClass EditorPosElement {
    Padding 0
    Margin 0
    {
-    FrameWidgetClass LabelFrame {
+    FrameWidgetClass "{00000000F098AF52}" {
+     Name "LabelFrame"
      ignorepointer 1
      size 0.25 1
      hexactpos 1
@@ -28,8 +32,10 @@ PanelWidgetClass EditorPosElement {
      hexactsize 0
      vexactsize 0
      {
-      TextWidgetClass EditorPosElementLabel {
+      TextWidgetClass "{00000000192EECB3}" {
+       Name "EditorPosElementLabel"
        ignorepointer 1
+       color 0.659 0.706 0.769 1
        position 0 0
        size 1 1
        halign center_ref
@@ -41,7 +47,7 @@ PanelWidgetClass EditorPosElement {
        scriptclass "ViewBinding"
        text "Text Label:"
        font "gui/fonts/MetronBook16"
-       "text offset" -12 0
+       "text offset" -10 0
        "exact text" 0
        "text halign" right
        "text valign" center
@@ -53,11 +59,12 @@ PanelWidgetClass EditorPosElement {
       }
      }
     }
-    PanelWidgetClass frame_x {
+    PanelWidgetClass "{00000000405D19FB}" {
+     Name "frame_x"
      visible 1
      clipchildren 1
      ignorepointer 1
-     color 0.7647 0.1804 0.102 0.2353
+     color 0.2 0.145 0.165 0.961
      position 0 0
      size 0.25 1
      valign center_ref
@@ -67,12 +74,13 @@ PanelWidgetClass EditorPosElement {
      vexactsize 0
      style rover_sim_colorable
      {
-      PanelWidgetClass lbl_x0 {
+      PanelWidgetClass "{00000000B98EAF09}" {
+       Name "lbl_x0"
        ignorepointer 1
        keepsafezone 0
-       color 0.7647 0.1804 0.102 1
+       color 0.816 0.29 0.322 1
        position 0 0
-       size 24 24
+       size 26 30
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -80,8 +88,10 @@ PanelWidgetClass EditorPosElement {
        vexactsize 1
        style rover_sim_colorable
        {
-        TextWidgetClass x0 {
+        TextWidgetClass "{000000006939E8A4}" {
+         Name "x0"
          ignorepointer 1
+         color 0.949 0.965 0.984 1
          size 1 1
          halign center_ref
          valign center_ref
@@ -90,25 +100,26 @@ PanelWidgetClass EditorPosElement {
          hexactsize 0
          vexactsize 0
          text "X"
-         font "gui/fonts/etelkatextpro"
+         font "gui/fonts/MetronBook16"
          "exact text" 0
-         "exact text size" 45
+         "exact text size" 16
          "size to text h" 0
          "text halign" center
          "text valign" center
         }
        }
       }
-      EditBoxWidgetClass x_value {
+      EditBoxWidgetClass "{00000000208238A0}" {
+       Name "x_value"
        visible 1
        clipchildren 1
-       color 1 1 1 0.9608
-       position 28 0
-       size 256 0.9
+       color 0.867 0.89 0.925 1
+       position 30 0
+       size 0.9 0.65
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 1
+       hexactsize 0
        vexactsize 0
        scaled 1
        scriptclass "ViewBinding"
@@ -116,7 +127,7 @@ PanelWidgetClass EditorPosElement {
        text "12345678910!"
        "limit visible" 0
        "exact text" 0
-       font "gui/fonts/Metron22"
+       font "gui/fonts/MetronBook16"
        {
         ScriptParamsClass {
          Binding_Name "X"
@@ -126,9 +137,10 @@ PanelWidgetClass EditorPosElement {
       }
      }
     }
-    PanelWidgetClass frame_y {
+    PanelWidgetClass "{00000000B9F19E15}" {
+     Name "frame_y"
      ignorepointer 1
-     color 0.5765 0.8157 0.2196 0.2353
+     color 0.137 0.192 0.172 0.961
      size 0.25 1
      valign center_ref
      hexactpos 1
@@ -137,12 +149,13 @@ PanelWidgetClass EditorPosElement {
      vexactsize 0
      style rover_sim_colorable
      {
-      PanelWidgetClass lbl_y {
+      PanelWidgetClass "{00000000174947F6}" {
+       Name "lbl_y"
        ignorepointer 1
        keepsafezone 0
-       color 0.5765 0.8157 0.2196 1
+       color 0.282 0.69 0.49 1
        position 0 0
-       size 24 24
+       size 26 30
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -150,8 +163,10 @@ PanelWidgetClass EditorPosElement {
        vexactsize 1
        style rover_sim_colorable
        {
-        TextWidgetClass y {
+        TextWidgetClass "{0000000098DF87BC}" {
+         Name "y"
          ignorepointer 1
+         color 0.949 0.965 0.984 1
          size 1 1
          halign center_ref
          valign center_ref
@@ -161,25 +176,26 @@ PanelWidgetClass EditorPosElement {
          vexactsize 0
          scriptclass ""
          text "Y"
-         font "gui/fonts/etelkatextpro"
+         font "gui/fonts/MetronBook16"
          "exact text" 0
-         "exact text size" 45
+         "exact text size" 16
          "size to text h" 0
          "text halign" center
          "text valign" center
         }
        }
       }
-      EditBoxWidgetClass y_value {
+      EditBoxWidgetClass "{000000008F8122FC}" {
+       Name "y_value"
        visible 1
        keepsafezone 0
-       color 1 1 1 0.9608
-       position 28 0
-       size 256 0.9
+       color 0.867 0.89 0.925 1
+       position 30 0
+       size 0.9 0.65
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 1
+       hexactsize 0
        vexactsize 0
        scriptclass "ViewBinding"
        style Default
@@ -187,7 +203,7 @@ PanelWidgetClass EditorPosElement {
        text "12345678910!"
        "limit visible" 0
        "exact text" 0
-       font "gui/fonts/Metron22"
+       font "gui/fonts/MetronBook16"
        {
         ScriptParamsClass {
          Binding_Name "Y"
@@ -197,10 +213,11 @@ PanelWidgetClass EditorPosElement {
       }
      }
     }
-    PanelWidgetClass frame_z {
+    PanelWidgetClass "{00000000B7C50B90}" {
+     Name "frame_z"
      clipchildren 1
      ignorepointer 1
-     color 0.2588 0.5176 0.9176 0.2353
+     color 0.129 0.169 0.226 0.961
      position 0 0
      size 0.25 1
      valign center_ref
@@ -210,13 +227,14 @@ PanelWidgetClass EditorPosElement {
      vexactsize 0
      style rover_sim_colorable
      {
-      PanelWidgetClass lbl_z {
+      PanelWidgetClass "{000000009E14B55B}" {
+       Name "lbl_z"
        clipchildren 1
        ignorepointer 1
        keepsafezone 0
-       color 0.2588 0.5176 0.9176 1
+       color 0.29 0.545 0.851 1
        position 0 0
-       size 24 24
+       size 26 30
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -224,8 +242,10 @@ PanelWidgetClass EditorPosElement {
        vexactsize 1
        style rover_sim_colorable
        {
-        TextWidgetClass z {
+        TextWidgetClass "{000000001B560F61}" {
+         Name "z"
          ignorepointer 1
+         color 0.949 0.965 0.984 1
          size 1 1
          halign center_ref
          valign center_ref
@@ -234,25 +254,27 @@ PanelWidgetClass EditorPosElement {
          hexactsize 0
          vexactsize 0
          text "Z"
-         font "gui/fonts/etelkatextpro"
+         font "gui/fonts/MetronBook16"
          "exact text" 0
+         "exact text size" 16
          "size to text h" 0
          "text halign" center
          "text valign" center
         }
        }
       }
-      EditBoxWidgetClass z_value {
+      EditBoxWidgetClass "{000000007A4511AF}" {
+       Name "z_value"
        visible 1
        clipchildren 1
        keepsafezone 0
-       color 1 1 1 0.9608
-       position 28 0
-       size 256 0.9
+       color 0.867 0.89 0.925 1
+       position 30 0
+       size 0.9 0.65
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 1
+       hexactsize 0
        vexactsize 0
        scriptclass "ViewBinding"
        style Default
@@ -260,7 +282,7 @@ PanelWidgetClass EditorPosElement {
        "limit visible" 0
        "Use default text" 0
        "exact text" 0
-       font "gui/fonts/Metron22"
+       font "gui/fonts/MetronBook16"
        {
         ScriptParamsClass {
          Binding_Name "Z"

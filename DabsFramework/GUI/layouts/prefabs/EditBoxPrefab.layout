@@ -1,17 +1,21 @@
-WrapSpacerWidgetClass EditBoxPrefab {
+WrapSpacerWidgetClass {
+ Name "EditBoxPrefab"
  visible 1
- size 1 24
+ color 1 1 1 1
+ size 1 30
  hexactpos 1
  vexactpos 1
  hexactsize 0
  vexactsize 1
  scriptclass ""
- style Colorable
+ style Empty
  Padding 0
  Margin 0
  {
-  TextWidgetClass Caption {
+  TextWidgetClass "{000000002D980BCF}" {
+   Name "Caption"
    ignorepointer 1
+   color 0.659 0.705 0.769 1
    position 0 0
    size 0.25 1
    halign center_ref
@@ -22,9 +26,10 @@ WrapSpacerWidgetClass EditBoxPrefab {
    vexactsize 0
    scaled 0
    scriptclass "ViewBinding"
+   style None
    text "This is text"
    font "gui/fonts/MetronBook16"
-   "text offset" -12 0
+   "text offset" -10 0
    "size to text h" 0
    "size to text v" 0
    "text halign" right
@@ -35,20 +40,24 @@ WrapSpacerWidgetClass EditBoxPrefab {
     }
    }
   }
-  PanelWidgetClass EditBoxPanel {
+  PanelWidgetClass "{00000000098E1E10}" {
+   Name "EditBoxPanel"
    ignorepointer 1
+   color 0.098 0.118 0.145 1
    size 0.75 1
    valign center_ref
    hexactpos 0
    vexactpos 0
    hexactsize 0
    vexactsize 0
+   style rover_sim_colorable
    {
-    PanelWidgetClass EditBoxOutline {
+    PanelWidgetClass "{00000000EE3FB9C6}" {
+     Name "EditBoxOutline"
      clipchildren 1
      ignorepointer 1
      keepsafezone 0
-     color 0.1176 0.1176 0.1176 1
+     color 0.255 0.294 0.345 1
      position 0 0
      size 1 1
      halign center_ref
@@ -58,23 +67,25 @@ WrapSpacerWidgetClass EditBoxPrefab {
      hexactsize 0
      vexactsize 0
      draggable 0
-     style DayZDefaultPanel
+     style Outline_1px
     }
-    EditBoxWidgetClass ContentText {
+    EditBoxWidgetClass "{0000000052A9AF18}" {
+     Name "ContentText"
      visible 1
-     position 0 0
-     size 1030 1
+     color 0.867 0.89 0.925 1
+     position 0.02 0
+     size 0.95 1
      valign center_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
      vexactsize 0
      scaled 1
      scriptclass "ViewBinding"
      style Default
      text "12345678910!"
      "exact text" 1
-     font "gui/fonts/MetronLight22"
+     font "gui/fonts/MetronBook16"
      {
       ScriptParamsClass {
        Binding_Name "Value"

@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass EditorOptionsWrapSpacer {
- size 1 24
+ size 1 30
  halign center_ref
  valign center_ref
  hexactpos 1
@@ -30,11 +30,12 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      scriptclass "ViewBinding"
      text "Words and stuff"
      font "gui/fonts/MetronBook16"
-     "text offset" -12 0
+     "text offset" -10 0
      "size to text h" 0
      "size to text v" 0
      "text halign" right
      "text valign" center
+     color 0.6588 0.7059 0.7686 1
      {
       ScriptParamsClass {
        Binding_Name "Caption"
@@ -46,9 +47,9 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
   PanelWidgetClass EditorOptionSliderDownPanel {
    clipchildren 1
    ignorepointer 1
-   color 0.3922 0.3922 0.3922 0
+   color 0.1647 0.1843 0.2157 1
    position 0 0
-   size 0.02 1
+   size 0.07 1
    valign center_ref
    hexactpos 1
    vexactpos 1
@@ -57,24 +58,25 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
    style rover_sim_colorable
    {
     ButtonWidgetClass EditorOptionSliderDownButton {
-     color 1 1 1 0
+     color 1 1 1 1
      position 0 0
-     size 0.7 1
+     size 1 1
      valign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 0
      scriptclass "ViewBinding"
+     style Editor
      {
       ImageWidgetClass EditorOptionSliderDownIcon {
        visible 1
        clipchildren 1
        inheritalpha 0
        ignorepointer 1
-       color 0.7059 0.7059 0.7059 0.5882
+       color 0.6588 0.7059 0.7686 1
        position 0 0
-       size 12 12
+       size 10 10
        halign center_ref
        valign center_ref
        hexactpos 1
@@ -82,7 +84,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
        hexactsize 1
        vexactsize 1
        image0 "set:dayz_gui image:icon_collapse"
-       mode additive
+       mode blend
        "src alpha" 1
        "clamp mode" clamp
        "stretch mode" stretch_h
@@ -101,9 +103,9 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
   PanelWidgetClass EditorOptionSliderUpPanel {
    clipchildren 1
    ignorepointer 1
-   color 0.3922 0.3922 0.3922 0
+   color 0.1647 0.1843 0.2157 1
    position 0 0
-   size 0.02 1
+   size 0.07 1
    halign right_ref
    valign center_ref
    hexactpos 1
@@ -114,7 +116,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
    style rover_sim_colorable
    {
     ButtonWidgetClass EditorOptionSliderUpButton {
-     color 1 1 1 0
+     color 1 1 1 1
      position 0 0
      size 1 1
      halign right_ref
@@ -124,15 +126,16 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      hexactsize 0
      vexactsize 0
      scriptclass "ViewBinding"
+     style Editor
      {
       ImageWidgetClass EditorOptionSliderUpIcon {
        visible 1
        clipchildren 1
        inheritalpha 0
        ignorepointer 1
-       color 0.7059 0.7059 0.7059 1
+       color 0.6588 0.7059 0.7686 1
        position 0 0
-       size 12 12
+       size 10 10
        halign center_ref
        valign center_ref
        hexactpos 1
@@ -140,7 +143,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
        hexactsize 1
        vexactsize 1
        image0 "set:dayz_gui image:icon_collapse"
-       mode additive
+       mode blend
        "src alpha" 1
        "clamp mode" clamp
        "stretch mode" stretch_h
@@ -162,9 +165,9 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
    visible 1
    clipchildren 1
    inheritalpha 0
-   color 0.7059 0.7059 0.7059 0.3922
+   color 0.2471 0.5216 0.7922 1
    position 0 0
-   size 0.4 1
+   size 0.49 1
    halign center_ref
    valign center_ref
    hexactpos 1
@@ -185,7 +188,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      clipchildren 1
      inheritalpha 0
      ignorepointer 1
-     color 0.8627 0.8627 0.8627 1
+     color 0.8667 0.8902 0.9255 1
      position 0 0
      size 1 1
      halign center_ref
@@ -197,7 +200,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      scaled 0
      scriptclass "ViewBinding"
      text "10000"
-     font "gui/fonts/MetronBook22"
+     font "gui/fonts/MetronBook16"
      "exact text" 0
      "size to text h" 1
      "text halign" center
@@ -205,9 +208,9 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      {
       EditBoxWidgetClass EditorOptionSliderInput {
        visible 0
-       color 0.8627 0.8627 0.8627 1
-       position 10 0
-       size 40 1
+       color 0.8667 0.8902 0.9255 1
+       position 0 0
+       size 68 1
        halign center_ref
        valign center_ref
        hexactpos 1
@@ -219,7 +222,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
        text "10000"
        "limit visible" 0
        "exact text" 0
-       font "gui/fonts/sdf_MetronLight42"
+       font "gui/fonts/MetronBook16"
        {
         ScriptParamsClass {
          Binding_Name "CalculatedValue"
@@ -238,7 +241,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
     PanelWidgetClass SliderOutline_override {
      inheritalpha 0
      ignorepointer 1
-     color 0.7059 0.7059 0.7059 1
+     color 0.2549 0.2941 0.3451 1
      size 1 1
      halign center_ref
      valign center_ref
@@ -246,7 +249,7 @@ WrapSpacerWidgetClass EditorOptionsWrapSpacer {
      vexactpos 1
      hexactsize 0
      vexactsize 0
-     style blank
+     style Outline_1px
     }
    }
    {

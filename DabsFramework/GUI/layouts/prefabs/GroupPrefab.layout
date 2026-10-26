@@ -2,9 +2,9 @@ WrapSpacerWidgetClass EditorDialogOption {
  clipchildren 0
  inheritalpha 0
  ignorepointer 0
- color 1 1 1 0.3137
+ color 1 1 1 1
  position 0 0
- size 1 20
+ size 1 30
  halign center_ref
  hexactpos 1
  vexactpos 1
@@ -12,32 +12,33 @@ WrapSpacerWidgetClass EditorDialogOption {
  vexactsize 1
  scriptclass ""
  style Empty
- Padding 4
+ Padding 3
  Margin 0
- "Size To Content H" 1
+ "Size To Content H" 0
  "Size To Content V" 1
  content_halign center
  content_valign center
  {
   ButtonWidgetClass EditorDialogOptionButton {
-   size 0.99 1
+   size 0.99 30
    halign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
-   vexactsize 0
+   vexactsize 1
    scriptclass "ViewBinding"
-   style Empty
+   style Editor
    switch toggle
+   color 0.1647 0.1843 0.2157 1
    {
     FrameWidgetClass EditorDialogOptionPanel {
      clipchildren 1
      ignorepointer 1
-     size 1 1
+     size 30 30
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      fixaspect inside
      {
       ImageWidgetClass expand_image {
@@ -45,14 +46,14 @@ WrapSpacerWidgetClass EditorDialogOption {
        clipchildren 0
        inheritalpha 1
        ignorepointer 1
-       color 1 1 1 0.549
-       size 0.9 0.9
+       color 0.3922 0.6588 0.9373 1
+       size 16 16
        halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 0
-       vexactsize 0
+       hexactsize 1
+       vexactsize 1
        image0 "set:dayz_gui image:icon_collapse"
        mode blend
        "src alpha" 1
@@ -65,14 +66,14 @@ WrapSpacerWidgetClass EditorDialogOption {
        clipchildren 0
        inheritalpha 1
        ignorepointer 1
-       color 1 1 1 0.549
-       size 0.9 0.9
+       color 0.3922 0.6588 0.9373 1
+       size 16 16
        halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 0
-       vexactsize 0
+       hexactsize 1
+       vexactsize 1
        image0 "set:dayz_gui image:icon_expand"
        mode blend
        "src alpha" 1
@@ -85,9 +86,9 @@ WrapSpacerWidgetClass EditorDialogOption {
     TextWidgetClass EditorDialogOptionTitle {
      clipchildren 1
      ignorepointer 1
-     color 1 1 1 0.7843
+     color 0.8667 0.8902 0.9255 1
      position 0 0
-     size 0.95 20
+     size 0.87 30
      halign right_ref
      hexactpos 1
      vexactpos 1
@@ -95,9 +96,10 @@ WrapSpacerWidgetClass EditorDialogOption {
      vexactsize 1
      scriptclass "ViewBinding"
      text "Test Me"
-     font "gui/fonts/etelkatextpro"
-     "size to text v" 1
+     font "gui/fonts/MetronBook16"
+     "size to text v" 0
      "text valign" center
+     "text offset" 8 0
      {
       ScriptParamsClass {
        Binding_Name "Caption"
@@ -106,7 +108,7 @@ WrapSpacerWidgetClass EditorDialogOption {
     }
     PanelWidgetClass EditorDialogOptionSpacer {
      ignorepointer 1
-     color 0.5882 0.5882 0.5882 1
+     color 0.2549 0.2941 0.3451 1
      position 0 0
      size 1 1
      halign center_ref
@@ -129,7 +131,7 @@ WrapSpacerWidgetClass EditorDialogOption {
    visible 1
    clipchildren 0
    ignorepointer 0
-   color 0 0 0 1
+   color 0.1373 0.1569 0.1843 1
    position 0 1
    size 1 0
    halign center_ref
@@ -138,8 +140,8 @@ WrapSpacerWidgetClass EditorDialogOption {
    hexactsize 0
    vexactsize 1
    scriptclass "ViewBinding"
-   style Empty
-   Padding 6
+   style Colorable
+   Padding 8
    Margin 0
    "Size To Content V" 1
    {

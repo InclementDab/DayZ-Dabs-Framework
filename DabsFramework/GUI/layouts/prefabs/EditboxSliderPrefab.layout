@@ -1,5 +1,5 @@
 WrapSpacerWidgetClass UNUSED {
- size 0.25 20
+ size 0.25 30
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -9,16 +9,16 @@ WrapSpacerWidgetClass UNUSED {
  {
   FrameWidgetClass FrameWidget0 {
    ignorepointer 1
-   size 1 20
+   size 1 30
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 1
    {
     SliderWidgetClass SliderWidget0 {
-     color 1 1 1 0.9961
+     color 0.2471 0.5216 0.7922 1
      position 5 0
-     size 0.65 18
+     size 0.62 24
      halign right_ref
      valign center_ref
      hexactpos 1
@@ -36,14 +36,14 @@ WrapSpacerWidgetClass UNUSED {
     }
     FrameWidgetClass FrameWidget1 {
      ignorepointer 1
-     size 162 20
+     size 162 30
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
      {
       EditBoxWidgetClass EditBoxWidget0 {
-       size 33 16
+       size 48 22
        halign center_ref
        valign center_ref
        hexactpos 1
@@ -52,7 +52,9 @@ WrapSpacerWidgetClass UNUSED {
        vexactsize 1
        scriptclass "ViewBinding"
        text "255"
-       font "gui/fonts/sdf_MetronLight42"
+       font "gui/fonts/MetronBook16"
+       color 0.8667 0.8902 0.9255 1
+       style Default
        {
         ScriptParamsClass {
          Binding_Name "CalculatedValue"

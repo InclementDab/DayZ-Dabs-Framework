@@ -1,8 +1,9 @@
-FrameWidgetClass CheckBoxPrefab {
+FrameWidgetClass {
+ Name "CheckBoxPrefab"
  visible 1
  clipchildren 1
  ignorepointer 1
- size 1 22
+ size 1 30
  halign center_ref
  valign center_ref
  hexactpos 0
@@ -12,7 +13,8 @@ FrameWidgetClass CheckBoxPrefab {
  scaled 1
  scriptclass ""
  {
-  WrapSpacerWidgetClass WrapSpacerWidget0 {
+  WrapSpacerWidgetClass "{00000000F826C813}" {
+   Name "WrapSpacerWidget0"
    ignorepointer 1
    position 0 0
    size 1 1
@@ -24,11 +26,14 @@ FrameWidgetClass CheckBoxPrefab {
    vexactsize 0
    Padding 0
    Margin 0
+   content_valign center
    {
-    TextWidgetClass Caption {
+    TextWidgetClass "{00000000507E5A6B}" {
+     Name "Caption"
      visible 1
      clipchildren 1
      ignorepointer 1
+     color 0.659 0.706 0.769 1
      position 0 0
      size 0.25 1
      valign center_ref
@@ -39,7 +44,7 @@ FrameWidgetClass CheckBoxPrefab {
      scriptclass "ViewBinding"
      text "Caption!"
      font "gui/fonts/MetronBook16"
-     "text offset" -12 0
+     "text offset" -10 0
      "exact text" 0
      "text halign" right
      "text valign" center
@@ -50,27 +55,39 @@ FrameWidgetClass CheckBoxPrefab {
       }
      }
     }
-    CheckBoxWidgetClass CheckBox {
-     visible 1
-     clipchildren 1
-     inheritalpha 0
-     keepsafezone 0
-     color 0.7059 0.7059 0.7059 1
+    FrameWidgetClass "{6AAE4474FE4110B4}" {
+     Name "Frame0"
+     clipchildren 0
      position 0 0
-     size 0.75 1
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
+     size 48 1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
      vexactsize 0
-     scaled 1
-     scriptclass "ViewBinding"
-     style CheckBox_22px
-     checked 0
      {
-      ScriptParamsClass {
-       Binding_Name "Value"
-       Two_Way_Binding 1
+      CheckBoxWidgetClass "{000000001CEC5735}" {
+       Name "CheckBox"
+       visible 1
+       clipchildren 1
+       keepsafezone 0
+       color 0.392 0.659 0.937 1
+       position 0 0
+       size 16 16
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 1
+       vexactsize 1
+       scaled 1
+       scriptclass "ViewBinding"
+       style Editor
+       checked 1
+       {
+        ScriptParamsClass {
+         Binding_Name "Value"
+         Two_Way_Binding 1
+        }
+       }
       }
      }
     }
