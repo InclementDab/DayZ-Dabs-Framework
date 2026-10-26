@@ -13,6 +13,7 @@ class PluginProject: PluginDialogBase
 	protected string m_Prefix;
 	protected string m_RootDirectory;
 	protected string m_WorkbenchDirectory;
+	protected string m_RepositoryDirectory;
 	protected string m_DayZDirectory;
 	
 	protected ref LaunchSettings m_LaunchSettings;
@@ -22,6 +23,7 @@ class PluginProject: PluginDialogBase
 	void PluginProject()
 	{
 		string current_dir = GetCurrentDirectory();
+		Print(current_dir);
 		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
 			return;
@@ -97,6 +99,7 @@ class PluginProject: PluginDialogBase
 		m_RootDirectory = GetRootDirectory();
 		m_WorkbenchDirectory = GetWorkbenchDirectory();
 		m_DayZDirectory = GetDayZDirectory(m_LaunchSettings);
+		GetCLIParam("repository", m_RepositoryDirectory);
 	}
 	
 	override void Run()

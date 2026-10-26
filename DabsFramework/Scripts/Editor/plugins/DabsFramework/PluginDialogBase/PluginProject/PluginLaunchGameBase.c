@@ -3,8 +3,10 @@ class PluginLaunchGameBase: PluginProject
 	void PluginLaunchGameBase()
 	{
 		bool is_game_and_workbench_same_directory = IsGameAndWorkbenchSameDirectory(m_LaunchSettings);
-		
+				
 		if (!is_game_and_workbench_same_directory) {
+			// Create dummy game directory to launch from
+			
 			// Delete all extra folders in wb directory
 			array<string> folders_to_save = {};
 			
@@ -16,7 +18,7 @@ class PluginLaunchGameBase: PluginProject
 				foreach (string prefix2: m_Prefixes) {			
 					string prefix = prefix2;
 					array<string> prefix_split = {};
-					string source_folder = m_RootDirectory + SystemPath.SEPERATOR + prefix;
+					string source_folder = "P:" + SystemPath.SEPERATOR + prefix; //m_RootDirectory -> P:
 					prefix.Split("\\", prefix_split);
 					string built_path = m_WorkbenchDirectory + SystemPath.SEPERATOR_ALT;
 					if (prefix_split.Count() < 1) {
@@ -25,7 +27,7 @@ class PluginLaunchGameBase: PluginProject
 					
 					// Add each root dir to exclude
 					folders_to_save.Insert(prefix_split[0]);
-					PromiseSymLink(source_folder, m_WorkbenchDirectory + SystemPath.SEPERATOR + prefix);
+					//PromiseSymLink(source_folder, m_WorkbenchDirectory + SystemPath.SEPERATOR + prefix);
 				}
 			}
 			
@@ -127,33 +129,39 @@ class PluginLaunchGameBase: PluginProject
 		}
 										
 		// Reformats mod list
+		string mod_parameter;
 		string formatted_mod_list;
-		array<string> mod_list = {};
-		m_ProjectSettings["Mods"].Split(";", mod_list);
-		for (int i = 0; i < mod_list.Count(); i++) {
-			formatted_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + mod_list[i];
-			if (i != mod_list.Count() - 1) {
-				formatted_mod_list += ";";
-			}
-		}
-		
-		// Reformats server mod list
 		string formatted_server_mod_list;
-		array<string> server_mod_list = {};
-		m_ProjectSettings["ServerMods"].Split(";", server_mod_list);				
-		for (int j = 0; j < server_mod_list.Count(); j++) {
-			if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
-				// introducing a bug idc. 
-				formatted_mod_list += ";" + launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
-			} else {
-				formatted_server_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+		if (GetCLIParam("mod", mod_parameter)) {
+			formatted_mod_list = mod_parameter;
+		} else {
+			// Legacy support
+			array<string> mod_list = {};
+			m_ProjectSettings["Mods"].Split(";", mod_list);
+			for (int i = 0; i < mod_list.Count(); i++) {
+				formatted_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + mod_list[i];
+				if (i != mod_list.Count() - 1) {
+					formatted_mod_list += ";";
+				}
 			}
 			
-			if (j != server_mod_list.Count() - 1) {
+			// Reformats server mod list
+			array<string> server_mod_list = {};
+			m_ProjectSettings["ServerMods"].Split(";", server_mod_list);				
+			for (int j = 0; j < server_mod_list.Count(); j++) {
 				if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
-					formatted_mod_list += ";";
+					// introducing a bug idc. 
+					formatted_mod_list += ";" + launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
 				} else {
-					formatted_server_mod_list += ";";
+					formatted_server_mod_list += launch_settings.Mods + SystemPath.SEPERATOR + server_mod_list[j];
+				}
+				
+				if (j != server_mod_list.Count() - 1) {
+					if ((launch_settings.LaunchType & GameLaunchType.OFFLINE) == GameLaunchType.OFFLINE) {
+						formatted_mod_list += ";";
+					} else {
+						formatted_server_mod_list += ";";
+					}
 				}
 			}
 		}
@@ -246,6 +254,12 @@ class PluginLaunchGameBase: PluginProject
 		string offline_launch_params = m_LaunchSettings.LaunchArgs + string.Format(" \"-profiles=%2\" \"-mod=%1\" \"-config=%3\"", formatted_mod_list, offline_profile_directory, m_ServerConfig);		
 		
 		offline_launch_params += " -offline";
+		
+		client_launch_params += " -loadRVFilesViaEnfusionFS=1";
+		client2_launch_params += " -loadRVFilesViaEnfusionFS=1";
+		server_launch_params += " -loadRVFilesViaEnfusionFS=1";
+		server2_launch_params += " -loadRVFilesViaEnfusionFS=1";
+		offline_launch_params += " -loadRVFilesViaEnfusionFS=1";
 		
 		string ip, password;
 		int port;

@@ -8,8 +8,8 @@ class PluginDialogBase: WorkbenchPlugin
 	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "sakhal", "dta", "platforms", "battleye"};
 	static const ref array<string> SCRIPT_MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission", "workbench"};
 	
-	protected ScriptEditor m_ScriptEditor = Workbench.GetModule("ScriptEditor");
-	protected ResourceBrowser m_ResourceBrowser = Workbench.GetModule("ResourceManager");
+	protected ScriptEditor m_ScriptEditor = Workbench.GetModule(ScriptEditor);
+	protected ResourceManager m_ResourceBrowser = Workbench.GetModule(ResourceManager);
 	
 	void PluginDialogBase()
 	{

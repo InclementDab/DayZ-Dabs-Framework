@@ -88,6 +88,14 @@ class CfgMods
 					"DabsFramework/scripts/5_Mission"
 				};
 			};
+
+			class workbenchScriptModule 
+			{
+				files[] = 
+				{
+					"DabsFramework/scripts/Editor"
+				};
+			};
 		};
 	};
 };
