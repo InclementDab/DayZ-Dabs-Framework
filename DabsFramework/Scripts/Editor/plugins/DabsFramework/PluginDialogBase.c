@@ -5,7 +5,7 @@ class PluginDialogBase: WorkbenchPlugin
 	static const string DEFAULT_EXTENSION = ".c";
 	static const string DUMMY_FILE = "$CurrentDir:_";
 	static const ref array<string> LOG_FILE_TYPES = {".log", ".rpt", ".adm", ".mdmp"};
-	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "sakhal", "dta", "platforms", "battleye"};
+	static const ref array<string> WB_DIR_DEFAULTS = {"Addons", "bliss", "sakhal", "nasdara", "dta", "platforms", "battleye"};
 	static const ref array<string> SCRIPT_MODULES = {"1_core", "2_gamelib", "3_game", "4_world", "5_mission", "workbench"};
 	
 	protected ScriptEditor m_ScriptEditor = Workbench.GetModule(ScriptEditor);
