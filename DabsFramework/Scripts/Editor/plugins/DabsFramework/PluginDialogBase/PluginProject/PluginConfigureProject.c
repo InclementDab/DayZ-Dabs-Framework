@@ -12,6 +12,9 @@ class PluginConfigureProject: PluginProject
 	{
 		super.Configure();
 		
+		// Run() reloads through PluginProject, Configure() doesn't
+		LoadProject();
+		
 		Workbench.ScriptDialog("Edit Environment", DIALOG_TAB_SIZE, m_LaunchSettings);
 	}
 }

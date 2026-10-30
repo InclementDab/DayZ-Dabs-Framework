@@ -22,33 +22,57 @@ class PluginProject: PluginDialogBase
 	
 	void PluginProject()
 	{
+		Print(GetCurrentDirectory());
+		LoadProject();
+	}
+	
+	override void Run()
+	{
+		super.Run();
+		
+		// Every plugin is its own instance, so re-read the settings that Configure Project (or any other plugin) saved since Workbench started
+		LoadProject();
+		
+		string game_directory_stable = GetDayZDirectory(m_LaunchSettings, DayZEnvironmentType.STABLE);
+		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
+	}
+	
+	protected bool LoadProject()
+	{
+		// LoadConfig appends to existing keys, so start clean on reload
+		m_ProjectSettings.Clear();
+		m_Prefixes.Clear();
+		
 		string current_dir = GetCurrentDirectory();
-		Print(current_dir);
 		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
-			return;
+			return false;
 		}		
 		
 		if (FileExist(current_dir + USER_CFG)) {
 			if (!LoadConfig(current_dir + USER_CFG, m_ProjectSettings)) {
 				ErrorDialog(string.Format("Failed to load %1 in %2", USER_CFG, current_dir));
-				return;
+				return false;
 			}
 		}
 
-		// Load launch settings
-		m_LaunchSettings = LaunchSettings.Load(current_dir + LAUNCH_BIN);
-		if (!m_LaunchSettings) {
+		// Load launch settings, keeping the previous ones if the file can't be read
+		LaunchSettings launch_settings = LaunchSettings.Load(current_dir + LAUNCH_BIN);
+		if (!launch_settings) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", LAUNCH_BIN, current_dir));
-			return;
+			return false;
 		}
 		
+		m_LaunchSettings = launch_settings;
+		
 		// Load build settings
-		m_BuildSettings = BuildSettings.Load(current_dir + BUILD_BIN);
-		if (!m_BuildSettings) {
+		BuildSettings build_settings = BuildSettings.Load(current_dir + BUILD_BIN);
+		if (!build_settings) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", BUILD_BIN, current_dir));
-			return;
+			return false;
 		}
+		
+		m_BuildSettings = build_settings;
 		
 		// Load server config
 		m_ServerConfig = current_dir + SERVER_CFG;
@@ -57,7 +81,7 @@ class PluginProject: PluginDialogBase
 		m_ServerConfig = temp;
 		if (!FileExist(m_ServerConfig)) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, current_dir));
-			return;
+			return false;
 		}
 		
 		// define filePatching folders into m_Prefix
@@ -100,14 +124,7 @@ class PluginProject: PluginDialogBase
 		m_WorkbenchDirectory = GetWorkbenchDirectory();
 		m_DayZDirectory = GetDayZDirectory(m_LaunchSettings);
 		GetCLIParam("repository", m_RepositoryDirectory);
-	}
-	
-	override void Run()
-	{
-		super.Run();
-		
-		string game_directory_stable = GetDayZDirectory(m_LaunchSettings, DayZEnvironmentType.STABLE);
-		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
+		return true;
 	}
 					
 	protected bool LoadConfig(string file, inout map<string, string> settings)

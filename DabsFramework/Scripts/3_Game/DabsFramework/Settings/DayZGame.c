@@ -153,12 +153,14 @@ modded class DayZGame
         }		
     }
 
+#ifndef WORKBENCH
 	override void SetMissionPath(string path)
 	{
 		super.SetMissionPath(path);
 
 		OnMissionPathSet(path);
 	}
+#endif
 	
 	array<MissionSetting> GetAllMissionSettings()
 	{
