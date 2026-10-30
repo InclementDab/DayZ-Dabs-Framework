@@ -13,7 +13,10 @@ class PluginConfigureProject: PluginProject
 		super.Configure();
 		
 		// Run() reloads through PluginProject, Configure() doesn't
-		LoadProject();
+		if (!LoadProject()) {
+			Error(string.Format("%1: Failed to load project in %2", Type(), GetCurrentDirectory()));
+			return;
+		}
 		
 		Workbench.ScriptDialog("Edit Environment", DIALOG_TAB_SIZE, m_LaunchSettings);
 	}

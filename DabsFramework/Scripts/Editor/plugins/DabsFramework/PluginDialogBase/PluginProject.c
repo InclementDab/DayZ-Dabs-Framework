@@ -23,7 +23,9 @@ class PluginProject: PluginDialogBase
 	void PluginProject()
 	{
 		Print(GetCurrentDirectory());
-		LoadProject();
+		if (!LoadProject()) {
+			Error(string.Format("%1: Failed to load project in %2", Type(), GetCurrentDirectory()));
+		}
 	}
 	
 	override void Run()
@@ -31,7 +33,10 @@ class PluginProject: PluginDialogBase
 		super.Run();
 		
 		// Every plugin is its own instance, so re-read the settings that Configure Project (or any other plugin) saved since Workbench started
-		LoadProject();
+		if (!LoadProject()) {
+			Error(string.Format("%1: Failed to load project in %2", Type(), GetCurrentDirectory()));
+			return;
+		}
 		
 		string game_directory_stable = GetDayZDirectory(m_LaunchSettings, DayZEnvironmentType.STABLE);
 		PromiseSymLink(string.Format("%1\\!Workshop", game_directory_stable), m_LaunchSettings.Mods);
@@ -44,19 +49,8 @@ class PluginProject: PluginDialogBase
 		m_Prefixes.Clear();
 		
 		string current_dir = GetCurrentDirectory();
-		if (!LoadConfig(current_dir + PROJECT_CFG, m_ProjectSettings)) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", PROJECT_CFG, current_dir));
-			return false;
-		}		
 		
-		if (FileExist(current_dir + USER_CFG)) {
-			if (!LoadConfig(current_dir + USER_CFG, m_ProjectSettings)) {
-				ErrorDialog(string.Format("Failed to load %1 in %2", USER_CFG, current_dir));
-				return false;
-			}
-		}
-
-		// Load launch settings, keeping the previous ones if the file can't be read
+		// Load launch settings first, the repository root comes from them. Keep the previous ones if the file can't be read
 		LaunchSettings launch_settings = LaunchSettings.Load(current_dir + LAUNCH_BIN);
 		if (!launch_settings) {
 			ErrorDialog(string.Format("Failed to load %1 in %2", LAUNCH_BIN, current_dir));
@@ -64,6 +58,27 @@ class PluginProject: PluginDialogBase
 		}
 		
 		m_LaunchSettings = launch_settings;
+		
+		// Setup -repository
+		string repository_cli_param;
+		if (GetCLIParam("repository", repository_cli_param)) {
+			repository_cli_param = SystemPath.Format(repository_cli_param);
+			m_LaunchSettings.Repository = repository_cli_param;
+		}
+		
+		string project_cfg = FindProjectFile(PROJECT_CFG);
+		if (!LoadConfig(project_cfg, m_ProjectSettings)) {
+			ErrorDialog(string.Format("Failed to load %1", project_cfg));
+			return false;
+		}
+		
+		string user_cfg = FindProjectFile(USER_CFG);
+		if (FileExist(user_cfg)) {
+			if (!LoadConfig(user_cfg, m_ProjectSettings)) {
+				ErrorDialog(string.Format("Failed to load %1", user_cfg));
+				return false;
+			}
+		}
 		
 		// Load build settings
 		BuildSettings build_settings = BuildSettings.Load(current_dir + BUILD_BIN);
@@ -75,12 +90,12 @@ class PluginProject: PluginDialogBase
 		m_BuildSettings = build_settings;
 		
 		// Load server config
-		m_ServerConfig = current_dir + SERVER_CFG;
+		m_ServerConfig = FindProjectFile(SERVER_CFG);
 		string temp = m_ServerConfig;
 		temp.Replace("\/", "\\");
 		m_ServerConfig = temp;
 		if (!FileExist(m_ServerConfig)) {
-			ErrorDialog(string.Format("Failed to load %1 in %2", SERVER_CFG, current_dir));
+			ErrorDialog(string.Format("Failed to load %1", m_ServerConfig));
 			return false;
 		}
 		
@@ -112,19 +127,25 @@ class PluginProject: PluginDialogBase
 			m_Prefixes.Insert(prefix_split);
 		}
 		
-		// Setup -repository
-		string repository_cli_param;
-		if (GetCLIParam("repository", repository_cli_param)) {
-			repository_cli_param = SystemPath.Format(repository_cli_param);
-			m_LaunchSettings.Repository = repository_cli_param;
-		}
-		
 		m_Prefix = GetPrefix();
 		m_RootDirectory = GetRootDirectory();
 		m_WorkbenchDirectory = GetWorkbenchDirectory();
 		m_DayZDirectory = GetDayZDirectory(m_LaunchSettings);
 		GetCLIParam("repository", m_RepositoryDirectory);
 		return true;
+	}
+	
+	// Project files live in the repository root, falls back to the workbench directory while Repository isn't set or the file isn't there
+	protected string FindProjectFile(string file)
+	{
+		if (m_LaunchSettings && m_LaunchSettings.Repository != string.Empty) {
+			string repository_file = string.Format("%1\\%2", m_LaunchSettings.Repository, file);
+			if (FileExist(repository_file)) {
+				return repository_file;
+			}
+		}
+		
+		return GetCurrentDirectory() + file;
 	}
 					
 	protected bool LoadConfig(string file, inout map<string, string> settings)
