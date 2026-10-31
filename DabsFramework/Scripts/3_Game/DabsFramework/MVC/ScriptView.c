@@ -51,7 +51,6 @@ class ScriptView: ScriptedViewBase
 		
 		All.Insert(this);
 				
-#ifndef COMPONENT_SYSTEM
 #ifndef NO_GUI		
 		m_LayoutRoot = CreateWidget(null);
 		if (!m_LayoutRoot) {
@@ -92,7 +91,6 @@ class ScriptView: ScriptedViewBase
 #else
 		
 		ErrorEx("Attempted to create layout on SERVER!");
-#endif
 #endif
 	}
 
@@ -136,7 +134,6 @@ class ScriptView: ScriptedViewBase
 	
 	protected void Reload()
 	{
-#ifndef COMPONENT_SYSTEM
 #ifndef NO_GUI		
 		Widget parent = m_LayoutRoot.GetParent();
 		m_LayoutRoot.Unlink();
@@ -148,7 +145,6 @@ class ScriptView: ScriptedViewBase
 		
 		m_Controller.SetParent(this);
 		m_LayoutRoot.SetUserData(this);	
-#endif
 #endif
 	}
 #endif

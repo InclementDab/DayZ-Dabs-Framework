@@ -9,8 +9,12 @@ class ConfigObject: Managed
 	{
 		m_Path = path;
 		m_Path.Split(" ", m_FullPath);
-		m_Name = m_FullPath[Math.Max(0, m_FullPath.Count() - 1)];
-		
+
+		if (m_FullPath.Count() > 0)
+		{
+			m_Name = m_FullPath[Math.Max(0, m_FullPath.Count() - 1)];
+		}
+
 		array<AttributeBase> attributes = AttributeBase.GetCustomAttributes(Type());
 		foreach (AttributeBase attribute: attributes) {
 			ConfigEntryAttribute config_entry_attribute = ConfigEntryAttribute.Cast(attribute);

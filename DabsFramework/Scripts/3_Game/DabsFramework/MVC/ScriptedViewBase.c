@@ -28,12 +28,6 @@ class ScriptedViewBase: Managed
 		if (Debug_Logging) {
 			PrintFormat("[Log] %1", this);
 		}
-
-#ifdef WORKBENCH
-		if (!g_Game) {
-			return;
-		}
-#endif
 		
 		m_TypeConverter = GetDayZGame().GetTypeConversion(Type());
 		if (!m_TypeConverter) {
@@ -74,13 +68,7 @@ class ScriptedViewBase: Managed
 	void OnWidgetScriptInit(Widget w)
 	{
 		m_LayoutRoot = w;
-		
-#ifdef WORKBENCH
-		if (!GetDayZGame()) {
-			return;
-		}
-#endif
-		
+				
 		m_WidgetController = GetDayZGame().GetWidgetController(m_LayoutRoot);
 		
 		if (!m_WidgetController) {
