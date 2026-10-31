@@ -158,7 +158,7 @@ modded class DayZGame
 	WidgetController GetWidgetController(Widget data) 
 	{	
 		WidgetController widgetController = WidgetController.Cast(m_WidgetControllerHashMap.Get(data.Type()).Spawn());
-		g_Script.Call(widgetController, "SetWidget", data);
+		g_Script.CallFunction(widgetController, "SetWidget", null, data);
 		return widgetController;
 	}	
 	

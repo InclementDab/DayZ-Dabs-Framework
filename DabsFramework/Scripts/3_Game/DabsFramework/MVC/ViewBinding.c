@@ -268,7 +268,7 @@ class ViewBinding : ScriptedViewBase
 					g_Script.CallFunctionParams(collection, "InsertAtEx", null, new Param2<TypeConverter, int>(GetTypeConversion(), find + 1));
 				}
 			} else {
-				g_Script.Call(collection, "Insert", drop_target);
+				g_Script.CallFunction(collection, "Insert", null, drop_target);
 			}
 		}		
 	}*/

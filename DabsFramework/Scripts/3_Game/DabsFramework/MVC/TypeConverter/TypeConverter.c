@@ -5,7 +5,7 @@ class TypeConverter
 	// Main Setter and Getter
 	void Set(Class value)
 	{
-		g_Script.Call(this, "SetData", value);
+		g_Script.CallFunction(this, "SetData", null, value);
 	}
 
 	Class Get()

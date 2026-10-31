@@ -293,7 +293,11 @@ class EventBase: Managed
 	// The very BUGGY version of event phases used for the original evr. I suggest turning this off
 	bool UseThreadedEventPhases()
 	{
+#ifdef WORKBENCH
+		return false;
+#else
 		return true;
+#endif
 	}
 	
 	float GetClientTick()

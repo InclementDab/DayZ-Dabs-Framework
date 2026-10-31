@@ -7,7 +7,7 @@ class PrefabBaseController<Class TValue>: ViewController
 	override void PropertyChanged(string property_name)
 	{
 		if (GetParent() && GetParent().IsInherited(PrefabBase)) {
-			g_Script.Call(GetParent(), "PrefabPropertyChanged", property_name);
+			g_Script.CallFunction(GetParent(), "PrefabPropertyChanged", null, property_name);
 		}
 	}
 }
