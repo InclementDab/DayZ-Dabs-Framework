@@ -30,7 +30,9 @@ class ColorWidgetAnimationTimer: WidgetAnimationTimer
 			return;
 		}
 		
-		float normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
+		// Elapsed goes through a float first, int / int truncates and the colour would jump from start to end
+		float elapsed = GetGame().GetTime() - m_StartTime;
+		float normalized = Math.Clamp(elapsed / m_Time, 0, 1);
 		m_Source.SetColor(LinearColor.Lerp(m_StartValueColor, m_EndValueColor, m_BlendMode, normalized));
 		
 		if (normalized >= 1) {	
@@ -91,7 +93,9 @@ class WidgetAnimationTimer: Managed
 		
 		float normalized = 1.0;
 		if (m_Time != 0) {
-			normalized = Math.Clamp(((GetGame().GetTime() - m_StartTime) / m_Time), 0, 1);		
+			// Elapsed goes through a float first, int / int truncates and every animation would snap to its end value
+			float elapsed = GetGame().GetTime() - m_StartTime;
+			normalized = Math.Clamp(elapsed / m_Time, 0, 1);
 		}
 
 		switch (m_Easing) {
